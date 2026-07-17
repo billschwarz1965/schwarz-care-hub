@@ -1,0 +1,27 @@
+# OS — ignore local noise
+desktop.ini
+Thumbs.db
+.DS_Store
+*.tmp
+~$*
+*.bak
+
+# Secrets and credentials (never commit)
+.env
+.env.*
+*.pem
+*credentials*
+*secret*
+
+# Intake staging (optional — remove if you want inbox tracked)
+intake/inbox/*
+!intake/inbox/.gitkeep
+
+# Large binaries — register in sources/registry.md instead of committing
+*.mp4
+*.zip
+*.pptx
+*.xlsx
+
+# Cursor / IDE
+.cursor/

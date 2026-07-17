@@ -1,0 +1,156 @@
+MedVerse Operating System — Complete Knowledge Base
+"Last Updated: July 17, 2026"
+Status: Active | Authoritative | Ready for use
+
+SECTION,CONTENT
+,
+PROGRAM IDENTITY,MedVerse — Unified global medical education and scientific engagement platform; enterprise infrastructure for Sanofi Medical
+POSITIONING,"Digital home of Sanofi Medical — intelligently connecting HCPs with the right scientific information, education, and engagement at the right time"
+,
+PROGRAM LEADERSHIP,
+Product Line Owner & Program Lead,Bill Schwarz
+Principal Architect & Strategic Author,Bill Schwarz
+Global Medical Omnichannel Capabilities Lead,Christina Ha
+Digital Head of Global Medical Product Owner,Sanjay Kalghatgi
+"Global Head, Medical Innovation",Maanuv Bharadwaj
+Global Web Product Line Lead,Anna Majewska
+Web Product Owner (incoming Aug 3),Adela (Theodo)
+Senior Business Analyst (July 13–Sept 30),Peyman Sakhitabe (Theodo)
+PMO (departed July 2),Mithun Shetty (Capgemini/frog)
+ADVENT/SciComm Lead,Christine Lindquist
+CX Strategist,Kenneth Eglinton
+GTMC Analytics,Cedric Radigue
+,
+FINANCIALS,
+2026 Program Funding,~€1.5 million
+Phase 1 Cost-Avoidance Target,"~$750,000"
+Peyman Theodo Contract,"€39,200 HT / €47,040 incl. VAT"
+ADVENT FY26 Migration Budget,"~$475,000"
+Medical-LLM Pilot Cost,~$200K–$250K/TA/month
+,
+PLATFORM ARCHITECTURE,
+Magnolia CMS,Content management system
+TalentLMS,Learning management
+Campus+,Scientific platform foundation
+Accelerator,Shared capabilities
+ACAST,Global podcast platform standard
+NOVA components,Compliant component library
+Migrator,Legacy site migration accelerator
+,
+ROADMAP PHASE 1 (2026),
+Goal 1,Deliver ~$750K cost avoidance
+Goal 2,Retire/migrate/consolidate legacy medical websites
+Goal 3,Expand US MedVerse capability (Q3/Q4)
+Goal 4,Build global readiness into architecture
+Goal 5,Establish platform as alternative to custom builds
+,
+ROADMAP PHASE 2 (2027),
+Goal 1,Complete broader US medical website consolidation
+Goal 2,Expand shared platform model
+Goal 3,Increase migration velocity
+Goal 4,"Mature governance, intake, prioritization, analytics, operations"
+Goal 5,Convert project work into sustainable product operating model
+,
+GLOBAL PRIORITIES,
+Japan,🔴 CRITICAL — eMR decommission pending; MedVerse JP not started; August deadline
+Greater Gulf,🟡 IMMERSE expansion target — treated as single registration unit
+Germany,🟡 IMMERSE expansion target — EADV Congress (end of Sept)
+,
+ACTIVE PROGRAMS,
+IMMERSE,Live (global instance); US instance pending MLR; local expansion by EADV Sept
+ADVENT,Integration into MedVerse confirmed; U.S.-first pilot; Q1/Q2 2027 target; ~900 assets — selective migration
+MedVerse US Homepage MVP,In MLR review (pending Legal/Regulatory as of July 1)
+Fitusiran Safety Site (US),EMMRC approved; Aug 10 leadership update due
+Library of Congresses,Backlog — requirements documented
+US MVO,Backlog — integration meeting May 21
+Nerve Nexus,Backlog — kickoff May 13
+Br1dge,Active program — analytics model reference
+RDU,Active program
+,
+CRITICAL DEADLINES,
+"July 18, 2026",Circulate ADVENT workshop notes; collect corrections + workstream opt-ins
+"July 27, 2026",Login/registration screenshots to Christina
+~August 2026,Japan eMR decommissioning — decision required NOW
+"August 3, 2026",Adela starts — Web Product Owner
+"August 10, 2026",Fitusiran safety site update to North America Leadership Team
+Mid-August 2026,Business content validation aligned with technical gap analysis
+End of September 2026,"IMMERSE local expansion (Japan, Germany, Gulf) — EADV Congress"
+"September 30, 2026",Peyman Theodo engagement ends
+,
+TOP RISKS,
+🔴 CRITICAL,Japan eMR decommissioning blocked — August deadline at risk
+🔴 HIGH,Peyman's undelivered JP commitment — stakeholder trust gap
+🔴 HIGH,MedVerse JP architecture not started — no dev team details
+🔴 HIGH,Global registration not ready by EADV (Sept)
+🔴 HIGH,No dedicated PMO — Bill/Christina absorbing operational work
+🔴 HIGH,Operating model not formalized before new programs onboard
+🟡 MEDIUM,Adela onboarding during in-flight delivery
+🟡 MEDIUM,Measurement gap — Year 1 framework undefined
+🟡 MEDIUM,Regeneron/Legal/Regulatory session pending
+🟡 MEDIUM,Medical Hub resourcing not confirmed
+,
+GOVERNANCE MODEL,
+DAI Model,Medical owns science; Product owns platform
+Operating Rhythm,Weekly ops · Monthly governance · Quarterly exec
+Legal/Privacy/EBI,Advisory model — not core team
+Content Governance,MLR required; scientific publications via iEnvision
+,
+AI-FIRST DIRECTION,
+Core Principle,LLM enablement = default MedVerse requirement (not optional)
+Voice & Conversational,Phased evolution
+AI-Assisted Discovery,Content must be AI-native structured
+Medical-LLM Pilots,"CMO-led, ~$200K–$250K/TA/month, centralized contracting"
+Content Requirements,Transcripts + SEO/LLM metadata + schema + declarative headings
+,
+CONTENT EXPERIENCE FRAMEWORK — 3 PILLARS,
+Pillar 1: Audience,Design around mode and moment of need
+Pillar 2: Content Qualities & Types,"GEO/LLM surfacing, high-impact formats"
+Pillar 3: Content Orchestration,"Activation across owned, third-party, and ecosystem channels"
+,
+HIGH-PRIORITY AUDIENCE MODES,
+Ad-hoc information searchers,"Seek quick, reliable answers in flow of work"
+Evidence explorers,Go beyond quick answers to explore implications
+,
+HIGH-PRIORITY CONTENT TYPES,
+Core research with layered depth,Pre-generated insights; clear structure; inline citations; visible provenance
+Short-form video,3-5 minutes MAX; visually-led; skippable; closed-captioned; full transcript
+Infographics & quick visuals,Rapid visual understanding; structured annotations; AI-readable; expandable
+AI retrieval chat,Answer-first; retrieval-based; cited responses; pre-defined prompts
+Patient-ready explainers,Simplified language; inline citations; ready-to-share; clearly delineated
+,
+LOWER-PRIORITY CONTENT TYPES,
+Long-form e-learning modules,Heavy investment; pharma-skeptical; not AI-legible
+PDF static documents,Not AI-readable; too dense
+Long-form audio/podcast,Too time-consuming; already well-served
+Long-form traditional research,Too slow for HCP moments
+,
+HCP RESEARCH — 5 KEY INSIGHTS,
+Insight 1,"AI use widespread but segmented by task (orientation, memory refresh, clinical reasoning)"
+Insight 2,Trust collapses when AI overreaches — single negative experience causes abandonment
+Insight 3,"Pharma content trusted for clinical decisioning, NOT learning (~90% reject pharma e-learning)"
+Insight 4,UpToDate remains gold standard — used at least once per shift
+Insight 5,"Visual structure outperforms narrative — HCPs scan, don't read sequentially"
+,
+5 IMPLICATIONS FOR MEDVERSE,
+Implication 1,Don't try to replace UpToDate — position as Sanofi-specific layer
+Implication 2,"Focus where Sanofi can differentiate (product info, device training, access support)"
+Implication 3,Treat external LLMs as primary discovery channels
+Implication 4,Build AI-enabled hub to RAG all Sanofi content
+Implication 5,Gating is a liability unless it clearly adds value
+,
+5 STRATEGIC PRIORITIES (MITHUN RETROSPECTIVE),
+Priority 1,Clarify long-term vision beyond today's website
+Priority 2,"Define long-term operating model — ownership across Product, Digital, Web, CX, Medical"
+Priority 3,"Establish stronger governance — Executive DAI, structured forums"
+Priority 4,Create MedVerse Content Deployment Kit — reusable onboarding package
+Priority 5,"Invest in organizational readiness — change management, communications, Medical Hub resourcing"
+,
+SOURCES COMMITTED,20
+STAKEHOLDERS,46
+PROGRAMS,10
+DEADLINES,9
+RISKS,15
+,
+DOCUMENT STATUS,Active | Authoritative | Ready for use
+CREATED,"July 17, 2026"
+PORTABLE,Yes — compatible with all AI tools and text editors
