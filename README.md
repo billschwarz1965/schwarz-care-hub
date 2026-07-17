@@ -6,7 +6,21 @@
 |---|---|
 | **Owner** | Bill Schwarz — Product Line Owner, MedVerse Digital Lead |
 | **Status** | Active — July 2026 |
+| **Human front door** | [MedVerse Platform Hub](../Meeting Notes and Agendas/Notes/MedVerse Hub/index.html) — start here for navigation |
 | **Canonical knowledge base** | [`knowledge-base/MedVerse_Operating_System.csv`](knowledge-base/MedVerse_Operating_System.csv) |
+
+---
+
+## Hub + OS — how they work together
+
+| | **MedVerse Hub** | **MedVerse Operating System** (this repo) |
+|---|---|---|
+| **Audience** | Humans — workstream leads, stakeholders, program team | Humans + AI — facts, registry, context |
+| **Purpose** | Navigate workstreams, meetings, actions, decisions | Authoritative intelligence and source index |
+| **Start** | `Meeting Notes and Agendas/Notes/MedVerse Hub/index.html` | Hub → **Operating System** page, or this README |
+| **Update when…** | Actions, meetings, workstream status change | Facts, risks, roadmap, registered sources change |
+
+**One front door:** Hub for humans. **One source of truth:** OS CSV + registry for structured intelligence.
 
 ---
 

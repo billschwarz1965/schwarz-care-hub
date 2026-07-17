@@ -1,18 +1,13 @@
 # Knowledge Base
 
-## Authoritative file
+## Authoritative files
 
-**[`MedVerse_Operating_System.csv`](MedVerse_Operating_System.csv)**
+| File | Purpose |
+|------|---------|
+| [`MedVerse_Operating_System.csv`](MedVerse_Operating_System.csv) | Structured facts — leadership · roadmap · risks · programs (machine-friendly) |
+| [`MedVerse_Operating_System_Complete.txt`](MedVerse_Operating_System_Complete.txt) | Full narrative knowledge base — content framework · HCP research · stakeholders · learnings |
 
-Structured key-value knowledge covering:
-
-- Program identity and positioning
-- Leadership and DAI roles
-- Financial summary and vendor landscape
-- Roadmap and milestones
-- Risks, dependencies, and open decisions
-- Governance and compliance guardrails
-- AI / discoverability direction
+**Use the CSV for facts and AI lookup; use the Complete document for depth and context.** When they diverge, update both in the same commit.
 
 ## Format
 
@@ -27,4 +22,4 @@ CSV with `SECTION,CONTENT` rows. Section headers are rows where CONTENT is empty
 
 ## Origin
 
-Migrated from `Intelligence/OSU 23 Feb/MedVerse_Operating_System.csv` (July 17, 2026 snapshot).
+Migrated from `Intelligence/OSU 23 Feb/MedVerse_Operating_System.csv`, then enriched July 17, 2026 with July workshop outcomes (Jul 13–14), P+ June 2026, and MedVerse Hub operating model. **This file is authoritative** — do not treat the Intelligence folder copy as current.

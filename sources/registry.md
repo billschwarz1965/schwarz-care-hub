@@ -11,7 +11,8 @@ Paths below are relative to `Campus+Medical - Discovery/` unless noted.
 
 | ID | Title | Path | Updated | Owner |
 |----|-------|------|---------|-------|
-| OS-001 | MedVerse Operating System CSV | `MedVerse Operating System/knowledge-base/MedVerse_Operating_System.csv` | 2026-07-17 | Bill Schwarz |
+| OS-001 | MedVerse Operating System CSV | `MedVerse Operating System/knowledge-base/MedVerse_Operating_System.csv` | 2026-07-17 | Bill Schwarz — structured facts |
+| OS-005 | MedVerse Operating System Complete (narrative) | `MedVerse Operating System/knowledge-base/MedVerse_Operating_System_Complete.txt` | 2026-07-17 | Bill Schwarz — full knowledge base; pair with OS-001 |
 | OS-002 | AI Bootstrap v1.3.3 | `MedVerse Operating System/ai-context/bootstrap/MedVerse_AI_Bootstrap_v1.3.3_04_FEB_2026.md` | 2026-02-04 | Bill Schwarz |
 | OS-003 | Claude/Copilot system instructions | `MedVerse Operating System/ai-context/personas/MedVerse_System_Instructions_Claude_Copilot.txt` | 2026-02 | Bill Schwarz |
 | OS-004 | Claude Opus persona loader | `MedVerse Operating System/ai-context/personas/MedVerse_Claude_Opus_Persona_Loader.txt` | 2026-02 | Bill Schwarz |
@@ -27,6 +28,7 @@ Paths below are relative to `Campus+Medical - Discovery/` unless noted.
 | STR-003 | FY26 Budget Summary | `PMO/Business Case artifacts/FY26_Budget_Summary.md` | 2026 | Line-item budget |
 | STR-004 | Business Requirements PO JD | `PMO/MedVerse_Business_Requirements_Product_Owner_JD.md` | 2026 | Operating model |
 | STR-005 | Executive infographic | `Intelligence/OSU 23 Feb/MedVerse_Executive_Infographic_v2.pdf` | 2026 | Visual summary |
+| STR-007 | OS CSV (legacy snapshot) | `Intelligence/OSU 23 Feb/MedVerse_Operating_System.csv` | 2026-07-17 | Superseded by OS-001 — reference only |
 | STR-006 | AI OS Confluence bundle v1.3.3 | `Intelligence/drive-download-20260204T160708Z-3-001/MedVerse_AI_Operating_System_Confluence_v1.3.3_04_FEB_2026-1.md` | 2026-02-04 | Full DAI/governance bundle |
 
 ---
@@ -74,6 +76,35 @@ Paths below are relative to `Campus+Medical - Discovery/` unless noted.
 | RES-002 | GMI MVP Content Audit | `MedVerse Content Repository/GMI/MVP Content Audit/` | — | SharePoint link |
 | RES-003 | ADVENT medical education assets | `Medical Education/ADVENT/` | Ongoing | Decks, transcripts |
 | RES-004 | IMMERSE AAD metrics | `Medical Education/Immerse/AAD Metrics/` | 2026 | Launch analytics CSV |
+| RES-005 | Future-Ready Content Research Screener V1 | `Research & Benchmarking/HCP Existing Knowledge/MedVerse_Future-Ready_Content_Research_Screener_V1_2026-05-12.md` | 2026-05-12 | frog/Capgemini · 12 HCP recruitment spec · Content Experience Framework |
+
+---
+
+## Content Strategy — Governance Calls (frog/Capgemini)
+
+| ID | Title | Path | Updated | Notes |
+|----|-------|------|---------|-------|
+| CSG-001 | Extended Team Session — 7 May | `Content Strategy/04_Governance Calls/7th May - Extended Team Session.pptx` | 2026-05-07 | Content Experience Framework cadence |
+| CSG-002 | Extended Team Session — 15 May | `Content Strategy/04_Governance Calls/15th May - Extended Team Session.pptx` | 2026-05-15 | Midpoint governance |
+| CSG-003 | SteerCo Session — 21 May | `Content Strategy/04_Governance Calls/21th May - Steerco Session.pptx` | 2026-05-21 | Executive steering |
+| CSG-004 | Exec Summary — Extended Team (28 May) | `Content Strategy/04_Governance Calls/28th May - Exec Summary for Extended Team Session.pptx` | 2026-05-28 | Abridged update to extended team |
+| CSG-005 | HCP Interview Summary — 9 June | `Content Strategy/04_Governance Calls/9th June - HCP Interview Summary.pptx` | 2026-06-09 | 12 HCP interviews · pairs with RES-005 |
+| CSG-006 | Extended Team Session — 18 June | `Content Strategy/04_Governance Calls/18th June - Extended Team Session.pptx` | 2026-06-18 | Pre-validation |
+| CSG-007 | Extended Team Session — 25 June | `Content Strategy/04_Governance Calls/25th June - Extended Team Session.pptx` | 2026-06-25 | Framework validation window |
+| CSG-008 | Deliverable Extraction — 29 June | `Content Strategy/04_Governance Calls/29th June - Deliverable Extraction.pptx` | 2026-06-29 | Final handover extraction · Creators Cut source |
+
+Index: `Content Strategy/04_Governance Calls/README.md`
+
+---
+
+## Content Strategy — Weekly Reports (frog/Capgemini)
+
+| ID | Title | Path | Updated | Notes |
+|----|-------|------|---------|-------|
+| CXW-001 | CX Team Weekly Reports (master deck) | `Content Strategy/05_Weekly Reports/MedVerse CX Team - Weekly Reports.pptx` | 2026-07-17 | Weeks 1–10 · project plan · GREEN RAG throughout |
+| CXW-001-E | CX Team Weekly Reports — slide text extract | `Content Strategy/05_Weekly Reports/MedVerse_CX_Team_Weekly_Reports_extract.md` | 2026-07-17 | Searchable extract of CXW-001 |
+
+Index: `Content Strategy/05_Weekly Reports/README.md`
 
 ---
 

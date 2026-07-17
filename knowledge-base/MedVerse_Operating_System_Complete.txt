@@ -1,0 +1,704 @@
+================================================================================
+MEDVERSE OPERATING SYSTEM — COMPLETE KNOWLEDGE BASE
+================================================================================
+
+Last Updated: July 17, 2026
+Status: Active | Authoritative | Ready for use
+Committed by: Bill Schwarz, Product Line Owner — Medical Digital
+
+Companion file: MedVerse_Operating_System.csv (structured facts — update both together)
+Human front door: Meeting Notes and Agendas/Notes/MedVerse Hub/index.html
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+
+1. COMMIT MANIFEST
+2. PROGRAM IDENTITY
+3. OPERATING MODEL & TOOLS
+4. PROGRAM LEADERSHIP
+5. PLATFORM FOUR PILLARS & WORKSTREAMS
+6. JULY 2026 WORKSHOP OUTCOMES
+7. FINANCIALS
+8. PLATFORM ARCHITECTURE
+9. ROADMAP
+10. GLOBAL PRIORITIES
+11. ACTIVE PROGRAMS & MIGRATIONS
+12. DEADLINE TRACKER
+13. ACTIVE RISK REGISTER
+14. GOVERNANCE MODEL
+15. AI-FIRST DIRECTION
+16. CONTENT EXPERIENCE FRAMEWORK
+17. HCP RESEARCH FINDINGS
+18. STAKEHOLDER ROSTER
+19. STRATEGIC DECISIONS & LEARNINGS
+20. NEXT STEPS
+
+================================================================================
+1. COMMIT MANIFEST
+================================================================================
+
+20 Sources Integrated:
+
+1. MedVerse AI Operating System Bootstrap | Original | Foundation document
+2. MedVerse Operating System Update | June 1–July 17, 2026 | Program memory update
+3. ADVENT/MedVerse 2-Day Workshop | July 13–14, 2026 | Workshop summary
+4. Content Experience Strategy Final Handover | July 15, 2026 | frog/Capgemini deliverable
+5. IMMERSE Meeting Alignment | July 17, 2026 | Zoom meeting summary
+6. MedVerse Roadmap Catch-Up | July 15, 2026 | Zoom meeting summary
+7. Business Priorities for MedVerse | July 1, 2026 | Priority tracker
+8. Japan Medical Content Blocker | July 8, 2026 | Anna Majewska escalation
+9. PMO Retrospective + SharePoint Audit | July 2, 2026 | Mithun Shetty handover
+10. MedVerse Program Retrospective | July 2, 2026 | Strategic assessment
+11. SharePoint Audit | June 2026 | Document library map
+12. Workshop Planning Meeting | June 11, 2026 | Lindquist/Schwarz/Ha
+13. May 28 Governance Call + CoPilot Summary | May 28, 2026 | frog/Capgemini midpoint
+14. May 28 Abridged Update to Extended Team | June 3, 2026 | Bill Schwarz distribution
+15. Content Strategy Kickoff | May 12, 2026 | Meeting notes
+16. Adela Profile | June 2026 | Incoming Web PO
+17. Peyman Theodo Contract | June 24, 2026 | Vendor contract
+18. Website & Media Reporting Playbook | Nov 2025 | Analytics reference
+19. Content Experience Framework — Creators Cut | July 2026 | frog/Capgemini operational
+20. HCP Interviews & Research Summary | July 2026 | frog/Capgemini research
+21. Future-Ready Content Research Screener V1 | May 12, 2026 | frog/Capgemini · RES-005 recruitment spec
+22–29. Content Strategy Governance Calls CSG-001–CSG-008 | May 7 – Jun 29, 2026 | frog/Capgemini · Extended Team · SteerCo · HCP summary · Deliverable extraction
+30. CX Team Weekly Reports CXW-001 | Apr 20 – Jul 3, 2026 | frog/Capgemini · Weeks 1–10 project RAG deck
+
+================================================================================
+2. PROGRAM IDENTITY
+================================================================================
+
+MedVerse — Unified global medical education and scientific engagement platform;
+enterprise infrastructure for Sanofi Medical
+
+Platform role: CMO-sponsored strategic infrastructure — connective tissue across
+Campus+, program hubs, insights, field medical, and congress; NOT another
+standalone HCP portal
+
+IMMERSE — Immunology implementation; first major MedVerse program (global live)
+
+T1D / ADA launch — June 5, 2026: T1D unbranded landing page live for ADA
+Congress on the MedVerse medical-content template; first US General Medicines
+Medical web channel on MedVerse (not June 16)
+
+Positioning: AI-powered scientific engagement orchestration — intelligently
+connecting HCPs with the right scientific information at the right time;
+orchestrates Sanofi science where HCPs already seek answers (search, LLMs,
+third-party platforms, owned channels)
+
+Program phase: Consolidation & Validation (Post-MVP → Platform Scale) — On Track
+per P+ June 2026
+
+NOT a website project — a product-line transformation
+
+================================================================================
+3. OPERATING MODEL & TOOLS
+================================================================================
+
+Human front door: MedVerse Platform Hub (index.html) — workstreams, meetings,
+decisions, resources, roadmap
+
+Structured intelligence: MedVerse Operating System (this repository) — CSV,
+registry, intake, AI context
+
+Authority split:
+- Facts / roadmap / risks / leadership → OS CSV + this document
+- Live actions / meetings / workstream status → Hub + workstream portals
+- New intelligence → intake/inbox → sources/registry.md → update CSV
+
+================================================================================
+4. PROGRAM LEADERSHIP
+================================================================================
+
+CMO Sponsor: CMO Office
+Product Line Owner & Program Lead: Bill Schwarz
+Principal Architect & Strategic Author: Bill Schwarz
+Global Medical Omnichannel Capabilities Lead: Christina Ha
+Digital Head of Global Medical Product Owner: Sanjay Kalghatgi
+Global Head, Medical Innovation: Maanuv Bharadwaj
+Global Web Product Line Lead: Anna Majewska
+Web Product Owner (starts Aug 3): Adela (Theodo)
+Senior Business Analyst (Jul 13–Sept 30): Peyman Sakhitabe (Theodo)
+PMO (departed Jul 2): Mithun Shetty (Capgemini/frog)
+ADVENT / SciComm Lead: Christine Lindquist
+ADVENT Workshop Facilitator: Christine Lindquist
+CX Strategist: Kenneth Eglinton
+GTMC Analytics: Cedric Radigue
+Senior Oversight: John Shields
+
+================================================================================
+5. PLATFORM FOUR PILLARS & WORKSTREAMS
+================================================================================
+
+PLATFORM FOUR PILLARS (Experience model — July workshop):
+
+1. Engagement & Content Experience — HCP journeys, personalization, program hub
+   integration, homepage UX
+2. Insights & Analytics — GTMC dashboards, CRM/Veeva, Year 1 KPI framework
+3. Technology & Integration — Campus+, search rebuild, AI, migration, SEO/redirects
+4. Governance & Operating Model — rollout, content ops, alliance alignment,
+   adoption (workshop sessions deferred Jul 14)
+
+WORKSTREAMS (July 2026 — portals under MedVerse Hub):
+
+| Workstream | Status | Next milestone |
+|------------|--------|----------------|
+| ADVENT Integration with MedVerse | Active | Regeneron/Legal session · ADVENT target state (30 days) |
+| Platform & Experience | Forming | UX prototype feedback |
+| Analytics & Measurement | Forming | Year 1 KPI framework |
+| Content & AI Discoverability | Forming | SEO/GEO/AEO checklist |
+| Governance & Rollout | Planned | Deferred sessions — schedule TBD |
+| Change & Adoption | Forming/Planned | Adoption plan outline |
+| Program Migration (Beyond ADVENT) | Planned | Derive patterns from ADVENT pilot |
+
+================================================================================
+6. JULY 2026 WORKSHOP OUTCOMES (Jul 13–14)
+================================================================================
+
+CONFIRMED DECISIONS:
+
+- MedVerse is strategic infrastructure — not a program site; CMO-sponsored
+- Consolidation before orchestration — Campus+ authority, AI-ready content, then
+  personalization (multi-year)
+- Open content default for LLM discoverability; progressive gating preferred
+- Shift from drive traffic to portal → orchestrate knowledge across channels
+- ADVENT remains distinct program/brand; integrates into MedVerse; not separate
+  technology platform; adventprogram.com redirect model
+- Migration is prioritization — not lift-and-shift of ~900 legacy assets
+- LLM enablement is default MedVerse requirement — not optional
+- New capabilities require business case, measurement, reusable cross-TA value
+- U.S.-first pilot is leading ADVENT migration approach — scope/timing pending
+- Agency spend on ADVENT constrained — shift toward internal/MedVerse capabilities
+- Medical education out of scope for competitive firewall (Dupixent/NextGen =
+  alliance positioning)
+
+NOT YET DECIDED:
+
+- Exact ADVENT migration date and global rollout sequence
+- Authentication model (login, NPI, passkeys, cookies, consent)
+- Patient-facing and staff resource scope
+- Post-migration operating model and governance cadence
+- Governance & Rollout Strategy sessions (deck slides 165–166) — deferred Day 2
+
+================================================================================
+7. FINANCIALS
+================================================================================
+
+2026 Program Funding: ~€1.5 million
+Phase 1 Cost-Avoidance Target: ~$750,000
+Peyman Theodo Contract: €39,200 HT / €47,040 incl. VAT
+ADVENT FY26 Migration Budget: ~$475,000
+Medical-LLM Pilot Cost: ~$200K–$250K/TA/month (CMO-led six-month pilots;
+centralize contracting)
+
+================================================================================
+8. PLATFORM ARCHITECTURE
+================================================================================
+
+Magnolia CMS: Content management (Nova migration in progress across instances)
+TalentLMS: Learning management
+Campus+: Scientific platform foundation
+Accelerator: Shared capabilities (transitioning back to operations/run teams)
+ACAST: Global podcast platform standard
+NOVA components: Compliant component library
+Migrator: Legacy site migration — ~80% automation validated (Advent US, LoC,
+Rare Diseases POC Jun 2026)
+Cvent: Events platform — Library of Congresses migrating SpotMe → Cvent;
+analytics integration required
+
+================================================================================
+9. ROADMAP
+================================================================================
+
+PHASE 1 — 2026
+- Deliver ~$750K cost avoidance
+- Retire/migrate/consolidate legacy medical websites
+- Expand US MedVerse capability (Q3/Q4)
+- Build global readiness into architecture
+- Establish platform as alternative to custom builds
+- Form platform workstreams; validate July workshop outcomes
+
+Q3 2026 NEAR-TERM
+- Circulate ADVENT workshop summary; collect corrections + workstream opt-ins (Jul 18)
+- Regeneron / Legal / Regulatory / Compliance session
+- Define ADVENT target state within 30 days post-workshop
+- Structured feedback on MedVerse homepage UX prototypes
+- Define Year 1 measurement framework
+- Confirm U.S.-first ADVENT pilot scope, redirect model, timing
+
+PHASE 2 — 2027
+- Complete broader US medical website consolidation
+- Expand shared platform model
+- Increase migration velocity (ADVENT pilot readiness discussed Q1/Q2 2027)
+- Mature governance, intake, prioritization, analytics, operations
+- Convert project work into sustainable product operating model
+
+================================================================================
+10. GLOBAL PRIORITIES
+================================================================================
+
+Japan: 🔴 CRITICAL — eMR decommission ~Aug; Migrator feasibility confirmed Jun
+       2026 (low effort); JP registration (Maverick widget) + IMMERSE instance
+       before EADV still at risk
+
+Greater Gulf: 🟡 IMMERSE expansion — single registration unit; 53K+ profiles;
+              EADV target Sept
+
+Germany: 🟡 IMMERSE expansion — 96K+ profiles; EADV Congress end of Sept
+
+================================================================================
+11. ACTIVE PROGRAMS & MIGRATIONS
+================================================================================
+
+IMMERSE: Live (global); US instance pending MLR; JP/DE/GG registration flows
+         before EADV Sept
+
+ADVENT: Jul workshop confirmed integration as program/brand; ~900 assets —
+        retain/redesign/archive/retire; U.S.-first pilot; Regeneron narrative
+        pending; Q1/Q2 2027 readiness discussed
+
+MedVerse US Homepage MVP: In MLR review through Jun/Jul 2026; unifying landing
+                          page blocked behind legal review
+
+Fitusiran Safety Site (US): EMMRC approved; Ask-an-Expert model; Aug 10
+                            leadership update due
+
+Library of Congresses: Backlog — requirements documented; SpotMe → Cvent; US
+                       indexable variant planned
+
+US MVO: Backlog — integration meeting May 21
+
+Nerve Nexus: Backlog — kickoff May 13
+
+US Rare Diseases: Migration kickoff Jun 2026 — Lena/Rachel engaged
+
+Br1dge: Active — US migration target end-Aug/early-Sep 2026; analytics model
+        reference
+
+RDU: Active program
+
+Transplant: On roadmap — target mid-to-late Sept 2026
+
+Vaccines: Accelerating onto MedVerse — Monica Mercer engaged
+
+================================================================================
+12. DEADLINE TRACKER
+================================================================================
+
+July 13–14, 2026: MedVerse & ADVENT Platform Workshop completed (onsite)
+
+July 18, 2026: Circulate ADVENT workshop notes; collect corrections +
+               workstream opt-ins | Owner: Bill
+
+July 18, 2026: Global registration capability demo | Owner: Anna Majewska
+
+July 27, 2026: Login/registration screenshots to Christina | Owner: Anna Majewska
+
+~August 2026: Japan eMR decommissioning — decision required | Owner: Bill +
+              Christina
+
+August 3, 2026: Adela starts — Web Product Owner | Owner: Bill
+
+August 10, 2026: Fitusiran safety site update to North America Leadership Team |
+                Owner: Christina
+
+Mid-August 2026: Business content validation aligned with technical gap analysis |
+                Owner: Bill
+
+End-Aug / early-Sep 2026: Bridge US migration target
+
+End of September 2026: IMMERSE local expansion (Japan, Germany, Gulf) — EADV |
+                      Owner: Team
+
+September 30, 2026: Peyman Theodo engagement ends
+
+Within 30 days post-workshop: ADVENT target state definition | Owner: ADVENT–MedVerse
+                              core team
+
+================================================================================
+13. ACTIVE RISK REGISTER
+================================================================================
+
+🔴 CRITICAL RISKS:
+
+Japan eMR decommissioning — August deadline; JP IMMERSE/registration path still
+at risk
+
+🔴 HIGH RISKS:
+
+Alliance/compliance dependency — Regeneron, Legal, Regulatory could delay ADVENT
+migration or limit experience
+Peyman's undelivered JP commitment — stakeholder trust gap with Anna/Japan
+Global registration not ready by EADV (Sept)
+No dedicated PMO — Bill/Christina absorbing operational work
+Operating model not formalized — Governance & Rollout sessions deferred
+Authentication/identity model undecided — blocks personalization roadmap
+
+🟡 MEDIUM RISKS:
+
+Adela onboarding during in-flight delivery (IMMERSE, ADVENT, Fitusiran)
+Measurement gap — Year 1 framework undefined (workstream in progress)
+Change-adoption risk — affiliates and agencies need training and clear decision
+rights
+Medical Hub resourcing not confirmed
+Homepage MLR delay — blocks unifying MedVerse landing page
+No dedicated change management owner
+ADVENT perceived as website project vs. product-line transformation
+AI expectations advancing faster than content/governance readiness
+Vendor-risk concentration in medical-LLM platforms
+Bill's strategic authorship not sufficiently visible in leadership communications
+
+================================================================================
+14. GOVERNANCE MODEL
+================================================================================
+
+DAI Model: Medical owns science; Product owns platform
+
+Operating Rhythm: Weekly ops · Monthly governance · Quarterly exec
+
+Legal/Privacy/EBI: Advisory model — not core team
+
+Content Governance: MLR required; scientific publications via iEnvision
+                   (GF-QU-GOP-0000882)
+
+DAI v1: Exists in SharePoint — needs Executive DAI upgrade
+
+Workshop deferral: Governance & Rollout Strategy sessions deferred Jul 14 —
+                   schedule TBD
+
+Platform principles: Orchestration over fragmentation; programs retain identity;
+                     measure learning not traffic alone
+
+================================================================================
+15. AI-FIRST DIRECTION
+================================================================================
+
+Core Principle: LLM enablement = default MedVerse requirement (confirmed Jul
+workshop — not optional)
+
+Consolidation sequence: Consolidation before orchestration — AI-ready content
+first; personalization phased
+
+Voice-enabled and conversational navigation: Phased evolution
+
+AI-assisted content discovery: Content must be AI-native structured
+
+Medical-LLM pilots: CMO-led, ~$200K–$250K/TA/month, centralized contracting
+(six-month pilots)
+
+Content Requirements: Transcripts + SEO/LLM metadata + schema + declarative
+headings + alt text on migrated assets
+
+Measurement shift: Stop optimizing for portal traffic — measure discovery,
+engagement quality, message exposure, journeys, LLM citations, cost
+
+Near-term priorities: Trusted content foundations, metadata, findability,
+                     compliance controls
+
+Two strategies: Organic LLM-readable content + paid medical-LLM collaborations
+
+================================================================================
+16. CONTENT EXPERIENCE FRAMEWORK
+================================================================================
+
+THREE PILLARS (Content strategy — frog/Capgemini):
+
+1. Audience — Design around mode and moment of need
+2. Content Qualities & Types — GEO/LLM surfacing, high-impact formats
+3. Content Orchestration — Activation across owned, third-party, and ecosystem
+                          channels
+
+---
+
+AUDIENCE BEHAVIOR MODES:
+
+Ad-hoc information searchers (🔴 HIGH PRIORITY)
+- Seek quick, reliable answers to specific scientific questions in flow of work
+- Engage briefly; expect clarity, credibility, immediate relevance
+
+Evidence explorers (🔴 HIGH PRIORITY)
+- Go beyond quick answers to explore implications, validate understanding
+- Revisit content, follow citations, work through evidence application
+
+Scientific interpreters (🟡 IMPLICATED)
+- Critically analyse, compare, contextualise scientific evidence
+- Seek rigour, transparency, access to primary data
+
+Patient-facing translators (🟡 LOW PRIORITY)
+- Prepare to explain scientific information in patient conversations
+- Reuse trusted content for shared decision-making
+
+Mastery-driven learners (🔵 DE-PRIORITIZE)
+- Build deep, structured understanding over time
+- Willing to invest attention; progress through complexity
+- Seek formal learning via objective industry bodies; dubious of pharma-led content
+
+---
+
+HIGH-PRIORITY CONTENT TYPES:
+
+Core research with layered depth
+- Pre-generated key insights (3-5 bullets at top)
+- Clear structure: summary → explanation → evidence → deeper links
+- Inline citations in first screen
+- Visible provenance (last updated, author/reviewer role, evidence type/level)
+- Time signal; structured tags for AI classification
+- Direct links to trusted external evidence
+- Clinical applicability translation
+
+Short-form video
+- 3-5 minutes MAXIMUM
+- Visually-led (flow diagrams, mechanisms, steps)
+- Skippable + speed-controlled + closed-captioned + FULL TRANSCRIPT
+- Segmented chapters; clear time signal
+- Highlighted key insights
+
+Infographics & quick visuals
+- Designed for rapid visual understanding (seconds, not minutes)
+- Must include text equivalents/structured annotations
+- Built on-site (not static images) for AI readability
+- Expandable sections (no forced reading)
+- Extractable text layer
+
+AI retrieval chat
+- Answer-first interaction
+- RETRIEVAL-BASED (grounded in governed MedVerse content, NOT generative)
+- Cited responses with clear sources + confidence signals
+- Pre-defined prompts to guide common queries
+- Follow-up questions + suggested queries
+
+Patient-ready explainers
+- Simplified language
+- Inline citations maintaining traceability
+- Ready-to-share outputs for use in real patient interactions
+- Clearly delineated from HCP-only content
+- Grounded in same governed MedVerse evidence
+
+---
+
+LOWER-PRIORITY CONTENT TYPES:
+
+Long-form e-learning modules: Heavy investment; pharma-skeptical; not AI-legible
+PDF static documents: Not AI-readable; too dense for most HCP moments
+Long-form audio/podcast: Too time-consuming; already well-served by other sources
+Long-form traditional research formats: "No more than 3-5 minutes... anything
+                                        longer is too much"
+
+---
+
+AI-NATIVE CONTENT STRUCTURING — 4 PRINCIPLES:
+
+1. Open, crawlable pages
+   - No login barriers; full content served without authentication
+   - Tag where attestation requirements don't exist
+   - All major LLMs rely on publicly indexed pages
+
+2. Clear structure
+   - Single H1 = canonical title
+   - Summary paragraph after H1
+   - Semantic <section> tags linked to headings
+   - H3 subsection headings for narrow query retrieval
+
+3. Machine-readable formats
+   - HTML-first data (not images of tables or PDFs)
+   - Machine-readable dates
+   - Structured metadata with evidence type classification
+   - Each reference classified by study type
+
+4. Citation-ready design
+   - DOI-linked inline citations
+   - Full reference list in HTML (not PDF appendix)
+   - Schema markup in <head>
+   - Explicitly marked-up key takeaway boxes
+
+---
+
+CONTENT ORCHESTRATION — ECOSYSTEM MODEL:
+
+MedVerse must operate as a SCIENTIFIC INTELLIGENCE LAYER within a broader
+ecosystem — not a standalone destination.
+
+HCP Discovery Journey:
+1. Discovery starts on LLMs and Search (general + medical)
+2. Validation happens in trusted medical environments (UpToDate, journals)
+3. Action happens in time-constrained moments
+4. HCPs still turn to field reps for pharma-led information
+
+Ecosystem Channels:
+- General LLMs: Gemini, Claude, ChatGPT, Apple Intelligence
+- Medical LLMs: OpenEvidence, UpToDate, MedAI, DermAI, Heidi, Doximity, etc.
+- Journals & Medical Outlets: Medscape, PubMed, NEJM, JAMA
+- MedVerse: Core pull destination; standardized medical information across TAs;
+           bi-directional links to program sites; LLM & third-party ready
+- Linked program sites: ADVENT, IMMERSE, Br1dge, RDU, Nerve Nexus — retain
+                       branded identity
+- Other owned channels: Social, congress content, field reps
+
+Best-in-Class Orchestration Principles:
+- Minimize login friction — attestation pop-ups deter AI crawlers
+- Personalization on trusted platforms HCPs already use
+- LLM visibility = content quality and structure
+- Social ≠ primary channel for core HCP behavior modes
+- Third-party partnerships critical (OpenEvidence, UpToDate, API connectors)
+- Field teams = trust + activation layer
+
+================================================================================
+17. HCP RESEARCH FINDINGS
+================================================================================
+
+RESEARCH SCOPE:
+
+12 HCPs interviewed (recruitment spec: RES-005 — Future-Ready Content Research Screener V1, May 12, 2026)
+Markets: US, France, Germany
+Profiles: Generalists + specialists; early-career → experienced; range of digital/AI
+         adoption
+
+---
+
+5 KEY INSIGHTS:
+
+INSIGHT 1: AI Use Is Widespread — But Segmented by Task
+Orientation · memory refresh · clinical reasoning (hypothesis support only).
+Pattern: AI → cross-check → decision. Human judgement remains final authority.
+
+INSIGHT 2: Trust Collapses When AI Overreaches
+Single negative experience can cause tool abandonment. Hallucinations viewed
+more negatively than stated limitations.
+
+INSIGHT 3: Pharma Content Trusted for Clinical Decisioning — NOT Learning
+~90% of HCPs interviewed would NOT trust pharma for traditional learning modules.
+
+INSIGHT 4: UpToDate Remains the Gold Standard
+Used at least once per shift by some HCPs. HCPs start with Google/AI summaries,
+then move to UpToDate to confirm/expand.
+
+INSIGHT 5: Visual Structure Consistently Outperforms Narrative
+HCPs scan for answers — they do not read sequentially.
+
+---
+
+5 IMPLICATIONS FOR MEDVERSE:
+
+1. Don't try to replace UpToDate — position as Sanofi-specific layer
+2. Focus where Sanofi can differentiate (product info, device training, access)
+3. Treat external LLMs as primary discovery channels
+4. Build AI-enabled hub to RAG all Sanofi content with visible citations
+5. Gating is a liability unless it clearly adds value
+
+================================================================================
+18. STAKEHOLDER ROSTER
+================================================================================
+
+SANOFI INTERNAL (34):
+
+Bill Schwarz, Christina Ha, Sanjay Kalghatgi, Maanuv Bharadwaj, Anna Majewska,
+Christine Lindquist, Kenneth Eglinton, Kristin Chand, John Shields, Laura Bellec,
+Przemyslaw Zelechowski, Cedric Radigue, Jesse Alvarez, Tony Costa, Peyman Sakhitabe,
+Julia Mo, Waverly, Sahir, Anastasia, Vanco, Gary, Marcia Kayath, Marissa Poole,
+Herson Quinones, Chijioke Okafor, Severine Litzinger, Junghwan Lee, Lyly Fong,
+Miriam Gilvirgili, Kathrin Bergin, Aizhan Dzhurumbaeva, Svend Geertsen,
+Christophe Ladreyt, Rajat Bisa
+
+EXTERNAL/AGENCY (12):
+
+Adela (Theodo — incoming), Charlotte Maile (frog), Nathalie Bannon (frog),
+Malina Keutel (frog), Daniel Stephenson (Capgemini), Henry Wills (frog),
+Mithun Shetty (Capgemini — departed), Jeremy Katz (Capgemini), Hannah (WPP/IMMERSE),
+Valeria Grasso (WPP), Ocean (WPP), Jacqueline Smith
+
+================================================================================
+19. STRATEGIC DECISIONS & LEARNINGS
+================================================================================
+
+5 STRATEGIC PRIORITIES (MITHUN RETROSPECTIVE):
+
+1. Clarify long-term vision beyond today's website
+2. Define long-term operating model — ownership across Product, Digital, Web, CX,
+   Medical
+3. Establish stronger governance — Executive DAI, structured forums
+4. Create MedVerse Content Deployment Kit — reusable onboarding package
+5. Invest in organizational readiness — change management, communications,
+   Medical Hub resourcing
+
+---
+
+5 KEY LEARNINGS (MITHUN RETROSPECTIVE):
+
+LEARNING 1: Evolve the Operating Model for Scale
+MVP flexibility now creates ownership/governance uncertainty. Define long-term
+model before onboarding additional Medical Programs.
+
+LEARNING 2: Strengthen Strategic Governance & Decision Making
+Executive engagement strong but many strategic decisions remain open. Develop
+Executive DAI; establish durable governance cadences.
+
+LEARNING 3: Develop and Distribute a MedVerse Content Deployment Kit
+IMMERSE knowledge lives in core team — every new program should be easier than
+the last.
+
+LEARNING 4: Organizational Readiness Must Grow Alongside Platform
+Platform matured faster than org readiness. Secure Medical Hub resources; persona-
+based comms; dedicated change management.
+
+LEARNING 5: Define MedVerse's Long-Term Identity
+Multiple descriptions in circulation — align on digital home of Sanofi Medical
+evolving to intelligent orchestration layer.
+
+================================================================================
+20. NEXT STEPS
+================================================================================
+
+IMMEDIATE (NEXT 2 WEEKS):
+
+1. Respond to Anna Majewska on Japan eMR blocker — decision required
+2. Circulate ADVENT workshop notes (July 18 deadline)
+3. Schedule Regeneron/Legal/Regulatory session
+4. Confirm Adela onboarding plan (starts Aug 3)
+5. Global registration capability demo (July 18 — Anna)
+
+AUGUST:
+
+1. Adela onboarding and knowledge transfer
+2. Fitusiran safety site leadership update (Aug 10)
+3. Business content validation for ADVENT migration
+4. Schedule deferred governance workshop
+
+Q3/Q4 2026:
+
+1. IMMERSE global expansion (Japan, Germany, Gulf) — EADV Congress (end Sept)
+2. ADVENT U.S.-first pilot planning; target state within 30 days post-workshop
+3. Establish Year 1 measurement framework
+4. Build MedVerse Content Deployment Kit
+5. Formalize operating model and governance
+6. Bridge US migration (end-Aug / early-Sep)
+
+================================================================================
+DOCUMENT METADATA
+================================================================================
+
+Created: July 17, 2026
+Last Updated: July 17, 2026
+Reviewed: July 17, 2026 — reconciled with Jul workshop, P+ June, Hub/OS model
+Status: Active | Authoritative
+Format: Plain Text
+Portable: Yes — compatible with all AI tools and text editors
+Sections: 20
+Commit sources: 30
+Stakeholders: 46
+Programs: 12
+Workstreams: 7
+Deadlines: 13
+Risks: 23
+Workshop decisions: 11
+
+Pair with: MedVerse_Operating_System.csv (structured facts — keep synchronized)
+
+================================================================================
+
+This document is authoritative as of July 17, 2026. Use it with the OS CSV as
+the single source of truth for MedVerse program context, decisions, and strategic
+direction. Operational actions live in the MedVerse Hub and workstream portals.
+
+END OF MEDVERSE OPERATING SYSTEM — COMPLETE KNOWLEDGE BASE
+
+================================================================================
