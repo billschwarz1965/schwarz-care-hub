@@ -31,6 +31,7 @@ Paths below are relative to `Campus+Medical - Discovery/` unless noted.
 | STR-005 | Executive infographic | `Intelligence/OSU 23 Feb/MedVerse_Executive_Infographic_v2.pdf` | 2026 | Visual summary |
 | STR-007 | OS CSV (legacy snapshot) | `Intelligence/OSU 23 Feb/MedVerse_Operating_System.csv` | 2026-07-17 | Superseded by OS-001 — reference only |
 | STR-006 | AI OS Confluence bundle v1.3.3 | `Intelligence/drive-download-20260204T160708Z-3-001/MedVerse_AI_Operating_System_Confluence_v1.3.3_04_FEB_2026-1.md` | 2026-02-04 | Full DAI/governance bundle |
+| STR-009 | AI OS single-file bundle v1 (archived) | `MedVerse Operating System/intake/processed/2026-01/MedVerse_AI_Operating_System_BUNDLE_v1.md` | 2026-01-31 | Original bootstrap bundle; superseded by OS-002 + OS-005 |
 
 ---
 
