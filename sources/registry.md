@@ -24,6 +24,7 @@ Paths below are relative to `Campus+Medical - Discovery/` unless noted.
 | ID | Title | Path | Updated | Notes |
 |----|-------|------|---------|-------|
 | STR-001 | P+ Status — June 2026 | `PMO/P+ June 2026 Medverse.md` | 2026-06 | Consolidation & validation phase |
+| STR-008 | P+ Status — July 2026 | `PMO/P+ July 2026 Medverse.md` / `.html` | 2026-07 | Workshop-aligned direction; ADVENT integration proof point |
 | STR-002 | P+ Status — May 2026 | `PMO/P+ May 2026 Medverse.md` | 2026-05 | Prior month |
 | STR-003 | FY26 Budget Summary | `PMO/Business Case artifacts/FY26_Budget_Summary.md` | 2026 | Line-item budget |
 | STR-004 | Business Requirements PO JD | `PMO/MedVerse_Business_Requirements_Product_Owner_JD.md` | 2026 | Operating model |

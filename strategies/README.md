@@ -8,6 +8,7 @@ Strategy memos, positioning narratives, and program status reports.
 
 | Document | Path |
 |----------|------|
+| P+ July 2026 | `../../PMO/P+ July 2026 Medverse.md` / `.html` |
 | P+ June 2026 | `../../PMO/P+ June 2026 Medverse.md` |
 | P+ May 2026 | `../../PMO/P+ May 2026 Medverse.md` |
 | Platform requirements | `../../MedVerse Platform Requirements.docx` |
