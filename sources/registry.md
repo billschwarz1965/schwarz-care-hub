@@ -3,7 +3,7 @@
 **Master index** of MedVerse intelligence across Campus+ Discovery and SharePoint.  
 Paths below are relative to `Campus+Medical - Discovery/` unless noted.
 
-*Last reviewed: July 17, 2026*
+*Last reviewed: July 21, 2026*
 
 ---
 
@@ -11,8 +11,8 @@ Paths below are relative to `Campus+Medical - Discovery/` unless noted.
 
 | ID | Title | Path | Updated | Owner |
 |----|-------|------|---------|-------|
-| OS-001 | MedVerse Operating System CSV | `MedVerse Operating System/knowledge-base/MedVerse_Operating_System.csv` | 2026-07-17 | Bill Schwarz — structured facts |
-| OS-005 | MedVerse Operating System Complete (narrative) | `MedVerse Operating System/knowledge-base/MedVerse_Operating_System_Complete.txt` | 2026-07-17 | Bill Schwarz — full knowledge base; pair with OS-001 |
+| OS-001 | MedVerse Operating System CSV | `MedVerse Operating System/knowledge-base/MedVerse_Operating_System.csv` | 2026-07-21 | Bill Schwarz — structured facts |
+| OS-005 | MedVerse Operating System Complete (narrative) | `MedVerse Operating System/knowledge-base/MedVerse_Operating_System_Complete.txt` | 2026-07-21 | Bill Schwarz — full knowledge base; pair with OS-001 |
 | OS-002 | AI Bootstrap v1.3.3 | `MedVerse Operating System/ai-context/bootstrap/MedVerse_AI_Bootstrap_v1.3.3_04_FEB_2026.md` | 2026-02-04 | Bill Schwarz |
 | OS-003 | Claude/Copilot system instructions | `MedVerse Operating System/ai-context/personas/MedVerse_System_Instructions_Claude_Copilot.txt` | 2026-02 | Bill Schwarz |
 | OS-004 | Claude Opus persona loader | `MedVerse Operating System/ai-context/personas/MedVerse_Claude_Opus_Persona_Loader.txt` | 2026-02 | Bill Schwarz |
@@ -46,6 +46,8 @@ Paths below are relative to `Campus+Medical - Discovery/` unless noted.
 | MTG-005 | Day 1 executive summary | `Meeting Notes and Agendas/MedVerse_Advent_Workshop_Day1_Executive_Summary_July_13_2026.html` | 2026-07-13 | |
 | MTG-006 | Sprint reviews | `Working Sessions/Sprint Review [N], [date]/` | Ongoing | Zoom transcripts + notes |
 | MTG-007 | Meeting notes template | `_Templates/Meeting Notes Template.md` | — | Standard capture format |
+| MTG-008 | IMMERSE Roadmap & Prioritisation — call notes | `MedVerse Operating System/intake/processed/2026-07/IMMERSE_Roadmap_Prioritisation_Call_Notes_2026-07-21.md` | 2026-07-21 | WPP/VML (Veronica Longhini) · global registration · Talent LMS · dashboard · Nova · follow-up Jul 31 |
+| MTG-009 | U.S. MedVerse Home Page — MLR approval & production path | `MedVerse Operating System/intake/processed/2026-07/US_MedVerse_Homepage_MLR_Approval_2026-07-20.md` | 2026-07-21 | MAT-US-2606609 · MLR approved Jul 17 · prod target week of Jul 21 |
 
 ---
 

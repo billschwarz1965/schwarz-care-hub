@@ -22,4 +22,4 @@ CSV with `SECTION,CONTENT` rows. Section headers are rows where CONTENT is empty
 
 ## Origin
 
-Migrated from `Intelligence/OSU 23 Feb/MedVerse_Operating_System.csv`, then enriched July 17, 2026 with July workshop outcomes (Jul 13–14), P+ June 2026, and MedVerse Hub operating model. **This file is authoritative** — do not treat the Intelligence folder copy as current.
+Migrated from `Intelligence/OSU 23 Feb/MedVerse_Operating_System.csv`, then enriched July 17–21, 2026 with July workshop outcomes (Jul 13–14), IMMERSE Roadmap call (MTG-008), P+ June 2026, and MedVerse Hub operating model. **This file is authoritative** — do not treat the Intelligence folder copy as current.

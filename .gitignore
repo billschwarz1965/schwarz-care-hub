@@ -25,3 +25,4 @@ intake/inbox/*
 
 # Cursor / IDE
 .cursor/
+.claude/

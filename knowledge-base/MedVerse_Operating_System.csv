@@ -1,5 +1,5 @@
 MedVerse Operating System — Complete Knowledge Base
-"Last Updated: July 17, 2026"
+"Last Updated: July 21, 2026"
 Status: Active | Authoritative | Ready for use
 
 SECTION,CONTENT
@@ -17,8 +17,13 @@ Global Medical Omnichannel Capabilities Lead,Christina Ha
 Digital Head of Global Medical Product Owner,Sanjay Kalghatgi
 "Global Head, Medical Innovation",Maanuv Bharadwaj
 Global Web Product Line Lead,Anna Majewska
+Magnolia Dev Lead (Campus+),Emil Mircea
 Web Product Owner (starts Aug 3),Adela (Theodo)
 Senior Business Analyst (Jul 13–Sept 30),Peyman Sakhitabe (Theodo)
+WPP/VML Client Service Director,Veronica Longhini
+WPP/VML — IMMERSE,Adam Naylor
+WPP/IMMERSE — Sanofi liaison,Hannah Kim
+GTMC Insights & Analytics,Patrick Fogarty
 PMO (departed Jul 2),Mithun Shetty (Capgemini/frog)
 ADVENT / SciComm Lead,Christine Lindquist
 ADVENT Workshop Facilitator,Christine Lindquist
@@ -37,13 +42,13 @@ Authority split,"Facts / roadmap / risks → OS CSV; live actions / meetings →
 ,
 PLATFORM FOUR PILLARS (Experience Model),
 Pillar 1 — Engagement & Content Experience,"HCP journeys, personalization, program hub integration, homepage UX"
-Pillar 2 — Insights & Analytics,"GTMC dashboards, CRM/Veeva, unified measurement, Year 1 KPI framework (in progress)"
+Pillar 2 — Insights & Analytics,"GTMC dashboards (global site tracks landing page visits only — no Talent LMS metrics in current dashboard), CRM/Veeva, unified measurement, Year 1 KPI framework (in progress); Hannah Kim engaging Patrick Fogarty / GTMC Insights for granularity"
 Pillar 3 — Technology & Integration,"Campus+, search rebuild, AI, migration, SEO/redirects, Migrator (~80% automation POC validated Jun 2026)"
 Pillar 4 — Governance & Operating Model,"Rollout, content ops, alliance alignment, adoption — workshop sessions deferred Jul 14"
 ,
 WORKSTREAMS (July 2026),
 ADVENT Integration with MedVerse,Active — first migration proof point; U.S.-first pilot; Regeneron/Legal alignment pending
-Platform & Experience,Forming — homepage UX · Four Pillars · search · personalization
+Platform & Experience,Active — US homepage MLR approved · prod launch target week of Jul 21; homepage UX · Four Pillars · search · personalization
 Analytics & Measurement,Forming — Year 1 KPI framework · GTMC · CRM/Veeva unification
 Content & AI Discoverability,Forming — LLM-ready standards · SEO/GEO/AEO · metadata · transcripts
 Governance & Rollout,Planned — deferred from Jul workshop; sessions TBD
@@ -58,7 +63,7 @@ ADVENT FY26 Migration Budget,"~$475,000"
 Medical-LLM Pilot Cost,~$200K–$250K/TA/month (CMO-led six-month pilots; centralize contracting)
 ,
 PLATFORM ARCHITECTURE,
-Magnolia CMS,Content management system (Nova migration in progress across instances)
+Magnolia CMS,Content management system — Nova upgrade in progress (global search · improved forms · AI capabilities · enhanced usability/performance); WPP team Magnolia-trained with access to both platforms
 TalentLMS,Learning management
 Campus+,Scientific platform foundation
 Accelerator,Shared capabilities (transitioning capabilities back to operations/run teams)
@@ -91,14 +96,15 @@ Goal 4,"Mature governance, intake, prioritization, analytics, operations"
 Goal 5,Convert project work into sustainable product operating model
 ,
 GLOBAL PRIORITIES,
+Global Registration Flow,🟡 New global registration flow in development — country select + country-specific approval; target launch Sept 2026; IMMERSE early adopter to test and prioritise rollout
 Japan,🔴 CRITICAL — eMR decommission ~Aug; Migrator feasibility confirmed Jun 2026 (low effort); JP registration (Maverick widget) + IMMERSE instance before EADV still at risk
-Greater Gulf,🟡 IMMERSE expansion — single registration unit; 53K+ profiles; EADV target Sept
-Germany,🟡 IMMERSE expansion — 96K+ profiles; EADV Congress end of Sept
+Greater Gulf,🟡 IMMERSE expansion — single registration unit; 53K+ profiles; EADV target Sept; CDP process for country opt-in
+Germany,🟡 IMMERSE expansion — 96K+ profiles; EADV Congress end of Sept; CDP process for country opt-in
 ,
 ACTIVE PROGRAMS,
-IMMERSE,Live (global); US instance pending MLR; JP/DE/GG registration flows before EADV Sept
+IMMERSE,"Live (global); US instance pending MLR — US instance migration PAUSED pending disclaimer/language decision; transition to global registration (Sept target); CDP for US+global content approval (one English version); geo-restrictions/login per country via CDP; 3 Talent LMS modules updating (respiratory PLA · GI PLA · HS) — target before fall congresses; registration required for LMS progress tracking; interest-registration landing page requirement for non-eligible countries (Peyman exploring)"
 ADVENT,"Jul workshop confirmed integration into MedVerse as program/brand (not separate tech platform); ~900 assets — retain/redesign/archive/retire; U.S.-first pilot; adventprogram.com redirect model; Regeneron narrative pending; Q1/Q2 2027 readiness discussed"
-MedVerse US Homepage MVP,In MLR review through Jun/Jul 2026; unifying landing page blocked behind legal review
+MedVerse US Homepage MVP,"MLR APPROVED Jul 17, 2026 (MAT-US-2606609); link fixes for Stability Calculator + Ingredient Search in Magnolia draft (Jul 20); final review Bill + Christina before prod; target prod launch week of Jul 21, 2026; operating model gap — content/link updates via dev team (Emil Mircea) not agency"
 Fitusiran Safety Site (US),EMMRC approved; Ask-an-Expert model; Aug 10 leadership update due
 Library of Congresses,Backlog — requirements documented; SpotMe → Cvent; US indexable variant planned
 US MVO,Backlog — integration meeting May 21
@@ -121,17 +127,52 @@ Decision 9,U.S.-first pilot is leading ADVENT migration approach — scope/timin
 Decision 10,Agency spend on ADVENT constrained — shift toward internal/MedVerse capabilities
 Decision 11,Medical education out of scope for competitive firewall (Dupixent/NextGen = alliance positioning)
 ,
+IMMERSE ROADMAP CALL (WPP/VML · Jul 2026),
+Topic 1 — Global Registration,"Transition from country-specific to global registration; new flow allows country select + country-specific approval; Sept 2026 target; IMMERSE early adopter"
+Topic 2 — Content Approval,"CDP process for US + global audiences; one English version for all countries; geo-restrictions/login per local regulations"
+Topic 3 — Talent LMS,"3 modules updating (respiratory PLA · GI PLA · HS content) — review in progress; target before fall congresses; registration required for progress tracking"
+Topic 4 — Interest Registration,"Requirement tracked for static landing page/form for HCPs from non-eligible countries; Peyman exploring technical feasibility (congress QR workflows)"
+Topic 5 — Dashboard Analytics,"Global dashboard = landing page visits only; no Talent LMS metrics or user-specific data; Hannah → Patrick Fogarty / GTMC for enhanced granularity"
+Topic 6 — Dashboard Access,"Christina shared PowerPoint + access instructions with WPP (Valeria · Simone) — DONE; regular Sanofi login sufficient per Bill"
+Topic 7 — Nova CMS Upgrade,"Magnolia → Nova enables global search · forms · AI · performance; WPP Magnolia-trained with dual-platform access"
+Topic 8 — US Instance,"Migration to US instance PAUSED until disclaimer/language decision for US vs global compliance"
+Topic 9 — Follow-Up Cadence,"Jul 31 follow-up scheduled (10:30 AM EST); next session aligned with Adela arrival early Aug; Bill/Peyman to document scalable requirements"
+,
+IMMERSE ROADMAP FOLLOW-UPS,
+Follow-up 1,CDP timeline + country opt-in list (fall congresses) — WPP + Hannah/Oceane — In progress
+Follow-up 2,Interest-registration landing page for non-eligible countries — Peyman — Open
+Follow-up 3,Talent LMS 3 modules upload before autumn conferences — WPP — In progress
+Follow-up 4,Dashboard access instructions — Christina → Valeria/Simone — Done
+Follow-up 5,Dashboard metrics enhancement — Hannah → Patrick Fogarty / GTMC — Open
+Follow-up 6,Disclaimer updates + US instance decision — Team — Open (migration paused)
+Follow-up 7,Follow-up meeting Jul 31 10:30 AM EST — WPP — Scheduled
+Follow-up 8,Document interest-form + QR requirements for cross-platform reuse — Bill + Peyman — Open
+Follow-up 9,Adam Naylor feature walkthrough with Peyman — Adam/Peyman — Open (Adam away until Jul 27)
+,
+US HOMEPAGE PRODUCTION (Jul 2026),
+Homepage MLR,APPROVED Jul 17 — MAT-US-2606609
+Remaining changes,Useful Tools links — Stability Calculator + Ingredient Search → Sanofi Medical Information URLs (Peyman spec Jul 20)
+Draft status,Link updates in Magnolia draft Jul 20 — not yet visible in production
+Review gate,Final review required — Bill Schwarz + Christina Ha before prod publish
+Prod target,Week of Jul 21, 2026 (pending review)
+Operating model,Homepage not agency-managed; dev team (Emil Mircea) executing link updates — model TBD with GTMC/hub
+,
 OPEN DECISIONS (Post-Workshop),
 Open 1,Exact ADVENT migration date and global rollout sequence
 Open 2,Authentication model — login · NPI · passkeys · cookies · consent
 Open 3,Patient-facing and staff resource scope
 Open 4,Post-migration operating model and governance cadence
 Open 5,Governance & Rollout Strategy sessions — deferred Day 2 (Jul 14)
+Open 6,US instance migration + disclaimer/language for US vs global compliance — migration paused pending decision
+Open 7,Interest-registration landing page technical approach for non-eligible countries
 ,
 CRITICAL DEADLINES,
 "July 13–14, 2026",MedVerse & ADVENT Platform Workshop completed (onsite)
 "July 18, 2026",Circulate ADVENT workshop notes; collect corrections + workstream opt-ins
 "July 27, 2026",Login/registration screenshots to Christina
+"July 31, 2026",IMMERSE Roadmap follow-up call (WPP/VML · Sanofi) — 10:30 AM EST
+"Week of Jul 21, 2026",U.S. MedVerse Home Page production launch (MAT-US-2606609) — pending Bill + Christina final review
+"September 2026",Global registration flow launch (IMMERSE early adopter)
 ~August 2026,Japan eMR decommissioning — decision required
 "August 3, 2026",Adela starts — Web Product Owner
 "August 10, 2026",Fitusiran safety site update to North America Leadership Team
@@ -145,15 +186,16 @@ TOP RISKS,
 🔴 CRITICAL,Japan eMR decommissioning — August deadline; JP IMMERSE/registration path still at risk
 🔴 HIGH,Alliance/compliance dependency — Regeneron · Legal · Regulatory could delay ADVENT migration or limit experience
 🔴 HIGH,Peyman's undelivered JP commitment — stakeholder trust gap
-🔴 HIGH,Global registration not ready by EADV (Sept)
+🔴 HIGH,Global registration not ready by EADV (Sept) — global flow targeting Sept launch; IMMERSE early adopter; CDP country opt-in timeline still uncertain for fall congresses
 🔴 HIGH,No dedicated PMO — Bill/Christina absorbing operational work
 🔴 HIGH,Operating model not formalized — Governance & Rollout sessions deferred
 🔴 HIGH,Authentication/identity model undecided — blocks personalization roadmap
 🟡 MEDIUM,Adela onboarding during in-flight delivery
-🟡 MEDIUM,Measurement gap — Year 1 framework undefined (workstream in progress)
+🟡 MEDIUM,Measurement gap — Year 1 framework undefined; global dashboard lacks Talent LMS metrics and user-level granularity (GTMC engagement in progress)
+🟡 MEDIUM,US instance migration paused — disclaimer/language decision blocks IMMERSE US path
 🟡 MEDIUM,Change-adoption risk — affiliates and agencies need training and clear decision rights
 🟡 MEDIUM,Medical Hub resourcing not confirmed
-🟡 MEDIUM,Homepage MLR delay — blocks unifying MedVerse landing page and discoverable navigation
+🟡 MEDIUM,Homepage operating model gap — content/link updates require dev team; transitional until GTMC hub model (Peyman bridging)
 🟡 MEDIUM,No dedicated change management owner
 🟡 MEDIUM,ADVENT perceived as website project vs. product-line transformation
 🟡 MEDIUM,AI expectations advancing faster than content/governance readiness
@@ -220,17 +262,17 @@ Priority 3,"Establish stronger governance — Executive DAI, structured forums"
 Priority 4,Create MedVerse Content Deployment Kit — reusable onboarding package
 Priority 5,"Invest in organizational readiness — change management, communications, Medical Hub resourcing"
 ,
-SOURCES COMMITTED,33
-STAKEHOLDERS,46
+SOURCES COMMITTED,35
+STAKEHOLDERS,51
 PROGRAMS,12
 WORKSTREAMS,7
-DEADLINES,12
-RISKS,23
+DEADLINES,15
+RISKS,24
 WORKSHOP DECISIONS,11
-COMMIT SOURCES,30
+COMMIT SOURCES,32
 ,
 DOCUMENT STATUS,Active | Authoritative | Ready for use
 CREATED,"July 17, 2026"
-ENRICHED,"July 17, 2026 — Jul workshop (Jul 13–14), P+ June 2026, MedVerse Hub operating model"
+ENRICHED,"July 21, 2026 — US Homepage MLR approved + prod path (MTG-009); IMMERSE Roadmap call (MTG-008); Jul workshop; Hub/OS model"
 PORTABLE,Yes — compatible with all AI tools and text editors
 AUTHORITY,"MedVerse Operating System/knowledge-base/ — supersede Intelligence/OSU 23 Feb/ copy for facts"

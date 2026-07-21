@@ -2,7 +2,7 @@
 MEDVERSE OPERATING SYSTEM — COMPLETE KNOWLEDGE BASE
 ================================================================================
 
-Last Updated: July 17, 2026
+Last Updated: July 21, 2026
 Status: Active | Authoritative | Ready for use
 Committed by: Bill Schwarz, Product Line Owner — Medical Digital
 
@@ -19,26 +19,27 @@ TABLE OF CONTENTS
 4. PROGRAM LEADERSHIP
 5. PLATFORM FOUR PILLARS & WORKSTREAMS
 6. JULY 2026 WORKSHOP OUTCOMES
-7. FINANCIALS
-8. PLATFORM ARCHITECTURE
-9. ROADMAP
-10. GLOBAL PRIORITIES
-11. ACTIVE PROGRAMS & MIGRATIONS
-12. DEADLINE TRACKER
-13. ACTIVE RISK REGISTER
-14. GOVERNANCE MODEL
-15. AI-FIRST DIRECTION
-16. CONTENT EXPERIENCE FRAMEWORK
-17. HCP RESEARCH FINDINGS
-18. STAKEHOLDER ROSTER
-19. STRATEGIC DECISIONS & LEARNINGS
-20. NEXT STEPS
+7. IMMERSE ROADMAP & PRIORITISATION CALL (WPP/VML)
+8. FINANCIALS
+9. PLATFORM ARCHITECTURE
+10. ROADMAP
+11. GLOBAL PRIORITIES
+12. ACTIVE PROGRAMS & MIGRATIONS
+13. DEADLINE TRACKER
+14. ACTIVE RISK REGISTER
+15. GOVERNANCE MODEL
+16. AI-FIRST DIRECTION
+17. CONTENT EXPERIENCE FRAMEWORK
+18. HCP RESEARCH FINDINGS
+19. STAKEHOLDER ROSTER
+20. STRATEGIC DECISIONS & LEARNINGS
+21. NEXT STEPS
 
 ================================================================================
 1. COMMIT MANIFEST
 ================================================================================
 
-20 Sources Integrated:
+32 Sources Integrated:
 
 1. MedVerse AI Operating System Bootstrap | Original | Foundation document
 2. MedVerse Operating System Update | June 1–July 17, 2026 | Program memory update
@@ -63,6 +64,8 @@ TABLE OF CONTENTS
 21. Future-Ready Content Research Screener V1 | May 12, 2026 | frog/Capgemini · RES-005 recruitment spec
 22–29. Content Strategy Governance Calls CSG-001–CSG-008 | May 7 – Jun 29, 2026 | frog/Capgemini · Extended Team · SteerCo · HCP summary · Deliverable extraction
 30. CX Team Weekly Reports CXW-001 | Apr 20 – Jul 3, 2026 | frog/Capgemini · Weeks 1–10 project RAG deck
+31. IMMERSE Roadmap & Prioritisation Call | ~July 2026 | WPP/VML notes circulated Jul 21 (MTG-008)
+32. U.S. MedVerse Home Page — MLR Approval & Production Path | Jul 17–20, 2026 | MAT-US-2606609 (MTG-009)
 
 ================================================================================
 2. PROGRAM IDENTITY
@@ -134,7 +137,9 @@ PLATFORM FOUR PILLARS (Experience model — July workshop):
 
 1. Engagement & Content Experience — HCP journeys, personalization, program hub
    integration, homepage UX
-2. Insights & Analytics — GTMC dashboards, CRM/Veeva, Year 1 KPI framework
+2. Insights & Analytics — GTMC dashboards (landing page visits only in current
+   global dashboard; no Talent LMS metrics); CRM/Veeva; Year 1 KPI framework;
+   Hannah Kim engaging Patrick Fogarty / GTMC for enhanced granularity
 3. Technology & Integration — Campus+, search rebuild, AI, migration, SEO/redirects
 4. Governance & Operating Model — rollout, content ops, alliance alignment,
    adoption (workshop sessions deferred Jul 14)
@@ -144,7 +149,7 @@ WORKSTREAMS (July 2026 — portals under MedVerse Hub):
 | Workstream | Status | Next milestone |
 |------------|--------|----------------|
 | ADVENT Integration with MedVerse | Active | Regeneron/Legal session · ADVENT target state (30 days) |
-| Platform & Experience | Forming | UX prototype feedback |
+| Platform & Experience | Active | US Homepage prod launch (week of Jul 21) |
 | Analytics & Measurement | Forming | Year 1 KPI framework |
 | Content & AI Discoverability | Forming | SEO/GEO/AEO checklist |
 | Governance & Rollout | Planned | Deferred sessions — schedule TBD |
@@ -181,7 +186,74 @@ NOT YET DECIDED:
 - Governance & Rollout Strategy sessions (deck slides 165–166) — deferred Day 2
 
 ================================================================================
-7. FINANCIALS
+7. IMMERSE ROADMAP & PRIORITISATION CALL (WPP/VML · ~Jul 2026)
+================================================================================
+
+Source: MTG-008 — notes circulated by Veronica Longhini (VML) Jul 21, 2026
+Attendees (core): Adam Naylor, Peyman Sakhitabe, Christina Ha, Hannah Kim (WPP)
+Cc: Bill Schwarz, Eros Verderio, Danielle Finley, Phase Five immunology team
+
+GLOBAL REGISTRATION & CONTENT DEPLOYMENT:
+
+- Transition from country-specific to global registration for IMMERSE underway
+- New global registration flow: user selects country → country-specific approval
+- Target launch: September 2026; IMMERSE as early adopter to test and prioritise
+- Content approval: CDP (Content Dissemination Plan) for US + global audiences;
+  one English version for all countries; geo-restrictions/login per country as
+  regulations require
+
+TALENT LMS:
+
+- WPP updating 3 modules: respiratory PLA, GI PLA, HS-specific content
+- Modules in review; target ready before fall congresses
+- Registration required for HCP access (individual learning progress tracking)
+
+INTEREST REGISTRATION:
+
+- Requirement tracked for static landing page/form for HCPs from countries not
+  yet able to access MedVerse — register interest, notify when access available
+- Peyman to explore technical feasibility (including congress QR workflows)
+- Bill/Peyman to document requirements for scalable cross-platform reuse
+
+ANALYTICS & DASHBOARD:
+
+- Global website dashboard tracks IMMERSE landing page visits only
+- Does NOT capture Talent LMS metrics or user-specific data in current view
+- Need granular analytics: asset clicks, user origins, campaign effectiveness
+- Hannah Kim to connect with Patrick Fogarty / GTMC Insights & Analytics team
+- Dashboard access: Christina shared PowerPoint + instructions with WPP (Done);
+  regular Sanofi login sufficient (Bill confirmed)
+
+PLATFORM (NOVA UPGRADE):
+
+- Magnolia → Nova upgrade enables global search, improved forms, AI capabilities,
+  enhanced usability and performance
+- WPP team completed Magnolia training; access to both platforms
+
+US INSTANCE:
+
+- Pause migration to US instance until disclaimer/language decision for US vs
+  global compliance requirements
+
+FOLLOW-UP & CADENCE:
+
+- Jul 31, 2026 · 10:30 AM EST — follow-up scheduled (WPP)
+- Next session to align with Adela arrival (early August) — Bill proposal
+- Regular WPP/Sanofi meetings to track progress toward fall congresses
+
+OPEN FOLLOW-UPS:
+
+| Action | Owner | Status |
+| CDP timeline + country opt-in (fall congresses) | WPP + Hannah/Oceane | In progress |
+| Interest-registration landing page | Peyman | Open |
+| Talent LMS 3 modules before autumn conferences | WPP | In progress |
+| Dashboard metrics enhancement | Hannah → Patrick Fogarty | Open |
+| Disclaimer + US instance decision | Team | Open (migration paused) |
+| Document interest-form + QR requirements | Bill + Peyman | Open |
+| Feature walkthrough (existing platform) | Adam + Peyman | Open (Adam away until Jul 27) |
+
+================================================================================
+8. FINANCIALS
 ================================================================================
 
 2026 Program Funding: ~€1.5 million
@@ -192,10 +264,12 @@ Medical-LLM Pilot Cost: ~$200K–$250K/TA/month (CMO-led six-month pilots;
 centralize contracting)
 
 ================================================================================
-8. PLATFORM ARCHITECTURE
+9. PLATFORM ARCHITECTURE
 ================================================================================
 
-Magnolia CMS: Content management (Nova migration in progress across instances)
+Magnolia CMS: Content management — Nova upgrade in progress (global search,
+  improved forms, AI capabilities, enhanced usability/performance); WPP team
+  Magnolia-trained with access to both platforms
 TalentLMS: Learning management
 Campus+: Scientific platform foundation
 Accelerator: Shared capabilities (transitioning back to operations/run teams)
@@ -207,7 +281,7 @@ Cvent: Events platform — Library of Congresses migrating SpotMe → Cvent;
 analytics integration required
 
 ================================================================================
-9. ROADMAP
+10. ROADMAP
 ================================================================================
 
 PHASE 1 — 2026
@@ -234,31 +308,45 @@ PHASE 2 — 2027
 - Convert project work into sustainable product operating model
 
 ================================================================================
-10. GLOBAL PRIORITIES
+11. GLOBAL PRIORITIES
 ================================================================================
 
 Japan: 🔴 CRITICAL — eMR decommission ~Aug; Migrator feasibility confirmed Jun
        2026 (low effort); JP registration (Maverick widget) + IMMERSE instance
        before EADV still at risk
 
+Global Registration Flow: 🟡 New flow in development — country select +
+       country-specific approval; target launch Sept 2026; IMMERSE early adopter
+
 Greater Gulf: 🟡 IMMERSE expansion — single registration unit; 53K+ profiles;
-              EADV target Sept
+              EADV target Sept; CDP process for country opt-in
 
-Germany: 🟡 IMMERSE expansion — 96K+ profiles; EADV Congress end of Sept
+Germany: 🟡 IMMERSE expansion — 96K+ profiles; EADV Congress end of Sept;
+         CDP process for country opt-in
 
 ================================================================================
-11. ACTIVE PROGRAMS & MIGRATIONS
+12. ACTIVE PROGRAMS & MIGRATIONS
 ================================================================================
 
-IMMERSE: Live (global); US instance pending MLR; JP/DE/GG registration flows
-         before EADV Sept
+IMMERSE: Live (global); US instance pending MLR — US instance migration PAUSED
+         pending disclaimer/language decision. Transition to global registration
+         (Sept 2026 target; IMMERSE early adopter). CDP for US+global content
+         approval (one English version). Geo-restrictions/login per country via
+         CDP. Three Talent LMS modules updating (respiratory PLA, GI PLA, HS) —
+         target before fall congresses. Registration required for LMS progress
+         tracking. Interest-registration landing page requirement for non-eligible
+         countries (Peyman exploring).
 
 ADVENT: Jul workshop confirmed integration as program/brand; ~900 assets —
         retain/redesign/archive/retire; U.S.-first pilot; Regeneron narrative
         pending; Q1/Q2 2027 readiness discussed
 
-MedVerse US Homepage MVP: In MLR review through Jun/Jul 2026; unifying landing
-                          page blocked behind legal review
+MedVerse US Homepage MVP: MLR APPROVED Jul 17, 2026 (MAT-US-2606609). Link fixes
+                          for Stability Calculator + Ingredient Search in Magnolia
+                          draft (Jul 20). Final review by Bill + Christina before
+                          prod. Target production launch week of Jul 21, 2026.
+                          Operating model gap: content/link updates via dev team
+                          (Emil Mircea), not agency — transitional until GTMC/hub.
 
 Fitusiran Safety Site (US): EMMRC approved; Ask-an-Expert model; Aug 10
                             leadership update due
@@ -282,7 +370,7 @@ Transplant: On roadmap — target mid-to-late Sept 2026
 Vaccines: Accelerating onto MedVerse — Monica Mercer engaged
 
 ================================================================================
-12. DEADLINE TRACKER
+13. DEADLINE TRACKER
 ================================================================================
 
 July 13–14, 2026: MedVerse & ADVENT Platform Workshop completed (onsite)
@@ -293,6 +381,15 @@ July 18, 2026: Circulate ADVENT workshop notes; collect corrections +
 July 18, 2026: Global registration capability demo | Owner: Anna Majewska
 
 July 27, 2026: Login/registration screenshots to Christina | Owner: Anna Majewska
+
+July 31, 2026: IMMERSE Roadmap follow-up (WPP/VML · Sanofi) — 10:30 AM EST |
+               Owner: Veronica Longhini / WPP
+
+Week of Jul 21, 2026: U.S. MedVerse Home Page production launch (MAT-US-2606609) |
+                      pending Bill + Christina final review | Owner: Emil Mircea
+
+September 2026: Global registration flow launch (IMMERSE early adopter) |
+                Owner: Anna Majewska / Digital Web
 
 ~August 2026: Japan eMR decommissioning — decision required | Owner: Bill +
               Christina
@@ -316,7 +413,7 @@ Within 30 days post-workshop: ADVENT target state definition | Owner: ADVENT–M
                               core team
 
 ================================================================================
-13. ACTIVE RISK REGISTER
+14. ACTIVE RISK REGISTER
 ================================================================================
 
 🔴 CRITICAL RISKS:
@@ -329,7 +426,9 @@ at risk
 Alliance/compliance dependency — Regeneron, Legal, Regulatory could delay ADVENT
 migration or limit experience
 Peyman's undelivered JP commitment — stakeholder trust gap with Anna/Japan
-Global registration not ready by EADV (Sept)
+Global registration not ready by EADV (Sept) — global flow targeting Sept
+launch; IMMERSE early adopter; CDP country opt-in timeline uncertain for fall
+congresses
 No dedicated PMO — Bill/Christina absorbing operational work
 Operating model not formalized — Governance & Rollout sessions deferred
 Authentication/identity model undecided — blocks personalization roadmap
@@ -337,11 +436,14 @@ Authentication/identity model undecided — blocks personalization roadmap
 🟡 MEDIUM RISKS:
 
 Adela onboarding during in-flight delivery (IMMERSE, ADVENT, Fitusiran)
-Measurement gap — Year 1 framework undefined (workstream in progress)
+Measurement gap — Year 1 framework undefined; global dashboard lacks Talent LMS
+metrics and user-level granularity (Hannah → Patrick Fogarty / GTMC in progress)
+US instance migration paused — disclaimer/language decision blocks IMMERSE US path
 Change-adoption risk — affiliates and agencies need training and clear decision
 rights
 Medical Hub resourcing not confirmed
-Homepage MLR delay — blocks unifying MedVerse landing page
+Homepage operating model gap — content/link updates require dev team (Emil
+Mircea); transitional until GTMC hub model established (Peyman bridging)
 No dedicated change management owner
 ADVENT perceived as website project vs. product-line transformation
 AI expectations advancing faster than content/governance readiness
@@ -349,7 +451,7 @@ Vendor-risk concentration in medical-LLM platforms
 Bill's strategic authorship not sufficiently visible in leadership communications
 
 ================================================================================
-14. GOVERNANCE MODEL
+15. GOVERNANCE MODEL
 ================================================================================
 
 DAI Model: Medical owns science; Product owns platform
@@ -370,7 +472,7 @@ Platform principles: Orchestration over fragmentation; programs retain identity;
                      measure learning not traffic alone
 
 ================================================================================
-15. AI-FIRST DIRECTION
+16. AI-FIRST DIRECTION
 ================================================================================
 
 Core Principle: LLM enablement = default MedVerse requirement (confirmed Jul
@@ -398,7 +500,7 @@ Near-term priorities: Trusted content foundations, metadata, findability,
 Two strategies: Organic LLM-readable content + paid medical-LLM collaborations
 
 ================================================================================
-16. CONTENT EXPERIENCE FRAMEWORK
+17. CONTENT EXPERIENCE FRAMEWORK
 ================================================================================
 
 THREE PILLARS (Content strategy — frog/Capgemini):
@@ -543,7 +645,7 @@ Best-in-Class Orchestration Principles:
 - Field teams = trust + activation layer
 
 ================================================================================
-17. HCP RESEARCH FINDINGS
+18. HCP RESEARCH FINDINGS
 ================================================================================
 
 RESEARCH SCOPE:
@@ -586,28 +688,29 @@ HCPs scan for answers — they do not read sequentially.
 5. Gating is a liability unless it clearly adds value
 
 ================================================================================
-18. STAKEHOLDER ROSTER
+19. STAKEHOLDER ROSTER
 ================================================================================
 
 SANOFI INTERNAL (34):
 
 Bill Schwarz, Christina Ha, Sanjay Kalghatgi, Maanuv Bharadwaj, Anna Majewska,
-Christine Lindquist, Kenneth Eglinton, Kristin Chand, John Shields, Laura Bellec,
+Emil Mircea (Magnolia dev), Christine Lindquist, Kenneth Eglinton, Kristin Chand, John Shields, Laura Bellec,
 Przemyslaw Zelechowski, Cedric Radigue, Jesse Alvarez, Tony Costa, Peyman Sakhitabe,
 Julia Mo, Waverly, Sahir, Anastasia, Vanco, Gary, Marcia Kayath, Marissa Poole,
 Herson Quinones, Chijioke Okafor, Severine Litzinger, Junghwan Lee, Lyly Fong,
 Miriam Gilvirgili, Kathrin Bergin, Aizhan Dzhurumbaeva, Svend Geertsen,
 Christophe Ladreyt, Rajat Bisa
 
-EXTERNAL/AGENCY (12):
+EXTERNAL/AGENCY (16):
 
 Adela (Theodo — incoming), Charlotte Maile (frog), Nathalie Bannon (frog),
 Malina Keutel (frog), Daniel Stephenson (Capgemini), Henry Wills (frog),
-Mithun Shetty (Capgemini — departed), Jeremy Katz (Capgemini), Hannah (WPP/IMMERSE),
-Valeria Grasso (WPP), Ocean (WPP), Jacqueline Smith
+Mithun Shetty (Capgemini — departed), Jeremy Katz (Capgemini), Hannah Kim (WPP/IMMERSE),
+Veronica Longhini (VML/WPP), Adam Naylor (VML/WPP), Valeria Grasso (WPP),
+Simone (WPP), Ocean/Oceane (WPP), Jacqueline Smith, Patrick Fogarty (GTMC)
 
 ================================================================================
-19. STRATEGIC DECISIONS & LEARNINGS
+20. STRATEGIC DECISIONS & LEARNINGS
 ================================================================================
 
 5 STRATEGIC PRIORITIES (MITHUN RETROSPECTIVE):
@@ -645,7 +748,7 @@ Multiple descriptions in circulation — align on digital home of Sanofi Medical
 evolving to intelligent orchestration layer.
 
 ================================================================================
-20. NEXT STEPS
+21. NEXT STEPS
 ================================================================================
 
 IMMEDIATE (NEXT 2 WEEKS):
@@ -655,6 +758,13 @@ IMMEDIATE (NEXT 2 WEEKS):
 3. Schedule Regeneron/Legal/Regulatory session
 4. Confirm Adela onboarding plan (starts Aug 3)
 5. Global registration capability demo (July 18 — Anna)
+6. IMMERSE Roadmap follow-up — Jul 31, 10:30 AM EST (WPP/VML)
+7. Peyman: explore interest-registration landing page for non-eligible countries
+8. Hannah: connect with Patrick Fogarty / GTMC on dashboard granularity
+9. Bill/Peyman: document interest-form + QR code requirements for reuse
+10. WPP: CDP timeline + country opt-in list for fall congresses
+11. Bill + Christina: final review U.S. MedVerse Home Page before prod publish
+12. Emil Mircea: publish homepage to production after review approval
 
 AUGUST:
 
@@ -677,25 +787,25 @@ DOCUMENT METADATA
 ================================================================================
 
 Created: July 17, 2026
-Last Updated: July 17, 2026
-Reviewed: July 17, 2026 — reconciled with Jul workshop, P+ June, Hub/OS model
+Last Updated: July 21, 2026
+Reviewed: July 21, 2026 — IMMERSE Roadmap call (MTG-008); Jul workshop; Hub/OS model
 Status: Active | Authoritative
 Format: Plain Text
 Portable: Yes — compatible with all AI tools and text editors
-Sections: 20
-Commit sources: 30
-Stakeholders: 46
+Sections: 21
+Commit sources: 32
+Stakeholders: 51
 Programs: 12
 Workstreams: 7
-Deadlines: 13
-Risks: 23
+Deadlines: 15
+Risks: 24
 Workshop decisions: 11
 
 Pair with: MedVerse_Operating_System.csv (structured facts — keep synchronized)
 
 ================================================================================
 
-This document is authoritative as of July 17, 2026. Use it with the OS CSV as
+This document is authoritative as of July 21, 2026. Use it with the OS CSV as
 the single source of truth for MedVerse program context, decisions, and strategic
 direction. Operational actions live in the MedVerse Hub and workstream portals.
 
