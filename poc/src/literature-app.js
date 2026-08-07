@@ -108,6 +108,7 @@ async function runSearch() {
     addOrionSignal(query, allResults);
     saveToMemory(query, allResults.length, nejmResults.length);
     autoDeepDive(allResults);
+    resultsArea.scrollIntoView({ behavior: "smooth", block: "start" });
   } catch (err) {
     resultsArea.innerHTML = `<div class="empty-state">
       <i class="ti ti-alert-triangle"></i>
