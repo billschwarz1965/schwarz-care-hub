@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sanofi MedVerse — Medical Concierge</title>
+  <title>Sanofi MedVerse — MSL Copilot</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
@@ -39,580 +39,276 @@
       --font: 'Work Sans', 'Raleway', 'Roboto', sans-serif;
     }
 
-    body {
-      font-family: var(--font);
-      background: var(--bg);
-      color: var(--text);
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
     /* HEADER */
-    .header {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0;
-      flex-shrink: 0;
-    }
-    .header-brand-bar {
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 50%, var(--gold) 100%);
-    }
-    .header-inner {
-      padding: 10px 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .header-home {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-      border-radius: 8px;
-      padding: 4px 8px 4px 4px;
-      margin: -4px;
-      transition: background 0.15s;
-    }
+    .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0; flex-shrink: 0; }
+    .header-brand-bar { height: 3px; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 50%, var(--gold) 100%); }
+    .header-inner { padding: 10px 24px; display: flex; align-items: center; gap: 12px; }
+    .header-home { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; color: inherit; border-radius: 8px; padding: 4px 8px 4px 4px; margin: -4px; transition: background 0.15s; }
     .header-home:hover { background: var(--surface-dim); }
-    .header-logo {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-weight: 600; font-size: 14px;
-    }
+    .header-logo { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px; }
     .header-title { font-size: 16px; font-weight: 600; color: var(--text); }
     .header-subtitle { font-size: 12px; color: var(--text-muted); }
-    .header-actions {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .header-badge {
-      font-size: 11px;
-      padding: 3px 10px;
-      background: var(--warning-bg);
-      color: var(--warning);
-      border-radius: 20px;
-      font-weight: 500;
-    }
-    .new-chat-btn {
-      display: none;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      background: var(--accent-light);
-      color: var(--accent-text);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-family: var(--font);
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .new-chat-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
-    .new-chat-btn i { font-size: 14px; }
-    .new-chat-btn.visible { display: flex; }
+    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .header-badge { font-size: 11px; padding: 3px 10px; background: var(--warning-bg); color: var(--warning); border-radius: 20px; font-weight: 500; }
+    .back-btn { display: none; align-items: center; gap: 6px; padding: 6px 14px; background: var(--accent-light); color: var(--accent-text); border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+    .back-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+    .back-btn.visible { display: flex; }
 
     /* MODULE NAV */
-    .module-nav {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-      display: flex;
-      gap: 0;
-      flex-shrink: 0;
-    }
-    .module-tab {
-      padding: 10px 20px;
-      font-family: var(--font);
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-muted);
-      text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: all 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .module-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; flex-shrink: 0; overflow-x: auto; }
+    .module-tab { padding: 10px 20px; font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
     .module-tab:hover { color: var(--text); }
-    .module-tab.active {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-      font-weight: 600;
-    }
+    .module-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
     .module-tab i { font-size: 16px; }
 
-    /* LAYOUT */
-    .layout {
-      display: flex;
-      flex: 1;
-      overflow: hidden;
-    }
+    /* MAIN SCROLL AREA */
+    .main-scroll { flex: 1; overflow-y: auto; }
+    .main-scroll::-webkit-scrollbar { width: 6px; }
+    .main-scroll::-webkit-scrollbar-track { background: transparent; }
+    .main-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-    /* CHAT AREA */
-    .chat-area {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
-    .messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 24px;
-      scroll-behavior: smooth;
-    }
-    .messages::-webkit-scrollbar { width: 6px; }
-    .messages::-webkit-scrollbar-track { background: transparent; }
-    .messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
-    /* WELCOME */
-    .welcome {
-      max-width: 640px;
-      margin: 40px auto 0;
-      text-align: center;
-    }
-    .welcome-icon {
-      width: 64px; height: 64px;
-      background: var(--accent-light);
-      border-radius: 20px;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 16px;
-      font-size: 28px; color: var(--accent);
-    }
-    .welcome h1 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
-    .welcome p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; max-width: 480px; margin: 0 auto 24px; }
-    .prompts-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      max-width: 560px;
-      margin: 0 auto;
-    }
-    .prompt-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px 14px;
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .prompt-card:hover { border-color: var(--accent-secondary); background: var(--accent-light); }
-    .prompt-card i { font-size: 18px; color: var(--accent-text); flex-shrink: 0; }
-    .prompt-card span { font-size: 13px; font-weight: 500; }
-    .demo-cta-row { margin: 20px auto 0; text-align: center; }
+    /* === WELCOME HUB === */
+    .hub { max-width: 1100px; margin: 0 auto; padding: 28px 24px 40px; }
+    .hub-header { text-align: center; margin-bottom: 32px; }
+    .hub-icon { width: 64px; height: 64px; background: var(--accent-light); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-size: 28px; color: var(--accent); }
+    .hub h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+    .hub-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.6; max-width: 600px; margin: 0 auto; }
+    .demo-cta-row { text-align: center; margin: 18px 0 0; }
     .demo-run-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 10px 22px; font-size: 13px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: background .15s; }
     .demo-run-btn:hover { background: var(--accent-hover); }
-    .demo-run-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .demo-run-btn i { font-size: 16px; }
+    .demo-run-btn:disabled { opacity: .5; cursor: not-allowed; }
 
-    .demo-narrator {
-      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-      z-index: 1100;
-      background: var(--text); color: white;
-      font-family: var(--font); font-size: 13px; font-weight: 500;
-      padding: 10px 22px; border-radius: 24px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-      opacity: 0; transition: opacity 0.3s;
-      pointer-events: none; white-space: nowrap;
-      max-width: 90vw; overflow: hidden; text-overflow: ellipsis;
-    }
-    .demo-narrator.visible { opacity: 1; }
-    .demo-narrator i { margin-right: 6px; }
+    /* SEARCH BAR */
+    .hub-search { max-width: 620px; margin: 0 auto 28px; position: relative; }
+    .hub-search-wrap { display: flex; gap: 10px; }
+    .hub-search-input { flex: 1; padding: 14px 18px 14px 44px; border: 2px solid var(--border); border-radius: 14px; font-family: var(--font); font-size: 14px; outline: none; background: var(--surface); transition: border-color .2s, box-shadow .2s; }
+    .hub-search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(122,0,230,.08); }
+    .hub-search-input::placeholder { color: var(--text-muted); }
+    .hub-search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 18px; color: var(--text-muted); pointer-events: none; }
+    .hub-search-btn { padding: 14px 22px; background: var(--accent); color: white; border: none; border-radius: 14px; font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background .15s; white-space: nowrap; }
+    .hub-search-btn:hover { background: var(--accent-hover); }
+    .hub-search-hints { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 10px; }
+    .hub-search-hint-chip { background: var(--surface-dim); border: 1px solid var(--border); border-radius: 16px; padding: 4px 12px; font-size: 11px; font-family: var(--font); cursor: pointer; color: var(--text-secondary); transition: all .15s; }
+    .hub-search-hint-chip:hover { background: var(--accent-light); color: var(--accent-text); border-color: var(--accent)44; }
 
-    .prompt-card.demo-highlight {
-      border-color: var(--accent) !important;
-      background: var(--accent-light) !important;
-      box-shadow: 0 0 0 4px rgba(122, 0, 230, 0.15);
-      transition: all 0.3s;
-    }
+    /* AGENT GRID */
+    .agent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 900px) { .agent-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .agent-grid { grid-template-columns: 1fr; } }
 
-    /* MESSAGES */
-    .msg { max-width: 720px; margin: 0 auto 20px; }
-    .msg-user {
-      display: flex;
-      justify-content: flex-end;
-    }
-    .msg-user .msg-bubble {
-      background: var(--accent);
-      color: white;
-      border-radius: 18px 18px 4px 18px;
-      padding: 12px 18px;
-      max-width: 80%;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    .msg-ai { display: flex; gap: 12px; align-items: flex-start; }
-    .msg-ai-avatar {
-      width: 32px; height: 32px;
-      background: var(--accent-light);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; color: var(--accent);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .msg-ai-content {
-      flex: 1;
-      min-width: 0;
-    }
-    .msg-ai-text {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 4px 18px 18px 18px;
-      padding: 16px 20px;
-      font-size: 14px;
-      line-height: 1.7;
-    }
-    .msg-ai-text h3 { font-size: 14px; font-weight: 600; margin: 0 0 4px; }
-    .msg-ai-text p { margin: 0 0 12px; }
-    .msg-ai-text p:last-child { margin-bottom: 0; }
-    .msg-ai-text strong { font-weight: 600; }
-    .msg-ai-text table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 13px; }
-    .msg-ai-text th, .msg-ai-text td { padding: 6px 10px; border: 1px solid var(--border); text-align: left; }
-    .msg-ai-text th { background: var(--surface-dim); font-weight: 600; }
-    .msg-ai-text ul, .msg-ai-text ol { padding-left: 20px; margin: 8px 0; }
-    .msg-ai-text li { margin-bottom: 4px; }
+    .agent-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 20px; cursor: pointer; transition: all .2s; position: relative; display: flex; flex-direction: column; }
+    .agent-card:hover { border-color: var(--accent-secondary); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(122,0,230,.08); }
+    .agent-card-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 14px; flex-shrink: 0; }
+    .agent-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .agent-card p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; flex: 1; }
+    .agent-card-tag { display: inline-block; margin-top: 12px; padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; }
 
-    /* CITATIONS */
-    .cite-ref {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 18px; height: 18px;
-      background: var(--accent-light);
-      color: var(--accent-text);
-      font-size: 11px; font-weight: 600;
-      border-radius: 4px;
-      cursor: pointer;
-      vertical-align: super;
-      margin: 0 1px;
-      transition: background 0.15s;
-    }
-    .cite-ref:hover { background: var(--accent); color: white; }
-    .citations-panel {
-      margin-top: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .citation-card {
-      background: var(--surface-dim);
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 12px;
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-    }
-    .citation-num {
-      width: 22px; height: 22px;
-      background: var(--accent-light);
-      color: var(--accent-text);
-      border-radius: 5px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 600;
-      flex-shrink: 0;
-    }
-    .citation-info { flex: 1; min-width: 0; }
-    .citation-title { font-weight: 600; margin-bottom: 2px; }
-    .citation-meta { color: var(--text-muted); }
-    .citation-type {
-      display: inline-block;
-      padding: 1px 6px;
-      background: var(--surface);
-      border-radius: 4px;
-      font-size: 10px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      margin-left: 6px;
-    }
+    /* card colour themes */
+    .agent-card[data-agent="precall"]     .agent-card-icon { background: var(--accent-light); color: var(--accent); }
+    .agent-card[data-agent="precall"]     .agent-card-tag  { background: var(--accent-light); color: var(--accent-text); }
+    .agent-card[data-agent="territory"]   .agent-card-icon { background: #dbeafe; color: #2563eb; }
+    .agent-card[data-agent="territory"]   .agent-card-tag  { background: #dbeafe; color: #1d4ed8; }
+    .agent-card[data-agent="postcall"]    .agent-card-icon { background: var(--orion-bg); color: var(--orion-accent); }
+    .agent-card[data-agent="postcall"]    .agent-card-tag  { background: var(--orion-bg); color: var(--orion-accent); }
+    .agent-card[data-agent="medinfo"]     .agent-card-icon { background: #fce7f3; color: #be185d; }
+    .agent-card[data-agent="medinfo"]     .agent-card-tag  { background: #fce7f3; color: #be185d; }
+    .agent-card[data-agent="competitive"] .agent-card-icon { background: #fef3c7; color: #b45309; }
+    .agent-card[data-agent="competitive"] .agent-card-tag  { background: #fef3c7; color: #92400e; }
+    .agent-card[data-agent="congress"]    .agent-card-icon { background: #e0f2fe; color: #0369a1; }
+    .agent-card[data-agent="congress"]    .agent-card-tag  { background: #e0f2fe; color: #0c4a6e; }
+    .agent-card[data-agent="kol"]         .agent-card-icon { background: #fae8ff; color: #a21caf; }
+    .agent-card[data-agent="kol"]         .agent-card-tag  { background: #fae8ff; color: #86198f; }
+    .agent-card[data-agent="compliance"]  .agent-card-icon { background: var(--success-bg); color: var(--success); }
+    .agent-card[data-agent="compliance"]  .agent-card-tag  { background: var(--success-bg); color: var(--success); }
+    .agent-card[data-agent="literature"]  .agent-card-icon { background: #fae8ff; color: #a21caf; }
+    .agent-card[data-agent="literature"]  .agent-card-tag  { background: #fae8ff; color: #86198f; }
+    .agent-card[data-agent="lit-scout"]   .agent-card-icon { background: #fff7ed; color: #c2410c; }
+    .agent-card[data-agent="lit-scout"]   .agent-card-tag  { background: #fff7ed; color: #c2410c; }
+    .agent-card[data-agent="disease-nav"] .agent-card-icon { background: #ecfdf5; color: #059669; }
+    .agent-card[data-agent="disease-nav"] .agent-card-tag  { background: #ecfdf5; color: #059669; }
+    .agent-card[data-agent="orion"]       .agent-card-icon { background: var(--orion-bg); color: var(--orion-accent); }
+    .agent-card[data-agent="orion"]       .agent-card-tag  { background: var(--orion-bg); color: var(--orion-accent); }
 
-    /* FOLLOW-UP SUGGESTIONS */
-    .follow-ups {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
-    }
-    .follow-up-chip {
-      background: var(--accent-light);
-      color: var(--accent-text);
-      border: 1px solid var(--accent)22;
-      border-radius: 20px;
-      padding: 6px 14px;
-      font-size: 12.5px;
-      font-family: var(--font);
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
-      text-align: left;
-      line-height: 1.4;
-    }
-    .follow-up-chip:hover {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
-    }
+    /* === AGENT PANEL === */
+    .agent-panel { display: none; max-width: 960px; margin: 0 auto; padding: 24px; }
+    .agent-panel.active { display: block; }
 
-    /* TYPING INDICATOR */
-    .typing { display: flex; gap: 4px; padding: 8px 0; }
-    .typing span {
-      width: 8px; height: 8px;
-      background: var(--border-strong);
-      border-radius: 50%;
-      animation: bounce 1.4s infinite;
-    }
-    .typing span:nth-child(2) { animation-delay: 0.2s; }
-    .typing span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes bounce {
-      0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
-      40% { transform: scale(1); opacity: 1; }
-    }
+    .panel-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .panel-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .panel-title { font-size: 18px; font-weight: 700; }
+    .panel-desc { font-size: 13px; color: var(--text-secondary); }
 
-    /* INPUT */
-    .input-area {
-      padding: 16px 24px 20px;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .input-row {
-      max-width: 720px;
-      margin: 0 auto;
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
-    }
-    .input-wrap {
-      flex: 1;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      transition: border-color 0.15s;
-    }
-    .input-wrap:focus-within { border-color: var(--accent); }
-    .input-wrap textarea {
-      flex: 1;
-      border: none;
-      background: none;
-      font-family: var(--font);
-      font-size: 14px;
-      resize: none;
-      outline: none;
-      color: var(--text);
-      max-height: 120px;
-      line-height: 1.4;
-    }
-    .input-wrap textarea::placeholder { color: var(--text-muted); }
-    .send-btn {
-      width: 40px; height: 40px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
-      transition: opacity 0.15s, transform 0.1s;
-      flex-shrink: 0;
-    }
-    .send-btn:hover { opacity: 0.9; }
-    .send-btn:active { transform: scale(0.95); }
-    .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-    .input-hint {
-      max-width: 720px;
-      margin: 6px auto 0;
-      font-size: 11px;
-      color: var(--text-muted);
-      text-align: center;
-    }
+    /* FORM PANELS */
+    .form-panel { display: flex; gap: 20px; }
+    .form-main { flex: 1; }
+    .form-results { flex: 1; max-width: 480px; }
+    @media (max-width: 800px) { .form-panel { flex-direction: column; } .form-results { max-width: none; } }
 
-    /* RIGHT SIDEBAR */
-    .sidebar {
-      width: 360px;
-      background: var(--surface);
-      border-left: 1px solid var(--border);
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .sidebar-chat-header {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-    .sidebar-chat-icon {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-size: 18px; flex-shrink: 0;
-    }
-    .sidebar-chat-title { font-size: 14px; font-weight: 700; }
-    .sidebar-chat-sub { font-size: 11px; color: var(--text-muted); }
-    .sidebar-demo-btn {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 5px 12px; font-size: 11px; font-weight: 600;
-      background: var(--accent); color: white; border: none;
-      border-radius: 16px; cursor: pointer; font-family: var(--font);
-      transition: background 0.15s; white-space: nowrap;
-    }
-    .sidebar-demo-btn:hover { background: var(--accent-hover); }
-    .sidebar-demo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .sidebar-clear-btn {
-      padding: 5px 8px; font-size: 13px; border-radius: 50%;
-      border: 1px solid var(--border); background: var(--surface);
-      cursor: pointer; color: var(--text-muted); display: flex;
-      align-items: center; justify-content: center;
-      width: 28px; height: 28px;
-    }
-    .sidebar-clear-btn:hover { background: var(--surface-dim); }
-    .sidebar-suggestions {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex; flex-wrap: wrap; gap: 6px;
-      flex-shrink: 0;
-    }
-    .sidebar-suggestion {
-      background: var(--accent-light); color: var(--accent-text);
-      border: 1px solid transparent; border-radius: 16px;
-      padding: 5px 12px; font-size: 11px; font-family: var(--font);
-      cursor: pointer; transition: all 0.15s; font-weight: 500;
-    }
-    .sidebar-suggestion:hover { background: var(--accent); color: white; }
-    .sidebar-content {
-      flex: 1;
-      padding: 16px 18px;
-      overflow-y: auto;
-    }
-    .sidebar-section-title {
-      font-size: 11px; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.5px; color: var(--text-muted);
-      margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
-    }
-    .sidebar-section-title i { font-size: 14px; }
-    .sidebar-empty {
-      text-align: center;
-      padding: 30px 20px;
-      color: var(--text-muted);
-      font-size: 12px;
-    }
-    .sidebar-empty i { font-size: 28px; display: block; margin-bottom: 8px; opacity: 0.3; }
+    .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; margin-bottom: 16px; }
+    .form-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .form-card h4 i { font-size: 16px; color: var(--accent); }
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 5px; }
+    .form-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; outline: none; background: var(--bg); transition: border-color .15s; }
+    .form-input:focus { border-color: var(--accent); }
+    .form-select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; outline: none; background: var(--bg); }
+    .form-row { display: flex; gap: 12px; }
+    .form-row > * { flex: 1; }
+    .form-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border: none; border-radius: 8px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .form-btn-primary { background: var(--accent); color: white; }
+    .form-btn-primary:hover { background: var(--accent-hover); }
+    .form-btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+    .form-btn-secondary { background: var(--surface-dim); color: var(--text-secondary); border: 1px solid var(--border); }
+    .form-btn-secondary:hover { background: var(--accent-light); color: var(--accent-text); }
+    .form-chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+    .form-chip { padding: 5px 12px; border-radius: 16px; font-size: 11px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--surface); transition: all .15s; }
+    .form-chip:hover { border-color: var(--accent); }
+    .form-chip.selected { background: var(--accent); color: white; border-color: var(--accent); }
+
+    /* RESULT CARDS */
+    .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; animation: slideIn .3s ease; }
+    @keyframes slideIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    .result-card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .result-badge { padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; white-space: nowrap; }
+    .result-title { font-size: 14px; font-weight: 600; flex: 1; }
+    .result-body { font-size: 12.5px; line-height: 1.6; color: var(--text-secondary); }
+    .result-body strong { color: var(--text); }
+    .result-meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 11px; color: var(--text-muted); }
+    .result-meta-item { display: flex; align-items: center; gap: 4px; }
+    .result-meta-item i { font-size: 13px; }
+    .result-actions { display: flex; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .result-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 13px; }
+    .result-empty i { font-size: 32px; display: block; margin-bottom: 8px; opacity: .3; }
+
+    /* BADGES */
+    .badge-success { background: var(--success-bg); color: var(--success); }
+    .badge-warning { background: var(--warning-bg); color: var(--warning); }
+    .badge-info { background: #dbeafe; color: #1d4ed8; }
+    .badge-accent { background: var(--accent-light); color: var(--accent-text); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger); }
+    .badge-orion { background: var(--orion-bg); color: var(--orion-accent); }
+
+    /* TERRITORY DASHBOARD PANEL */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+    @media (max-width: 600px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    .stat-tile { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+    .stat-num { font-size: 24px; font-weight: 700; color: var(--accent); }
+    .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 4px; }
+
+    .territory-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 700px) { .territory-grid { grid-template-columns: 1fr; } }
+    .territory-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; }
+    .territory-section h3 { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+    .territory-section h3 i { font-size: 18px; color: var(--accent); }
+
+    .meeting-card { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 8px; transition: background 0.15s; }
+    .meeting-card:hover { background: var(--surface-dim); }
+    .meeting-date { font-size: 13px; font-weight: 600; color: var(--accent); min-width: 55px; text-align: center; }
+    .meeting-info { flex: 1; min-width: 0; }
+    .meeting-hcp { font-size: 13px; font-weight: 600; }
+    .meeting-topic { font-size: 12px; color: var(--text-secondary); }
+    .meeting-meta { display: flex; gap: 10px; margin-top: 4px; font-size: 11px; }
+    .meeting-type { color: var(--text-muted); }
+    .meeting-status { display: flex; align-items: center; gap: 3px; }
+    .meeting-status.success { color: var(--success); }
+    .meeting-status.warning { color: var(--warning); }
+    .meeting-status.muted { color: var(--text-muted); }
+
+    .alert-card { display: flex; gap: 10px; padding: 10px 12px; border-radius: 8px; background: var(--surface-dim); margin-bottom: 6px; font-size: 12px; }
+    .alert-text { flex: 1; }
+    .alert-time { color: var(--text-muted); font-size: 11px; margin-top: 2px; }
+
+    /* BRIEFING CARD */
+    .briefing-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 20px; }
+    .briefing-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .briefing-avatar { width: 56px; height: 56px; background: var(--accent-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--accent); flex-shrink: 0; }
+    .briefing-name-block { flex: 1; min-width: 200px; }
+    .briefing-name { font-size: 18px; font-weight: 700; }
+    .briefing-meta { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+    .briefing-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .badge { font-size: 11px; padding: 4px 12px; border-radius: 20px; font-weight: 500; border: 1px solid var(--border); }
+    .badge.tier { background: var(--accent-light); color: var(--accent-text); border-color: var(--accent)33; }
+    .badge.engagement { background: var(--surface-dim); }
+    .briefing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 700px) { .briefing-grid { grid-template-columns: 1fr; } }
+    .briefing-section { background: var(--surface-dim); border-radius: var(--radius); padding: 16px; }
+    .briefing-section.highlight { background: var(--orion-bg); border: 1px solid #9fe1cb; grid-column: 1 / -1; }
+    .section-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .section-title i { font-size: 15px; }
+    .section-body { font-size: 13px; }
+    .detail-row { display: flex; gap: 8px; margin-bottom: 4px; }
+    .detail-label { color: var(--text-muted); min-width: 80px; flex-shrink: 0; }
+    .detail-muted { color: var(--text-muted); font-style: italic; }
+    .interest-chip { display: inline-block; padding: 3px 10px; background: var(--accent-light); color: var(--accent-text); border-radius: 12px; font-size: 11px; margin: 2px 3px 2px 0; }
+    .query-item { display: flex; gap: 6px; align-items: flex-start; margin-bottom: 4px; font-size: 12px; }
+    .trial-item { margin-bottom: 4px; }
+    .next-action { font-size: 14px; font-weight: 500; color: #085041; }
+
+    /* POST-CALL SIGNAL */
+    .post-call-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; }
+    .post-call-form { display: flex; flex-direction: column; gap: 10px; }
+    .signal-select { padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; outline: none; background: var(--surface); }
+    .signal-select:focus { border-color: var(--accent); }
+    .signal-notes { padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; outline: none; resize: none; }
+    .signal-notes:focus { border-color: var(--accent); }
+    .submit-signal-btn { padding: 10px 20px; background: var(--accent); color: white; border: none; border-radius: 8px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; justify-content: center; transition: all 0.15s; }
+    .submit-signal-btn:hover { background: var(--accent-hover); }
+    .submit-signal-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .signal-confirmation { display: none; align-items: center; gap: 8px; font-size: 13px; color: var(--orion-accent); font-weight: 500; padding: 10px; background: var(--orion-bg); border-radius: 8px; }
 
     /* SIGNAL CARDS */
-    .signal-card {
-      background: var(--orion-bg);
-      border: 1px solid #9fe1cb;
-      border-radius: var(--radius);
-      padding: 14px;
-      margin-bottom: 12px;
-      animation: slideIn 0.3s ease;
-    }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .signal-header {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 10px;
-    }
-    .signal-dot {
-      width: 8px; height: 8px;
-      background: var(--orion-accent);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-    .signal-time { font-size: 11px; color: var(--text-muted); }
-    .signal-topic { font-size: 13px; font-weight: 600; color: #085041; margin-bottom: 8px; }
-    .signal-row {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 4px;
-      font-size: 12px;
-    }
-    .signal-label { color: var(--text-muted); min-width: 70px; flex-shrink: 0; }
+    .signal-card { background: var(--orion-bg); border: 1px solid #9fe1cb; border-radius: var(--radius); padding: 12px; margin-bottom: 10px; animation: slideIn .3s ease; }
+    .signal-header { display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
+    .signal-dot { width: 7px; height: 7px; background: var(--orion-accent); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .signal-time { font-size: 10px; color: var(--text-muted); }
+    .signal-topic { font-size: 12px; font-weight: 600; color: #085041; margin-bottom: 6px; }
+    .signal-row { display: flex; gap: 5px; margin-bottom: 3px; font-size: 11px; }
+    .signal-label { color: var(--text-muted); min-width: 60px; flex-shrink: 0; }
     .signal-value { color: #085041; }
-    .signal-action {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid #9fe1cb;
-      font-size: 12px;
-      color: #0f6e56;
-      font-weight: 500;
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-    }
-    .signal-action i { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+    .signal-action { margin-top: 8px; padding-top: 8px; border-top: 1px solid #9fe1cb; font-size: 11px; color: #0f6e56; font-weight: 500; display: flex; align-items: flex-start; gap: 5px; }
+    .signal-action i { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
 
-    /* SIGNAL STATS */
-    .signal-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 16px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-    }
-    .signal-stat {
-      background: var(--surface-dim);
-      border-radius: 8px;
-      padding: 10px 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: 2px solid transparent;
-    }
-    .signal-stat:hover { background: var(--accent-light); }
-    .signal-stat.active { border-color: var(--accent); background: var(--accent-light); }
-    .signal-stat-num { font-size: 20px; font-weight: 600; }
-    .signal-stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-    .signal-card.filtered-out { display: none; }
+    /* MSL PROFILE */
+    .msl-profile { display: flex; gap: 14px; align-items: center; padding: 14px; background: var(--surface-dim); border-radius: var(--radius); margin-bottom: 10px; }
+    .msl-avatar { width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; flex-shrink: 0; }
+    .msl-name { font-size: 14px; font-weight: 600; }
+    .msl-meta { font-size: 12px; color: var(--text-secondary); }
 
-    /* MARKDOWN RENDERING */
-    .rendered h3 { margin-top: 16px; }
-    .rendered blockquote {
-      border-left: 3px solid var(--accent-light);
-      padding-left: 12px;
-      color: var(--text-secondary);
-      margin: 8px 0;
-    }
+    /* COMPETITIVE INTEL */
+    .comp-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .comp-table th, .comp-table td { padding: 8px 10px; border: 1px solid var(--border); text-align: left; }
+    .comp-table th { background: var(--surface-dim); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .3px; }
+    .comp-highlight { background: var(--accent-light); font-weight: 600; }
+
+    /* COMPLIANCE CHECKLIST */
+    .checklist-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 8px; margin-bottom: 6px; background: var(--surface-dim); }
+    .checklist-icon { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+    .checklist-pass .checklist-icon { background: var(--success-bg); color: var(--success); }
+    .checklist-warn .checklist-icon { background: var(--warning-bg); color: var(--warning); }
+    .checklist-fail .checklist-icon { background: var(--danger-bg); color: var(--danger); }
+    .checklist-text { flex: 1; font-size: 12.5px; line-height: 1.5; }
+    .checklist-label { font-weight: 600; }
+
+    /* NARRATOR */
+    .demo-narrator { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 1100; background: var(--text); color: white; font-family: var(--font); font-size: 13px; font-weight: 500; padding: 10px 22px; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,.25); opacity: 0; transition: opacity .3s; pointer-events: none; white-space: nowrap; max-width: 90vw; overflow: hidden; text-overflow: ellipsis; }
+    .demo-narrator.visible { opacity: 1; }
+    .demo-narrator i { margin-right: 6px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
-  <script type="module" crossorigin src="/assets/main-CED5Ikng.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/narrator-BRSS0JpU.js">
+  <script type="module" crossorigin src="/assets/main-CBJZmb5K.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/enhancements-DokCBmAo.js">
+  <link rel="modulepreload" crossorigin href="/assets/narrator-Gu1jBQbu.js">
+  <link rel="modulepreload" crossorigin href="/assets/orion-bridge-Bxojkdb6.js">
+  <link rel="stylesheet" crossorigin href="/assets/enhancements-Dgdrl367.css">
 </head>
 <body>
   <div class="header">
     <div class="header-brand-bar"></div>
     <div class="header-inner">
-      <a class="header-home" id="header-home" title="Return to welcome screen">
+      <a class="header-home" id="header-home" title="Return to MSL Copilot hub">
         <div class="header-logo"><i class="ti ti-brain"></i></div>
         <div>
           <div class="header-title">Sanofi MedVerse</div>
@@ -620,91 +316,515 @@
         </div>
       </a>
       <div class="header-actions">
-        <button class="new-chat-btn" id="new-chat-btn" title="Start a new conversation">
-          <i class="ti ti-plus"></i> New conversation
-        </button>
+        <button class="back-btn" id="back-btn"><i class="ti ti-arrow-left"></i> All Agents</button>
         <div class="header-badge">POC v0.1</div>
       </div>
     </div>
   </div>
 
   <nav class="module-nav">
-    <a class="module-tab active" href="/index.html"><i class="ti ti-message-circle"></i> Medical Concierge</a>
-    <a class="module-tab" href="/orion.html"><i class="ti ti-radar-2"></i> Orion Intelligence</a>
-    <a class="module-tab" href="/disease.html"><i class="ti ti-dna"></i> Disease Navigator</a>
-    <a class="module-tab" href="/literature.html"><i class="ti ti-book-2"></i> Literature Intelligence</a>
-    <a class="module-tab" href="/congress.html"><i class="ti ti-calendar-event"></i> Congress Intelligence</a>
-    <a class="module-tab" href="/agents.html"><i class="ti ti-robot"></i> Agent Ecosystem</a>
+    <a class="module-tab active" href="/index.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
+    <a class="module-tab" href="/medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
+    <a class="module-tab" href="/concierge.html"><i class="ti ti-message-circle"></i> HCP Concierge</a>
+    <a class="module-tab" href="/patient.html"><i class="ti ti-heart"></i> Patient Concierge</a>
+    <a class="module-tab" href="/system-tools.html"><i class="ti ti-settings"></i> System Tools</a>
   </nav>
 
-  <div class="layout">
-    <div class="chat-area">
-      <div class="messages" id="messages">
-        <div class="welcome" id="welcome">
-          <div class="welcome-icon"><i class="ti ti-brain"></i></div>
-          <h1>Medical Concierge</h1>
-          <p>Ask clinical questions and get cited answers from Sanofi medical content. Every interaction generates intelligence signals for field teams.</p>
-          <div class="prompts-grid" id="prompts-grid"></div>
-          <div class="demo-cta-row" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-            <button class="demo-run-btn" id="run-topic-demo"><i class="ti ti-player-play"></i> One-click topics demo</button>
-          </div>
+  <div class="main-scroll" id="main-scroll">
+
+    <!-- ===== HUB (Agent Grid) ===== -->
+    <div class="hub" id="hub">
+      <div class="hub-header">
+        <div class="hub-icon"><i class="ti ti-briefcase"></i></div>
+        <h1>MSL Copilot</h1>
+        <p class="hub-sub">AI-powered field engagement command center. Pre-call intelligence, territory management, competitive insights, compliance guidance, and post-call reporting — built for Medical Science Liaisons.</p>
+        <div class="demo-cta-row">
+          <button class="demo-run-btn" id="run-demo"><i class="ti ti-player-play"></i> Run Demo</button>
         </div>
       </div>
-      <div class="input-area">
-        <div class="input-row">
-          <div class="input-wrap">
-            <textarea id="input" rows="1" placeholder="Ask a clinical question..." autofocus></textarea>
-          </div>
-          <button class="send-btn" id="send-btn" disabled><i class="ti ti-arrow-up"></i></button>
+
+      <div class="hub-search" id="hub-search">
+        <div class="hub-search-wrap">
+          <i class="ti ti-sparkles hub-search-icon"></i>
+          <input class="hub-search-input" id="hub-search-input" type="text" placeholder="Search — e.g. &quot;Prep for Dr. Chen meeting&quot; or &quot;Dupixent vs abrocitinib data&quot;">
+          <button class="hub-search-btn" id="hub-search-btn"><i class="ti ti-arrow-right"></i> Go</button>
         </div>
-        <div class="input-hint">MedVerse Concierge uses retrieval-augmented generation over governed Sanofi medical content. All responses are citation-based.</div>
+        <div class="hub-search-hints" id="hub-search-hints"></div>
+      </div>
+
+      <div class="agent-grid">
+        <div class="agent-card" data-agent="precall">
+          <div class="agent-card-icon"><i class="ti ti-clipboard-text"></i></div>
+          <h3>Pre-Call Intelligence</h3>
+          <p>Look up any HCP for a comprehensive pre-call briefing — engagement history, scientific interests, Orion signals, trial involvement, and recommended talking points.</p>
+          <span class="agent-card-tag">Core Agent</span>
+        </div>
+        <div class="agent-card" data-agent="territory">
+          <div class="agent-card-icon"><i class="ti ti-map-2"></i></div>
+          <h3>Territory Dashboard</h3>
+          <p>View your territory at a glance — upcoming meetings, HCP engagement stats, Orion alerts, and prioritized action items for the week.</p>
+          <span class="agent-card-tag">Dashboard</span>
+        </div>
+        <div class="agent-card" data-agent="postcall">
+          <div class="agent-card-icon"><i class="ti ti-send"></i></div>
+          <h3>Post-Call Reporting</h3>
+          <p>Submit post-call signals directly to Orion. Capture HCP insights, requests, and follow-up actions for team-wide visibility and intelligence routing.</p>
+          <span class="agent-card-tag">Orion Signal</span>
+        </div>
+        <div class="agent-card" data-agent="medinfo">
+          <div class="agent-card-icon"><i class="ti ti-file-description"></i></div>
+          <h3>Medical Information</h3>
+          <p>Process unsolicited medical information requests from HCPs. Generate compliant response letters with appropriate disclaimers and reference citations.</p>
+          <span class="agent-card-tag">Compliance</span>
+        </div>
+        <div class="agent-card" data-agent="competitive">
+          <div class="agent-card-icon"><i class="ti ti-chart-arrows"></i></div>
+          <h3>Competitive Intelligence</h3>
+          <p>Access head-to-head trial data, competitor pipeline updates, and comparative efficacy/safety profiles for scientific exchange discussions.</p>
+          <span class="agent-card-tag">Market Intel</span>
+        </div>
+        <div class="agent-card" data-agent="congress">
+          <div class="agent-card-icon"><i class="ti ti-calendar-event"></i></div>
+          <h3>Congress Planner</h3>
+          <p>Plan congress engagement — view upcoming presentations, identify HCP attendance, schedule satellite symposium invitations, and track poster highlights.</p>
+          <span class="agent-card-tag">Congress</span>
+        </div>
+        <div class="agent-card" data-agent="kol">
+          <div class="agent-card-icon"><i class="ti ti-star"></i></div>
+          <h3>KOL Profiling</h3>
+          <p>Deep KOL analysis — publication metrics, speaking engagements, influence network mapping, advisory board history, and engagement trajectory scoring.</p>
+          <span class="agent-card-tag">KOL Insights</span>
+        </div>
+        <div class="agent-card" data-agent="compliance">
+          <div class="agent-card-icon"><i class="ti ti-shield-check"></i></div>
+          <h3>Compliance Advisor</h3>
+          <p>Pre-meeting compliance check — verify interaction type, review gift/meal limits, validate scientific exchange topics, and ensure fair balance in materials.</p>
+          <span class="agent-card-tag">Guardrails</span>
+        </div>
+        <div class="agent-card" data-agent="literature">
+          <div class="agent-card-icon"><i class="ti ti-book-2"></i></div>
+          <h3>Literature Intelligence</h3>
+          <p>Search PubMed and medical databases for evidence-based publications. Find clinical trials, meta-analyses, and review articles with citation summaries.</p>
+          <span class="agent-card-tag">Evidence</span>
+        </div>
+        <div class="agent-card" data-agent="lit-scout">
+          <div class="agent-card-icon"><i class="ti ti-binoculars"></i></div>
+          <h3>Literature Scout</h3>
+          <p>Proactive monitoring of new publications in your therapeutic areas. Get alerts on competitor papers, guideline updates, and emerging evidence.</p>
+          <span class="agent-card-tag">Monitoring</span>
+        </div>
+        <div class="agent-card" data-agent="disease-nav">
+          <div class="agent-card-icon"><i class="ti ti-dna"></i></div>
+          <h3>Disease Navigator</h3>
+          <p>Explore disease state profiles, pathophysiology, treatment landscapes, and cross-TA connections. Understand the science behind Sanofi therapeutic areas.</p>
+          <span class="agent-card-tag">Disease Intel</span>
+        </div>
+        <div class="agent-card" data-agent="orion">
+          <div class="agent-card-icon"><i class="ti ti-radar-2"></i></div>
+          <h3>Orion Intelligence</h3>
+          <p>Real-time engagement intelligence from HCP interactions across MedVerse. View signal trends, territory heatmaps, and priority alerts for your field team.</p>
+          <span class="agent-card-tag">Field Intel</span>
+        </div>
       </div>
     </div>
 
-    <div class="sidebar">
-      <div class="sidebar-chat-header">
-        <div class="sidebar-chat-icon"><i class="ti ti-brain"></i></div>
-        <div>
-          <div class="sidebar-chat-title">Concierge AI</div>
-          <div class="sidebar-chat-sub">Clinical Q&A with citations</div>
-        </div>
-        <button class="sidebar-demo-btn" id="run-clinical-demo" style="margin-left:auto;"><i class="ti ti-player-play" style="font-size:13px"></i> Demo</button>
-        <button class="sidebar-clear-btn" id="sidebar-clear-btn" title="Clear conversation"><i class="ti ti-refresh"></i></button>
+    <!-- ===== PRE-CALL INTELLIGENCE PANEL ===== -->
+    <div class="agent-panel" id="panel-precall">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:var(--accent-light);color:var(--accent);"><i class="ti ti-clipboard-text"></i></div>
+        <div><div class="panel-title">Pre-Call Intelligence</div><div class="panel-desc">HCP briefing with engagement history, signals, and recommended approach</div></div>
       </div>
-      <div class="sidebar-suggestions" id="sidebar-suggestions"></div>
-      <div class="sidebar-input-row" style="padding:10px 16px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-shrink:0;">
-        <input type="text" id="sidebar-input" placeholder="Ask a clinical question…" style="flex:1;border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:13px;font-family:var(--font);outline:none;">
-        <button id="sidebar-send" disabled style="width:34px;height:34px;border-radius:10px;border:none;background:var(--accent);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;"><i class="ti ti-send"></i></button>
-      </div>
-      <div class="sidebar-content" id="sidebar-content">
-        <div class="sidebar-section-title"><i class="ti ti-radar-2"></i> Orion Signal Feed</div>
-        <div class="signal-stats" id="signal-stats">
-          <div class="signal-stat" data-filter="all">
-            <div class="signal-stat-num" id="stat-signals">0</div>
-            <div class="signal-stat-label">Signals</div>
-          </div>
-          <div class="signal-stat" data-filter="topics">
-            <div class="signal-stat-num" id="stat-topics">0</div>
-            <div class="signal-stat-label">Topics</div>
-          </div>
-          <div class="signal-stat" data-filter="deep">
-            <div class="signal-stat-num" id="stat-depth">—</div>
-            <div class="signal-stat-label">Avg depth</div>
-          </div>
-          <div class="signal-stat" data-filter="priority">
-            <div class="signal-stat-num" id="stat-priority">—</div>
-            <div class="signal-stat-label">Priority</div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-search"></i> Look Up HCP</h4>
+            <div class="form-group">
+              <label class="form-label">HCP Name</label>
+              <input class="form-input" id="pc-hcp-search" type="text" placeholder="e.g. Dr. Sarah Chen, Dr. Torres, Dr. Nakamura…">
+            </div>
+            <button class="form-btn form-btn-primary" id="pc-submit"><i class="ti ti-clipboard-text"></i> Generate Briefing</button>
           </div>
         </div>
-        <div id="signals-container">
-          <div class="sidebar-empty">
-            <i class="ti ti-radar-2"></i>
-            No signals yet. Ask a question to generate behavioral intelligence for Orion.
-          </div>
+        <div class="form-results" id="pc-results">
+          <div class="result-empty"><i class="ti ti-clipboard-text"></i>Enter an HCP name to generate a pre-call intelligence briefing.</div>
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- ===== TERRITORY DASHBOARD PANEL ===== -->
+    <div class="agent-panel" id="panel-territory">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#dbeafe;color:#2563eb;"><i class="ti ti-map-2"></i></div>
+        <div><div class="panel-title">Territory Dashboard</div><div class="panel-desc">Your territory engagement overview and prioritized actions</div></div>
+      </div>
+      <div id="territory-content"></div>
+    </div>
+
+    <!-- ===== POST-CALL REPORTING PANEL ===== -->
+    <div class="agent-panel" id="panel-postcall">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:var(--orion-bg);color:var(--orion-accent);"><i class="ti ti-send"></i></div>
+        <div><div class="panel-title">Post-Call Reporting</div><div class="panel-desc">Submit engagement signals to Orion for field team intelligence</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-radar-2"></i> Signal Details</h4>
+            <div class="form-group">
+              <label class="form-label">HCP Name</label>
+              <input class="form-input" id="sig-hcp" type="text" placeholder="e.g. Dr. Sarah Chen">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Signal Type</label>
+              <select class="form-select" id="sig-type">
+                <option value="">Select signal type…</option>
+                <option>HCP expressed interest in clinical trial enrollment</option>
+                <option>Requested head-to-head comparative data</option>
+                <option>Asked about off-label considerations</option>
+                <option>Discussed competitive product switching</option>
+                <option>Expressed interest in speaking opportunity</option>
+                <option>Requested patient education materials</option>
+                <option>Reported adverse event (forward to PV)</option>
+                <option>Identified unmet medical need</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Meeting Type</label>
+              <select class="form-select" id="sig-meeting-type">
+                <option value="">Select…</option>
+                <option>Scientific Exchange (1:1)</option>
+                <option>Advisory Board</option>
+                <option>Lunch & Learn (group)</option>
+                <option>Congress interaction</option>
+                <option>Virtual meeting</option>
+                <option>Phone call</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Notes</label>
+              <textarea class="form-input" id="sig-notes" rows="3" placeholder="Context, follow-up actions, notable quotes…" style="resize:vertical;"></textarea>
+            </div>
+            <button class="form-btn form-btn-primary" id="sig-submit" disabled><i class="ti ti-radar-2"></i> Submit Signal to Orion</button>
+          </div>
+        </div>
+        <div class="form-results" id="sig-results">
+          <div class="result-empty"><i class="ti ti-send"></i>Complete the form to submit a post-call signal. Signals are routed to Orion for team-wide intelligence.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MEDICAL INFORMATION PANEL ===== -->
+    <div class="agent-panel" id="panel-medinfo">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fce7f3;color:#be185d;"><i class="ti ti-file-description"></i></div>
+        <div><div class="panel-title">Medical Information</div><div class="panel-desc">Process and respond to unsolicited medical information requests</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-mail"></i> Request Details</h4>
+            <div class="form-group">
+              <label class="form-label">Requesting HCP</label>
+              <input class="form-input" id="mi-hcp" type="text" placeholder="HCP name or ID">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Request Type</label>
+              <select class="form-select" id="mi-type">
+                <option value="">Select…</option>
+                <option>Dosing & Administration</option>
+                <option>Efficacy Data Request</option>
+                <option>Safety / AE Profile</option>
+                <option>Drug Interactions</option>
+                <option>Off-label Use Inquiry</option>
+                <option>Product Availability / Supply</option>
+                <option>Pregnancy / Lactation</option>
+                <option>Pediatric Use</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Product</label>
+              <select class="form-select" id="mi-product">
+                <option value="">Select product…</option>
+                <option>Dupixent (dupilumab)</option>
+                <option>Kevzara (sarilumab)</option>
+                <option>Aubagio (teriflunomide)</option>
+                <option>Praluent (alirocumab)</option>
+                <option>Sarclisa (isatuximab)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Question Details</label>
+              <textarea class="form-input" id="mi-question" rows="3" placeholder="Describe the HCP's question…" style="resize:vertical;"></textarea>
+            </div>
+            <button class="form-btn form-btn-primary" id="mi-submit"><i class="ti ti-file-description"></i> Generate Response</button>
+          </div>
+        </div>
+        <div class="form-results" id="mi-results">
+          <div class="result-empty"><i class="ti ti-file-description"></i>Enter the request details to generate a compliant medical information response.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== COMPETITIVE INTELLIGENCE PANEL ===== -->
+    <div class="agent-panel" id="panel-competitive">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fef3c7;color:#b45309;"><i class="ti ti-chart-arrows"></i></div>
+        <div><div class="panel-title">Competitive Intelligence</div><div class="panel-desc">Head-to-head data, competitor pipelines, and comparative profiles</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-vs"></i> Comparison Query</h4>
+            <div class="form-group">
+              <label class="form-label">Therapeutic Area</label>
+              <select class="form-select" id="ci-ta">
+                <option value="">Select…</option>
+                <option>Atopic Dermatitis</option>
+                <option>Asthma</option>
+                <option>Rheumatoid Arthritis</option>
+                <option>CRSwNP</option>
+                <option>Multiple Myeloma</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Sanofi Product</label>
+              <select class="form-select" id="ci-product">
+                <option value="">Select…</option>
+                <option>Dupixent (dupilumab)</option>
+                <option>Kevzara (sarilumab)</option>
+                <option>Sarclisa (isatuximab)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Competitor</label>
+              <select class="form-select" id="ci-competitor">
+                <option value="">Select competitor…</option>
+                <option>Abrocitinib (Cibinqo) — Pfizer</option>
+                <option>Upadacitinib (Rinvoq) — AbbVie</option>
+                <option>Tralokinumab (Adbry) — LEO</option>
+                <option>Baricitinib (Olumiant) — Lilly</option>
+                <option>Tocilizumab (Actemra) — Roche</option>
+                <option>Daratumumab (Darzalex) — J&J</option>
+              </select>
+            </div>
+            <button class="form-btn form-btn-primary" id="ci-submit"><i class="ti ti-chart-arrows"></i> Get Comparison</button>
+          </div>
+        </div>
+        <div class="form-results" id="ci-results">
+          <div class="result-empty"><i class="ti ti-chart-arrows"></i>Select a therapeutic area and competitor to view comparative data.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CONGRESS PLANNER PANEL ===== -->
+    <div class="agent-panel" id="panel-congress">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#e0f2fe;color:#0369a1;"><i class="ti ti-calendar-event"></i></div>
+        <div><div class="panel-title">Congress Planner</div><div class="panel-desc">Plan HCP engagement around upcoming medical congresses</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-building-pavilion"></i> Select Congress</h4>
+            <div class="form-group">
+              <label class="form-label">Congress</label>
+              <select class="form-select" id="cg-congress">
+                <option value="">Select…</option>
+                <option>EADV 2026 — European Academy of Dermatology (Sep 2026)</option>
+                <option>ACR 2026 — American College of Rheumatology (Nov 2026)</option>
+                <option>AAAAI 2027 — Allergy, Asthma & Immunology (Feb 2027)</option>
+                <option>ATS 2027 — American Thoracic Society (May 2027)</option>
+                <option>ASH 2026 — American Society of Hematology (Dec 2026)</option>
+              </select>
+            </div>
+            <button class="form-btn form-btn-primary" id="cg-submit"><i class="ti ti-calendar-event"></i> Plan Congress Engagement</button>
+          </div>
+        </div>
+        <div class="form-results" id="cg-results">
+          <div class="result-empty"><i class="ti ti-calendar-event"></i>Select a congress to view engagement opportunities, presentations, and HCP attendance.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== KOL PROFILING PANEL ===== -->
+    <div class="agent-panel" id="panel-kol">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fae8ff;color:#a21caf;"><i class="ti ti-star"></i></div>
+        <div><div class="panel-title">KOL Profiling</div><div class="panel-desc">Deep analysis of Key Opinion Leader engagement and influence</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-user-star"></i> KOL Lookup</h4>
+            <div class="form-group">
+              <label class="form-label">KOL Name</label>
+              <input class="form-input" id="kol-name" type="text" placeholder="e.g. Dr. Sarah Chen">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Focus Area</label>
+              <select class="form-select" id="kol-focus">
+                <option value="">Select…</option>
+                <option>Publication Impact</option>
+                <option>Clinical Trial Leadership</option>
+                <option>Congress Speaking</option>
+                <option>Advisory Board History</option>
+                <option>Full Profile</option>
+              </select>
+            </div>
+            <button class="form-btn form-btn-primary" id="kol-submit"><i class="ti ti-star"></i> Generate KOL Profile</button>
+          </div>
+        </div>
+        <div class="form-results" id="kol-results">
+          <div class="result-empty"><i class="ti ti-star"></i>Enter a KOL name to generate a comprehensive influence and engagement profile.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== COMPLIANCE ADVISOR PANEL ===== -->
+    <div class="agent-panel" id="panel-compliance">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:var(--success-bg);color:var(--success);"><i class="ti ti-shield-check"></i></div>
+        <div><div class="panel-title">Compliance Advisor</div><div class="panel-desc">Pre-meeting compliance verification and scientific exchange guardrails</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-checklist"></i> Meeting Compliance Check</h4>
+            <div class="form-group">
+              <label class="form-label">HCP Name</label>
+              <input class="form-input" id="comp-hcp" type="text" placeholder="HCP for the meeting">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Interaction Type</label>
+              <select class="form-select" id="comp-type">
+                <option value="">Select…</option>
+                <option>Scientific Exchange (1:1)</option>
+                <option>Advisory Board</option>
+                <option>Lunch & Learn (group)</option>
+                <option>Speaker Program</option>
+                <option>Congress Interaction</option>
+                <option>Virtual Meeting</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Topics Planned</label>
+              <textarea class="form-input" id="comp-topics" rows="2" placeholder="What topics will be discussed?" style="resize:vertical;"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Meal / Gift Included?</label>
+              <select class="form-select" id="comp-meal">
+                <option value="none">No meal or gift</option>
+                <option value="modest">Modest meal ($75 or less)</option>
+                <option value="meal">Standard meal ($75–$150)</option>
+                <option value="gift">Educational item / reprint</option>
+              </select>
+            </div>
+            <button class="form-btn form-btn-primary" id="comp-submit"><i class="ti ti-shield-check"></i> Run Compliance Check</button>
+          </div>
+        </div>
+        <div class="form-results" id="comp-results">
+          <div class="result-empty"><i class="ti ti-shield-check"></i>Enter meeting details to run a pre-meeting compliance verification.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== LITERATURE INTELLIGENCE PANEL ===== -->
+    <div class="agent-panel" id="panel-literature">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fae8ff;color:#a21caf;"><i class="ti ti-book-2"></i></div>
+        <div><div class="panel-title">Literature Intelligence</div><div class="panel-desc">Search medical literature for evidence-based publications and clinical data</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-search"></i> Literature Search</h4>
+            <div class="form-group">
+              <label class="form-label">Search Query</label>
+              <input class="form-input" id="msl-lit-query" type="text" placeholder="e.g. dupilumab atopic dermatitis long-term safety">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Publication Type</label>
+                <select class="form-select" id="msl-lit-type"><option value="">All types</option><option>Clinical Trial</option><option>Meta-Analysis</option><option>Systematic Review</option><option>Real-World Evidence</option></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Date Range</label>
+                <select class="form-select" id="msl-lit-date"><option value="">Any time</option><option>Last 6 months</option><option>Last 1 year</option><option>Last 3 years</option></select>
+              </div>
+            </div>
+            <button class="form-btn form-btn-primary" id="msl-lit-submit"><i class="ti ti-book-2"></i> Search Literature</button>
+          </div>
+        </div>
+        <div class="form-results" id="msl-lit-results">
+          <div class="result-empty"><i class="ti ti-book-2"></i>Enter a search query to find relevant medical publications.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== LITERATURE SCOUT PANEL ===== -->
+    <div class="agent-panel" id="panel-lit-scout">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fff7ed;color:#c2410c;"><i class="ti ti-binoculars"></i></div>
+        <div><div class="panel-title">Literature Scout</div><div class="panel-desc">Proactive monitoring of new publications and guideline updates</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-bell-ringing"></i> Publication Monitoring</h4>
+            <div class="form-group">
+              <label class="form-label">Therapeutic Area</label>
+              <select class="form-select" id="msl-scout-ta"><option value="">Select…</option><option>Atopic Dermatitis</option><option>Asthma (Type 2)</option><option>Rheumatoid Arthritis</option><option>CRSwNP</option><option>Eosinophilic Esophagitis</option><option>COPD</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Keywords (optional)</label>
+              <input class="form-input" id="msl-scout-keywords" type="text" placeholder="e.g. biologic sequencing, real-world evidence">
+            </div>
+            <button class="form-btn form-btn-primary" id="msl-scout-submit"><i class="ti ti-binoculars"></i> View Recent Publications</button>
+          </div>
+        </div>
+        <div class="form-results" id="msl-scout-results">
+          <div class="result-empty"><i class="ti ti-binoculars"></i>Select a therapeutic area to see recent publications and set up monitoring alerts.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DISEASE NAVIGATOR PANEL ===== -->
+    <div class="agent-panel" id="panel-disease-nav">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#ecfdf5;color:#059669;"><i class="ti ti-dna"></i></div>
+        <div><div class="panel-title">Disease Navigator</div><div class="panel-desc">Explore disease states, pathophysiology, and treatment landscapes</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-microscope"></i> Disease Lookup</h4>
+            <div class="form-group">
+              <label class="form-label">Disease / Condition</label>
+              <select class="form-select" id="msl-dn-disease"><option value="">Select…</option><option>Atopic Dermatitis</option><option>Asthma (Type 2 Eosinophilic)</option><option>Rheumatoid Arthritis</option><option>CRSwNP</option><option>Eosinophilic Esophagitis</option><option>Prurigo Nodularis</option><option>COPD (Type 2 High)</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Focus Area</label>
+              <select class="form-select" id="msl-dn-focus"><option value="">Full overview</option><option>Pathophysiology</option><option>Treatment Landscape</option><option>Cross-TA Connections</option><option>Epidemiology</option><option>Sanofi Pipeline</option></select>
+            </div>
+            <button class="form-btn form-btn-primary" id="msl-dn-submit"><i class="ti ti-dna"></i> Explore Disease</button>
+          </div>
+        </div>
+        <div class="form-results" id="msl-dn-results">
+          <div class="result-empty"><i class="ti ti-dna"></i>Select a disease to explore its pathophysiology, treatment landscape, and Sanofi portfolio connections.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ORION INTELLIGENCE PANEL ===== -->
+    <div class="agent-panel" id="panel-orion">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:var(--orion-bg);color:var(--orion-accent);"><i class="ti ti-radar-2"></i></div>
+        <div><div class="panel-title">Orion Intelligence</div><div class="panel-desc">Real-time engagement intelligence from HCP interactions across MedVerse</div></div>
+      </div>
+      <div id="orion-content"></div>
+    </div>
+
+  </div><!-- /main-scroll -->
 
   <div class="demo-narrator" id="demo-narrator"></div>
 </body>
