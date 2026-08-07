@@ -1,6 +1,6 @@
 import { speak, speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 
-const PUBMED_BASE = "/api/pubmed";
+const PUBMED_BASE = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils";
 const NEJM_JOURNAL = '"N Engl J Med"[Journal]';
 
 const searchInput = document.getElementById("search-input");

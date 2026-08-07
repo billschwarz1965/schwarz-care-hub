@@ -846,7 +846,7 @@ function delay(ms) {
 
 // ─── LIVE TRIAL SEARCH ───
 
-const TRIALS_BASE = "/api/trials";
+const TRIALS_BASE = "https://clinicaltrials.gov/api/v2";
 const trialOverlay = document.getElementById("trial-search-overlay");
 const trialInput = document.getElementById("trial-search-input");
 const trialSearchBtn = document.getElementById("trial-search-btn");
