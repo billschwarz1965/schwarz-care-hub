@@ -546,9 +546,15 @@
       border-radius: 8px;
       padding: 10px 12px;
       text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid transparent;
     }
+    .signal-stat:hover { background: var(--accent-light); }
+    .signal-stat.active { border-color: var(--accent); background: var(--accent-light); }
     .signal-stat-num { font-size: 20px; font-weight: 600; }
     .signal-stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .signal-card.filtered-out { display: none; }
 
     /* MARKDOWN RENDERING */
     .rendered h3 { margin-top: 16px; }
@@ -621,19 +627,19 @@
       </div>
       <div class="sidebar-content" id="sidebar-content">
         <div class="signal-stats" id="signal-stats">
-          <div class="signal-stat">
+          <div class="signal-stat" data-filter="all">
             <div class="signal-stat-num" id="stat-signals">0</div>
             <div class="signal-stat-label">Signals</div>
           </div>
-          <div class="signal-stat">
+          <div class="signal-stat" data-filter="topics">
             <div class="signal-stat-num" id="stat-topics">0</div>
             <div class="signal-stat-label">Topics</div>
           </div>
-          <div class="signal-stat">
+          <div class="signal-stat" data-filter="deep">
             <div class="signal-stat-num" id="stat-depth">—</div>
             <div class="signal-stat-label">Avg depth</div>
           </div>
-          <div class="signal-stat">
+          <div class="signal-stat" data-filter="priority">
             <div class="signal-stat-num" id="stat-priority">—</div>
             <div class="signal-stat-label">Priority</div>
           </div>

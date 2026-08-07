@@ -13,6 +13,7 @@ let signalCount = 0;
 let topicsSet = new Set();
 let depthScores = [];
 let highestPriority = null;
+let activeSignalFilter = null;
 
 const depthMap = { "Light engagement": 1, "Moderate engagement": 2, "Deep engagement": 3, "Deep engagement — cross-TA query": 4, "Deep engagement — cross-TA": 4, "High-value engagement": 4 };
 const priorityOrder = ["Low", "Standard", "Standard", "PRIORITY"];
@@ -35,6 +36,9 @@ function resetChat() {
   document.getElementById("stat-priority").textContent = "—";
 
   signalsContainer.innerHTML = `<div class="sidebar-empty"><i class="ti ti-radar-2"></i>No signals yet. Ask a question to generate behavioral intelligence for Orion.</div>`;
+
+  activeSignalFilter = null;
+  document.querySelectorAll(".signal-stat").forEach(s => s.classList.remove("active"));
 
   newChatBtn.classList.remove("visible");
   inputEl.value = "";
@@ -206,6 +210,9 @@ function addOrionSignal(signal) {
 
   const card = document.createElement("div");
   card.className = "signal-card";
+  card.dataset.disease = signal.diseaseArea;
+  card.dataset.depth = signal.depth;
+  card.dataset.priority = signal.orionAction.startsWith("PRIORITY") ? "high" : signal.depth.includes("Deep") ? "med" : "low";
   card.innerHTML = `
     <div class="signal-header">
       <div class="signal-dot"></div>
@@ -222,6 +229,7 @@ function addOrionSignal(signal) {
     </div>`;
 
   signalsContainer.insertBefore(card, signalsContainer.firstChild);
+  if (activeSignalFilter) applySignalFilter(activeSignalFilter);
 }
 
 function renderMarkdown(text) {
@@ -407,4 +415,50 @@ async function runTopicDemo() {
   demoRunning = false;
   setDemoBtnsDisabled(false);
   topicDemoBtn.innerHTML = '<i class="ti ti-player-play"></i> One-click topics demo';
+}
+
+// === SIGNAL STAT FILTERS ===
+document.getElementById("signal-stats").addEventListener("click", (e) => {
+  const tile = e.target.closest(".signal-stat");
+  if (!tile) return;
+  const filter = tile.dataset.filter;
+
+  if (activeSignalFilter === filter || filter === "all") {
+    activeSignalFilter = null;
+    document.querySelectorAll(".signal-stat").forEach(s => s.classList.remove("active"));
+    applySignalFilter(null);
+  } else {
+    activeSignalFilter = filter;
+    document.querySelectorAll(".signal-stat").forEach(s => s.classList.remove("active"));
+    tile.classList.add("active");
+    applySignalFilter(filter);
+  }
+});
+
+function applySignalFilter(filter) {
+  const cards = signalsContainer.querySelectorAll(".signal-card");
+  const seenTopics = new Set();
+
+  cards.forEach(card => {
+    card.classList.remove("filtered-out");
+
+    if (!filter) return;
+
+    if (filter === "topics") {
+      const disease = card.dataset.disease;
+      if (seenTopics.has(disease)) {
+        card.classList.add("filtered-out");
+      } else {
+        seenTopics.add(disease);
+      }
+    } else if (filter === "deep") {
+      if (!card.dataset.depth.includes("Deep") && !card.dataset.depth.includes("High")) {
+        card.classList.add("filtered-out");
+      }
+    } else if (filter === "priority") {
+      if (card.dataset.priority !== "high") {
+        card.classList.add("filtered-out");
+      }
+    }
+  });
 }

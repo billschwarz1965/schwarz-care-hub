@@ -254,6 +254,54 @@ This comparison is particularly relevant for younger patients and those with car
     }
   },
   {
+    patterns: ["competitor", "competitive landscape", "market", "alternatives", "adbry", "ebglyss", "lebrikizumab", "nemluvio", "nemolizumab", "nucala", "xolair", "fasenra", "tezspire", "rinvoq", "cibinqo", "opzelura"],
+    buildResponse(docs) {
+      const cl = docs.find(d => d.id === "CL-001");
+      const dupixent = docs.find(d => d.id === "AD-001");
+      const safety = docs.find(d => d.id === "AD-003");
+      const citations = [cl, dupixent, safety].filter(Boolean);
+
+      return {
+        answer: `Here's the competitive landscape for Dupixent across its approved and pipeline indications [1]:
+
+**Atopic Dermatitis — Most Competitive Market:**
+- **IL-13 biologics:** Adbry (tralokinumab, ages 12+), Ebglyss (lebrikizumab) — target IL-13 only vs Dupixent's dual IL-4/IL-13 blockade
+- **IL-31 biologic:** Nemluvio (nemolizumab) — targets itch specifically via IL-31 receptor
+- **Oral JAK inhibitors:** Rinvoq (upadacitinib, AbbVie), Cibinqo (abrocitinib, Pfizer) — rapid itch onset but carry boxed warnings for MACE, malignancy, thrombosis
+- **Topicals:** Opzelura (ruxolitinib, topical JAK), Eucrisa (crisaborole, PDE4)
+
+**Asthma — Biologic Differentiation:**
+- **Anti-IL-5:** Nucala (mepolizumab, GSK), Fasenra (benralizumab, AstraZeneca) — eosinophil-focused only
+- **Anti-TSLP:** Tezspire (tezepelumab, AstraZeneca) — phenotype-independent but newer
+- **Anti-IgE:** Xolair (omalizumab) — limited to allergic/IgE-high phenotypes
+
+**CRSwNP:** Dupixent first-to-market; Xolair and Nucala approved with narrower profiles
+**COPD (type 2 high):** First-mover advantage — no approved biologic competitors (BOREAS/NOTUS Phase 3 positive)
+
+**Dupixent's key competitive advantages** [2][3]:
+- Only biologic blocking **both IL-4 and IL-13** via IL-4Rα — broadest type 2 mechanism
+- **Broadest age range** approved (ages 6 months+ in AD)
+- **No routine lab monitoring** required — unlike JAK inhibitors
+- **3+ years of long-term safety data** with favorable profile
+- **Cross-disease platform** — one mechanism addressing 7+ indications`,
+        citations,
+        followUps: [
+          "How does dupilumab compare to abrocitinib in head-to-head data?",
+          "What are the active clinical trials in the dupilumab program?",
+          "Explain type 2 inflammation and how it connects multiple diseases"
+        ],
+        signal: {
+          topic: "Dupixent Competitive Landscape Analysis",
+          intent: "Competitive intelligence / market positioning",
+          diseaseArea: "Cross-TA Immunology",
+          stage: "Competitive assessment",
+          depth: "Deep engagement",
+          orionAction: "PRIORITY — HCP exploring competitive landscape. Flag for MSL with competitive positioning guide and H2H data deck."
+        }
+      };
+    }
+  },
+  {
     patterns: ["psoriasis", "IBD", "IL-23", "Th17", "IL-17", "Crohn", "overlap"],
     buildResponse(docs) {
       const il23 = docs.find(d => d.id === "IMM-002");
@@ -376,6 +424,11 @@ export const suggestedPrompts = [
     text: "Explain type 2 inflammation and how it connects multiple diseases",
     short: "Type 2 inflammation",
     icon: "brain"
+  },
+  {
+    text: "What is the competitive landscape for Dupixent across its indications?",
+    short: "Dupixent competitors",
+    icon: "chart-bar"
   },
   {
     text: "I have an MTX-inadequate RA patient. What does the sarilumab evidence show?",

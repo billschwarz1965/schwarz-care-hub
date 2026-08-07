@@ -78,7 +78,10 @@
 
     /* STATS */
     .stats-row { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
-    .stat-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+    .stat-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 13px; display: flex; align-items: center; gap: 6px; cursor: pointer; transition: all 0.15s; user-select: none; }
+    .stat-chip:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(122,0,230,0.08); transform: translateY(-1px); }
+    .stat-chip:active { transform: translateY(0); }
+    .stat-chip.chip-active { border-color: var(--accent); background: var(--accent-light); box-shadow: 0 0 0 2px rgba(122,0,230,0.15); }
     .stat-chip strong { font-weight: 700; }
     .stat-chip i { font-size: 15px; }
     .stat-chip.purple i { color: var(--accent); }
@@ -162,6 +165,56 @@
     .pres-disease-tag { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 10px; background: var(--surface-dim); border-radius: 5px; color: var(--text-secondary); }
     .pres-empty { text-align: center; padding: 40px; color: var(--text-muted); font-size: 13px; }
     .pres-empty i { font-size: 28px; display: block; margin-bottom: 8px; }
+
+    /* HIGHLIGHT CARD CLICKABLE */
+    .highlight-card { cursor: pointer; transition: all 0.15s; }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(122,0,230,0.08); transform: translateY(-1px); }
+    .highlight-card:active { transform: translateY(0); }
+
+    /* PRES CARD CLICKABLE */
+    .pres-card { cursor: pointer; transition: all 0.15s; }
+    .pres-card:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(122,0,230,0.08); }
+
+    /* POSTER MODAL */
+    .poster-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: none; align-items: flex-start; justify-content: center; padding: 32px 24px; overflow-y: auto; backdrop-filter: blur(3px); }
+    .poster-overlay.visible { display: flex; }
+
+    .poster-modal { background: var(--surface); border-radius: var(--radius-lg); width: 100%; max-width: 800px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; animation: posterIn 0.2s ease-out; }
+    @keyframes posterIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .poster-banner { padding: 24px 28px 20px; position: relative; color: white; }
+    .poster-banner-close { position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; font-size: 18px; transition: background 0.15s; }
+    .poster-banner-close:hover { background: rgba(255,255,255,0.35); }
+    .poster-banner-badges { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+    .poster-badge { font-size: 10px; font-weight: 600; padding: 2px 10px; border-radius: 4px; background: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.3px; }
+    .poster-badge.sanofi { background: rgba(249,200,81,0.3); }
+    .poster-badge.impact { background: rgba(255,100,100,0.3); }
+    .poster-title { font-size: 20px; font-weight: 700; line-height: 1.4; margin-bottom: 10px; }
+    .poster-authors { font-size: 13px; opacity: 0.85; line-height: 1.4; }
+    .poster-congress-info { font-size: 12px; opacity: 0.7; margin-top: 8px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .poster-congress-info span { display: flex; align-items: center; gap: 4px; }
+    .poster-congress-info i { font-size: 14px; }
+
+    .poster-body { padding: 24px 28px 28px; }
+
+    .poster-section { margin-bottom: 22px; }
+    .poster-section:last-child { margin-bottom: 0; }
+    .poster-section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .poster-section-label i { font-size: 14px; }
+
+    .poster-abstract { font-size: 14px; color: var(--text); line-height: 1.7; }
+
+    .poster-findings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .poster-finding-item { display: flex; align-items: flex-start; gap: 8px; padding: 10px 12px; background: var(--surface-dim); border-radius: 8px; font-size: 13px; line-height: 1.4; color: var(--text-secondary); }
+    .poster-finding-item i { color: var(--accent); font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+    .poster-msl-box { background: var(--orion-bg); border-radius: 10px; padding: 16px 18px; }
+    .poster-msl-box .poster-section-label { color: var(--orion-accent); }
+    .poster-msl-text { font-size: 13px; color: #085041; line-height: 1.6; }
+
+    .poster-footer { display: flex; align-items: center; gap: 10px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .poster-footer-tag { font-size: 12px; font-weight: 500; padding: 4px 12px; background: var(--surface-dim); border-radius: 6px; color: var(--text-secondary); }
+    .poster-footer-id { font-size: 11px; color: var(--text-muted); margin-left: auto; }
   </style>
 </head>
 <body>
@@ -194,12 +247,12 @@
     <div class="page-title">Congress Intelligence</div>
     <div class="page-subtitle">Scientific data from major medical congresses — curated presentations, key findings, and MSL talking points. Content sourced from congress.sanofimedica.com and society proceedings.</div>
 
-    <div class="stats-row">
-      <div class="stat-chip purple"><i class="ti ti-calendar-event"></i> <strong id="stat-congresses">0</strong> Congresses</div>
-      <div class="stat-chip green"><i class="ti ti-file-text"></i> <strong id="stat-presentations">0</strong> Presentations</div>
-      <div class="stat-chip gold"><i class="ti ti-star-filled"></i> <strong id="stat-sanofi">0</strong> Sanofi data</div>
-      <div class="stat-chip purple"><i class="ti ti-dna"></i> <strong id="stat-diseases">0</strong> Disease areas</div>
-      <div class="stat-chip red"><i class="ti ti-flame"></i> <strong id="stat-high-impact">0</strong> High impact</div>
+    <div class="stats-row" id="stats-row">
+      <div class="stat-chip purple" data-chip="congresses"><i class="ti ti-calendar-event"></i> <strong id="stat-congresses">0</strong> Congresses</div>
+      <div class="stat-chip green" data-chip="presentations"><i class="ti ti-file-text"></i> <strong id="stat-presentations">0</strong> Presentations</div>
+      <div class="stat-chip gold" data-chip="sanofi"><i class="ti ti-star-filled"></i> <strong id="stat-sanofi">0</strong> Sanofi data</div>
+      <div class="stat-chip purple" data-chip="diseases"><i class="ti ti-dna"></i> <strong id="stat-diseases">0</strong> Disease areas</div>
+      <div class="stat-chip red" data-chip="high-impact"><i class="ti ti-flame"></i> <strong id="stat-high-impact">0</strong> High impact</div>
     </div>
 
     <div class="section-title"><i class="ti ti-calendar-event"></i> Congress Timeline</div>
@@ -220,6 +273,10 @@
       </div>
     </div>
     <div class="pres-list" id="presentations-list"></div>
+  </div>
+
+  <div class="poster-overlay" id="poster-overlay">
+    <div class="poster-modal" id="poster-modal"></div>
   </div>
 
   <script type="module" src="/src/congress-app.js"></script>

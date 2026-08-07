@@ -172,7 +172,7 @@ export const BUSINESS_AGENTS = [
     users: ["Patients", "HCPs"],
     compliancePartners: ["privacy", "ae-detect", "fair-balance"],
     hubDependency: [],
-    status: "planned"
+    status: "active"
   },
   {
     id: "trial-match",
@@ -314,6 +314,13 @@ export const CHART_DATA = {
       { name: "Dr. T. Augustin", scores: [85, 90, 80, 88, 82, 60], color: "#aa46a3" },
       { name: "Dr. F. Sampogna", scores: [78, 72, 85, 70, 75, 90], color: "#f9c851" }
     ]
+  },
+  trialLandscape: {
+    title: "Sanofi Clinical Trial Landscape — Immunology & Inflammation",
+    subtitle: "Active recruiting trials by therapeutic area",
+    labels: ["Atopic Dermatitis", "Asthma", "COPD", "CRSwNP", "EoE", "Prurigo Nodularis", "CSU", "EGPA"],
+    data: [14, 8, 6, 5, 4, 3, 3, 2],
+    colors: ["#7a00e6", "#aa46a3", "#0f6e56", "#5b8def", "#d4553a", "#f59e0b", "#ef4444", "#8b5cf6"]
   }
 };
 
@@ -1399,6 +1406,78 @@ Review ID: MLR-2026-08-0412 | Submitted: Aug 6, 2026 | Priority: Expedited
         label: "Stability assessment delivered",
         badge: "ASSESSED & DOCUMENTED",
         content: "2 of 3 products cleared: Lantus (8 vials) and Toujeo Max (3 pens) are within labeled stability tolerance — return to refrigeration. Beyfortus requires Sanofi Vaccines confirmation (1-800-VACCINE) due to stricter excursion limits. Pharmacy action plan and excursion documentation generated. No products were administered — no AE reporting required."
+      }
+    ]
+  },
+  "trial-intel": {
+    title: "Clinical trial landscape analysis and investigator matching",
+    hasCharts: true,
+    steps: [
+      {
+        type: "input",
+        label: "Clinical operations request",
+        content: "We're planning a Phase 3b dupilumab trial in moderate-to-severe AD with a biomarker-stratified enrollment design. I need the competitive trial landscape, top-enrolling sites in the US, and investigator recommendations. Target: 500 patients across 40 sites."
+      },
+      {
+        type: "processing",
+        label: "Clinical Trial Intelligence Agent processing",
+        items: [
+          "Querying ClinicalTrials.gov: atopic dermatitis, Phase 3/3b, recruiting/planned...",
+          "Identified 47 active competitor trials in AD (22 recruiting, 25 planned)...",
+          "Analyzing site-level enrollment velocity: 1,200 US investigator sites with AD experience...",
+          "Cross-referencing HCP Explorer: investigator publication profiles and KOL status...",
+          "Mapping enrollment competition: sites shared with active competitor trials...",
+          "Scoring site readiness: IRB turnaround, screen-fail rates, diversity metrics..."
+        ]
+      },
+      {
+        type: "chart",
+        chartId: "trialLandscape"
+      },
+      {
+        type: "draft",
+        label: "Competitive landscape and site recommendations",
+        content: `**Dupilumab AD Phase 3b — Trial Intelligence Report**
+
+**Competitive landscape (US, AD, Phase 2+):**
+- **47 active trials** across 8 mechanisms (IL-13, JAK, OX40L, IL-31, PDE4, TSLP, IL-33, TYK2)
+- **Highest enrollment competition:** JAK inhibitor trials (12 active) followed by IL-13 (8 active)
+- **Biomarker-stratified trials:** Only 3 competitor trials use biomarker enrollment — this is a differentiator
+
+**Top-enrolling US sites for AD biologics (past 24 months):**
+
+| Rank | Site | PI | Patients enrolled (24mo) | Screen-fail rate | Active competitor trials | Risk |
+|------|------|----|------------------------|-----------------|------------------------|------|
+| 1 | Oregon Health Sciences Univ | Dr. E. Simpson | 142 | 12% | 2 (JAK, IL-13) | Medium |
+| 2 | Icahn School of Medicine | Dr. E. Guttman-Yassky | 128 | 9% | 3 (JAK, OX40L, IL-13) | High |
+| 3 | Northwestern Univ | Dr. J. Silverberg | 118 | 14% | 1 (JAK) | Low |
+| 4 | George Washington Univ | Dr. A. Blauvelt | 105 | 11% | 2 (IL-13, TYK2) | Medium |
+| 5 | Indiana Univ | Dr. M. Kurek | 98 | 18% | 0 | None |
+
+**Recommended site strategy (40 sites):**
+- **Tier 1 (10 sites):** High-enrolling academic centers with dupilumab PI experience — target 200 patients
+- **Tier 2 (15 sites):** Community dermatology networks with low competitor overlap — target 200 patients
+- **Tier 3 (15 sites):** Emerging sites with strong diversity metrics for FDA guidance compliance — target 100 patients
+
+**Key risks:**
+- Sites #1 and #2 have high competitor overlap — enrollment may be slower than historical rates
+- Biomarker stratification adds ~3 weeks to screening — adjust enrollment timeline accordingly
+- 6 top sites have pending IRB submissions for competitor trials launching Q4 2026`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer review",
+        checks: [
+          { agent: "PHI Protection", agentId: "privacy", status: "pass", detail: "All data is aggregate site-level performance. No individual patient data or protected health information referenced. Investigator profiles use professional/public credentials only." },
+          { agent: "Scientific Verification", agentId: "sci-verify", status: "pass", detail: "Trial counts verified against ClinicalTrials.gov (query date: Aug 6, 2026). Enrollment figures sourced from Sanofi Clinical Operations database. Screen-fail rates from site feasibility questionnaires." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Trial intelligence report logged — dupilumab AD Phase 3b planning. 47 competitor trials analyzed, 1,200 US sites scored, 40-site recommendation generated. Compliance record #CTI-2026-08-0412." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Trial intelligence delivered",
+        badge: "LANDSCAPE VERIFIED",
+        content: "Competitive landscape mapped: 47 active trials across 8 mechanisms. 40-site recommendation stratified by enrollment capacity, competitor overlap, and diversity metrics. 5 highest-risk sites flagged for enrollment competition. Biomarker stratification timeline impact quantified (+3 weeks screening). Report exportable to clinical operations planning system."
       }
     ]
   }

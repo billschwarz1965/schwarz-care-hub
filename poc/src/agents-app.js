@@ -458,12 +458,20 @@ function renderAgentGrid() {
         }).join("")}
       </div>
       ${a.id === "literature-scout" ? '<a class="agent-launch-cta" href="/literature.html"><i class="ti ti-external-link"></i> Launch Live Agent</a>' : ""}
+      ${a.id === "trial-intel" ? '<div class="agent-launch-cta" style="cursor:pointer" data-action="live-trials"><i class="ti ti-flask"></i> Live Trial Search</div>' : ""}
       ${hasDemo ? '<div class="agent-demo-cta"><i class="ti ti-player-play"></i> Run simulated demo</div>' : '<div class="agent-demo-cta planned"><i class="ti ti-clock"></i> Demo coming soon</div>'}
     </div>`;
   }).join("");
 
+  grid.querySelectorAll("[data-action='live-trials']").forEach(btn => {
+    btn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); openTrialSearch(); });
+  });
   grid.querySelectorAll(".agent-card.has-demo").forEach(card => {
-    card.addEventListener("click", () => openDemo(card.dataset.id));
+    card.addEventListener("click", (e) => {
+      if (e.target.closest("[data-action='live-trials']")) return;
+      if (e.target.closest(".agent-launch-cta")) return;
+      openDemo(card.dataset.id);
+    });
   });
 }
 
@@ -750,6 +758,129 @@ function esc(str) {
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ─── LIVE TRIAL SEARCH ───
+
+const TRIALS_BASE = "/api/trials";
+const trialOverlay = document.getElementById("trial-search-overlay");
+const trialInput = document.getElementById("trial-search-input");
+const trialSearchBtn = document.getElementById("trial-search-btn");
+const trialResults = document.getElementById("trial-results");
+const trialCloseBtn = document.getElementById("trial-search-close");
+
+function openTrialSearch() {
+  if (!trialOverlay) return;
+  trialOverlay.classList.add("visible");
+  document.body.style.overflow = "hidden";
+  trialInput.focus();
+}
+
+function closeTrialSearch() {
+  if (!trialOverlay) return;
+  trialOverlay.classList.remove("visible");
+  document.body.style.overflow = "";
+}
+
+if (trialCloseBtn) {
+  trialCloseBtn.addEventListener("click", closeTrialSearch);
+  trialOverlay.addEventListener("click", (e) => { if (e.target === trialOverlay) closeTrialSearch(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && trialOverlay.classList.contains("visible")) closeTrialSearch(); });
+}
+
+if (trialSearchBtn) {
+  trialSearchBtn.addEventListener("click", runTrialSearch);
+  trialInput.addEventListener("keydown", (e) => { if (e.key === "Enter") runTrialSearch(); });
+}
+
+document.querySelectorAll(".trial-quick-tag").forEach(tag => {
+  tag.addEventListener("click", () => {
+    trialInput.value = tag.dataset.q;
+    runTrialSearch();
+  });
+});
+
+async function runTrialSearch() {
+  const query = trialInput.value.trim();
+  if (!query) return;
+
+  trialSearchBtn.disabled = true;
+  trialSearchBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Searching…';
+  trialResults.innerHTML = `<div class="trial-loading"><i class="ti ti-loader-2"></i><p>Querying ClinicalTrials.gov…</p></div>`;
+
+  try {
+    const params = new URLSearchParams({
+      "query.term": query,
+      pageSize: "20",
+      format: "json",
+      "fields": "NCTId,BriefTitle,OverallStatus,Phase,Condition,InterventionName,LeadSponsorName,EnrollmentCount,StartDate,PrimaryCompletionDate,StudyType,LocationCity"
+    });
+    const res = await fetch(`${TRIALS_BASE}/studies?${params}`);
+    const data = await res.json();
+    const studies = data.studies || [];
+    const total = data.totalCount || studies.length;
+
+    if (!studies.length) {
+      trialResults.innerHTML = `<div class="trial-empty"><i class="ti ti-flask-off"></i><h4>No trials found</h4><p>Try different search terms or a broader query.</p></div>`;
+    } else {
+      renderTrialResults(studies, total, query);
+    }
+  } catch (err) {
+    trialResults.innerHTML = `<div class="trial-empty"><i class="ti ti-alert-triangle"></i><h4>Search error</h4><p>${esc(err.message)}</p></div>`;
+  }
+
+  trialSearchBtn.disabled = false;
+  trialSearchBtn.innerHTML = '<i class="ti ti-search"></i> Search';
+}
+
+function renderTrialResults(studies, total, query) {
+  let html = `<div class="trial-results-header">
+    <h4>Clinical Trials</h4>
+    <span class="trial-results-count">${total.toLocaleString()} total — showing ${studies.length}</span>
+  </div>`;
+
+  for (const study of studies) {
+    const proto = study.protocolSection || {};
+    const id = proto.identificationModule || {};
+    const status = proto.statusModule || {};
+    const design = proto.designModule || {};
+    const sponsor = proto.sponsorCollaboratorsModule || {};
+    const conditions = proto.conditionsModule || {};
+    const interventions = proto.armsInterventionsModule || {};
+    const enrollment = design.enrollmentInfo || {};
+
+    const nctId = id.nctId || "";
+    const title = id.briefTitle || "Untitled";
+    const overallStatus = status.overallStatus || "";
+    const phases = (design.phases || []).join(", ");
+    const leadSponsor = sponsor.leadSponsor?.name || "";
+    const enrollCount = enrollment.count || "";
+    const startDate = status.startDateStruct?.date || "";
+    const condList = (conditions.conditions || []).slice(0, 4);
+    const interventionNames = (interventions.interventions || []).map(i => i.name).slice(0, 3);
+
+    const phaseClass = phases.includes("3") ? "phase3" : phases.includes("2") ? "phase2" : phases.includes("1") ? "phase1" : phases.includes("4") ? "phase4" : "";
+    const statusClass = overallStatus === "RECRUITING" ? "recruiting" : overallStatus === "ACTIVE_NOT_RECRUITING" ? "active" : overallStatus === "COMPLETED" ? "completed" : "other";
+    const statusLabel = overallStatus.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+
+    html += `<div class="trial-card">
+      <div class="trial-card-top">
+        <a class="trial-nct" href="https://clinicaltrials.gov/study/${nctId}" target="_blank" rel="noopener">${esc(nctId)}</a>
+        ${phases ? `<span class="trial-phase ${phaseClass}">${esc(phases)}</span>` : ""}
+        <span class="trial-status-badge ${statusClass}">${esc(statusLabel)}</span>
+        ${leadSponsor ? `<span style="font-size:10px;color:var(--text-muted)">${esc(leadSponsor)}</span>` : ""}
+      </div>
+      <div class="trial-card-title">${esc(title)}</div>
+      <div class="trial-card-meta">
+        ${enrollCount ? `<span><i class="ti ti-users"></i> ${enrollCount.toLocaleString()} enrolled</span>` : ""}
+        ${startDate ? `<span><i class="ti ti-calendar"></i> ${esc(startDate)}</span>` : ""}
+        ${interventionNames.length ? `<span><i class="ti ti-pill"></i> ${esc(interventionNames.join(", "))}</span>` : ""}
+      </div>
+      ${condList.length ? `<div class="trial-card-conditions">${condList.map(c => `<span class="trial-cond-tag">${esc(c)}</span>`).join("")}</div>` : ""}
+    </div>`;
+  }
+
+  trialResults.innerHTML = html;
 }
 
 init();

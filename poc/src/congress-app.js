@@ -3,6 +3,7 @@ import { CONGRESSES, PRESENTATIONS, getCongressById, getPresentationsByCongressI
 const stats = getCongressStats();
 let activeCongressId = null;
 let activeFilter = "all";
+let activeChip = null;
 
 function init() {
   renderStats();
@@ -10,6 +11,8 @@ function init() {
   renderHighlights();
   renderPresentations();
   bindFilters();
+  bindStatChips();
+  bindPosterOverlay();
 }
 
 function renderStats() {
@@ -54,6 +57,13 @@ function renderTimeline() {
     card.addEventListener("click", () => {
       const id = card.dataset.id;
       activeCongressId = activeCongressId === id ? null : id;
+      activeChip = null;
+      activeFilter = "all";
+      document.querySelectorAll(".pres-filter").forEach(b => b.classList.remove("active"));
+      const allBtn = document.querySelector('.pres-filter[data-filter="all"]');
+      if (allBtn) allBtn.classList.add("active");
+      const row = document.getElementById("stats-row");
+      if (row) row.querySelectorAll(".stat-chip").forEach(c => c.classList.remove("chip-active"));
       renderTimeline();
       renderHighlights();
       renderPresentations();
@@ -86,7 +96,7 @@ function renderHighlights() {
   container.innerHTML = highlights.map(p => {
     const congress = getCongressById(p.congressId);
     return `
-    <div class="highlight-card">
+    <div class="highlight-card" data-pres-id="${p.id}">
       <div class="highlight-top">
         <span class="highlight-congress" style="color:${congress.color}">${esc(congress.abbrev)}</span>
         <span class="highlight-type">${esc(p.type)}</span>
@@ -98,6 +108,10 @@ function renderHighlights() {
       <div class="highlight-impact"><i class="ti ti-${p.impact === "high" ? "flame" : "star"}""></i> ${p.impact === "high" ? "High impact" : "Notable"} · ${esc(p.diseaseArea)}</div>
     </div>`;
   }).join("");
+
+  container.querySelectorAll(".highlight-card").forEach(card => {
+    card.addEventListener("click", () => openPoster(card.dataset.presId));
+  });
 }
 
 function renderPresentations() {
@@ -113,8 +127,14 @@ function renderPresentations() {
     filtered = filtered.filter(p => p.impact === "high");
   }
 
-  const congressLabel = activeCongressId ? getCongressById(activeCongressId)?.abbrev : "All Congresses";
-  document.getElementById("pres-heading").textContent = congressLabel;
+  let headingLabel = activeCongressId ? getCongressById(activeCongressId)?.abbrev : "All Congresses";
+  if (activeChip === "sanofi") headingLabel = "Sanofi Data";
+  else if (activeChip === "high-impact") headingLabel = "High Impact";
+  else if (activeChip === "congresses") headingLabel = "All Congresses";
+  else if (activeChip === "presentations") headingLabel = "All Presentations";
+  else if (activeChip === "diseases") headingLabel = "By Disease Area";
+
+  document.getElementById("pres-heading").textContent = headingLabel;
   document.getElementById("pres-count").textContent = `${filtered.length} presentation${filtered.length !== 1 ? "s" : ""}`;
 
   if (filtered.length === 0) {
@@ -146,6 +166,10 @@ function renderPresentations() {
       <div class="pres-disease-tag">${esc(p.diseaseArea)}</div>
     </div>`;
   }).join("");
+
+  container.querySelectorAll(".pres-card").forEach(card => {
+    card.addEventListener("click", () => openPoster(card.dataset.id));
+  });
 }
 
 function bindFilters() {
@@ -154,8 +178,136 @@ function bindFilters() {
       document.querySelectorAll(".pres-filter").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       activeFilter = btn.dataset.filter;
+
+      // Sync chip state
+      activeChip = activeFilter === "sanofi" ? "sanofi" : activeFilter === "high-impact" ? "high-impact" : null;
+      const row = document.getElementById("stats-row");
+      if (row) {
+        row.querySelectorAll(".stat-chip").forEach(c => c.classList.remove("chip-active"));
+        if (activeChip) {
+          const match = row.querySelector(`.stat-chip[data-chip="${activeChip}"]`);
+          if (match) match.classList.add("chip-active");
+        }
+      }
+
       renderPresentations();
     });
+  });
+}
+
+function bindStatChips() {
+  const row = document.getElementById("stats-row");
+  if (!row) return;
+
+  row.addEventListener("click", (e) => {
+    const chip = e.target.closest(".stat-chip");
+    if (!chip) return;
+    const key = chip.dataset.chip;
+
+    // Toggle: same chip clears, different chip activates
+    if (activeChip === key) {
+      activeChip = null;
+      activeFilter = "all";
+      activeCongressId = null;
+    } else {
+      activeChip = key;
+      activeCongressId = null;
+
+      if (key === "sanofi") {
+        activeFilter = "sanofi";
+      } else if (key === "high-impact") {
+        activeFilter = "high-impact";
+      } else {
+        activeFilter = "all";
+      }
+    }
+
+    // Update chip visual states
+    row.querySelectorAll(".stat-chip").forEach(c => c.classList.remove("chip-active"));
+    if (activeChip) chip.classList.add("chip-active");
+
+    // Sync filter buttons
+    document.querySelectorAll(".pres-filter").forEach(b => b.classList.remove("active"));
+    const matchingFilter = document.querySelector(`.pres-filter[data-filter="${activeFilter}"]`);
+    if (matchingFilter) matchingFilter.classList.add("active");
+
+    renderTimeline();
+    renderHighlights();
+    renderPresentations();
+
+    // Scroll to relevant section
+    const target = key === "congresses"
+      ? document.getElementById("congress-timeline")
+      : document.getElementById("presentations-list");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+}
+
+function openPoster(presId) {
+  const p = PRESENTATIONS.find(pr => pr.id === presId);
+  if (!p) return;
+  const congress = getCongressById(p.congressId);
+  const modal = document.getElementById("poster-modal");
+
+  modal.innerHTML = `
+    <div class="poster-banner" style="background: linear-gradient(135deg, ${congress.color}, ${congress.color}cc);">
+      <button class="poster-banner-close" id="poster-close"><i class="ti ti-x"></i></button>
+      <div class="poster-banner-badges">
+        <span class="poster-badge">${esc(p.type)}</span>
+        ${p.sanofiData ? '<span class="poster-badge sanofi">Sanofi data</span>' : ""}
+        ${p.impact === "high" ? '<span class="poster-badge impact">High impact</span>' : ""}
+      </div>
+      <div class="poster-title">${esc(p.title)}</div>
+      <div class="poster-authors">${esc(p.authors)}</div>
+      <div class="poster-congress-info">
+        <span><i class="ti ti-calendar-event"></i> ${esc(congress.name)}</span>
+        <span><i class="ti ti-map-pin"></i> ${esc(congress.location)}</span>
+        <span><i class="ti ti-calendar"></i> ${esc(congress.dates)}</span>
+      </div>
+    </div>
+    <div class="poster-body">
+      <div class="poster-section">
+        <div class="poster-section-label"><i class="ti ti-file-text"></i> Abstract</div>
+        <div class="poster-abstract">${esc(p.abstract)}</div>
+      </div>
+      <div class="poster-section">
+        <div class="poster-section-label"><i class="ti ti-list-check"></i> Key Findings</div>
+        <div class="poster-findings-grid">
+          ${p.keyFindings.map(f => `<div class="poster-finding-item"><i class="ti ti-circle-check"></i> ${esc(f)}</div>`).join("")}
+        </div>
+      </div>
+      <div class="poster-section">
+        <div class="poster-msl-box">
+          <div class="poster-section-label"><i class="ti ti-user-star"></i> MSL Talking Points — Internal Only</div>
+          <div class="poster-msl-text">${esc(p.mslTalkingPoints)}</div>
+        </div>
+      </div>
+      <div class="poster-footer">
+        <span class="poster-footer-tag">${esc(p.diseaseArea)}</span>
+        <span class="poster-footer-id">${esc(p.id)}</span>
+      </div>
+    </div>`;
+
+  const overlay = document.getElementById("poster-overlay");
+  overlay.classList.add("visible");
+  overlay.scrollTop = 0;
+
+  document.getElementById("poster-close").addEventListener("click", closePoster);
+}
+
+function closePoster() {
+  document.getElementById("poster-overlay").classList.remove("visible");
+}
+
+function bindPosterOverlay() {
+  const overlay = document.getElementById("poster-overlay");
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closePoster();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closePoster();
   });
 }
 

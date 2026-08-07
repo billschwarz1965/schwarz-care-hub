@@ -74,6 +74,19 @@ export const knowledgeBase = [
     content: "The IL-23/Th17 axis plays a central role in both psoriasis and inflammatory bowel disease (IBD), highlighting important cross-TA considerations. IL-23 drives the differentiation and expansion of Th17 cells, which produce IL-17A, IL-17F, and IL-22 — key mediators of cutaneous and intestinal inflammation. In psoriasis, IL-17A drives keratinocyte hyperproliferation and neutrophil recruitment. In IBD (particularly Crohn's disease), IL-23-driven Th17 responses contribute to intestinal mucosal damage. Epidemiological data indicate patients with psoriasis have a 1.5-2x increased risk of IBD compared to the general population. This shared pathophysiology has therapeutic implications: while anti-IL-17 agents are highly effective in psoriasis, some have shown paradoxical worsening or new-onset IBD — a critical consideration for HCPs managing patients with both conditions.",
     keywords: ["IL-23", "Th17", "IL-17", "psoriasis", "IBD", "Crohn's", "cross-TA", "overlap", "paradoxical"]
   },
+  // --- COMPETITIVE LANDSCAPE ---
+  {
+    id: "CL-001",
+    title: "Dupixent Competitive Landscape — Cross-Indication Analysis",
+    category: "competitive-landscape",
+    diseaseArea: "Cross-TA Immunology",
+    therapeuticArea: "Immunology",
+    source: "MedVerse Competitive Intelligence — Market Analysis 2026",
+    sourceType: "Competitive Intelligence",
+    date: "2026",
+    content: "Dupixent (dupilumab) faces distinct competitive landscapes across its approved indications. In Atopic Dermatitis: Biologic competitors include Adbry (tralokinumab, IL-13, ages 12+), Ebglyss (lebrikizumab, IL-13), and Nemluvio (nemolizumab, IL-31R for itch). Oral JAK inhibitors Rinvoq (upadacitinib, AbbVie) and Cibinqo (abrocitinib, Pfizer) offer rapid itch relief but carry boxed warnings for MACE, malignancy, and thrombosis. Topicals include Opzelura (ruxolitinib, topical JAK) and Eucrisa (crisaborole, PDE4). Dupixent maintains market leadership with broadest age range (6mo+), strongest long-term safety (3+ years, no lab monitoring), and the JADE DARE head-to-head showing comparable EASI-75 with superior safety vs abrocitinib. In Asthma: Anti-IL-5 biologics Nucala (mepolizumab, GSK), Fasenra (benralizumab, AstraZeneca), and Cinqair (reslizumab) target eosinophils only. Tezspire (tezepelumab, AstraZeneca) blocks TSLP for phenotype-independent severe asthma. Xolair (omalizumab, Genentech/Novartis) targets IgE in allergic asthma. Dupixent uniquely blocks both IL-4 and IL-13 via IL-4Rα, addressing the broadest type 2 biology. In CRSwNP: Dupixent was first-to-market. Xolair and Nucala approved but with narrower efficacy. In COPD: Dupixent is first-mover with positive Phase 3 data (BOREAS, NOTUS) in type 2 high COPD. No approved biologic competitors yet — Fasenra and Tezspire are investigational.",
+    keywords: ["competitive landscape", "competitors", "dupixent", "adbry", "tralokinumab", "ebglyss", "lebrikizumab", "nemolizumab", "rinvoq", "upadacitinib", "cibinqo", "abrocitinib", "opzelura", "nucala", "mepolizumab", "xolair", "omalizumab", "fasenra", "benralizumab", "tezspire", "tezepelumab", "JAK inhibitor", "head-to-head", "JADE DARE", "market share"]
+  },
   // --- CONGRESS ---
   {
     id: "CON-001",
