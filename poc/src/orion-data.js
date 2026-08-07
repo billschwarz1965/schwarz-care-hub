@@ -90,44 +90,36 @@ const SIGNALS = [
   },
 ];
 
-function getAnalytics() {
-  const now = new Date("2026-08-06T16:00:00");
-  const today = SIGNALS.filter(s => s.timestamp.startsWith("2026-08-06"));
-  const priority = SIGNALS.filter(s => s.orionAction.startsWith("PRIORITY"));
-  const hcpIds = new Set(SIGNALS.map(s => s.hcpId));
+function getAnalytics(signalSubset) {
+  const signals = signalSubset || SIGNALS;
+  const today = signals.filter(s => s.timestamp.startsWith("2026-08-06"));
+  const priority = signals.filter(s => s.orionAction.startsWith("PRIORITY"));
+  const hcpIds = new Set(signals.map(s => s.hcpId));
   const diseaseAreas = {};
-  SIGNALS.forEach(s => {
+  signals.forEach(s => {
     diseaseAreas[s.diseaseArea] = (diseaseAreas[s.diseaseArea] || 0) + 1;
   });
   const depthMap = { "Light engagement": 1, "Moderate engagement": 2, "Deep engagement": 3, "Deep engagement — cross-TA query": 4, "Deep engagement — cross-TA": 4, "High-value engagement": 4 };
-  const avgDepth = SIGNALS.reduce((sum, s) => sum + (depthMap[s.depth] || 2), 0) / SIGNALS.length;
-  const totalMinutes = SIGNALS.reduce((sum, s) => sum + s.sessionDuration, 0);
-
-  const repeatHcps = [];
-  const hcpSignalCounts = {};
-  SIGNALS.forEach(s => { hcpSignalCounts[s.hcpId] = (hcpSignalCounts[s.hcpId] || 0) + 1; });
-  Object.entries(hcpSignalCounts).forEach(([id, count]) => {
-    if (count > 1) repeatHcps.push(id);
-  });
+  const avgDepth = signals.length ? signals.reduce((sum, s) => sum + (depthMap[s.depth] || 2), 0) / signals.length : 0;
+  const totalMinutes = signals.reduce((sum, s) => sum + s.sessionDuration, 0);
 
   return {
-    totalSignals: SIGNALS.length,
+    totalSignals: signals.length,
     todaySignals: today.length,
     priorityAlerts: priority.length,
     uniqueHcps: hcpIds.size,
     diseaseAreas,
     avgDepth: avgDepth.toFixed(1),
     totalEngagementMinutes: totalMinutes,
-    repeatHcps,
   };
 }
 
-function getHcpProfile(hcpId) {
+function getHcpProfile(hcpId, signalSubset) {
   const profile = HCP_PROFILES.find(h => h.id === hcpId);
-  const signals = SIGNALS.filter(s => s.hcpId === hcpId).sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+  const signals = (signalSubset || SIGNALS).filter(s => s.hcpId === hcpId).sort((a, b) => b.timestamp.localeCompare(a.timestamp));
   const topics = new Set(signals.map(s => s.diseaseArea));
   const depthMap = { "Light engagement": 1, "Moderate engagement": 2, "Deep engagement": 3, "Deep engagement — cross-TA query": 4, "Deep engagement — cross-TA": 4, "High-value engagement": 4 };
-  const maxDepth = Math.max(...signals.map(s => depthMap[s.depth] || 2));
+  const maxDepth = signals.length ? Math.max(...signals.map(s => depthMap[s.depth] || 2)) : 0;
   const totalMinutes = signals.reduce((sum, s) => sum + s.sessionDuration, 0);
 
   return {
@@ -141,8 +133,9 @@ function getHcpProfile(hcpId) {
   };
 }
 
-function getMslActionQueue() {
-  return SIGNALS
+function getMslActionQueue(signalSubset) {
+  const signals = signalSubset || SIGNALS;
+  return signals
     .filter(s => s.orionAction.startsWith("PRIORITY") || s.orionAction.startsWith("Queue"))
     .sort((a, b) => {
       const aPri = a.orionAction.startsWith("PRIORITY") ? 0 : 1;
@@ -156,4 +149,134 @@ function getMslActionQueue() {
     });
 }
 
-export { SIGNALS, HCP_PROFILES, getAnalytics, getHcpProfile, getMslActionQueue };
+function generateTalkingPoints(signal) {
+  const points = [];
+  if (signal.depth.includes("Deep") || signal.depth.includes("High")) {
+    points.push(`High engagement depth signals genuine clinical interest in ${signal.diseaseArea} — open with recent data.`);
+  }
+  if (signal.queries.length > 1) {
+    points.push(`HCP asked ${signal.queries.length} queries spanning ${signal.intent.toLowerCase()} — prepare comprehensive responses.`);
+  }
+  if (signal.orionAction.includes("cross-TA") || signal.orionAction.includes("Cross-TA")) {
+    points.push(`Cross-therapeutic-area exploration detected — consider involving the ${signal.diseaseArea} specialist MSL.`);
+  }
+  if (signal.contentAccessed.length > 1) {
+    points.push(`Accessed ${signal.contentAccessed.length} content pieces including "${signal.contentAccessed[0]}" — reference these in conversation.`);
+  }
+  if (signal.stage.includes("Treatment")) {
+    points.push("HCP is in treatment selection phase — focus on comparative efficacy and patient selection criteria.");
+  }
+  if (signal.stage.includes("Pipeline")) {
+    points.push("Pipeline interest suggests advisory board or speaker bureau potential — assess willingness.");
+  }
+  if (signal.intent.includes("Congress") || signal.intent.includes("congress")) {
+    points.push("Congress data interest signals desire for cutting-edge evidence — share pre-publication highlights.");
+  }
+  if (points.length < 2) {
+    points.push(`Review content accessed: ${signal.contentAccessed.join(", ")}.`);
+    points.push(`Session lasted ${signal.sessionDuration} minutes — indicates ${signal.sessionDuration > 10 ? "substantial" : "focused"} engagement.`);
+  }
+  return points;
+}
+
+const LIVE_SIGNAL_TEMPLATES = [
+  {
+    hcpId: "HCP-4821", topic: "Dupixent real-world evidence in pediatric AD",
+    intent: "Clinical decision support", diseaseArea: "Atopic Dermatitis",
+    stage: "Patient management", depth: "Deep engagement",
+    orionAction: "PRIORITY: KOL reviewing pediatric data — coordinate with pediatric MSL",
+    queries: ["What real-world data exists for dupilumab in adolescent AD patients?", "How do pediatric response rates compare to adults?"],
+    contentAccessed: ["Dupixent Pediatric AD Data", "AD Treatment Algorithm 2026"],
+    sessionDuration: 11,
+  },
+  {
+    hcpId: "HCP-7204", topic: "Asthma biologic sequencing after anti-IgE failure",
+    intent: "Treatment strategy", diseaseArea: "Severe Asthma",
+    stage: "Treatment selection", depth: "Deep engagement",
+    orionAction: "PRIORITY: Pulmonologist evaluating biologic switch — MSL outreach recommended",
+    queries: ["What is the recommended sequencing after omalizumab failure in severe asthma?", "How does dupilumab compare with mepolizumab in eosinophilic asthma?"],
+    contentAccessed: ["Severe Asthma Biologic Sequencing Guide", "Dupixent in Asthma — Clinical Overview"],
+    sessionDuration: 9,
+  },
+  {
+    hcpId: "HCP-3159", topic: "IL-6 pathway inhibition — long-term safety outcomes",
+    intent: "Safety information", diseaseArea: "Rheumatoid Arthritis",
+    stage: "Patient management", depth: "Moderate engagement",
+    orionAction: "Queue for MSL follow-up — rheumatologist reviewing long-term safety data",
+    queries: ["What are the 5-year safety outcomes for sarilumab in RA?"],
+    contentAccessed: ["Kevzara Long-Term Safety Extension Study"],
+    sessionDuration: 6,
+  },
+  {
+    hcpId: "HCP-5538", topic: "Eosinophilic esophagitis — emerging biologic therapies",
+    intent: "Pipeline intelligence", diseaseArea: "EoE",
+    stage: "Pipeline assessment", depth: "Deep engagement",
+    orionAction: "PRIORITY: Allergist exploring EoE pipeline — high-value engagement for emerging indication",
+    queries: ["What biologics are in late-stage trials for EoE?", "What is the dupilumab EoE Phase 3 data?"],
+    contentAccessed: ["Dupilumab in EoE — Phase 3 Results", "EoE Treatment Landscape 2026"],
+    sessionDuration: 15,
+  },
+  {
+    hcpId: "HCP-9012", topic: "Ulcerative colitis biologic sequencing",
+    intent: "Clinical decision support", diseaseArea: "GI / Dermatology",
+    stage: "Treatment selection", depth: "Deep engagement",
+    orionAction: "Queue for MSL follow-up — GI specialist evaluating biologic options for refractory UC",
+    queries: ["What is the current evidence for biologic sequencing in UC after anti-TNF failure?"],
+    contentAccessed: ["UC Biologic Sequencing — Evidence Review"],
+    sessionDuration: 8,
+  },
+  {
+    hcpId: "HCP-6377", topic: "Prurigo nodularis — nemolizumab and dupilumab data",
+    intent: "Scientific education", diseaseArea: "Atopic Dermatitis",
+    stage: "Data review", depth: "Moderate engagement",
+    orionAction: "Queue for MSL follow-up — dermatologist exploring PN treatment data",
+    queries: ["How do nemolizumab and dupilumab compare in prurigo nodularis?"],
+    contentAccessed: ["PN Treatment Landscape 2026"],
+    sessionDuration: 5,
+  },
+  {
+    hcpId: "HCP-7204", topic: "COPD type 2 high phenotype — dupilumab BOREAS/NOTUS",
+    intent: "Clinical decision support", diseaseArea: "COPD",
+    stage: "Treatment selection", depth: "High-value engagement",
+    orionAction: "PRIORITY: KOL deep-diving COPD data — potential speaker identification",
+    queries: ["What were the primary endpoints in BOREAS and NOTUS?", "Which COPD patients are most likely to benefit from dupilumab?"],
+    contentAccessed: ["Dupilumab COPD — BOREAS/NOTUS Results", "Type 2 COPD Phenotyping Guide"],
+    sessionDuration: 19,
+  },
+  {
+    hcpId: "HCP-4821", topic: "Alopecia areata — JAK inhibitor vs biologic positioning",
+    intent: "Treatment strategy", diseaseArea: "Alopecia Areata",
+    stage: "Concept exploration", depth: "Moderate engagement",
+    orionAction: "Queue for MSL follow-up — KOL comparing mechanism classes in AA",
+    queries: ["What is the current positioning of JAK inhibitors versus biologics in alopecia areata?"],
+    contentAccessed: ["AA Treatment Landscape 2026"],
+    sessionDuration: 7,
+  },
+];
+
+let liveSignalCounter = 100;
+
+function generateLiveSignal() {
+  const template = LIVE_SIGNAL_TEMPLATES[Math.floor(Math.random() * LIVE_SIGNAL_TEMPLATES.length)];
+  liveSignalCounter++;
+  const now = new Date();
+  const ts = now.getFullYear() + "-" +
+    String(now.getMonth() + 1).padStart(2, "0") + "-" +
+    String(now.getDate()).padStart(2, "0") + "T" +
+    String(now.getHours()).padStart(2, "0") + ":" +
+    String(now.getMinutes()).padStart(2, "0") + ":" +
+    String(now.getSeconds()).padStart(2, "0");
+  return {
+    ...template,
+    id: `SIG-LIVE-${liveSignalCounter}`,
+    timestamp: ts,
+    sessionDuration: Math.max(2, template.sessionDuration + Math.floor(Math.random() * 5) - 2),
+    _isLive: true,
+  };
+}
+
+function addSignal(signal) {
+  SIGNALS.push(signal);
+}
+
+export { SIGNALS, HCP_PROFILES, getAnalytics, getHcpProfile, getMslActionQueue, generateTalkingPoints, generateLiveSignal, addSignal };

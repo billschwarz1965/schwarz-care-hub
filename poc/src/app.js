@@ -284,10 +284,29 @@ function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// === AUTO-DEMO ===
+// === AUTO-DEMOS ===
 const demoBtn = document.getElementById("run-clinical-demo");
-if (demoBtn) {
-  demoBtn.addEventListener("click", runClinicalDemo);
+const topicDemoBtn = document.getElementById("run-topic-demo");
+let demoRunning = false;
+
+if (demoBtn) demoBtn.addEventListener("click", runClinicalDemo);
+if (topicDemoBtn) topicDemoBtn.addEventListener("click", runTopicDemo);
+
+function narrate(text) {
+  const el = document.getElementById("demo-narrator");
+  if (!el) return;
+  el.innerHTML = `<i class="ti ti-sparkles"></i> ${escapeHtml(text)}`;
+  el.classList.add("visible");
+}
+
+function narrateOff() {
+  const el = document.getElementById("demo-narrator");
+  if (el) el.classList.remove("visible");
+}
+
+function setDemoBtnsDisabled(disabled) {
+  if (demoBtn) { demoBtn.disabled = disabled; }
+  if (topicDemoBtn) { topicDemoBtn.disabled = disabled; }
 }
 
 async function typeIntoInput(text) {
@@ -303,8 +322,10 @@ async function typeIntoInput(text) {
 }
 
 async function runClinicalDemo() {
-  demoBtn.disabled = true;
-  demoBtn.innerHTML = '<i class="ti ti-loader-2 ti-spin"></i> Running demo…';
+  if (demoRunning) return;
+  demoRunning = true;
+  setDemoBtnsDisabled(true);
+  demoBtn.innerHTML = '<i class="ti ti-loader-2 ti-spin"></i> Running…';
 
   const question1 = "What are my options for a 45-year-old patient with moderate-to-severe atopic dermatitis who failed topicals?";
   await typeIntoInput(question1);
@@ -322,4 +343,68 @@ async function runClinicalDemo() {
   await typeIntoInput(question3);
   await delay(400);
   await submitQuery(question3);
+
+  demoRunning = false;
+  setDemoBtnsDisabled(false);
+  demoBtn.innerHTML = '<i class="ti ti-player-play"></i> Clinical question demo';
+}
+
+async function runTopicDemo() {
+  if (demoRunning) return;
+  demoRunning = true;
+  setDemoBtnsDisabled(true);
+  topicDemoBtn.innerHTML = '<i class="ti ti-loader-2 ti-spin"></i> Running…';
+
+  resetChat();
+  await delay(600);
+
+  const promptCards = Array.from(promptsGrid.querySelectorAll(".prompt-card"));
+  const topicsToDemo = [0, 1, 2];
+
+  narrate("One-click topic queries — HCPs explore Sanofi medical content with a single tap");
+  await delay(2500);
+
+  for (let idx = 0; idx < topicsToDemo.length; idx++) {
+    const cardIdx = topicsToDemo[idx];
+    const card = promptCards[cardIdx];
+    if (!card) continue;
+
+    if (welcomeEl && welcomeEl.style.display === "none") {
+      narrate("Resetting for the next topic query");
+      await delay(1200);
+      resetChat();
+      await delay(800);
+    }
+
+    const label = card.querySelector("span")?.textContent || "";
+    narrate(`Topic ${idx + 1} of ${topicsToDemo.length}: "${label}" — highlighting the card`);
+    card.classList.add("demo-highlight");
+    card.scrollIntoView({ behavior: "smooth", block: "center" });
+    await delay(2000);
+
+    narrate(`Clicking "${label}" — query sent instantly, no typing needed`);
+    card.classList.remove("demo-highlight");
+    card.click();
+    await delay(3000);
+
+    narrate("AI response with citations and Orion signal generated simultaneously");
+    await delay(3000);
+
+    const followUps = messagesEl.querySelectorAll(".follow-up-chip");
+    if (followUps.length > 0 && idx < topicsToDemo.length - 1) {
+      narrate("Follow-up suggestions let HCPs dive deeper with one more click");
+      followUps[0].scrollIntoView({ behavior: "smooth", block: "center" });
+      await delay(2500);
+    }
+  }
+
+  narrate("Every interaction generates behavioral intelligence for MSL field teams via Orion");
+  const sidebar = document.querySelector(".sidebar-content");
+  if (sidebar) sidebar.scrollTo({ top: 0, behavior: "smooth" });
+  await delay(4000);
+
+  narrateOff();
+  demoRunning = false;
+  setDemoBtnsDisabled(false);
+  topicDemoBtn.innerHTML = '<i class="ti ti-player-play"></i> One-click topics demo';
 }

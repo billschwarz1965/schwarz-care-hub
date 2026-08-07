@@ -216,7 +216,29 @@
     .demo-cta-row { margin: 20px auto 0; text-align: center; }
     .demo-run-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 10px 22px; font-size: 13px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: background .15s; }
     .demo-run-btn:hover { background: var(--accent-hover); }
+    .demo-run-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .demo-run-btn i { font-size: 16px; }
+
+    .demo-narrator {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      z-index: 1100;
+      background: var(--text); color: white;
+      font-family: var(--font); font-size: 13px; font-weight: 500;
+      padding: 10px 22px; border-radius: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+      opacity: 0; transition: opacity 0.3s;
+      pointer-events: none; white-space: nowrap;
+      max-width: 90vw; overflow: hidden; text-overflow: ellipsis;
+    }
+    .demo-narrator.visible { opacity: 1; }
+    .demo-narrator i { margin-right: 6px; }
+
+    .prompt-card.demo-highlight {
+      border-color: var(--accent) !important;
+      background: var(--accent-light) !important;
+      box-shadow: 0 0 0 4px rgba(122, 0, 230, 0.15);
+      transition: all 0.3s;
+    }
 
     /* MESSAGES */
     .msg { max-width: 720px; margin: 0 auto 20px; }
@@ -575,8 +597,9 @@
           <h1>Medical Concierge</h1>
           <p>Ask clinical questions and get cited answers from Sanofi medical content. Every interaction generates intelligence signals for field teams.</p>
           <div class="prompts-grid" id="prompts-grid"></div>
-          <div class="demo-cta-row">
-            <button class="demo-run-btn" id="run-clinical-demo"><i class="ti ti-player-play"></i> Watch clinical question demo</button>
+          <div class="demo-cta-row" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <button class="demo-run-btn" id="run-topic-demo"><i class="ti ti-player-play"></i> One-click topics demo</button>
+            <button class="demo-run-btn" id="run-clinical-demo" style="background:var(--accent-secondary);"><i class="ti ti-player-play"></i> Clinical question demo</button>
           </div>
         </div>
       </div>
@@ -625,6 +648,7 @@
     </div>
   </div>
 
+  <div class="demo-narrator" id="demo-narrator"></div>
   <script type="module" src="/src/app.js"></script>
 </body>
 </html>
