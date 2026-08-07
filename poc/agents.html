@@ -67,6 +67,11 @@
     .arch-biz-layer .arch-layer-tag { color: var(--accent); }
     .arch-consumers { display: flex; gap: 5px; flex-wrap: wrap; }
     .arch-consumer { background: var(--accent-light); color: var(--accent-text); padding: 3px 9px; border-radius: 5px; font-size: 11px; font-weight: 500; display: inline-flex; align-items: center; gap: 3px; }
+    .arch-consumer { cursor: pointer; transition: all 0.2s; }
+    .arch-consumer:hover { background: var(--accent); color: #fff; transform: translateY(-1px); box-shadow: 0 2px 8px rgba(122,0,230,0.2); }
+    .arch-consumer:hover i { color: #fff; }
+    .arch-consumer.pod-active { background: var(--accent); color: #fff; }
+    .arch-consumer.pod-active i { color: #fff; }
     .arch-consumer i { font-size: 12px; }
     .arch-hub-layer { background: linear-gradient(135deg, #f0e6ff 0%, #e0d4ff 100%); border-color: #c4b5fd; }
     .arch-hub-layer .arch-layer-tag { color: var(--accent); }
@@ -121,6 +126,8 @@
     .agent-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; transition: border-color 0.15s, box-shadow 0.15s; }
     .agent-card.has-demo { cursor: pointer; }
     .agent-card.has-demo:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(122,0,230,0.08); }
+    .agent-card.pod-highlight { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(122,0,230,0.25), 0 4px 20px rgba(122,0,230,0.15); animation: pod-glow 2.4s ease-out; }
+    @keyframes pod-glow { 0% { box-shadow: 0 0 0 3px rgba(122,0,230,0.4), 0 4px 24px rgba(122,0,230,0.25); } 70% { box-shadow: 0 0 0 3px rgba(122,0,230,0.25), 0 4px 20px rgba(122,0,230,0.15); } 100% { box-shadow: none; border-color: var(--border); } }
     .agent-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
     .agent-icon { width: 34px; height: 34px; background: var(--accent-light); color: var(--accent-text); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
     .agent-status { font-size: 10px; font-weight: 600; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; }

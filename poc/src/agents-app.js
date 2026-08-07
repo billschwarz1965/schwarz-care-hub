@@ -25,8 +25,28 @@ function renderArchitecture() {
   const hubConsumers = document.getElementById("arch-hub-consumers");
   const hubAgents = BUSINESS_AGENTS.filter(a => a.hubDependency?.includes("hcp-explorer"));
   hubConsumers.innerHTML = hubAgents.map(a =>
-    `<span class="arch-consumer"><i class="ti ti-${a.icon}"></i> ${esc(a.name)}</span>`
+    `<span class="arch-consumer" data-agent-id="${a.id}"><i class="ti ti-${a.icon}"></i> ${esc(a.name)}</span>`
   ).join("");
+
+  hubConsumers.addEventListener("click", (e) => {
+    const pod = e.target.closest(".arch-consumer[data-agent-id]");
+    if (!pod) return;
+    const agentId = pod.dataset.agentId;
+    const card = document.querySelector(`.agent-card[data-id="${agentId}"]`);
+    if (!card) return;
+
+    document.querySelectorAll(".arch-consumer.pod-active").forEach(el => el.classList.remove("pod-active"));
+    pod.classList.add("pod-active");
+
+    document.querySelectorAll(".agent-card.pod-highlight").forEach(el => el.classList.remove("pod-highlight"));
+    card.classList.add("pod-highlight");
+    card.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    setTimeout(() => {
+      card.classList.remove("pod-highlight");
+      pod.classList.remove("pod-active");
+    }, 2400);
+  });
 }
 
 function renderHubSection() {
