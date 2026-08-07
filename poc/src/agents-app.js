@@ -201,6 +201,8 @@ function renderHubSection() {
   });
 }
 
+let activeGovernance = null;
+
 function renderComplianceStrip() {
   const strip = document.getElementById("compliance-strip");
   strip.innerHTML = COMPLIANCE_AGENTS.map(c =>
@@ -208,6 +210,79 @@ function renderComplianceStrip() {
       <i class="ti ti-${c.icon}"></i><span>${esc(c.name)}</span>
     </div>`
   ).join("");
+
+  strip.addEventListener("click", (e) => {
+    const chip = e.target.closest(".comp-chip[data-id]");
+    if (!chip) return;
+    const compId = chip.dataset.id;
+
+    if (activeGovernance === compId) {
+      closeGovernancePanel();
+      return;
+    }
+
+    const comp = COMPLIANCE_AGENTS.find(c => c.id === compId);
+    if (!comp) return;
+
+    document.querySelectorAll(".comp-chip.comp-selected").forEach(el => el.classList.remove("comp-selected"));
+    chip.classList.add("comp-selected");
+    activeGovernance = compId;
+    renderGovernancePanel(comp);
+  });
+}
+
+function renderGovernancePanel(comp) {
+  const panel = document.getElementById("governance-panel");
+  const supervised = BUSINESS_AGENTS.filter(a => a.compliancePartners.includes(comp.id));
+
+  panel.innerHTML = `
+    <div class="governance-panel-header">
+      <div>
+        <div class="governance-panel-title"><i class="ti ti-${comp.icon}"></i> ${esc(comp.name)}</div>
+        <div class="governance-panel-desc">${esc(comp.desc)}</div>
+      </div>
+      <button class="governance-panel-close" id="governance-close"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="governance-panel-body">
+      <div class="governance-stat-row">
+        <div class="governance-stat"><div class="governance-stat-num">${supervised.length}</div><div class="governance-stat-label">Supervised agents</div></div>
+        <div class="governance-stat"><div class="governance-stat-num">${supervised.filter(a => a.status === "active").length}</div><div class="governance-stat-label">Active</div></div>
+      </div>
+      <div class="governance-agent-list">
+        ${supervised.map(a => `
+          <div class="governance-agent" data-agent-id="${a.id}">
+            <div class="governance-agent-top">
+              <div class="governance-agent-icon"><i class="ti ti-${a.icon}"></i></div>
+              <div class="governance-agent-name">${esc(a.name)}</div>
+            </div>
+            <div class="governance-agent-desc">${esc(a.desc)}</div>
+          </div>
+        `).join("")}
+      </div>
+    </div>`;
+
+  panel.classList.add("visible");
+  panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+  panel.querySelector("#governance-close").addEventListener("click", closeGovernancePanel);
+
+  panel.querySelectorAll(".governance-agent[data-agent-id]").forEach(el => {
+    el.addEventListener("click", () => {
+      const card = document.querySelector(`.agent-card[data-id="${el.dataset.agentId}"]`);
+      if (!card) return;
+      document.querySelectorAll(".agent-card.pod-highlight").forEach(c => c.classList.remove("pod-highlight"));
+      card.classList.add("pod-highlight");
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(() => card.classList.remove("pod-highlight"), 2400);
+    });
+  });
+}
+
+function closeGovernancePanel() {
+  const panel = document.getElementById("governance-panel");
+  panel.classList.remove("visible");
+  document.querySelectorAll(".comp-chip.comp-selected").forEach(el => el.classList.remove("comp-selected"));
+  activeGovernance = null;
 }
 
 function renderAgentGrid() {

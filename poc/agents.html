@@ -148,7 +148,33 @@
     .compliance-grid { display: flex; gap: 5px; flex-wrap: wrap; }
     .comp-chip { display: flex; align-items: center; gap: 4px; padding: 5px 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 7px; font-size: 11px; color: var(--text-secondary); transition: all 0.3s; cursor: default; }
     .comp-chip i { font-size: 12px; }
+    .comp-chip { cursor: pointer; }
+    .comp-chip:hover { background: var(--warn-bg); border-color: #f59e0b; color: var(--warn); transform: translateY(-1px); box-shadow: 0 2px 8px rgba(245,158,11,0.15); }
+    .comp-chip.comp-selected { background: var(--warn); border-color: var(--warn); color: #fff; font-weight: 600; transform: scale(1.05); }
+    .comp-chip.comp-selected i { color: #fff; }
     .comp-chip.comp-active { background: var(--warn-bg); border-color: #f59e0b; color: var(--warn); font-weight: 600; transform: scale(1.05); }
+
+    /* GOVERNANCE PANEL */
+    .governance-panel { display: none; background: var(--surface); border: 2px solid #f59e0b; border-radius: 12px; margin-top: 14px; overflow: hidden; animation: fadeSlideIn 0.3s ease; }
+    .governance-panel.visible { display: block; }
+    .governance-panel-header { padding: 14px 18px; background: linear-gradient(135deg, var(--warn-bg), #fef9c3); border-bottom: 1px solid #f59e0b; display: flex; align-items: center; justify-content: space-between; }
+    .governance-panel-title { font-size: 15px; font-weight: 700; color: var(--warn); display: flex; align-items: center; gap: 8px; }
+    .governance-panel-title i { font-size: 18px; }
+    .governance-panel-desc { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+    .governance-panel-close { width: 26px; height: 26px; border-radius: 6px; border: 1px solid #f59e0b; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--warn); flex-shrink: 0; }
+    .governance-panel-close:hover { background: var(--warn-bg); }
+    .governance-panel-body { padding: 14px 18px; }
+    .governance-stat-row { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+    .governance-stat { background: var(--warn-bg); border-radius: 8px; padding: 8px 14px; text-align: center; flex: 1; min-width: 100px; }
+    .governance-stat-num { font-size: 20px; font-weight: 700; color: var(--warn); }
+    .governance-stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
+    .governance-agent-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+    .governance-agent { background: var(--surface-dim); border: 1px solid var(--border); border-radius: 10px; padding: 12px; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; }
+    .governance-agent:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(122,0,230,0.08); }
+    .governance-agent-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .governance-agent-icon { width: 28px; height: 28px; background: var(--accent-light); color: var(--accent-text); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+    .governance-agent-name { font-size: 13px; font-weight: 600; }
+    .governance-agent-desc { font-size: 11.5px; color: var(--text-secondary); line-height: 1.4; }
 
     /* AGENT GRID */
     .agent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
@@ -392,8 +418,9 @@
 
     <!-- Compliance Strip -->
     <div class="section">
-      <h2><i class="ti ti-shield-check"></i> Governance agents <span class="h2-sub">(highlights activate during demos)</span></h2>
+      <h2><i class="ti ti-shield-check"></i> Governance agents <span class="h2-sub">(click to see supervised agents)</span></h2>
       <div id="compliance-strip" class="compliance-grid"></div>
+      <div id="governance-panel" class="governance-panel"></div>
     </div>
 
     <!-- Business Agents -->
