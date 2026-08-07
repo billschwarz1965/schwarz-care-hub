@@ -23,6 +23,10 @@ intake/inbox/*
 *.pptx
 *.xlsx
 
+# Dependencies and build caches
+node_modules/
+.vite/
+
 # Cursor / IDE
 .cursor/
 .claude/

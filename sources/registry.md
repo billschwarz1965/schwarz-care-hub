@@ -3,7 +3,7 @@
 **Master index** of MedVerse intelligence across Campus+ Discovery and SharePoint.  
 Paths below are relative to `Campus+Medical - Discovery/` unless noted.
 
-*Last reviewed: July 21, 2026*
+*Last reviewed: July 22, 2026*
 
 ---
 
@@ -11,11 +11,12 @@ Paths below are relative to `Campus+Medical - Discovery/` unless noted.
 
 | ID | Title | Path | Updated | Owner |
 |----|-------|------|---------|-------|
-| OS-001 | MedVerse Operating System CSV | `MedVerse Operating System/knowledge-base/MedVerse_Operating_System.csv` | 2026-07-21 | Bill Schwarz — structured facts |
-| OS-005 | MedVerse Operating System Complete (narrative) | `MedVerse Operating System/knowledge-base/MedVerse_Operating_System_Complete.txt` | 2026-07-21 | Bill Schwarz — full knowledge base; pair with OS-001 |
+| OS-001 | MedVerse Operating System CSV | `MedVerse Operating System/knowledge-base/MedVerse_Operating_System.csv` | 2026-07-22 | Bill Schwarz — structured facts |
+| OS-005 | MedVerse Operating System Complete (narrative) | `MedVerse Operating System/knowledge-base/MedVerse_Operating_System_Complete.txt` | 2026-07-22 | Bill Schwarz — full knowledge base; pair with OS-001 |
 | OS-002 | AI Bootstrap v1.3.3 | `MedVerse Operating System/ai-context/bootstrap/MedVerse_AI_Bootstrap_v1.3.3_04_FEB_2026.md` | 2026-02-04 | Bill Schwarz |
 | OS-003 | Claude/Copilot system instructions | `MedVerse Operating System/ai-context/personas/MedVerse_System_Instructions_Claude_Copilot.txt` | 2026-02 | Bill Schwarz |
 | OS-004 | Claude Opus persona loader | `MedVerse Operating System/ai-context/personas/MedVerse_Claude_Opus_Persona_Loader.txt` | 2026-02 | Bill Schwarz |
+| OS-006 | Portable AI Bundle — July 2026 | `MedVerse Operating System/ai-context/MedVerse_AI_Portable_Bundle_July_2026.md` | 2026-07-21 | Bill Schwarz — single-file bundle for any AI tool |
 
 ---
 
@@ -35,6 +36,22 @@ Paths below are relative to `Campus+Medical - Discovery/` unless noted.
 
 ---
 
+## Vision & Orion alignment
+
+| ID | Title | Path | Updated | Notes |
+|----|-------|------|---------|-------|
+| VIS-001 | Aligning MedVerse with Orion (deck) | `Intelligence/Medverse Explained/Aligning MedVerse with Orion.pptx` | 2026-08 | 16-slide vision deck — MedVerse Concierge, DFMME ecosystem, 5-layer architecture, Orion integration roadmap |
+| VIS-002 | Orchestrating Medical Knowledge (visual) | `Intelligence/Medverse Explained/Orchestrating_Medical_Knowledge.pdf` | 2026-08 | 12-page image-based deck — visual companion to VIS-001 |
+| VIS-003 | How AI Agents Orchestrate Medicine (audio) | `Intelligence/Medverse Explained/How_AI_Agents_Orchestrate_Medicine.m4a` | 2026-08 | Audio narrative — AI agent orchestration concept |
+| VIS-004 | How MedVerse Orchestrates Fragmented Knowledge (audio) | `Intelligence/Medverse Explained/How_MedVerse_orchestrates_fragmented_medical_knowledge.m4a` | 2026-08 | Audio narrative — knowledge orchestration |
+| VIS-005 | The Medical Intelligence Operating System (audio) | `Intelligence/Medverse Explained/The_medical_intelligence_operating_system.m4a` | 2026-08 | Audio narrative — OS vision |
+| VIS-006 | Podcast: Future of Medical Knowledge (video) | `Intelligence/Medverse Explained/Podcast Future of Medical Knowledge.mp4` | 2026-08 | Video podcast — medical knowledge future |
+| VIS-007 | The Medical Intelligence Operating System (video) | `Intelligence/Medverse Explained/The Medical intelligence Operating System.mp4` | 2026-08 | Video — OS concept |
+| VIS-008 | The Knowledge Ecosystem (video) | `Intelligence/Medverse Explained/The_Knowledge_Ecosystem.mp4` | 2026-08 | Video — ecosystem model |
+| VIS-009 | The MedVerse Vision (video) | `Intelligence/Medverse Explained/The_MedVerse_Vision.mp4` | 2026-08 | Video — platform vision |
+
+---
+
 ## Meeting intelligence
 
 | ID | Title | Path | Updated | Notes |
@@ -48,6 +65,22 @@ Paths below are relative to `Campus+Medical - Discovery/` unless noted.
 | MTG-007 | Meeting notes template | `_Templates/Meeting Notes Template.md` | — | Standard capture format |
 | MTG-008 | IMMERSE Roadmap & Prioritisation — call notes | `MedVerse Operating System/intake/processed/2026-07/IMMERSE_Roadmap_Prioritisation_Call_Notes_2026-07-21.md` | 2026-07-21 | WPP/VML (Veronica Longhini) · global registration · Talent LMS · dashboard · Nova · follow-up Jul 31 |
 | MTG-009 | U.S. MedVerse Home Page — MLR approval & production path | `MedVerse Operating System/intake/processed/2026-07/US_MedVerse_Homepage_MLR_Approval_2026-07-20.md` | 2026-07-21 | MAT-US-2606609 · MLR approved Jul 17 · prod target week of Jul 21 |
+| MTG-010 | MedVerse US Homepage — production launch | `MedVerse Operating System/intake/processed/2026-07/MedVerse_US_Homepage_Production_Launch_2026-07-22.md` | 2026-07-22 | LIVE medical.campus.sanofi · first US Medical portal · first MedVerse production instance |
+
+---
+
+## Communications
+
+| ID | Title | Path | Updated | Notes |
+|----|-------|------|---------|-------|
+| COM-001 | US Launch one-slide summary | `MedVerse Communications/MedVerse_US_Launch_One_Slide_July_2026.html` | 2026-07-22 | CMO/GTMC leadership · internal |
+| COM-002 | Field medical blurb | `MedVerse Communications/Field_Medical_Blurb_MedVerse_US_Launch.md` | 2026-07-22 | MSL customer-safe language |
+| COM-003 | CMO packet appendix (2 slides) | `MedVerse Communications/MedVerse_US_Launch_CMO_Appendix_2Slides_July_2026.html` | 2026-07-22 | Site content map · platform journey · pairs with one-slide summary |
+| COM-004 | Platform roadmap communications addendum | `MedVerse Communications/MedVerse_Platform_Roadmap_Comms_Addendum_July_2026.md` | 2026-07-22 | 5-phase roadmap · SEO/AEO · RDU/ADVENT · FME 2028 · copy blocks |
+| COM-005 | Viva Engage post (full + short) | `MedVerse Communications/MedVerse_US_Launch_Viva_Engage_July_2026.md` | 2026-07-22 | Medical + Digital + Communications |
+| COM-006 | CMO & GTMC leadership email | `MedVerse Communications/MedVerse_US_Launch_CMO_GTMC_Email_July_2026.md` | 2026-07-22 | Send-ready · attachments reference |
+| COM-007 | Talking points (2 min verbal) | `MedVerse Communications/MedVerse_US_Launch_Talking_Points_July_2026.md` | 2026-07-22 | Staff meeting · steering |
+| COM-008 | Communications pack index | `MedVerse Communications/README.md` | 2026-07-22 | Master index — start here |
 
 ---
 

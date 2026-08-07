@@ -1,5 +1,5 @@
 MedVerse Operating System — Complete Knowledge Base
-"Last Updated: July 21, 2026"
+"Last Updated: July 22, 2026"
 Status: Active | Authoritative | Ready for use
 
 SECTION,CONTENT
@@ -32,6 +32,7 @@ GTMC Analytics,Cedric Radigue
 Senior Oversight,John Shields
 ,
 PROGRAM MILESTONES,
+MedVerse US Production Launch,"Jul 22, 2026 — medical.campus.sanofi LIVE · first US Medical portal · first MedVerse production instance (MAT-US-2606609)"
 T1D / ADA Congress launch,"T1D unbranded landing page live June 5, 2026 — first US General Medicines Medical content on MedVerse template (ADA Congress)"
 IMMERSE,First major MedVerse program — global instance live; US pending MLR
 ,
@@ -48,9 +49,9 @@ Pillar 4 — Governance & Operating Model,"Rollout, content ops, alliance alignm
 ,
 WORKSTREAMS (July 2026),
 ADVENT Integration with MedVerse,Active — first migration proof point; U.S.-first pilot; Regeneron/Legal alignment pending
-Platform & Experience,Active — US homepage MLR approved · prod launch target week of Jul 21; homepage UX · Four Pillars · search · personalization
+Platform & Experience,Active — US MedVerse homepage LIVE Jul 22 · global platform Phase 1 · search · personalization roadmap
 Analytics & Measurement,Forming — Year 1 KPI framework · GTMC · CRM/Veeva unification
-Content & AI Discoverability,Forming — LLM-ready standards · SEO/GEO/AEO · metadata · transcripts
+Content & AI Discoverability,Forming — AI-ready content · SEO · AEO · LLM metadata · transcripts · schema · open-content defaults
 Governance & Rollout,Planned — deferred from Jul workshop; sessions TBD
 Change & Adoption,Planned — field medical · M-3 comms · training · adoption metrics
 Program Migration (Beyond ADVENT),Planned — reusable playbook from ADVENT pilot
@@ -88,12 +89,41 @@ Item 4,Structured feedback on MedVerse homepage UX prototypes
 Item 5,Define Year 1 measurement framework (discovery · engagement quality · journeys · LLM citations)
 Item 6,Confirm U.S.-first ADVENT pilot scope · redirect model · timing
 ,
-ROADMAP PHASE 2 (2027),
-Goal 1,Complete broader US medical website consolidation
-Goal 2,Expand shared platform model
-Goal 3,Increase migration velocity (ADVENT pilot readiness discussed Q1/Q2 2027)
+ROADMAP Q3–Q4 2026 (MIGRATION & CONSOLIDATION),
+Item 1,Br1dge Program — US migration onto MedVerse (target end-Aug / early-Sep 2026)
+Item 2,Migrate existing global medical site(s) to MedVerse platform architecture
+Item 3,Consolidate existing US Medical program sites into MedVerse hub (orchestrated entry vs. standalone sites)
+Item 4,RDU · Nerve Nexus · additional US program onboarding paths
+Item 5,ADVENT U.S.-first integration pilot · redirect model · alliance alignment
+Item 6,Global registration flow (Sept) · IMMERSE early adopter · JP/DE/GG EADV expansion
+Item 7,AI-ready content standards · SEO (Search Engine Optimization) · AEO (Answer Engine Optimization) on migrated and new content
+,
+ROADMAP Q1–Q2 2027 (PROGRAM MIGRATION),
+Item 1,Rare Diseases University (RDU) — integrate program site into MedVerse
+Item 2,Global ADVENT Program — migrate global ADVENT program sites into MedVerse (following U.S. pilot)
+Item 3,Continue US Medical site consolidation · global site migration
+Item 4,Maturation of program migration playbook · increased migration velocity
+Item 5,Scale AI-ready content · SEO · AEO across onboarded programs
+,
+ROADMAP Q3–Q4 2027 (INTELLIGENCE & PERSONALIZATION),
+Item 1,Enhanced personalization — HCP journeys informed by engagement and profile data
+Item 2,Integration with additional data sources (CRM/Veeva · analytics · franchise data)
+Item 3,Conversational search capabilities — AI-assisted discovery on MedVerse
+Item 4,Mature learning-oriented measurement · Year 1+ KPI framework operationalized
+Item 5,Sustainable product operating model · governance cadence established
+,
+ROADMAP PHASE 2 (2027 — SUMMARY),
+Goal 1,Complete broader US medical website consolidation (accelerating Q3–Q4 2026)
+Goal 2,RDU + Global ADVENT into MedVerse (Q1–Q2 2027)
+Goal 3,Personalization · data integration · conversational search (Q3–Q4 2027)
 Goal 4,"Mature governance, intake, prioritization, analytics, operations"
 Goal 5,Convert project work into sustainable product operating model
+Goal 6,AI-ready content · SEO · AEO embedded in all migrated content (2026–2027)
+,
+ROADMAP 2028 (FIELD MEDICAL INTEGRATION),
+Goal 1,Integrate MedVerse with Field Medical Experience digital ecosystem at scale
+Goal 2,Connected HCP and field medical workflows · shared data · orchestrated scientific engagement
+Goal 3,Global MedVerse platform maturity · sustained operating model
 ,
 GLOBAL PRIORITIES,
 Global Registration Flow,🟡 New global registration flow in development — country select + country-specific approval; target launch Sept 2026; IMMERSE early adopter to test and prioritise rollout
@@ -103,14 +133,14 @@ Germany,🟡 IMMERSE expansion — 96K+ profiles; EADV Congress end of Sept; CDP
 ,
 ACTIVE PROGRAMS,
 IMMERSE,"Live (global); US instance pending MLR — US instance migration PAUSED pending disclaimer/language decision; transition to global registration (Sept target); CDP for US+global content approval (one English version); geo-restrictions/login per country via CDP; 3 Talent LMS modules updating (respiratory PLA · GI PLA · HS) — target before fall congresses; registration required for LMS progress tracking; interest-registration landing page requirement for non-eligible countries (Peyman exploring)"
-ADVENT,"Jul workshop confirmed integration into MedVerse as program/brand (not separate tech platform); ~900 assets — retain/redesign/archive/retire; U.S.-first pilot; adventprogram.com redirect model; Regeneron narrative pending; Q1/Q2 2027 readiness discussed"
-MedVerse US Homepage MVP,"MLR APPROVED Jul 17, 2026 (MAT-US-2606609); link fixes for Stability Calculator + Ingredient Search in Magnolia draft (Jul 20); final review Bill + Christina before prod; target prod launch week of Jul 21, 2026; operating model gap — content/link updates via dev team (Emil Mircea) not agency"
+ADVENT,"Integrates into MedVerse as program/brand; ~900 assets — retain/redesign/archive/retire; U.S.-first pilot Q3–Q4 2026; global ADVENT program sites into MedVerse Q1–Q2 2027; adventprogram.com redirect model; Regeneron narrative pending"
+MedVerse US Homepage (Production),"LIVE Jul 22, 2026 — HCP: https://medical.campus.sanofi · Internal: https://medical.campus.sanofi/?internal=true · MAT-US-2606609 · first US Medical portal · first MedVerse production instance · positioning: centralized hub for medical education and scientific engagement · content: IMMERSE · T1D · Medical Information · Nerve Nexus · RDU · Library of Congresses · HCDM · clinical tools · MedVerse signup"
 Fitusiran Safety Site (US),EMMRC approved; Ask-an-Expert model; Aug 10 leadership update due
 Library of Congresses,Backlog — requirements documented; SpotMe → Cvent; US indexable variant planned
 US MVO,Backlog — integration meeting May 21
 Nerve Nexus,Backlog — kickoff May 13
-Br1dge,Active — US migration target end-Aug/early-Sep 2026; analytics model reference
-RDU,Active — Rare Diseases migration kickoff Jun 2026
+Br1dge,Active — Q3–Q4 US migration onto MedVerse · target end-Aug/early-Sep 2026 · analytics model reference
+RDU,Active — Rare Diseases University · Q1–Q2 2027 target for full integration into MedVerse (migration kickoff Jun 2026)
 Transplant,On roadmap — target mid-to-late Sept 2026
 Vaccines,Accelerating onto MedVerse — Monica Mercer engaged
 ,
@@ -151,11 +181,11 @@ Follow-up 9,Adam Naylor feature walkthrough with Peyman — Adam/Peyman — Open
 ,
 US HOMEPAGE PRODUCTION (Jul 2026),
 Homepage MLR,APPROVED Jul 17 — MAT-US-2606609
-Remaining changes,Useful Tools links — Stability Calculator + Ingredient Search → Sanofi Medical Information URLs (Peyman spec Jul 20)
-Draft status,Link updates in Magnolia draft Jul 20 — not yet visible in production
-Review gate,Final review required — Bill Schwarz + Christina Ha before prod publish
-Prod target,Week of Jul 21, 2026 (pending review)
-Operating model,Homepage not agency-managed; dev team (Emil Mircea) executing link updates — model TBD with GTMC/hub
+Production launch,LIVE Jul 22, 2026 — HCP https://medical.campus.sanofi · Internal https://medical.campus.sanofi/?internal=true
+Live positioning,Sanofi Medical — centralized hub for medical education and scientific engagement
+Live content,IMMERSE · Autoimmune T1D · Medical Information · Nerve Nexus · RDU · Library of Congresses · HCDM · congress calendar · Ingredients Search · Stability Calculator · MedVerse signup
+Launch partners,GTMC · Cross-GBU SciComm · GTMC Omnichannel (Christina Ha) · Digital CX · Digital GBU · Global Web (Anna Majewska)
+Operating model,Homepage content/link updates transitional via dev team — model evolving with GTMC hub
 ,
 OPEN DECISIONS (Post-Workshop),
 Open 1,Exact ADVENT migration date and global rollout sequence
@@ -169,9 +199,9 @@ Open 7,Interest-registration landing page technical approach for non-eligible co
 CRITICAL DEADLINES,
 "July 13–14, 2026",MedVerse & ADVENT Platform Workshop completed (onsite)
 "July 18, 2026",Circulate ADVENT workshop notes; collect corrections + workstream opt-ins
-"July 27, 2026",Login/registration screenshots to Christina
+"July 22, 2026",MedVerse US homepage LIVE — medical.campus.sanofi (MAT-US-2606609) — first US Medical portal · first production MedVerse instance
 "July 31, 2026",IMMERSE Roadmap follow-up call (WPP/VML · Sanofi) — 10:30 AM EST
-"Week of Jul 21, 2026",U.S. MedVerse Home Page production launch (MAT-US-2606609) — pending Bill + Christina final review
+"July 27, 2026",Login/registration screenshots to Christina
 "September 2026",Global registration flow launch (IMMERSE early adopter)
 ~August 2026,Japan eMR decommissioning — decision required
 "August 3, 2026",Adela starts — Web Product Owner
@@ -262,17 +292,17 @@ Priority 3,"Establish stronger governance — Executive DAI, structured forums"
 Priority 4,Create MedVerse Content Deployment Kit — reusable onboarding package
 Priority 5,"Invest in organizational readiness — change management, communications, Medical Hub resourcing"
 ,
-SOURCES COMMITTED,35
+SOURCES COMMITTED,36
 STAKEHOLDERS,51
 PROGRAMS,12
 WORKSTREAMS,7
 DEADLINES,15
 RISKS,24
 WORKSHOP DECISIONS,11
-COMMIT SOURCES,32
+COMMIT SOURCES,33
 ,
 DOCUMENT STATUS,Active | Authoritative | Ready for use
 CREATED,"July 17, 2026"
-ENRICHED,"July 21, 2026 — US Homepage MLR approved + prod path (MTG-009); IMMERSE Roadmap call (MTG-008); Jul workshop; Hub/OS model"
+ENRICHED,"July 22, 2026 — US homepage LIVE; 2026–2028 roadmap (migration · SEO/AEO · RDU/ADVENT 2027 · personalization 2027 · Field Medical Experience 2028); Hub/OS model"
 PORTABLE,Yes — compatible with all AI tools and text editors
 AUTHORITY,"MedVerse Operating System/knowledge-base/ — supersede Intelligence/OSU 23 Feb/ copy for facts"
