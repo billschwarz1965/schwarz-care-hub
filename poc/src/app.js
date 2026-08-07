@@ -1,4 +1,5 @@
 import { generateResponse, suggestedPrompts } from "./rag-engine.js";
+import { speak, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 
 const messagesEl = document.getElementById("messages");
 const welcomeEl = document.getElementById("welcome");
@@ -334,12 +335,16 @@ function narrate(text) {
   const el = document.getElementById("demo-narrator");
   if (!el) return;
   el.innerHTML = `<i class="ti ti-sparkles"></i> ${escapeHtml(text)}`;
-  el.classList.add("visible");
+  if (isCCEnabled()) el.classList.add("visible");
+  speak(text);
+  showControls();
 }
 
 function narrateOff() {
   const el = document.getElementById("demo-narrator");
   if (el) el.classList.remove("visible");
+  stopSpeaking();
+  hideControls();
 }
 
 function setDemoBtnsDisabled(disabled) {
@@ -368,23 +373,34 @@ async function runClinicalDemo() {
   resetChat();
   await delay(600);
 
+  narrate("Medical Concierge demo — AI-powered clinical question answering with citations");
+  await delay(3000);
+
   const question1 = "What are my options for a 45-year-old patient with moderate-to-severe atopic dermatitis who failed topicals?";
+  narrate("An HCP asks about treatment options for moderate-to-severe atopic dermatitis");
   await typeIntoInput(question1);
   await delay(400);
   await submitQuery(question1);
-  await delay(2500);
+  narrate("The AI retrieves cited answers from Sanofi medical content and generates an Orion signal");
+  await delay(3500);
 
   const question2 = "How does dupilumab compare to abrocitinib in head-to-head data?";
+  narrate("Follow-up: comparing dupilumab versus abrocitinib in head-to-head trials");
   await typeIntoInput(question2);
   await delay(400);
   await submitQuery(question2);
-  await delay(2000);
+  narrate("Each response includes source citations and contributes to engagement intelligence");
+  await delay(3000);
 
   const question3 = "Explain type 2 inflammation and how it connects multiple diseases";
+  narrate("Cross-therapeutic area question — type 2 inflammation across disease states");
   await typeIntoInput(question3);
   await delay(400);
   await submitQuery(question3);
+  narrate("MedVerse connects knowledge across atopic dermatitis, asthma, and other type 2 diseases");
+  await delay(3000);
 
+  narrateOff();
   demoRunning = false;
   setDemoBtnsDisabled(false);
   demoBtn.innerHTML = '<i class="ti ti-player-play" style="font-size:13px"></i> Demo';

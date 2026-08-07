@@ -1,4 +1,5 @@
 import { SIGNALS, HCP_PROFILES, getAnalytics, getHcpProfile, getMslActionQueue, generateTalkingPoints, generateLiveSignal, addSignal } from "./orion-data.js";
+import { speak, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 
 const filterState = { diseaseArea: null, hcpId: null };
 let liveInterval = null;
@@ -500,11 +501,15 @@ const wait = (ms) => new Promise(r => setTimeout(r, ms));
 function narrate(text) {
   const el = document.getElementById("demo-narrator");
   el.innerHTML = `<i class="ti ti-sparkles"></i> ${escapeHtml(text)}`;
-  el.classList.add("visible");
+  if (isCCEnabled()) el.classList.add("visible");
+  speak(text);
+  showControls();
 }
 
 function narrateOff() {
   document.getElementById("demo-narrator").classList.remove("visible");
+  stopSpeaking();
+  hideControls();
 }
 
 function highlight(el) {
@@ -894,7 +899,11 @@ async function runChatDemo() {
   resetChat();
   await wait(600);
 
+  narrate("Orion AI chat demo — multi-persona questions about HCP engagement signals");
+  await wait(2500);
+
   for (const step of CHAT_DEMO_SEQUENCE) {
+    narrate(`${step.persona} asks: "${step.question.substring(0, 50)}..."`);
     await typeIntoChat(step.question);
     await wait(300);
     chatSuggestions.style.display = "none";
@@ -905,10 +914,12 @@ async function runChatDemo() {
     typing.remove();
     const response = generateChatResponse(step.question);
     addChatAIMsg(response);
-    await wait(2000);
+    narrate("AI analyzes real-time engagement signals and HCP profiles to generate insights");
+    await wait(2500);
   }
 
   addChatAIMsg(`<strong>Demo complete!</strong> ${CHAT_DEMO_SEQUENCE.length} questions answered across ${SIGNALS.length} signals and ${HCP_PROFILES.length} HCP profiles. The Orion Intelligence Agent turns behavioral signals into actionable MSL intelligence.`);
+  narrateOff();
 
   chatDemoRunning = false;
   chatDemoBtn.disabled = false;

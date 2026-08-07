@@ -1,4 +1,5 @@
 import { CONGRESSES, PRESENTATIONS, getCongressById, getPresentationsByCongressId, getCongressStats } from "./congress-data.js";
+import { speak, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 
 const stats = getCongressStats();
 let activeCongressId = null;
@@ -554,6 +555,22 @@ const CHAT_DEMO_SEQUENCE = [
   { persona: "MSL", css: "msl", question: "What Sanofi data was presented at ATS 2026?" },
 ];
 
+function narrate(text) {
+  const el = document.getElementById("demo-narrator");
+  if (!el) return;
+  el.innerHTML = `<i class="ti ti-sparkles"></i> ${text}`;
+  if (isCCEnabled()) el.classList.add("visible");
+  speak(text);
+  showControls();
+}
+
+function narrateOff() {
+  const el = document.getElementById("demo-narrator");
+  if (el) el.classList.remove("visible");
+  stopSpeaking();
+  hideControls();
+}
+
 let chatDemoRunning = false;
 
 async function typeIntoChat(text) {
@@ -571,8 +588,10 @@ async function runChatDemo() {
   chatDemoBtn.innerHTML = '<i class="ti ti-loader-2" style="font-size:13px;animation:spin 1s linear infinite"></i> Running…';
   resetChat();
   await delay(600);
+  narrate("Congress Intelligence demo — AI answers about medical congress data across personas");
 
   for (const step of CHAT_DEMO_SEQUENCE) {
+    narrate(step.persona + " asks about congress intelligence");
     await typeIntoChat(step.question);
     await delay(300);
     chatSuggestions.style.display = "none";
@@ -583,11 +602,13 @@ async function runChatDemo() {
     typing.remove();
     const response = generateResponse(step.question);
     addAIMsg(response);
+    narrate("AI surfaces findings from " + PRESENTATIONS.length + " presentations across " + CONGRESSES.length + " congresses");
     await delay(2000);
   }
 
   addAIMsg(`<strong>Demo complete!</strong> ${CHAT_DEMO_SEQUENCE.length} questions answered across ${CONGRESSES.length} congresses and ${PRESENTATIONS.length} presentations. The Congress Intelligence Agent can surface key findings, MSL talking points, and competitive data from any tracked congress.`);
 
+  narrateOff();
   chatDemoRunning = false;
   chatDemoBtn.disabled = false;
   chatDemoBtn.innerHTML = '<i class="ti ti-player-play" style="font-size:13px"></i> Demo';

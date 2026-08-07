@@ -1,4 +1,5 @@
 import { DISEASES, PATHWAYS, getDiseaseById, getConnectedDiseases, getDiseasesByPathway, getPathway } from "./disease-data.js";
+import { speak, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 
 const gridEl = document.getElementById("disease-grid");
 const detailEl = document.getElementById("disease-detail");
@@ -185,12 +186,16 @@ function narrate(text) {
   const el = document.getElementById("demo-narrator");
   if (!el) return;
   el.innerHTML = `<i class="ti ti-sparkles"></i> ${escapeHtml(text)}`;
-  el.classList.add("visible");
+  if (isCCEnabled()) el.classList.add("visible");
+  speak(text);
+  showControls();
 }
 
 function narrateOff() {
   const el = document.getElementById("demo-narrator");
   if (el) el.classList.remove("visible");
+  stopSpeaking();
+  hideControls();
 }
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }

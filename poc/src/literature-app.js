@@ -1,3 +1,5 @@
+import { speak, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
+
 const PUBMED_BASE = "/api/pubmed";
 const NEJM_JOURNAL = '"N Engl J Med"[Journal]';
 
@@ -922,31 +924,52 @@ if (demoChatBtn) {
   demoChatBtn.addEventListener("click", runChatDemo);
 }
 
+function narrate(text) {
+  const el = document.getElementById("demo-narrator");
+  if (!el) return;
+  el.innerHTML = `<i class="ti ti-sparkles"></i> ${text}`;
+  if (isCCEnabled()) el.classList.add("visible");
+  speak(text);
+  showControls();
+}
+
+function narrateOff() {
+  const el = document.getElementById("demo-narrator");
+  if (el) el.classList.remove("visible");
+  stopSpeaking();
+  hideControls();
+}
+
 async function runChatDemo() {
   demoChatBtn.disabled = true;
   demoChatBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running demo…';
 
   resetLitChat();
   await delay(600);
+  narrate("Literature Intelligence demo — live PubMed and NEJM searches with AI synthesis");
 
   await typeInto(chatInput, "What are the latest publications on dupilumab?");
+  narrate("Searching PubMed and NEJM for dupilumab publications");
   chatSend.disabled = false;
   await delay(500);
   await sendChatMessage();
   await delay(4000);
 
   await typeInto(chatInput, "What evidence exists for nirsevimab RSV prevention?");
+  narrate("Searching for nirsevimab RSV prevention evidence");
   chatSend.disabled = false;
   await delay(500);
   await sendChatMessage();
   await delay(4000);
 
   await typeInto(chatInput, "Tell me about tolebrutinib in multiple sclerosis");
+  narrate("Searching for tolebrutinib multiple sclerosis data");
   chatSend.disabled = false;
   await delay(500);
   await sendChatMessage();
   await delay(2000);
 
+  narrateOff();
   demoChatBtn.disabled = false;
   demoChatBtn.innerHTML = '<i class="ti ti-player-play"></i> Watch conversation demo';
 }
