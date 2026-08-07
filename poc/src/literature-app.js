@@ -1,6 +1,6 @@
 import { speak, speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 
-const PUBMED_BASE = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils";
+const PUBMED_BASE = "/api/pubmed";
 const NEJM_JOURNAL = '"N Engl J Med"[Journal]';
 
 const searchInput = document.getElementById("search-input");
@@ -872,20 +872,23 @@ async function runSearchDemo() {
 
   searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
   await delay(600);
+  await narrate("Literature search demo — querying PubMed and NEJM in real time");
 
   await typeInto(searchInput, "dupilumab atopic dermatitis long-term safety");
   await delay(500);
   await runSearch();
-  await delay(4000);
+  await narrate("Results include NEJM articles, auto deep-dive summaries, and Sanofi pipeline intelligence");
 
   searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
   await delay(1000);
   searchInput.value = "";
+  await narrate("Running a second search — nirsevimab RSV prevention");
   await typeInto(searchInput, "nirsevimab RSV prevention infants");
-  await delay(800);
+  await delay(500);
   await runSearch();
-  await delay(2000);
+  await narrate("Each search generates intelligence signals for MSL field teams via Orion");
 
+  narrateOff();
   demoSearchBtn.disabled = false;
   demoSearchBtn.innerHTML = '<i class="ti ti-player-play"></i> Watch literature search demo';
 }
@@ -952,24 +955,22 @@ async function runChatDemo() {
   await typeInto(chatInput, "What are the latest publications on dupilumab?");
   await narrate("Searching PubMed and NEJM for dupilumab publications");
   chatSend.disabled = false;
-  await delay(500);
   await sendChatMessage();
-  await delay(500);
+  await delay(2000);
 
+  await narrate("First query complete — now searching for nirsevimab RSV evidence");
   await typeInto(chatInput, "What evidence exists for nirsevimab RSV prevention?");
-  await narrate("Searching for nirsevimab RSV prevention evidence");
   chatSend.disabled = false;
-  await delay(500);
   await sendChatMessage();
-  await delay(500);
+  await delay(2000);
 
+  await narrate("Second query complete — searching for tolebrutinib in multiple sclerosis");
   await typeInto(chatInput, "Tell me about tolebrutinib in multiple sclerosis");
-  await narrate("Searching for tolebrutinib multiple sclerosis data");
   chatSend.disabled = false;
-  await delay(500);
   await sendChatMessage();
-  await delay(500);
+  await delay(1500);
 
+  await narrate("Three live PubMed searches with AI synthesis — all citations link to original papers");
   narrateOff();
   demoChatBtn.disabled = false;
   demoChatBtn.innerHTML = '<i class="ti ti-player-play"></i> Watch conversation demo';

@@ -631,11 +631,11 @@ function generateChatResponse(query) {
 
 async function searchPubMedLive(query, max = 5) {
   const terms = query.replace(/\b(what|how|is|are|the|can|tell|me|about|give|show|for|on|in|of|with|and|or|please|any)\b/gi, "").replace(/[?!.,]/g, "").replace(/\s+/g, " ").trim();
-  const searchRes = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${encodeURIComponent(terms)}&retmax=${max}&sort=relevance&retmode=json`);
+  const searchRes = await fetch(`/api/pubmed/esearch.fcgi?db=pubmed&term=${encodeURIComponent(terms)}&retmax=${max}&sort=relevance&retmode=json`);
   const searchData = await searchRes.json();
   const ids = searchData.esearchresult?.idlist || [];
   if (!ids.length) return [];
-  const sumRes = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(",")}&retmode=json`);
+  const sumRes = await fetch(`/api/pubmed/esummary.fcgi?db=pubmed&id=${ids.join(",")}&retmode=json`);
   const sumData = await sumRes.json();
   return ids.map(id => {
     const item = sumData.result?.[id];

@@ -50,6 +50,60 @@ while ($listener.IsListening) {
         $response = $context.Response
 
         $urlPath = $request.Url.LocalPath
+        $query = $request.Url.Query
+
+        # API proxy: forward /api/pubmed/* to PubMed E-Utilities
+        if ($urlPath.StartsWith("/api/pubmed/")) {
+            $apiPath = $urlPath -replace "^/api/pubmed/", ""
+            $targetUrl = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/$apiPath$query"
+            try {
+                $wc = New-Object System.Net.WebClient
+                $wc.Headers.Add("User-Agent", "MedVerse-POC/0.1")
+                $apiBytes = $wc.DownloadData($targetUrl)
+                $response.StatusCode = 200
+                if ($apiPath -match "retmode=text" -or $apiPath -match "efetch") {
+                    $response.ContentType = "text/plain; charset=utf-8"
+                } else {
+                    $response.ContentType = "application/json; charset=utf-8"
+                }
+                $response.ContentLength64 = $apiBytes.Length
+                $response.OutputStream.Write($apiBytes, 0, $apiBytes.Length)
+            } catch {
+                $response.StatusCode = 502
+                $errMsg = [System.Text.Encoding]::UTF8.GetBytes("API proxy error: $_")
+                $response.ContentLength64 = $errMsg.Length
+                $response.OutputStream.Write($errMsg, 0, $errMsg.Length)
+            }
+            $response.OutputStream.Close()
+            $ts = Get-Date -Format "HH:mm:ss"
+            Write-Host "  $ts  $($response.StatusCode)  PROXY $urlPath" -ForegroundColor DarkCyan
+            continue
+        }
+
+        # API proxy: forward /api/trials/* to ClinicalTrials.gov
+        if ($urlPath.StartsWith("/api/trials/")) {
+            $apiPath = $urlPath -replace "^/api/trials/", ""
+            $targetUrl = "https://clinicaltrials.gov/api/v2/$apiPath$query"
+            try {
+                $wc = New-Object System.Net.WebClient
+                $wc.Headers.Add("User-Agent", "MedVerse-POC/0.1")
+                $apiBytes = $wc.DownloadData($targetUrl)
+                $response.StatusCode = 200
+                $response.ContentType = "application/json; charset=utf-8"
+                $response.ContentLength64 = $apiBytes.Length
+                $response.OutputStream.Write($apiBytes, 0, $apiBytes.Length)
+            } catch {
+                $response.StatusCode = 502
+                $errMsg = [System.Text.Encoding]::UTF8.GetBytes("API proxy error: $_")
+                $response.ContentLength64 = $errMsg.Length
+                $response.OutputStream.Write($errMsg, 0, $errMsg.Length)
+            }
+            $response.OutputStream.Close()
+            $ts = Get-Date -Format "HH:mm:ss"
+            Write-Host "  $ts  $($response.StatusCode)  PROXY $urlPath" -ForegroundColor DarkCyan
+            continue
+        }
+
         if ($urlPath -eq "/") { $urlPath = "/index.html" }
 
         $filePath = Join-Path $root ($urlPath -replace "/", "\")
