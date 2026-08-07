@@ -2,10 +2,39 @@ import { BUSINESS_AGENTS, COMPLIANCE_AGENTS, SYSTEM_AGENTS, AGENT_DEMOS, CHART_D
 
 let activeDemo = null;
 let demoRunning = false;
+let activePersona = null;
+
+const PERSONA_MAP = {
+  "MSLs": {
+    icon: "user-star",
+    title: "MSL Field Teams",
+    desc: "AI copilots and intelligence tools that make every field interaction data-driven, compliant, and actionable",
+    userTags: ["MSLs", "Field Medical"],
+  },
+  "HCPs": {
+    icon: "stethoscope",
+    title: "Healthcare Professionals",
+    desc: "Point-of-care intelligence, clinical trial matching, ingredient safety, and on-demand MSL connections",
+    userTags: ["HCPs", "Pharmacists"],
+  },
+  "Patients": {
+    icon: "heart",
+    title: "Patients & Caregivers",
+    desc: "Treatment navigation, support programs, and safety-first interactions with built-in pharmacovigilance",
+    userTags: ["Patients"],
+  },
+  "Home office": {
+    icon: "building",
+    title: "Home Office & Medical Affairs",
+    desc: "Strategic intelligence, expert landscape analysis, segmentation, and evidence generation planning",
+    userTags: ["Home Office", "Medical Affairs", "Clinical Operations"],
+  },
+};
 
 function init() {
   renderStats();
   renderArchitecture();
+  bindPersonas();
   renderHubSection();
   renderComplianceStrip();
   renderAgentGrid();
@@ -47,6 +76,90 @@ function renderArchitecture() {
       pod.classList.remove("pod-active");
     }, 2400);
   });
+}
+
+function bindPersonas() {
+  const uxLayer = document.querySelector(".arch-ux-personas");
+  if (!uxLayer) return;
+
+  uxLayer.addEventListener("click", (e) => {
+    const span = e.target.closest(".arch-ux-personas span");
+    if (!span) return;
+    const label = span.textContent.trim();
+    const persona = PERSONA_MAP[label];
+    if (!persona) return;
+
+    if (activePersona === label) {
+      closePersonaPanel();
+      return;
+    }
+
+    document.querySelectorAll(".arch-ux-personas span.persona-active").forEach(el => el.classList.remove("persona-active"));
+    span.classList.add("persona-active");
+    activePersona = label;
+    renderPersonaPanel(label, persona);
+  });
+}
+
+function renderPersonaPanel(label, persona) {
+  const panel = document.getElementById("persona-panel");
+  const agents = BUSINESS_AGENTS.filter(a =>
+    a.users.some(u => persona.userTags.includes(u))
+  );
+  const activeCount = agents.filter(a => a.status === "active").length;
+  const plannedCount = agents.filter(a => a.status === "planned").length;
+
+  panel.innerHTML = `
+    <div class="persona-panel-header">
+      <div>
+        <div class="persona-panel-title"><i class="ti ti-${persona.icon}"></i> ${esc(persona.title)}</div>
+        <div class="persona-panel-desc">${esc(persona.desc)}</div>
+      </div>
+      <button class="persona-panel-close" id="persona-close"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="persona-panel-body">
+      <div class="persona-stat-row">
+        <div class="persona-stat"><div class="persona-stat-num">${agents.length}</div><div class="persona-stat-label">Available agents</div></div>
+        <div class="persona-stat"><div class="persona-stat-num">${activeCount}</div><div class="persona-stat-label">Active</div></div>
+        ${plannedCount > 0 ? `<div class="persona-stat"><div class="persona-stat-num">${plannedCount}</div><div class="persona-stat-label">Planned</div></div>` : ""}
+        <div class="persona-stat"><div class="persona-stat-num">${agents.reduce((s, a) => s + a.compliancePartners.length, 0)}</div><div class="persona-stat-label">Governance checks</div></div>
+      </div>
+      <div class="persona-agent-list">
+        ${agents.map(a => `
+          <div class="persona-agent" data-agent-id="${a.id}">
+            <div class="persona-agent-top">
+              <div class="persona-agent-icon"><i class="ti ti-${a.icon}"></i></div>
+              <div class="persona-agent-name">${esc(a.name)}</div>
+              <span class="persona-agent-status ${a.status}">${a.status === "active" ? "Active" : "Planned"}</span>
+            </div>
+            <div class="persona-agent-desc">${esc(a.desc)}</div>
+          </div>
+        `).join("")}
+      </div>
+    </div>`;
+
+  panel.classList.add("visible");
+  panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+  panel.querySelector("#persona-close").addEventListener("click", closePersonaPanel);
+
+  panel.querySelectorAll(".persona-agent[data-agent-id]").forEach(el => {
+    el.addEventListener("click", () => {
+      const card = document.querySelector(`.agent-card[data-id="${el.dataset.agentId}"]`);
+      if (!card) return;
+      document.querySelectorAll(".agent-card.pod-highlight").forEach(c => c.classList.remove("pod-highlight"));
+      card.classList.add("pod-highlight");
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(() => card.classList.remove("pod-highlight"), 2400);
+    });
+  });
+}
+
+function closePersonaPanel() {
+  const panel = document.getElementById("persona-panel");
+  panel.classList.remove("visible");
+  document.querySelectorAll(".arch-ux-personas span.persona-active").forEach(el => el.classList.remove("persona-active"));
+  activePersona = null;
 }
 
 function renderHubSection() {
