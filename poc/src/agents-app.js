@@ -1099,6 +1099,21 @@ if (chatInput && chatSend) {
 if (chatClearBtn) chatClearBtn.addEventListener("click", resetChat);
 bindSuggestionClicks();
 
+const chatFab = document.getElementById("chatFab");
+const chatPanel = document.getElementById("chatPanel");
+if (chatFab && chatPanel) {
+  chatFab.addEventListener("click", () => {
+    chatPanel.classList.add("open");
+    chatFab.classList.add("hidden");
+    const input = document.getElementById("chat-input");
+    if (input) input.focus();
+  });
+  chatClearBtn.addEventListener("click", () => {
+    chatPanel.classList.remove("open");
+    chatFab.classList.remove("hidden");
+  });
+}
+
 // ─── CHAT DEMO ───
 
 const CHAT_DEMO_SEQUENCE = [
