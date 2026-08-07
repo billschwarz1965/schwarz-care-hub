@@ -7,11 +7,15 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        concierge: resolve(__dirname, 'concierge.html'),
         orion: resolve(__dirname, 'orion.html'),
         disease: resolve(__dirname, 'disease.html'),
         literature: resolve(__dirname, 'literature.html'),
         congress: resolve(__dirname, 'congress.html'),
         agents: resolve(__dirname, 'agents.html'),
+        patient: resolve(__dirname, 'patient.html'),
+        medical: resolve(__dirname, 'medical.html'),
+        systemtools: resolve(__dirname, 'system-tools.html'),
       }
     }
   },

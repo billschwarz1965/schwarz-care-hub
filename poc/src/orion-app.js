@@ -1,5 +1,6 @@
 import { SIGNALS, HCP_PROFILES, getAnalytics, getHcpProfile, getMslActionQueue, generateTalkingPoints, generateLiveSignal, addSignal } from "./orion-data.js";
 import { speak, speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
+import { loadStoredSignals, onSignalReceived, clearStoredSignals } from "./orion-bridge.js";
 
 const filterState = { diseaseArea: null, hcpId: null };
 let liveInterval = null;
@@ -101,7 +102,8 @@ function renderStatDrilldown(stat) {
     });
   } else if (stat === "today") {
     title = "Today's Signals"; icon = "calendar-event";
-    const today = SIGNALS.filter(s => s.timestamp.startsWith("2026-08-06"));
+    const todayStr = new Date().getFullYear() + "-" + String(new Date().getMonth() + 1).padStart(2, "0") + "-" + String(new Date().getDate()).padStart(2, "0");
+    const today = SIGNALS.filter(s => s.timestamp.startsWith(todayStr) || s.timestamp.startsWith("2026-08-06"));
     items = today.map(s => {
       const hcp = HCP_PROFILES.find(h => h.id === s.hcpId);
       return { id: s.id, title: s.topic, badge: formatTime(s.timestamp), badgeCss: "dd-badge-log", meta: [escapeHtml(hcp?.name || s.hcpId), escapeHtml(s.diseaseArea)] };
@@ -746,7 +748,8 @@ function generateChatResponse(query) {
 
   // Trending / today
   if (q.includes("trending") || q.includes("today") || q.includes("recent")) {
-    const today = SIGNALS.filter(s => s.timestamp.startsWith("2026-08-06"));
+    const todayStr = new Date().getFullYear() + "-" + String(new Date().getMonth() + 1).padStart(2, "0") + "-" + String(new Date().getDate()).padStart(2, "0");
+    const today = SIGNALS.filter(s => s.timestamp.startsWith(todayStr) || s.timestamp.startsWith("2026-08-06"));
     const diseaseCount = {};
     today.forEach(s => { diseaseCount[s.diseaseArea] = (diseaseCount[s.diseaseArea] || 0) + 1; });
     const sorted = Object.entries(diseaseCount).sort((a, b) => b[1] - a[1]);
@@ -925,4 +928,35 @@ function bindChatDemo() {
 bindChat();
 bindChatDemo();
 
+// Ingest cross-module signals from localStorage before init renders
+const storedSignals = loadStoredSignals();
+storedSignals.forEach(s => {
+  if (!SIGNALS.find(existing => existing.id === s.id)) {
+    addSignal(s);
+  }
+});
+
 init();
+
+// Listen for real-time cross-module signals from other tabs
+onSignalReceived((signal) => {
+  if (!SIGNALS.find(existing => existing.id === signal.id)) {
+    addSignal(signal);
+    newSignalCount++;
+    renderDiseaseBreakdown();
+    applyFilters();
+    // Flash the new signal count badge
+    const liveBtn = document.getElementById("live-toggle");
+    if (liveBtn && !liveInterval) {
+      const badge = document.createElement("span");
+      badge.className = "cross-module-badge";
+      badge.textContent = newSignalCount;
+      badge.style.cssText = "position:absolute;top:-4px;right:-4px;background:#dc2626;color:white;font-size:10px;font-weight:700;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;animation:pulse 0.5s ease-out;";
+      liveBtn.style.position = "relative";
+      const existing = liveBtn.querySelector(".cross-module-badge");
+      if (existing) existing.remove();
+      liveBtn.appendChild(badge);
+    }
+    if (window.mvToast) mvToast("New signal from " + (signal._source || "MedVerse"), "info");
+  }
+});

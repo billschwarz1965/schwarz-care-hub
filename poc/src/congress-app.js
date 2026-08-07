@@ -620,3 +620,23 @@ function bindChatDemo() {
 init();
 bindChat();
 bindChatDemo();
+
+// Hash-based deep linking: #congress=aad-2026 or #poster=P-001
+(function handleHash() {
+  const hash = window.location.hash.slice(1);
+  if (!hash) return;
+  const params = new URLSearchParams(hash);
+  const congressId = params.get("congress");
+  const posterId = params.get("poster");
+  if (congressId) {
+    activeCongressId = congressId;
+    renderTimeline();
+    renderHighlights();
+    renderPresentations();
+    const card = document.querySelector(`.congress-card[data-id="${congressId}"]`);
+    if (card) card.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  if (posterId) {
+    setTimeout(() => openPoster(posterId), 400);
+  }
+})();

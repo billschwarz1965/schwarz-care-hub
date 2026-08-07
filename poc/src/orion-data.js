@@ -92,7 +92,8 @@ const SIGNALS = [
 
 function getAnalytics(signalSubset) {
   const signals = signalSubset || SIGNALS;
-  const today = signals.filter(s => s.timestamp.startsWith("2026-08-06"));
+  const todayStr = new Date().getFullYear() + "-" + String(new Date().getMonth() + 1).padStart(2, "0") + "-" + String(new Date().getDate()).padStart(2, "0");
+  const today = signals.filter(s => s.timestamp.startsWith(todayStr) || s.timestamp.startsWith("2026-08-06"));
   const priority = signals.filter(s => s.orionAction.startsWith("PRIORITY"));
   const hcpIds = new Set(signals.map(s => s.hcpId));
   const diseaseAreas = {};

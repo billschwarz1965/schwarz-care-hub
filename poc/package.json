@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "surge": "^0.41.2",
     "vite": "^6.3.5"
   }
 }

@@ -32,7 +32,7 @@ try {
 
 Write-Host ""
 Write-Host "  ========================================" -ForegroundColor Magenta
-Write-Host "    Sanofi MedVerse POC v0.1" -ForegroundColor White
+Write-Host "    Sanofi MedVerse POC v0.2" -ForegroundColor White
 Write-Host "  ========================================" -ForegroundColor Magenta
 Write-Host ""
 Write-Host "    Running at: " -NoNewline

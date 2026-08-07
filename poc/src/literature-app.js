@@ -1,4 +1,5 @@
 import { speak, speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
+import { broadcastSignal } from "./orion-bridge.js";
 
 const PUBMED_BASE = "/api/pubmed";
 const NEJM_JOURNAL = '"N Engl J Med"[Journal]';
@@ -387,6 +388,16 @@ function addOrionSignal(query, articles) {
 
     signalFeed.insertBefore(card, signalFeed.firstChild);
   }
+
+  broadcastSignal({
+    topic: `Literature Search — ${query.length > 40 ? query.slice(0, 38) + "…" : query}`,
+    intent, diseaseArea, depth,
+    orionAction: action,
+    queries: [query],
+    contentAccessed: articles.slice(0, 3).map(a => a.title || "PubMed Article"),
+    sessionDuration: Math.floor(Math.random() * 8) + 3,
+    _source: "Literature Intelligence",
+  });
 }
 
 function inferDiseaseArea(query) {

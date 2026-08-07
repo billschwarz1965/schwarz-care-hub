@@ -1,5 +1,6 @@
 import { generateResponse, suggestedPrompts } from "./rag-engine.js";
 import { speak, speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
+import { broadcastSignal } from "./orion-bridge.js";
 
 const messagesEl = document.getElementById("messages");
 const welcomeEl = document.getElementById("welcome");
@@ -143,6 +144,7 @@ async function submitQuery(query) {
   // Add Orion signal
   if (result.signal) {
     addOrionSignal(result.signal);
+    broadcastSignal({ ...result.signal, _source: "MSL Copilot" });
   }
 
   scrollToBottom();
