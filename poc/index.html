@@ -377,6 +377,7 @@
     }
     .typing span:nth-child(2) { animation-delay: 0.2s; }
     .typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes bounce {
       0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
       40% { transform: scale(1); opacity: 1; }
@@ -443,42 +444,81 @@
       text-align: center;
     }
 
-    /* ORION SIDEBAR */
+    /* RIGHT SIDEBAR */
     .sidebar {
-      width: 320px;
+      width: 360px;
       background: var(--surface);
       border-left: 1px solid var(--border);
-      overflow-y: auto;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
-    .sidebar-header {
-      padding: 16px 18px;
+    .sidebar-chat-header {
+      padding: 14px 16px;
       border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .sidebar-header h2 {
-      font-size: 14px;
-      font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      flex-shrink: 0;
     }
-    .sidebar-header h2 i { color: var(--orion-accent); }
-    .sidebar-header p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .sidebar-chat-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 18px; flex-shrink: 0;
+    }
+    .sidebar-chat-title { font-size: 14px; font-weight: 700; }
+    .sidebar-chat-sub { font-size: 11px; color: var(--text-muted); }
+    .sidebar-demo-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 5px 12px; font-size: 11px; font-weight: 600;
+      background: var(--accent); color: white; border: none;
+      border-radius: 16px; cursor: pointer; font-family: var(--font);
+      transition: background 0.15s; white-space: nowrap;
+    }
+    .sidebar-demo-btn:hover { background: var(--accent-hover); }
+    .sidebar-demo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .sidebar-clear-btn {
+      padding: 5px 8px; font-size: 13px; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--surface);
+      cursor: pointer; color: var(--text-muted); display: flex;
+      align-items: center; justify-content: center;
+      width: 28px; height: 28px;
+    }
+    .sidebar-clear-btn:hover { background: var(--surface-dim); }
+    .sidebar-suggestions {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; flex-wrap: wrap; gap: 6px;
+      flex-shrink: 0;
+    }
+    .sidebar-suggestion {
+      background: var(--accent-light); color: var(--accent-text);
+      border: 1px solid transparent; border-radius: 16px;
+      padding: 5px 12px; font-size: 11px; font-family: var(--font);
+      cursor: pointer; transition: all 0.15s; font-weight: 500;
+    }
+    .sidebar-suggestion:hover { background: var(--accent); color: white; }
     .sidebar-content {
       flex: 1;
       padding: 16px 18px;
       overflow-y: auto;
     }
+    .sidebar-section-title {
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.5px; color: var(--text-muted);
+      margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+    }
+    .sidebar-section-title i { font-size: 14px; }
     .sidebar-empty {
       text-align: center;
-      padding: 40px 20px;
+      padding: 30px 20px;
       color: var(--text-muted);
-      font-size: 13px;
+      font-size: 12px;
     }
-    .sidebar-empty i { font-size: 32px; display: block; margin-bottom: 8px; }
+    .sidebar-empty i { font-size: 28px; display: block; margin-bottom: 8px; opacity: 0.3; }
 
     /* SIGNAL CARDS */
     .signal-card {
@@ -605,7 +645,6 @@
           <div class="prompts-grid" id="prompts-grid"></div>
           <div class="demo-cta-row" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
             <button class="demo-run-btn" id="run-topic-demo"><i class="ti ti-player-play"></i> One-click topics demo</button>
-            <button class="demo-run-btn" id="run-clinical-demo" style="background:var(--accent-secondary);"><i class="ti ti-player-play"></i> Clinical question demo</button>
           </div>
         </div>
       </div>
@@ -621,11 +660,22 @@
     </div>
 
     <div class="sidebar">
-      <div class="sidebar-header">
-        <h2><i class="ti ti-radar-2"></i> Orion Signal Feed</h2>
-        <p>Behavioral signals flowing to field teams</p>
+      <div class="sidebar-chat-header">
+        <div class="sidebar-chat-icon"><i class="ti ti-brain"></i></div>
+        <div>
+          <div class="sidebar-chat-title">Concierge AI</div>
+          <div class="sidebar-chat-sub">Clinical Q&A with citations</div>
+        </div>
+        <button class="sidebar-demo-btn" id="run-clinical-demo" style="margin-left:auto;"><i class="ti ti-player-play" style="font-size:13px"></i> Demo</button>
+        <button class="sidebar-clear-btn" id="sidebar-clear-btn" title="Clear conversation"><i class="ti ti-refresh"></i></button>
+      </div>
+      <div class="sidebar-suggestions" id="sidebar-suggestions"></div>
+      <div class="sidebar-input-row" style="padding:10px 16px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-shrink:0;">
+        <input type="text" id="sidebar-input" placeholder="Ask a clinical question…" style="flex:1;border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:13px;font-family:var(--font);outline:none;">
+        <button id="sidebar-send" disabled style="width:34px;height:34px;border-radius:10px;border:none;background:var(--accent);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;"><i class="ti ti-send"></i></button>
       </div>
       <div class="sidebar-content" id="sidebar-content">
+        <div class="sidebar-section-title"><i class="ti ti-radar-2"></i> Orion Signal Feed</div>
         <div class="signal-stats" id="signal-stats">
           <div class="signal-stat" data-filter="all">
             <div class="signal-stat-num" id="stat-signals">0</div>

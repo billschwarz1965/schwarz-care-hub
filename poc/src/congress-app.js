@@ -317,4 +317,286 @@ function esc(str) {
   return d.innerHTML;
 }
 
+// ─── CHAT ───
+
+const chatMessages = document.getElementById("chat-messages");
+const chatInput = document.getElementById("chat-input");
+const chatSend = document.getElementById("chat-send");
+const chatSuggestions = document.getElementById("chat-suggestions");
+const chatDemoBtn = document.getElementById("chatDemoBtn");
+const chatClearBtn = document.getElementById("chatClearBtn");
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function resetChat() {
+  chatMessages.innerHTML = `<div class="chat-msg ai">
+    <div class="chat-ai-avatar"><i class="ti ti-calendar-event"></i></div>
+    <div class="chat-bubble chat-ai-bubble">
+      I'm the Congress Intelligence Agent. I track presentations across <strong>6 congresses</strong> — AAD, EADV, ATS, ACR, AAAAI, and DDW. Ask me about key findings, MSL talking points, or Sanofi data from any congress.
+    </div>
+  </div>`;
+  chatSuggestions.innerHTML = [
+    "Key Dupixent data at AAD",
+    "High-impact findings",
+    "COPD data from ATS",
+    "EoE evidence at DDW",
+    "What's upcoming at EADV?"
+  ].map(s => `<button class="chat-suggestion">${esc(s)}</button>`).join("");
+  chatSuggestions.style.display = "flex";
+  chatInput.value = "";
+  chatSend.disabled = true;
+  bindSuggestionClicks();
+}
+
+function bindSuggestionClicks() {
+  chatSuggestions.querySelectorAll(".chat-suggestion").forEach(btn => {
+    btn.addEventListener("click", () => {
+      chatInput.value = btn.textContent;
+      sendChat();
+    });
+  });
+}
+
+function addUserMsg(text) {
+  const div = document.createElement("div");
+  div.className = "chat-msg user";
+  div.innerHTML = `<div class="chat-bubble">${esc(text)}</div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addPersonaUserMsg(text, persona, css) {
+  const div = document.createElement("div");
+  div.className = "chat-msg user";
+  div.innerHTML = `<div><div class="chat-persona-label ${css}">${esc(persona)}</div><div class="chat-bubble" style="background:var(--accent);color:white;border-bottom-right-radius:4px">${esc(text)}</div></div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addAIMsg(html) {
+  const div = document.createElement("div");
+  div.className = "chat-msg ai";
+  div.innerHTML = `<div class="chat-ai-avatar"><i class="ti ti-calendar-event"></i></div><div class="chat-bubble chat-ai-bubble">${html}</div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addTyping() {
+  const div = document.createElement("div");
+  div.className = "chat-msg ai chat-typing-msg";
+  div.innerHTML = `<div class="chat-ai-avatar"><i class="ti ti-calendar-event"></i></div><div class="chat-bubble chat-ai-bubble"><span class="chat-typing"><span></span><span></span><span></span></span></div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  return div;
+}
+
+function generateResponse(query) {
+  const q = query.toLowerCase();
+
+  // Congress-specific queries
+  const congressMatch = CONGRESSES.find(c => {
+    const abbrevBase = c.abbrev.toLowerCase().replace(/\s*\d{4}$/, "");
+    return q.includes(c.abbrev.toLowerCase()) || q.includes(abbrevBase) || q.includes(c.society.toLowerCase().split(" ")[0]);
+  });
+
+  // Disease-specific queries
+  const diseaseMap = [
+    [/atopic|eczema|dermatitis|\bad\b/, "Atopic Dermatitis"],
+    [/copd|chronic obstructive/, "COPD"],
+    [/asthma/, "Type 2 Asthma"],
+    [/eoe|eosinophilic esophag/, "Eosinophilic Esophagitis"],
+    [/prurigo|pn\b/, "Prurigo Nodularis"],
+    [/urticaria|csu\b/, "Chronic Spontaneous Urticaria"],
+    [/crohn|ibd/, "IBD"],
+    [/rheumatoid|ra\b/, "Rheumatoid Arthritis"],
+    [/psoriasis/, "Psoriasis"],
+    [/nasal poly|crswnp/, "CRSwNP"],
+    [/cross.?ta|immunology|type.?2.*inflam/, "Cross-TA Immunology"],
+  ];
+  let diseaseMatch = null;
+  for (const [re, area] of diseaseMap) {
+    if (re.test(q)) { diseaseMatch = area; break; }
+  }
+
+  // Upcoming congress query
+  if (q.includes("upcoming") || q.includes("expected") || q.includes("what's next")) {
+    const upcoming = CONGRESSES.filter(c => c.status === "upcoming");
+    if (upcoming.length) {
+      const items = upcoming.map(c => `<strong>${esc(c.abbrev)}</strong> — ${esc(c.society)}<br>${esc(c.dates)} · ${esc(c.location)}<br><em>${esc(c.summary)}</em>`).join("<br><br>");
+      return `Upcoming congresses on our radar:<br><br>${items}`;
+    }
+  }
+
+  // High-impact query
+  if (q.includes("high impact") || q.includes("high-impact") || q.includes("key findings") || q.includes("top findings")) {
+    const highImpact = PRESENTATIONS.filter(p => p.impact === "high");
+    const items = highImpact.slice(0, 5).map(p => {
+      const c = getCongressById(p.congressId);
+      return `<strong>${esc(c.abbrev)}</strong> · ${esc(p.type)}<br>${esc(p.title)}<br>→ ${esc(p.keyFindings[0])}`;
+    }).join("<br><br>");
+    return `<strong>${highImpact.length} high-impact presentations</strong> tracked across all congresses:<br><br>${items}`;
+  }
+
+  // Head-to-head query
+  if (q.includes("head to head") || q.includes("head-to-head") || q.includes("h2h") || q.includes("compare") || q.includes("vs")) {
+    const h2h = PRESENTATIONS.filter(p => /head.to.head|compar|versus|vs\./i.test(p.title));
+    if (h2h.length) {
+      const items = h2h.map(p => {
+        const c = getCongressById(p.congressId);
+        return `<strong>${esc(c.abbrev)}</strong> · ${esc(p.type)}<br>${esc(p.title)}<br>→ ${p.keyFindings.map(f => esc(f)).join("<br>→ ")}`;
+      }).join("<br><br>");
+      return `Head-to-head comparison data from congress presentations:<br><br>${items}`;
+    }
+  }
+
+  // MSL talking points query
+  if (q.includes("msl") || q.includes("talking point")) {
+    let pool = PRESENTATIONS;
+    if (diseaseMatch) pool = pool.filter(p => p.diseaseArea === diseaseMatch);
+    if (congressMatch) pool = pool.filter(p => p.congressId === congressMatch.id);
+    const items = pool.slice(0, 4).map(p => {
+      const c = getCongressById(p.congressId);
+      return `<strong>${esc(p.title.slice(0, 60))}…</strong> (${esc(c.abbrev)})<br>💡 ${esc(p.mslTalkingPoints)}`;
+    }).join("<br><br>");
+    return `MSL talking points${diseaseMatch ? " for " + diseaseMatch : ""}:<br><br>${items}`;
+  }
+
+  // Sanofi data query
+  if (q.includes("sanofi")) {
+    let pool = PRESENTATIONS.filter(p => p.sanofiData);
+    if (congressMatch) pool = pool.filter(p => p.congressId === congressMatch.id);
+    const items = pool.slice(0, 5).map(p => {
+      const c = getCongressById(p.congressId);
+      return `★ <strong>${esc(c.abbrev)}</strong> · ${esc(p.type)}<br>${esc(p.title)}<br>→ ${esc(p.keyFindings[0])}`;
+    }).join("<br><br>");
+    return `<strong>${pool.length} Sanofi-sponsored presentations</strong>${congressMatch ? " at " + congressMatch.abbrev : ""}:<br><br>${items}`;
+  }
+
+  // Congress-specific match
+  if (congressMatch) {
+    const pres = getPresentationsByCongressId(congressMatch.id);
+    if (!pres.length) {
+      return `<strong>${esc(congressMatch.name)}</strong><br>${esc(congressMatch.dates)} · ${esc(congressMatch.location)}<br><br>${esc(congressMatch.summary)}<br><br>Presentation data is pending — this congress is ${congressMatch.status}.`;
+    }
+    const items = pres.slice(0, 4).map(p =>
+      `${p.impact === "high" ? "🔥 " : ""}${p.sanofiData ? "★ " : ""}<strong>${esc(p.type)}</strong>: ${esc(p.title)}<br>→ ${esc(p.keyFindings[0])}`
+    ).join("<br><br>");
+    return `<strong>${esc(congressMatch.name)}</strong> — ${pres.length} tracked presentations:<br><br>${items}${pres.length > 4 ? `<br><br>Plus ${pres.length - 4} more presentations.` : ""}`;
+  }
+
+  // Disease-specific match
+  if (diseaseMatch) {
+    const pres = PRESENTATIONS.filter(p => p.diseaseArea === diseaseMatch);
+    if (pres.length) {
+      const items = pres.slice(0, 4).map(p => {
+        const c = getCongressById(p.congressId);
+        return `<strong>${esc(c.abbrev)}</strong> · ${esc(p.type)}<br>${esc(p.title)}<br>→ ${esc(p.keyFindings[0])}`;
+      }).join("<br><br>");
+      return `<strong>${diseaseMatch}</strong> presentations across congresses (${pres.length} total):<br><br>${items}`;
+    }
+  }
+
+  // Fallback
+  return `I found <strong>${PRESENTATIONS.length} tracked presentations</strong> across <strong>${CONGRESSES.length} congresses</strong>. Try asking about:<br><br>• A specific congress (AAD, ATS, AAAAI, DDW)<br>• A disease area (AD, COPD, EoE, asthma)<br>• High-impact findings or MSL talking points<br>• Head-to-head comparison data<br>• Upcoming congresses`;
+}
+
+async function sendChat() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  chatInput.value = "";
+  chatSend.disabled = true;
+  chatSuggestions.style.display = "none";
+  addUserMsg(text);
+  const typing = addTyping();
+  await delay(800 + Math.random() * 600);
+  typing.remove();
+  const response = generateResponse(text);
+  addAIMsg(response);
+
+  // Follow-up suggestions based on query
+  const q = text.toLowerCase();
+  let followUps = [];
+  if (q.includes("aad")) followUps = ["Head-to-head AD data", "MSL talking points for AD", "Sanofi data at AAD"];
+  else if (q.includes("ats") || q.includes("copd")) followUps = ["COPD MSL talking points", "Unified airway data", "Sanofi respiratory data"];
+  else if (q.includes("eoe") || q.includes("ddw")) followUps = ["EoE pediatric data", "Long-term EoE durability", "Real-world EoE evidence"];
+  else if (q.includes("high impact")) followUps = ["MSL talking points", "Sanofi data highlights", "Head-to-head comparisons"];
+  else followUps = ["High-impact findings", "Upcoming congresses", "Sanofi data across congresses"];
+
+  chatSuggestions.innerHTML = followUps.map(s => `<button class="chat-suggestion">${esc(s)}</button>`).join("");
+  chatSuggestions.style.display = "flex";
+  bindSuggestionClicks();
+}
+
+function bindChat() {
+  if (chatInput && chatSend) {
+    chatSend.addEventListener("click", sendChat);
+    chatInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") sendChat();
+    });
+    chatInput.addEventListener("input", () => {
+      chatSend.disabled = !chatInput.value.trim();
+    });
+  }
+  if (chatClearBtn) chatClearBtn.addEventListener("click", resetChat);
+  bindSuggestionClicks();
+}
+
+// ─── CHAT DEMO ───
+
+const CHAT_DEMO_SEQUENCE = [
+  { persona: "MSL", css: "msl", question: "What were the key Dupixent presentations at AAD 2026?" },
+  { persona: "HCP", css: "hcp", question: "Tell me about the head-to-head comparison data" },
+  { persona: "Med Affairs", css: "med-affairs", question: "Summarize the high-impact findings across all congresses" },
+  { persona: "MSL", css: "msl", question: "What are the MSL talking points for COPD data?" },
+  { persona: "HCP", css: "hcp", question: "What EoE data was presented at DDW?" },
+  { persona: "Med Affairs", css: "med-affairs", question: "What's upcoming at EADV 2026?" },
+  { persona: "Patient Advocate", css: "patient", question: "What findings were reported for prurigo nodularis?" },
+  { persona: "MSL", css: "msl", question: "What Sanofi data was presented at ATS 2026?" },
+];
+
+let chatDemoRunning = false;
+
+async function typeIntoChat(text) {
+  chatInput.value = "";
+  for (let i = 0; i < text.length; i++) {
+    chatInput.value += text[i];
+    await delay(25 + Math.random() * 20);
+  }
+}
+
+async function runChatDemo() {
+  if (chatDemoRunning) return;
+  chatDemoRunning = true;
+  chatDemoBtn.disabled = true;
+  chatDemoBtn.innerHTML = '<i class="ti ti-loader-2" style="font-size:13px;animation:spin 1s linear infinite"></i> Running…';
+  resetChat();
+  await delay(600);
+
+  for (const step of CHAT_DEMO_SEQUENCE) {
+    await typeIntoChat(step.question);
+    await delay(300);
+    chatSuggestions.style.display = "none";
+    addPersonaUserMsg(step.question, step.persona, step.css);
+    chatInput.value = "";
+    const typing = addTyping();
+    await delay(1000 + Math.random() * 800);
+    typing.remove();
+    const response = generateResponse(step.question);
+    addAIMsg(response);
+    await delay(2000);
+  }
+
+  addAIMsg(`<strong>Demo complete!</strong> ${CHAT_DEMO_SEQUENCE.length} questions answered across ${CONGRESSES.length} congresses and ${PRESENTATIONS.length} presentations. The Congress Intelligence Agent can surface key findings, MSL talking points, and competitive data from any tracked congress.`);
+
+  chatDemoRunning = false;
+  chatDemoBtn.disabled = false;
+  chatDemoBtn.innerHTML = '<i class="ti ti-player-play" style="font-size:13px"></i> Demo';
+}
+
+function bindChatDemo() {
+  if (chatDemoBtn) chatDemoBtn.addEventListener("click", runChatDemo);
+}
+
 init();
+bindChat();
+bindChatDemo();

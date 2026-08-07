@@ -562,6 +562,81 @@ async function openDemo(agentId) {
     scrollDemo();
   }
   demoRunning = false;
+  showDemoPrompt(agentId);
+}
+
+function showDemoPrompt(agentId) {
+  const promptRow = document.getElementById("demo-prompt-row");
+  const promptInput = document.getElementById("demo-prompt-input");
+  const promptSend = document.getElementById("demo-prompt-send");
+  if (!promptRow) return;
+
+  const PROMPT_AGENTS = ["advisory-board", "expert-segment", "strategy-advisor", "gap-expert"];
+  if (!PROMPT_AGENTS.includes(agentId)) { promptRow.style.display = "none"; return; }
+
+  const placeholders = {
+    "advisory-board": "Ask about advisory board design...",
+    "expert-segment": "Ask about expert segmentation...",
+    "strategy-advisor": "Ask about medical strategy...",
+    "gap-expert": "Ask about engagement gaps..."
+  };
+  promptInput.placeholder = placeholders[agentId] || "Ask a follow-up question...";
+  promptRow.style.display = "flex";
+  promptInput.value = "";
+  promptSend.disabled = true;
+  promptInput.focus();
+}
+
+function generateDemoPromptResponse(agentId, query) {
+  const q = query.toLowerCase();
+
+  if (agentId === "advisory-board") {
+    if (/roster|member|who|list|recommend/i.test(q))
+      return `<strong>Roster Recommendation</strong><br>Based on your criteria, the Advisory Board Builder would query the Expert Intelligence Hub across 4,200+ dermatology profiles. The optimization algorithm balances scientific impact (40%), geographic representation (20%), expertise diversity (20%), engagement history (10%), and community mix (10%).<br><br>For a typical 14-member Global AD board: 8 US, 4 EU, 2 APAC — with 43% women representation and biomarker expertise coverage across TARC/CCL17, IgE phenotyping, and filaggrin genotyping.`;
+    if (/criteria|constraint|require|rule/i.test(q))
+      return `<strong>Configurable Constraints</strong><br>The Advisory Board Builder supports these optimization parameters:<br>• <strong>Regional quotas</strong> — specify seats per region (US/EU/APAC/LATAM)<br>• <strong>Academic/community mix</strong> — target ratio for practice setting diversity<br>• <strong>Expertise tags</strong> — required specializations (e.g., biomarkers, PRO measures)<br>• <strong>Exclusions</strong> — speaker bureau, competitor engagement, recent participation<br>• <strong>Tier mix</strong> — Global KOL, National KOL, Rising Star, Community Influencer`;
+    if (/score|rank|method|algorithm|how/i.test(q))
+      return `<strong>Scoring Methodology</strong><br>Each candidate receives a composite score (0–100) based on:<br>• <strong>Publication impact</strong> (40%) — h-index, recent AD-specific citations, first/last author ratio<br>• <strong>Geographic representation</strong> (20%) — fills gaps in current roster geography<br>• <strong>Expertise diversity</strong> (20%) — unique sub-specialty coverage vs. existing members<br>• <strong>Engagement history</strong> (10%) — prior Sanofi interactions, relationship strength from OneCRM<br>• <strong>Community balance</strong> (10%) — academic vs. community practice setting<br><br>Governance layer validates PHI protection, explainability of selection, and creates an immutable audit trail.`;
+    if (/compliance|governance|audit|privacy/i.test(q))
+      return `<strong>Governance Layer</strong><br>Every advisory board roster passes through 3 compliance agents before delivery:<br>• <strong>PHI Protection</strong> — ensures only professional profiles are exposed, no personal data or compensation history<br>• <strong>AI Explainability</strong> — provides full selection rationale with weightings, so Medical Affairs can defend each choice<br>• <strong>Audit Trail</strong> — logs candidate pool size, constraints applied, and final selections with compliance record ID`;
+    if (/region|geo|country|eu|apac|us|global/i.test(q))
+      return `<strong>Geographic Coverage</strong><br>The Expert Intelligence Hub profiles HCPs across 42 countries. For advisory boards, the builder can optimize across:<br>• <strong>US</strong> — 2,100+ profiled AD experts, academic medical centers and community practices<br>• <strong>EU</strong> — 1,400+ experts across UK, Germany, France, Netherlands, Nordics<br>• <strong>APAC</strong> — 500+ experts in Japan, Korea, Australia, China<br>• <strong>LATAM</strong> — 200+ emerging profiles in Brazil, Mexico, Argentina<br><br>The algorithm automatically balances geographic slots to maximize perspective diversity while meeting regional quota constraints.`;
+    if (/pediatric|child|paediatric/i.test(q))
+      return `<strong>Pediatric Focus</strong><br>For pediatric-focused advisory boards, the builder filters for:<br>• Investigators with pediatric AD trial experience<br>• Authors of pediatric-specific publications and guidelines<br>• Experts at children's hospitals or pediatric dermatology programs<br><br>Example: Dr. S. Barbarot (CHU Nantes) — pediatric AD expert, EASI validation lead, scores 91/100 for a pediatric-weighted board.`;
+    return `<strong>Advisory Board Builder</strong><br>I can help with advisory board design questions. Try asking about:<br>• Roster recommendations and member selection<br>• Scoring methodology and ranking algorithms<br>• Configurable constraints and optimization parameters<br>• Geographic coverage and regional quotas<br>• Compliance and governance review process`;
+  }
+
+  if (agentId === "expert-segment") {
+    if (/rising|star|emerging/i.test(q))
+      return `<strong>Rising Stars</strong><br>The segmentation model identifies rising stars through: >40% publication growth (3-year trend), increasing congress abstract acceptance, early-career PI roles, and low current Sanofi engagement. These represent the highest-value outreach targets for MSL teams.`;
+    if (/tier|kol|classif/i.test(q))
+      return `<strong>Tier Classification</strong><br>Experts are classified into 4 tiers based on composite scoring:<br>• <strong>Global KOL</strong> — guideline authors, major trial PIs, 50+ publications<br>• <strong>National KOL</strong> — regional thought leaders, 20+ publications, society roles<br>• <strong>Rising Star</strong> — high publication growth, emerging congress presence<br>• <strong>Community Influencer</strong> — high patient volume, practice pattern leadership`;
+    return `<strong>Expert Segmentation</strong><br>I can help with segmentation questions. Try asking about tier classifications, rising star identification, or engagement gap analysis.`;
+  }
+
+  return `<strong>${esc(agentId)}</strong><br>This agent's prompt capabilities are available. Try asking a specific question about its domain.`;
+}
+
+function handleDemoPrompt() {
+  const input = document.getElementById("demo-prompt-input");
+  const content = document.getElementById("demo-content");
+  const query = input.value.trim();
+  if (!query || demoRunning || !activeDemo) return;
+
+  const qEl = document.createElement("div");
+  qEl.className = "demo-prompt-q";
+  qEl.textContent = query;
+  content.appendChild(qEl);
+
+  const response = generateDemoPromptResponse(activeDemo, query);
+  const rEl = document.createElement("div");
+  rEl.className = "demo-prompt-response";
+  rEl.innerHTML = response;
+  content.appendChild(rEl);
+
+  input.value = "";
+  document.getElementById("demo-prompt-send").disabled = true;
+  content.scrollTop = content.scrollHeight;
 }
 
 function renderChart(chartId, data) {
@@ -702,6 +777,7 @@ function renderGapExpertChart(container, data) {
 
 function closeDemo() {
   document.getElementById("demo-panel").style.display = "none";
+  document.getElementById("demo-prompt-row").style.display = "none";
   document.body.style.overflow = "";
   activeDemo = null;
   demoRunning = false;
@@ -713,6 +789,13 @@ function bindClose() {
   document.getElementById("demo-panel").addEventListener("click", (e) => {
     if (e.target.id === "demo-panel") closeDemo();
   });
+  const promptInput = document.getElementById("demo-prompt-input");
+  const promptSend = document.getElementById("demo-prompt-send");
+  if (promptInput && promptSend) {
+    promptInput.addEventListener("input", () => { promptSend.disabled = !promptInput.value.trim(); });
+    promptInput.addEventListener("keydown", (e) => { if (e.key === "Enter" && promptInput.value.trim()) handleDemoPrompt(); });
+    promptSend.addEventListener("click", handleDemoPrompt);
+  }
 }
 
 function highlightCompliance(agentId) {
@@ -792,6 +875,281 @@ if (trialSearchBtn) {
   trialSearchBtn.addEventListener("click", runTrialSearch);
   trialInput.addEventListener("keydown", (e) => { if (e.key === "Enter") runTrialSearch(); });
 }
+
+// ─── ECOSYSTEM CHAT ───
+
+const chatMessages = document.getElementById("chat-messages");
+const chatInput = document.getElementById("chat-input");
+const chatSend = document.getElementById("chat-send");
+const chatSuggestions = document.getElementById("chat-suggestions");
+const chatDemoBtn = document.getElementById("chatDemoBtn");
+const chatClearBtn = document.getElementById("chatClearBtn");
+
+const DEFAULT_SUGGESTIONS = [
+  "How many agents are there?",
+  "What agents serve MSLs?",
+  "Explain governance layer",
+  "What is the Expert Hub?",
+  "Show agent architecture",
+];
+
+function resetChat() {
+  if (!chatMessages) return;
+  chatMessages.innerHTML = `<div class="chat-msg ai">
+    <div class="chat-ai-avatar"><i class="ti ti-robot"></i></div>
+    <div class="chat-bubble chat-ai-bubble">
+      I'm the Ecosystem Intelligence Agent. Ask me about MedVerse's <strong>agent architecture</strong>, governance layers, intelligence hubs, or how agents work together.
+    </div>
+  </div>`;
+  chatSuggestions.innerHTML = DEFAULT_SUGGESTIONS.map(s => `<button class="chat-suggestion">${esc(s)}</button>`).join("");
+  chatSuggestions.style.display = "flex";
+  chatInput.value = "";
+  chatSend.disabled = true;
+  bindSuggestionClicks();
+}
+
+function bindSuggestionClicks() {
+  chatSuggestions.querySelectorAll(".chat-suggestion").forEach(btn => {
+    btn.addEventListener("click", () => {
+      chatInput.value = btn.textContent;
+      sendChat();
+    });
+  });
+}
+
+function addUserMsg(text) {
+  const div = document.createElement("div");
+  div.className = "chat-msg user";
+  div.innerHTML = `<div class="chat-bubble">${esc(text)}</div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addPersonaUserMsg(text, persona, css) {
+  const div = document.createElement("div");
+  div.className = "chat-msg user";
+  div.innerHTML = `<div><div class="chat-persona-label ${css}">${esc(persona)}</div><div class="chat-bubble" style="background:var(--accent);color:white;border-bottom-right-radius:4px">${esc(text)}</div></div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addAIMsg(html) {
+  const div = document.createElement("div");
+  div.className = "chat-msg ai";
+  div.innerHTML = `<div class="chat-ai-avatar"><i class="ti ti-robot"></i></div><div class="chat-bubble chat-ai-bubble">${html}</div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addTyping() {
+  const div = document.createElement("div");
+  div.className = "chat-msg ai";
+  div.innerHTML = `<div class="chat-ai-avatar"><i class="ti ti-robot"></i></div><div class="chat-bubble chat-ai-bubble"><span class="chat-typing"><span></span><span></span><span></span></span></div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  return div;
+}
+
+function generateChatResponse(query) {
+  const q = query.toLowerCase();
+  const allAgents = [...BUSINESS_AGENTS, ...SYSTEM_AGENTS.map(h => ({...h, _isHub: true})), ...COMPLIANCE_AGENTS.map(c => ({...c, _isGov: true}))];
+
+  // Count / overview
+  if (q.includes("how many") || (q.includes("count") && q.includes("agent")) || q.includes("overview") || q.includes("total")) {
+    return `<strong>MedVerse Agent Ecosystem:</strong><br><br>` +
+      `• <strong>${BUSINESS_AGENTS.length}</strong> business agents (orchestration layer)<br>` +
+      `• <strong>${SYSTEM_AGENTS.length}</strong> intelligence hubs (platform layer)<br>` +
+      `• <strong>${COMPLIANCE_AGENTS.length}</strong> governance agents (compliance layer)<br>` +
+      `• <strong>${SYSTEM_AGENTS.reduce((s, a) => s + a.dataSources.length, 0)}</strong> connected data sources<br>` +
+      `• <strong>${BUSINESS_AGENTS.reduce((s, a) => s + a.compliancePartners.length, 0)}</strong> governance pairings<br><br>` +
+      `Every business agent has at least one governance partner ensuring compliance-by-design.`;
+  }
+
+  // Architecture
+  if (q.includes("architect") || q.includes("layer") || q.includes("how.*work") || q.includes("structure")) {
+    return `<strong>Four-layer architecture:</strong><br><br>` +
+      `<strong>1. User Experience Layer</strong> — MSLs, HCPs, Patients, Home Office<br>` +
+      `<strong>2. Agent Orchestration Layer</strong> — ${BUSINESS_AGENTS.length} business agents serving specific workflows<br>` +
+      `<strong>3. Intelligence Hub Layer</strong> — ${SYSTEM_AGENTS.length} foundational knowledge graphs (${SYSTEM_AGENTS.map(h => h.name).join(", ")})<br>` +
+      `<strong>4. Compliance & Governance Layer</strong> — ${COMPLIANCE_AGENTS.length} agents ensuring every interaction is monitored, validated, and audit-ready<br><br>` +
+      `Business agents query intelligence hubs for data and are supervised by governance agents.`;
+  }
+
+  // Persona-specific: MSL
+  if (q.includes("msl") || q.includes("field medical")) {
+    const mslAgents = BUSINESS_AGENTS.filter(a => a.users.some(u => u.toLowerCase().includes("msl") || u.toLowerCase().includes("field")));
+    const items = mslAgents.map(a => `• <strong>${esc(a.name)}</strong> — ${esc(a.desc.split(".")[0])}`).join("<br>");
+    return `<strong>${mslAgents.length} agents serve MSL field teams:</strong><br><br>${items}`;
+  }
+
+  // Persona-specific: HCP
+  if (q.includes("hcp") || q.includes("physician") || q.includes("healthcare pro")) {
+    const hcpAgents = BUSINESS_AGENTS.filter(a => a.users.some(u => u.toLowerCase().includes("hcp") || u.toLowerCase().includes("pharmacist")));
+    const items = hcpAgents.map(a => `• <strong>${esc(a.name)}</strong> — ${esc(a.desc.split(".")[0])}`).join("<br>");
+    return `<strong>${hcpAgents.length} agents serve HCPs:</strong><br><br>${items}`;
+  }
+
+  // Persona-specific: Patient
+  if (q.includes("patient")) {
+    const patAgents = BUSINESS_AGENTS.filter(a => a.users.some(u => u.toLowerCase().includes("patient")));
+    const items = patAgents.map(a => `• <strong>${esc(a.name)}</strong> — ${esc(a.desc.split(".")[0])}`).join("<br>");
+    return `<strong>${patAgents.length} agents serve patients:</strong><br><br>${items}`;
+  }
+
+  // Governance / compliance
+  if (q.includes("govern") || q.includes("compliance") || q.includes("mlr") || q.includes("audit")) {
+    const items = COMPLIANCE_AGENTS.slice(0, 6).map(a => `• <strong>${esc(a.name)}</strong> — ${esc(a.desc.split(".")[0])}`).join("<br>");
+    return `<strong>${COMPLIANCE_AGENTS.length} governance agents</strong> enforce compliance-by-design:<br><br>${items}<br><br>` +
+      `Plus ${COMPLIANCE_AGENTS.length - 6} more: ${COMPLIANCE_AGENTS.slice(6).map(a => a.name).join(", ")}.`;
+  }
+
+  // Expert Hub
+  if (q.includes("expert") && (q.includes("hub") || q.includes("intelligence"))) {
+    const hub = SYSTEM_AGENTS.find(h => h.id === "hcp-explorer");
+    if (hub) {
+      const sources = hub.dataSources.map(d => `• ${d.value} ${esc(d.label)}`).join("<br>");
+      const consumers = hub.consumers.map(id => BUSINESS_AGENTS.find(a => a.id === id)?.name).filter(Boolean);
+      return `<strong>${esc(hub.name)}</strong><br>${esc(hub.subtitle)}<br><br>` +
+        `<strong>Data sources:</strong><br>${sources}<br><br>` +
+        `<strong>Powers ${consumers.length} agents:</strong> ${consumers.join(", ")}`;
+    }
+  }
+
+  // Literature Intelligence hub
+  if (q.includes("literature") && (q.includes("hub") || q.includes("intelligence") || q.includes("platform"))) {
+    const hub = SYSTEM_AGENTS.find(h => h.id === "literature-intel");
+    if (hub) {
+      const sources = hub.dataSources.map(d => `• ${d.value} ${esc(d.label)}`).join("<br>");
+      return `<strong>${esc(hub.name)}</strong><br>${esc(hub.subtitle)}<br><br>` +
+        `<strong>Data sources:</strong><br>${sources}<br><br>` +
+        `<strong>Capabilities:</strong><br>${hub.capabilities.map(c => "• " + esc(c)).join("<br>")}`;
+    }
+  }
+
+  // Specific agent lookup
+  const agentMatch = allAgents.find(a => {
+    const name = a.name.toLowerCase();
+    return q.includes(name) || name.split(" ").every(w => q.includes(w));
+  });
+  if (agentMatch) {
+    let response = `<strong>${esc(agentMatch.name)}</strong><br>${esc(agentMatch.desc)}<br><br>`;
+    if (agentMatch.users) response += `<strong>Users:</strong> ${agentMatch.users.join(", ")}<br>`;
+    if (agentMatch.compliancePartners) {
+      const govNames = agentMatch.compliancePartners.map(id => COMPLIANCE_AGENTS.find(c => c.id === id)?.name).filter(Boolean);
+      response += `<strong>Governance:</strong> ${govNames.join(", ")}<br>`;
+    }
+    if (agentMatch.hubDependency?.length) {
+      const hubNames = agentMatch.hubDependency.map(id => SYSTEM_AGENTS.find(h => h.id === id)?.name).filter(Boolean);
+      response += `<strong>Intelligence hubs:</strong> ${hubNames.join(", ")}`;
+    }
+    if (agentMatch._isGov) {
+      const supervised = BUSINESS_AGENTS.filter(a => a.compliancePartners.includes(agentMatch.id));
+      response += `<strong>Supervises:</strong> ${supervised.map(a => a.name).join(", ")}`;
+    }
+    return response;
+  }
+
+  // Data sources
+  if (q.includes("data source") || q.includes("data") && q.includes("connect")) {
+    const allSources = SYSTEM_AGENTS.flatMap(h => h.dataSources.map(d => ({ ...d, hub: h.name })));
+    const items = allSources.map(d => `• <strong>${d.value}</strong> ${esc(d.label)} (${esc(d.hub)})`).join("<br>");
+    return `<strong>${allSources.length} connected data sources:</strong><br><br>${items}`;
+  }
+
+  // Fallback
+  return `The MedVerse ecosystem has <strong>${BUSINESS_AGENTS.length} business agents</strong>, <strong>${SYSTEM_AGENTS.length} intelligence hubs</strong>, and <strong>${COMPLIANCE_AGENTS.length} governance agents</strong>. Try asking about:<br><br>` +
+    `• Agent count or architecture overview<br>` +
+    `• Agents for a persona (MSLs, HCPs, patients)<br>` +
+    `• A specific agent (MSL Copilot, Advisory Board Builder)<br>` +
+    `• Governance/compliance layer<br>` +
+    `• Intelligence hubs (Expert Hub, Literature)`;
+}
+
+async function sendChat() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  chatInput.value = "";
+  chatSend.disabled = true;
+  chatSuggestions.style.display = "none";
+  addUserMsg(text);
+  const typing = addTyping();
+  await delay(800 + Math.random() * 600);
+  typing.remove();
+  addAIMsg(generateChatResponse(text));
+
+  const lq = text.toLowerCase();
+  let followUps = [];
+  if (lq.includes("how many") || lq.includes("overview")) followUps = ["Show agent architecture", "What agents serve MSLs?", "Explain governance layer"];
+  else if (lq.includes("msl")) followUps = ["What is the Expert Hub?", "How many agents?", "Explain governance"];
+  else if (lq.includes("govern")) followUps = ["Architecture overview", "What agents serve HCPs?", "Data sources"];
+  else if (lq.includes("hub") || lq.includes("expert")) followUps = ["Literature Intelligence hub", "Agents for MSLs", "Governance layer"];
+  else followUps = ["How many agents?", "Show architecture", "What agents serve MSLs?"];
+
+  chatSuggestions.innerHTML = followUps.map(s => `<button class="chat-suggestion">${esc(s)}</button>`).join("");
+  chatSuggestions.style.display = "flex";
+  bindSuggestionClicks();
+}
+
+if (chatInput && chatSend) {
+  chatSend.addEventListener("click", sendChat);
+  chatInput.addEventListener("keydown", e => { if (e.key === "Enter") sendChat(); });
+  chatInput.addEventListener("input", () => { chatSend.disabled = !chatInput.value.trim(); });
+}
+if (chatClearBtn) chatClearBtn.addEventListener("click", resetChat);
+bindSuggestionClicks();
+
+// ─── CHAT DEMO ───
+
+const CHAT_DEMO_SEQUENCE = [
+  { persona: "Med Affairs", css: "med-affairs", question: "How many agents are in the MedVerse ecosystem?" },
+  { persona: "MSL", css: "msl", question: "What agents are available for MSL field teams?" },
+  { persona: "Med Affairs", css: "med-affairs", question: "Explain the governance layer" },
+  { persona: "MSL", css: "msl", question: "What is the Expert Intelligence Hub?" },
+  { persona: "HCP", css: "hcp", question: "What agents serve HCPs?" },
+  { persona: "Med Affairs", css: "med-affairs", question: "Tell me about the MSL Copilot" },
+  { persona: "Field Ops", css: "field-ops", question: "Show agent architecture" },
+  { persona: "MSL", css: "msl", question: "What data sources are connected?" },
+];
+
+let chatDemoRunning = false;
+
+async function typeIntoChat(text) {
+  chatInput.value = "";
+  for (let i = 0; i < text.length; i++) {
+    chatInput.value += text[i];
+    await delay(25 + Math.random() * 20);
+  }
+}
+
+async function runChatDemo() {
+  if (chatDemoRunning) return;
+  chatDemoRunning = true;
+  chatDemoBtn.disabled = true;
+  chatDemoBtn.innerHTML = '<i class="ti ti-loader-2" style="font-size:13px;animation:spin 1s linear infinite"></i> Running…';
+  resetChat();
+  await delay(600);
+
+  for (const step of CHAT_DEMO_SEQUENCE) {
+    await typeIntoChat(step.question);
+    await delay(300);
+    chatSuggestions.style.display = "none";
+    addPersonaUserMsg(step.question, step.persona, step.css);
+    chatInput.value = "";
+    const typing = addTyping();
+    await delay(1000 + Math.random() * 800);
+    typing.remove();
+    addAIMsg(generateChatResponse(step.question));
+    await delay(2000);
+  }
+
+  addAIMsg(`<strong>Demo complete!</strong> ${CHAT_DEMO_SEQUENCE.length} questions answered across ${BUSINESS_AGENTS.length} business agents, ${SYSTEM_AGENTS.length} intelligence hubs, and ${COMPLIANCE_AGENTS.length} governance agents.`);
+
+  chatDemoRunning = false;
+  chatDemoBtn.disabled = false;
+  chatDemoBtn.innerHTML = '<i class="ti ti-player-play" style="font-size:13px"></i> Demo';
+}
+
+if (chatDemoBtn) chatDemoBtn.addEventListener("click", runChatDemo);
 
 document.querySelectorAll(".trial-quick-tag").forEach(tag => {
   tag.addEventListener("click", () => {

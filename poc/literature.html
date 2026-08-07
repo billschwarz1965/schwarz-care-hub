@@ -117,13 +117,31 @@
       padding: 24px;
     }
     .side-panel {
-      width: 340px;
+      width: 360px;
       border-left: 1px solid var(--border);
       background: var(--surface);
-      overflow-y: auto;
-      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
       flex-shrink: 0;
     }
+    .sidebar-chat-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .sidebar-chat-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 18px; flex-shrink: 0;
+    }
+    .sidebar-chat-title { font-size: 14px; font-weight: 700; }
+    .sidebar-chat-sub { font-size: 11px; color: var(--text-muted); }
 
     /* SEARCH HERO */
     .search-hero {
@@ -444,35 +462,20 @@
     .gov-check i { font-size: 12px; }
 
     /* CHAT INTERFACE */
-    .chat-section {
-      margin-top: 32px;
-      border-top: 2px solid var(--border);
-      padding-top: 24px;
-    }
-    .chat-section-header {
-      display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
-    }
-    .chat-section-icon {
-      width: 40px; height: 40px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-size: 20px;
-    }
-    .chat-section-title { font-size: 16px; font-weight: 700; }
-    .chat-section-subtitle { font-size: 12px; color: var(--text-muted); }
 
     .chat-container {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
       overflow: hidden;
     }
     .chat-messages {
-      min-height: 200px;
-      max-height: 480px;
+      flex: 1;
       overflow-y: auto;
       padding: 16px;
+      min-height: 0;
     }
     .chat-msg { display: flex; gap: 10px; margin-bottom: 14px; }
     .chat-msg-user { justify-content: flex-end; }
@@ -850,65 +853,40 @@
       <!-- COMPARE STICKY BAR -->
       <div id="compare-bar" style="display:none"></div>
 
-      <!-- CONVERSATIONAL INTERFACE -->
-      <div class="chat-section">
-        <div class="chat-section-header">
-          <div class="chat-section-icon"><i class="ti ti-message-chatbot"></i></div>
-          <div>
-            <div class="chat-section-title">Ask the Literature Agent</div>
-            <div class="chat-section-subtitle">Ask natural language questions — the agent searches PubMed and NEJM in real time and synthesizes evidence</div>
-          </div>
-        </div>
+    </div>
 
-        <div class="demo-cta-row" style="text-align:left;margin:0 0 12px">
-          <button class="demo-play-btn" id="demo-chat-btn"><i class="ti ti-player-play"></i> Watch conversation demo</button>
+    <!-- CHAT SIDEBAR -->
+    <div class="side-panel">
+      <div class="sidebar-chat-header">
+        <div class="sidebar-chat-icon"><i class="ti ti-message-chatbot"></i></div>
+        <div>
+          <div class="sidebar-chat-title">Literature AI</div>
+          <div class="sidebar-chat-sub">Ask about publications, evidence & research</div>
         </div>
-
-        <div class="chat-container" id="chat-panel">
-          <div class="chat-messages" id="chat-messages">
-            <div class="chat-msg chat-msg-agent">
-              <div class="chat-agent-avatar"><i class="ti ti-book-2"></i></div>
-              <div class="chat-msg-content">
-                <div class="chat-msg-bubble chat-agent-bubble">
-                  I'm the Literature Intelligence Agent with live connections to <strong>PubMed</strong> (36M+ articles) and the <strong>New England Journal of Medicine</strong>. Ask me about any Sanofi therapeutic area — I'll search, retrieve, and synthesize the published evidence for you.
-                </div>
+        <button class="demo-play-btn" id="demo-chat-btn" style="margin-left:auto;padding:5px 12px;font-size:11px;border-radius:16px;"><i class="ti ti-player-play" style="font-size:13px"></i> Demo</button>
+        <button id="chat-clear-btn" style="padding:5px 8px;font-size:13px;border-radius:50%;border:1px solid var(--border);background:var(--surface);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center;width:28px;height:28px;" title="Clear chat"><i class="ti ti-refresh"></i></button>
+      </div>
+      <div class="chat-container" id="chat-panel">
+        <div class="chat-messages" id="chat-messages">
+          <div class="chat-msg chat-msg-agent">
+            <div class="chat-agent-avatar"><i class="ti ti-book-2"></i></div>
+            <div class="chat-msg-content">
+              <div class="chat-msg-bubble chat-agent-bubble">
+                I'm the Literature Intelligence Agent with live connections to <strong>PubMed</strong> (36M+ articles) and the <strong>NEJM</strong>. Ask me about any Sanofi therapeutic area — I'll search, retrieve, and synthesize the evidence.
               </div>
             </div>
           </div>
-          <div class="chat-suggestions" id="chat-suggestions">
-            <button class="chat-suggestion" data-q="What are the latest publications on dupilumab?">Latest dupilumab publications</button>
-            <button class="chat-suggestion" data-q="How does dupilumab compare to abrocitinib in head-to-head data?">Dupilumab vs abrocitinib H2H</button>
-            <button class="chat-suggestion" data-q="What is the pediatric safety profile of dupilumab?">Pediatric safety data</button>
-            <button class="chat-suggestion" data-q="What evidence exists for nirsevimab RSV prevention?">Nirsevimab RSV evidence</button>
-            <button class="chat-suggestion" data-q="Tell me about tolebrutinib in multiple sclerosis">Tolebrutinib in MS</button>
-          </div>
-          <div class="chat-input-row">
-            <input type="text" id="chat-input" placeholder="Ask a question about the scientific literature…">
-            <button id="chat-send" disabled><i class="ti ti-send"></i></button>
-          </div>
         </div>
-      </div>
-    </div>
-
-    <!-- SIDEBAR -->
-    <div class="side-panel">
-      <div class="side-section">
-        <div class="side-section-title"><i class="ti ti-brain"></i> AI Intelligence Layer</div>
-        <div id="intel-panel">
-          <div class="intel-card">
-            <div class="intel-card-header"><i class="ti ti-info-circle"></i> Ready to analyze</div>
-            <p style="font-size:12px;color:var(--text-muted)">Search the literature to activate the intelligence layer. The agent will analyze publication trends, identify key authors, and surface evidence gaps.</p>
-          </div>
+        <div class="chat-suggestions" id="chat-suggestions">
+          <button class="chat-suggestion" data-q="What are the latest publications on dupilumab?">Latest dupilumab pubs</button>
+          <button class="chat-suggestion" data-q="How does dupilumab compare to abrocitinib in head-to-head data?">Dupilumab vs abrocitinib</button>
+          <button class="chat-suggestion" data-q="What is the pediatric safety profile of dupilumab?">Pediatric safety data</button>
+          <button class="chat-suggestion" data-q="What evidence exists for nirsevimab RSV prevention?">Nirsevimab RSV</button>
+          <button class="chat-suggestion" data-q="Tell me about tolebrutinib in multiple sclerosis">Tolebrutinib in MS</button>
         </div>
-      </div>
-
-      <div class="side-section">
-        <div class="side-section-title"><i class="ti ti-radar-2"></i> Orion Signal Feed</div>
-        <div id="signal-feed">
-          <div style="text-align:center;padding:20px;color:var(--text-muted);font-size:12px">
-            <i class="ti ti-radar-2" style="font-size:24px;display:block;margin-bottom:8px;opacity:0.3"></i>
-            Literature searches generate behavioral intelligence signals for Orion.
-          </div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Ask about the literature…">
+          <button id="chat-send" disabled><i class="ti ti-send"></i></button>
         </div>
       </div>
     </div>

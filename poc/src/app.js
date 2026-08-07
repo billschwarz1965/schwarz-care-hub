@@ -54,7 +54,7 @@ headerHome.addEventListener("click", (e) => {
 
 newChatBtn.addEventListener("click", () => resetChat());
 
-// Render suggested prompts
+// Render suggested prompts in main panel
 suggestedPrompts.forEach(p => {
   const card = document.createElement("div");
   card.className = "prompt-card";
@@ -62,6 +62,36 @@ suggestedPrompts.forEach(p => {
   card.addEventListener("click", () => submitQuery(p.text));
   promptsGrid.appendChild(card);
 });
+
+// Render sidebar suggestion chips
+const sidebarSuggestions = document.getElementById("sidebar-suggestions");
+if (sidebarSuggestions) {
+  suggestedPrompts.forEach(p => {
+    const btn = document.createElement("button");
+    btn.className = "sidebar-suggestion";
+    btn.textContent = p.short;
+    btn.addEventListener("click", () => submitQuery(p.text));
+    sidebarSuggestions.appendChild(btn);
+  });
+}
+
+// Sidebar clear button
+const sidebarClearBtn = document.getElementById("sidebar-clear-btn");
+if (sidebarClearBtn) sidebarClearBtn.addEventListener("click", () => resetChat());
+
+// Sidebar input
+const sidebarInput = document.getElementById("sidebar-input");
+const sidebarSendBtn = document.getElementById("sidebar-send");
+if (sidebarInput && sidebarSendBtn) {
+  sidebarSendBtn.addEventListener("click", () => {
+    const text = sidebarInput.value.trim();
+    if (text) { sidebarInput.value = ""; sidebarSendBtn.disabled = true; submitQuery(text); }
+  });
+  sidebarInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") { e.preventDefault(); const text = sidebarInput.value.trim(); if (text) { sidebarInput.value = ""; sidebarSendBtn.disabled = true; submitQuery(text); } }
+  });
+  sidebarInput.addEventListener("input", () => { sidebarSendBtn.disabled = !sidebarInput.value.trim(); });
+}
 
 // Input handling
 inputEl.addEventListener("input", () => {
@@ -333,7 +363,10 @@ async function runClinicalDemo() {
   if (demoRunning) return;
   demoRunning = true;
   setDemoBtnsDisabled(true);
-  demoBtn.innerHTML = '<i class="ti ti-loader-2 ti-spin"></i> Running…';
+  demoBtn.innerHTML = '<i class="ti ti-loader-2" style="font-size:13px;animation:spin 1s linear infinite"></i> Running…';
+
+  resetChat();
+  await delay(600);
 
   const question1 = "What are my options for a 45-year-old patient with moderate-to-severe atopic dermatitis who failed topicals?";
   await typeIntoInput(question1);
@@ -354,7 +387,7 @@ async function runClinicalDemo() {
 
   demoRunning = false;
   setDemoBtnsDisabled(false);
-  demoBtn.innerHTML = '<i class="ti ti-player-play"></i> Clinical question demo';
+  demoBtn.innerHTML = '<i class="ti ti-player-play" style="font-size:13px"></i> Demo';
 }
 
 async function runTopicDemo() {

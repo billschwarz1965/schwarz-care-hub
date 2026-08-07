@@ -167,7 +167,36 @@
       border-radius: var(--radius);
       padding: 16px;
       text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
     }
+    .stat-card:hover { border-color: var(--accent); background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(122,0,230,0.1); }
+    .stat-card.active { border-color: var(--accent); background: var(--accent-light); box-shadow: 0 0 0 3px rgba(122,0,230,0.15); }
+    .stat-card::after { content: ""; position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--accent); border-radius: 1px; transition: width 0.2s; }
+    .stat-card:hover::after { width: 24px; }
+    .stat-card.active::after { width: 24px; }
+
+    /* Stat Drill-Down Panel */
+    .stat-drilldown { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0; margin-bottom: 20px; animation: slideDown 0.25s ease; overflow: hidden; }
+    @keyframes slideDown { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 600px; } }
+    .stat-drilldown-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .stat-drilldown-header h3 { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .stat-drilldown-header h3 i { color: var(--accent); }
+    .stat-drilldown-close { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--text-muted); padding: 4px 8px; border-radius: 6px; }
+    .stat-drilldown-close:hover { background: var(--surface-dim); color: var(--text); }
+    .stat-drilldown-body { padding: 14px 18px; max-height: 340px; overflow-y: auto; }
+    .stat-drilldown-body::-webkit-scrollbar { width: 5px; }
+    .stat-drilldown-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .dd-item { padding: 10px 12px; border-radius: 8px; margin-bottom: 8px; background: var(--surface-dim); border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
+    .dd-item:hover { border-color: var(--accent); background: var(--accent-light); }
+    .dd-item:last-child { margin-bottom: 0; }
+    .dd-item-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+    .dd-item-meta { font-size: 11px; color: var(--text-muted); display: flex; gap: 8px; flex-wrap: wrap; }
+    .dd-item-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
+    .dd-badge-priority { background: var(--danger-bg); color: var(--danger); }
+    .dd-badge-queue { background: var(--warn-bg); color: var(--warn); }
+    .dd-badge-log { background: var(--surface-dim); color: var(--text-muted); }
     .stat-card-num {
       font-size: 28px;
       font-weight: 700;
@@ -585,6 +614,103 @@
       box-shadow: 0 0 0 6px rgba(122, 0, 230, 0.15) !important;
       transition: outline 0.3s, box-shadow 0.3s;
     }
+
+    /* LAYOUT + CHAT SIDEBAR */
+    .layout { display: flex; flex: 1; overflow: hidden; }
+    .dashboard { flex: 1; }
+    .chat-sidebar {
+      width: 360px; min-width: 360px; flex-shrink: 0;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    .chat-header {
+      padding: 14px 16px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+    }
+    .chat-header-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--orion-accent), #34d399);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 18px; flex-shrink: 0;
+    }
+    .chat-header-title { font-size: 14px; font-weight: 700; }
+    .chat-header-sub { font-size: 11px; color: var(--text-muted); }
+    .chat-header-actions { margin-left: auto; display: flex; gap: 6px; }
+    .chat-action-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 5px 12px; border-radius: 16px;
+      font-family: var(--font); font-size: 11px; font-weight: 600;
+      border: none; cursor: pointer; transition: all 0.15s;
+    }
+    .chat-demo-btn { background: var(--orion-accent); color: white; }
+    .chat-demo-btn:hover { background: #085041; }
+    .chat-demo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .chat-clear-btn { background: var(--surface-dim); color: var(--text-muted); }
+    .chat-clear-btn:hover { color: var(--orion-accent); }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 16px; min-height: 0; }
+    .chat-msg { margin-bottom: 14px; }
+    .chat-msg.user { display: flex; justify-content: flex-end; }
+    .chat-msg.user .chat-bubble { background: var(--orion-accent); color: white; border-bottom-right-radius: 4px; }
+    .chat-msg.ai { display: flex; gap: 10px; }
+    .chat-bubble {
+      max-width: 88%; padding: 10px 14px;
+      border-radius: 12px; font-size: 13px; line-height: 1.55;
+    }
+    .chat-ai-bubble { background: var(--surface-dim); color: var(--text); border-bottom-left-radius: 4px; }
+    .chat-ai-bubble strong { color: var(--orion-accent); }
+    .chat-ai-avatar {
+      width: 28px; height: 28px; flex-shrink: 0;
+      background: var(--orion-bg); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--orion-accent); font-size: 14px;
+    }
+    .chat-persona-label {
+      font-size: 10px; font-weight: 700; padding: 1px 8px;
+      border-radius: 4px; margin-bottom: 4px; display: inline-block;
+    }
+    .chat-persona-label.msl { background: #dbeafe; color: #1e40af; }
+    .chat-persona-label.hcp { background: #dcfce7; color: #166534; }
+    .chat-persona-label.med-affairs { background: var(--accent-light); color: var(--accent-text); }
+    .chat-persona-label.field-ops { background: var(--warning-bg); color: var(--warning); }
+    .chat-suggestions {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      padding: 10px 16px; border-top: 1px solid var(--border);
+      background: var(--surface-dim); flex-shrink: 0;
+    }
+    .chat-suggestion {
+      padding: 5px 12px; font-family: var(--font); font-size: 11px;
+      border: 1px solid var(--border); border-radius: 16px;
+      background: var(--surface); color: var(--text-secondary);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .chat-suggestion:hover { border-color: var(--orion-accent); color: var(--orion-accent); }
+    .chat-input-row { display: flex; border-top: 1px solid var(--border); flex-shrink: 0; }
+    .chat-input-row input {
+      flex: 1; padding: 12px 16px;
+      font-family: var(--font); font-size: 13px;
+      border: none; outline: none; background: transparent; color: var(--text);
+    }
+    .chat-input-row input::placeholder { color: var(--text-muted); }
+    .chat-input-row button {
+      padding: 0 16px; background: var(--orion-accent); color: white;
+      border: none; cursor: pointer; font-size: 16px; transition: background 0.15s;
+    }
+    .chat-input-row button:hover { background: #085041; }
+    .chat-input-row button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .chat-typing { display: inline-flex; gap: 4px; align-items: center; }
+    .chat-typing span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--text-muted); animation: chatBounce 1.2s infinite;
+    }
+    .chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes chatBounce {
+      0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+      40% { transform: translateY(-6px); opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -617,6 +743,7 @@
     <a class="module-tab" href="/agents.html"><i class="ti ti-robot"></i> Agent Ecosystem</a>
   </nav>
 
+  <div class="layout">
   <div class="dashboard">
     <div style="display:flex;align-items:center;gap:14px;">
       <div class="dash-title" style="flex:1;">Signal Intelligence Dashboard</div>
@@ -624,32 +751,33 @@
     </div>
     <div class="dash-subtitle">Real-time behavioral signals from MedVerse HCP engagement — feeding MSL pre-engagement intelligence to Orion</div>
 
-    <div class="stats-grid">
-      <div class="stat-card stat-accent">
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card stat-accent" data-stat="total">
         <div class="stat-card-num" id="stat-total">0</div>
         <div class="stat-card-label">Total Signals</div>
       </div>
-      <div class="stat-card stat-orion">
+      <div class="stat-card stat-orion" data-stat="today">
         <div class="stat-card-num" id="stat-today">0</div>
         <div class="stat-card-label">Today</div>
       </div>
-      <div class="stat-card stat-priority">
+      <div class="stat-card stat-priority" data-stat="priority">
         <div class="stat-card-num" id="stat-priority">0</div>
         <div class="stat-card-label">Priority Alerts</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-stat="hcps">
         <div class="stat-card-num" id="stat-hcps">0</div>
         <div class="stat-card-label">Unique HCPs</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-stat="depth">
         <div class="stat-card-num" id="stat-depth">—</div>
         <div class="stat-card-label">Avg Depth</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-stat="minutes">
         <div class="stat-card-num" id="stat-minutes">0</div>
         <div class="stat-card-label">Engagement</div>
       </div>
     </div>
+    <div id="stat-drilldown-container"></div>
 
     <div id="active-filters" class="active-filters"></div>
 
@@ -683,6 +811,41 @@
         <div class="panel-body" id="signal-timeline" style="max-height:500px;"></div>
       </div>
     </div>
+  </div>
+
+  <!-- CHAT SIDEBAR -->
+  <div class="chat-sidebar">
+    <div class="chat-header">
+      <div class="chat-header-icon"><i class="ti ti-radar-2"></i></div>
+      <div>
+        <div class="chat-header-title">Orion AI</div>
+        <div class="chat-header-sub">Ask about signals, HCPs & trends</div>
+      </div>
+      <div class="chat-header-actions">
+        <button class="chat-action-btn chat-demo-btn" id="chatDemoBtn"><i class="ti ti-player-play" style="font-size:13px"></i> Demo</button>
+        <button class="chat-action-btn chat-clear-btn" id="chatClearBtn"><i class="ti ti-refresh" style="font-size:13px"></i></button>
+      </div>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="chat-msg ai">
+        <div class="chat-ai-avatar"><i class="ti ti-radar-2"></i></div>
+        <div class="chat-bubble chat-ai-bubble">
+          I'm the Orion Signal Intelligence Agent. I analyze <strong>HCP engagement signals</strong> from MedVerse in real time. Ask me about priority alerts, trending topics, HCP profiles, or engagement patterns.
+        </div>
+      </div>
+    </div>
+    <div class="chat-suggestions" id="chat-suggestions">
+      <button class="chat-suggestion">Show priority alerts</button>
+      <button class="chat-suggestion">What's trending today?</button>
+      <button class="chat-suggestion">Tell me about Dr. Chen</button>
+      <button class="chat-suggestion">AD engagement signals</button>
+      <button class="chat-suggestion">KOL activity summary</button>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="chat-input" placeholder="Ask about signals & engagement…">
+      <button id="chat-send" disabled><i class="ti ti-send"></i></button>
+    </div>
+  </div>
   </div>
 
   <div class="demo-narrator" id="demo-narrator"></div>

@@ -58,6 +58,116 @@ function attachListeners() {
   });
 
   document.getElementById("live-toggle").addEventListener("click", toggleLiveFeed);
+
+  // Stat tile click
+  document.getElementById("stats-grid").addEventListener("click", (e) => {
+    const card = e.target.closest(".stat-card[data-stat]");
+    if (!card) return;
+    const stat = card.dataset.stat;
+    const wasActive = card.classList.contains("active");
+    document.querySelectorAll(".stat-card").forEach(c => c.classList.remove("active"));
+    if (wasActive) {
+      closeStatDrilldown();
+    } else {
+      card.classList.add("active");
+      renderStatDrilldown(stat);
+    }
+  });
+}
+
+// ── Stat Drill-Down ──
+
+let activeStatDrill = null;
+
+function closeStatDrilldown() {
+  activeStatDrill = null;
+  document.querySelectorAll(".stat-card").forEach(c => c.classList.remove("active"));
+  const container = document.getElementById("stat-drilldown-container");
+  container.innerHTML = "";
+}
+
+function renderStatDrilldown(stat) {
+  activeStatDrill = stat;
+  const container = document.getElementById("stat-drilldown-container");
+  let title = "", icon = "", items = [];
+
+  if (stat === "total") {
+    title = "All Signals"; icon = "chart-bar";
+    items = SIGNALS.map(s => {
+      const hcp = HCP_PROFILES.find(h => h.id === s.hcpId);
+      const isPri = s.orionAction.startsWith("PRIORITY");
+      return { id: s.id, title: s.topic, badge: isPri ? "PRIORITY" : s.depth.includes("Deep") ? "DEEP" : "", badgeCss: isPri ? "dd-badge-priority" : "dd-badge-queue", meta: [`${escapeHtml(hcp?.name || s.hcpId)}`, escapeHtml(s.diseaseArea), `${s.sessionDuration}m`] };
+    });
+  } else if (stat === "today") {
+    title = "Today's Signals"; icon = "calendar-event";
+    const today = SIGNALS.filter(s => s.timestamp.startsWith("2026-08-06"));
+    items = today.map(s => {
+      const hcp = HCP_PROFILES.find(h => h.id === s.hcpId);
+      return { id: s.id, title: s.topic, badge: formatTime(s.timestamp), badgeCss: "dd-badge-log", meta: [escapeHtml(hcp?.name || s.hcpId), escapeHtml(s.diseaseArea)] };
+    });
+  } else if (stat === "priority") {
+    title = "Priority Alerts"; icon = "alert-triangle";
+    const priority = SIGNALS.filter(s => s.orionAction.startsWith("PRIORITY"));
+    items = priority.map(s => {
+      const hcp = HCP_PROFILES.find(h => h.id === s.hcpId);
+      return { id: s.id, title: s.topic, badge: "PRIORITY", badgeCss: "dd-badge-priority", meta: [escapeHtml(hcp?.name || s.hcpId), escapeHtml(s.orionAction.replace(/^PRIORITY:\s*/, ""))] };
+    });
+  } else if (stat === "hcps") {
+    title = "Unique HCPs"; icon = "users";
+    const hcpIds = [...new Set(SIGNALS.map(s => s.hcpId))];
+    items = hcpIds.map(id => {
+      const hcp = HCP_PROFILES.find(h => h.id === id);
+      const sigs = SIGNALS.filter(s => s.hcpId === id);
+      const totalMin = sigs.reduce((sum, s) => sum + s.sessionDuration, 0);
+      return { id: null, hcpId: id, title: hcp?.name || id, badge: hcp?.tier || "", badgeCss: hcp?.tier === "KOL" ? "dd-badge-priority" : "dd-badge-queue", meta: [escapeHtml(hcp?.specialty || ""), `${sigs.length} signals`, `${totalMin}m engaged`] };
+    });
+  } else if (stat === "depth") {
+    title = "Engagement Depth Breakdown"; icon = "chart-dots-3";
+    const deepSigs = SIGNALS.filter(s => s.depth.includes("Deep") || s.depth.includes("High"));
+    const modSigs = SIGNALS.filter(s => s.depth.includes("Moderate"));
+    const lightSigs = SIGNALS.filter(s => !s.depth.includes("Deep") && !s.depth.includes("High") && !s.depth.includes("Moderate"));
+    items = [
+      ...deepSigs.map(s => ({ id: s.id, title: s.topic, badge: "Deep", badgeCss: "dd-badge-priority", meta: [escapeHtml(HCP_PROFILES.find(h => h.id === s.hcpId)?.name || s.hcpId), `${s.sessionDuration}m`] })),
+      ...modSigs.map(s => ({ id: s.id, title: s.topic, badge: "Moderate", badgeCss: "dd-badge-queue", meta: [escapeHtml(HCP_PROFILES.find(h => h.id === s.hcpId)?.name || s.hcpId), `${s.sessionDuration}m`] })),
+      ...lightSigs.map(s => ({ id: s.id, title: s.topic, badge: "Light", badgeCss: "dd-badge-log", meta: [escapeHtml(HCP_PROFILES.find(h => h.id === s.hcpId)?.name || s.hcpId), `${s.sessionDuration}m`] })),
+    ];
+  } else if (stat === "minutes") {
+    title = "Engagement Time"; icon = "clock";
+    items = [...SIGNALS].sort((a, b) => b.sessionDuration - a.sessionDuration).map(s => {
+      const hcp = HCP_PROFILES.find(h => h.id === s.hcpId);
+      return { id: s.id, title: s.topic, badge: `${s.sessionDuration}m`, badgeCss: s.sessionDuration >= 12 ? "dd-badge-priority" : s.sessionDuration >= 8 ? "dd-badge-queue" : "dd-badge-log", meta: [escapeHtml(hcp?.name || s.hcpId), escapeHtml(s.diseaseArea)] };
+    });
+  }
+
+  const itemsHtml = items.map(item => `
+    <div class="dd-item" ${item.id ? `data-signal-id="${escapeHtml(item.id)}"` : ""} ${item.hcpId ? `data-hcp-id="${escapeHtml(item.hcpId)}"` : ""}>
+      <div class="dd-item-title">${item.badge ? `<span class="dd-item-badge ${item.badgeCss}">${escapeHtml(item.badge)}</span> ` : ""}${escapeHtml(item.title)}</div>
+      <div class="dd-item-meta">${item.meta.map(m => `<span>${m}</span>`).join("")}</div>
+    </div>`).join("");
+
+  container.innerHTML = `
+    <div class="stat-drilldown">
+      <div class="stat-drilldown-header">
+        <h3><i class="ti ti-${icon}"></i> ${escapeHtml(title)} <span style="font-weight:400;color:var(--text-muted);font-size:12px;margin-left:4px">(${items.length})</span></h3>
+        <button class="stat-drilldown-close">&times;</button>
+      </div>
+      <div class="stat-drilldown-body">${itemsHtml || '<div style="text-align:center;color:var(--text-muted);padding:20px;font-size:13px;">No data</div>'}</div>
+    </div>`;
+
+  container.querySelector(".stat-drilldown-close").addEventListener("click", closeStatDrilldown);
+
+  container.querySelectorAll(".dd-item[data-signal-id]").forEach(el => {
+    el.addEventListener("click", () => renderSignalOverlay(el.dataset.signalId));
+  });
+
+  container.querySelectorAll(".dd-item[data-hcp-id]").forEach(el => {
+    el.addEventListener("click", () => {
+      filterState.hcpId = (filterState.hcpId === el.dataset.hcpId) ? null : el.dataset.hcpId;
+      filterState.diseaseArea = null;
+      applyFilters();
+      closeStatDrilldown();
+    });
+  });
 }
 
 // ── Stats ──
@@ -549,5 +659,267 @@ async function runDemo() {
 }
 
 document.getElementById("demo-play-btn").addEventListener("click", runDemo);
+
+// ─── CHAT ───
+
+const chatMessages = document.getElementById("chat-messages");
+const chatInput = document.getElementById("chat-input");
+const chatSend = document.getElementById("chat-send");
+const chatSuggestions = document.getElementById("chat-suggestions");
+const chatDemoBtn = document.getElementById("chatDemoBtn");
+const chatClearBtn = document.getElementById("chatClearBtn");
+
+function resetChat() {
+  chatMessages.innerHTML = `<div class="chat-msg ai">
+    <div class="chat-ai-avatar"><i class="ti ti-radar-2"></i></div>
+    <div class="chat-bubble chat-ai-bubble">
+      I'm the Orion Signal Intelligence Agent. I analyze <strong>HCP engagement signals</strong> from MedVerse in real time. Ask me about priority alerts, trending topics, HCP profiles, or engagement patterns.
+    </div>
+  </div>`;
+  chatSuggestions.innerHTML = [
+    "Show priority alerts",
+    "What's trending today?",
+    "Tell me about Dr. Chen",
+    "AD engagement signals",
+    "KOL activity summary"
+  ].map(s => `<button class="chat-suggestion">${escapeHtml(s)}</button>`).join("");
+  chatSuggestions.style.display = "flex";
+  chatInput.value = "";
+  chatSend.disabled = true;
+  bindSuggestionClicks();
+}
+
+function bindSuggestionClicks() {
+  chatSuggestions.querySelectorAll(".chat-suggestion").forEach(btn => {
+    btn.addEventListener("click", () => {
+      chatInput.value = btn.textContent;
+      sendChat();
+    });
+  });
+}
+
+function addChatUserMsg(text) {
+  const div = document.createElement("div");
+  div.className = "chat-msg user";
+  div.innerHTML = `<div class="chat-bubble">${escapeHtml(text)}</div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addChatPersonaMsg(text, persona, css) {
+  const div = document.createElement("div");
+  div.className = "chat-msg user";
+  div.innerHTML = `<div><div class="chat-persona-label ${css}">${escapeHtml(persona)}</div><div class="chat-bubble" style="background:var(--orion-accent);color:white;border-bottom-right-radius:4px">${escapeHtml(text)}</div></div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addChatAIMsg(html) {
+  const div = document.createElement("div");
+  div.className = "chat-msg ai";
+  div.innerHTML = `<div class="chat-ai-avatar"><i class="ti ti-radar-2"></i></div><div class="chat-bubble chat-ai-bubble">${html}</div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addChatTyping() {
+  const div = document.createElement("div");
+  div.className = "chat-msg ai chat-typing-msg";
+  div.innerHTML = `<div class="chat-ai-avatar"><i class="ti ti-radar-2"></i></div><div class="chat-bubble chat-ai-bubble"><span class="chat-typing"><span></span><span></span><span></span></span></div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  return div;
+}
+
+function generateChatResponse(query) {
+  const q = query.toLowerCase();
+  const analytics = getAnalytics();
+
+  // Priority alerts
+  if (q.includes("priority") || q.includes("alert") || q.includes("urgent")) {
+    const priority = SIGNALS.filter(s => s.orionAction.startsWith("PRIORITY"));
+    const items = priority.map(s => {
+      const hcp = HCP_PROFILES.find(h => h.id === s.hcpId);
+      return `🔴 <strong>${escapeHtml(hcp?.name || s.hcpId)}</strong> (${escapeHtml(hcp?.tier || "")})<br>${escapeHtml(s.topic)}<br>→ ${escapeHtml(s.orionAction.replace("PRIORITY: ", ""))}`;
+    }).join("<br><br>");
+    return `<strong>${priority.length} priority alerts</strong> requiring MSL action:<br><br>${items}`;
+  }
+
+  // Trending / today
+  if (q.includes("trending") || q.includes("today") || q.includes("recent")) {
+    const today = SIGNALS.filter(s => s.timestamp.startsWith("2026-08-06"));
+    const diseaseCount = {};
+    today.forEach(s => { diseaseCount[s.diseaseArea] = (diseaseCount[s.diseaseArea] || 0) + 1; });
+    const sorted = Object.entries(diseaseCount).sort((a, b) => b[1] - a[1]);
+    const trends = sorted.map(([area, count]) => `• <strong>${escapeHtml(area)}</strong> — ${count} signal${count > 1 ? "s" : ""}`).join("<br>");
+    return `<strong>${today.length} signals today</strong> across ${sorted.length} disease areas:<br><br>${trends}<br><br>Total engagement: <strong>${today.reduce((s, sig) => s + sig.sessionDuration, 0)} minutes</strong> across ${new Set(today.map(s => s.hcpId)).size} unique HCPs.`;
+  }
+
+  // HCP-specific query
+  const hcpMatch = HCP_PROFILES.find(h => {
+    const nameLower = h.name.toLowerCase();
+    const lastName = nameLower.split(" ").pop();
+    return q.includes(nameLower) || q.includes(lastName);
+  });
+  if (hcpMatch) {
+    const profile = getHcpProfile(hcpMatch.id);
+    const recentTopics = profile.signals.slice(0, 3).map(s => `• ${escapeHtml(s.topic)} (${escapeHtml(s.depth)})`).join("<br>");
+    return `<strong>${escapeHtml(hcpMatch.name)}</strong> — ${escapeHtml(hcpMatch.specialty)}<br>${escapeHtml(hcpMatch.institution)} · ${escapeHtml(hcpMatch.tier)} tier<br><br><strong>${profile.signalCount} signals</strong> · ${profile.totalEngagementMinutes} minutes engaged<br>Disease focus: ${profile.diseaseAreas.map(d => escapeHtml(d)).join(", ")}<br>${profile.hasPriority ? "🔴 Has active priority alerts" : "No priority alerts"}<br><br><strong>Recent activity:</strong><br>${recentTopics}`;
+  }
+
+  // KOL activity
+  if (q.includes("kol") || q.includes("key opinion")) {
+    const kols = HCP_PROFILES.filter(h => h.tier === "KOL");
+    const items = kols.map(h => {
+      const p = getHcpProfile(h.id);
+      return `<strong>${escapeHtml(h.name)}</strong> · ${escapeHtml(h.specialty)}<br>${p.signalCount} signals · ${p.totalEngagementMinutes}m engaged · ${p.hasPriority ? "🔴 Priority" : "Standard"}`;
+    }).join("<br><br>");
+    return `<strong>${kols.length} KOLs</strong> tracked in MedVerse:<br><br>${items}`;
+  }
+
+  // Disease-specific
+  const diseaseMap = [
+    [/atopic|dermatitis|\bad\b/, "Atopic Dermatitis"],
+    [/asthma/, "Severe Asthma"],
+    [/copd/, "COPD"],
+    [/rheumatoid|ra\b/, "Rheumatoid Arthritis"],
+    [/eoe|eosinophilic/, "EoE"],
+    [/cross.?ta|immunology/, "Cross-TA Immunology"],
+    [/ibd|crohn|colitis/, "GI / Dermatology"],
+  ];
+  let diseaseMatch = null;
+  for (const [re, area] of diseaseMap) {
+    if (re.test(q)) { diseaseMatch = area; break; }
+  }
+  if (diseaseMatch) {
+    const signals = SIGNALS.filter(s => s.diseaseArea === diseaseMatch);
+    if (signals.length) {
+      const items = signals.slice(0, 4).map(s => {
+        const hcp = HCP_PROFILES.find(h => h.id === s.hcpId);
+        return `<strong>${escapeHtml(hcp?.name || s.hcpId)}</strong> — ${escapeHtml(s.depth)}<br>${escapeHtml(s.topic)}`;
+      }).join("<br><br>");
+      const totalMin = signals.reduce((sum, s) => sum + s.sessionDuration, 0);
+      return `<strong>${signals.length} signals</strong> for ${escapeHtml(diseaseMatch)}:<br><br>${items}<br><br>Total engagement: <strong>${totalMin} minutes</strong>.`;
+    }
+  }
+
+  // Engagement patterns
+  if (q.includes("engagement") || q.includes("pattern") || q.includes("summary") || q.includes("overview")) {
+    const deepSignals = SIGNALS.filter(s => s.depth.includes("Deep") || s.depth.includes("High"));
+    return `<strong>Engagement overview:</strong><br><br>• <strong>${analytics.totalSignals}</strong> total signals from <strong>${analytics.uniqueHcps}</strong> unique HCPs<br>• <strong>${analytics.priorityAlerts}</strong> priority alerts pending<br>• <strong>${deepSignals.length}</strong> deep/high-value engagements<br>• <strong>${analytics.totalEngagementMinutes}m</strong> total engagement time<br>• Top areas: ${Object.entries(analytics.diseaseAreas).sort((a,b) => b[1]-a[1]).slice(0,3).map(([a,c]) => `${escapeHtml(a)} (${c})`).join(", ")}`;
+  }
+
+  // MSL actions
+  if (q.includes("msl") || q.includes("action") || q.includes("follow.?up") || q.includes("queue")) {
+    const queue = getMslActionQueue();
+    const items = queue.slice(0, 4).map(s => {
+      const isPri = s.orionAction.startsWith("PRIORITY");
+      return `${isPri ? "🔴" : "🟢"} <strong>${escapeHtml(s.hcpName)}</strong><br>${escapeHtml(s.orionAction.replace(/^PRIORITY:\s*/, "").replace(/^Queue for MSL follow-up —\s*/, ""))}`;
+    }).join("<br><br>");
+    return `<strong>${queue.length} items in MSL action queue</strong>:<br><br>${items}`;
+  }
+
+  // Fallback
+  return `I'm tracking <strong>${analytics.totalSignals} signals</strong> from <strong>${analytics.uniqueHcps} HCPs</strong> with <strong>${analytics.priorityAlerts} priority alerts</strong>. Try asking about:<br><br>• Priority alerts or MSL action queue<br>• Trending topics today<br>• A specific HCP (e.g. Dr. Chen, Dr. Gonzalez)<br>• Disease area signals (AD, COPD, asthma)<br>• KOL activity summary<br>• Engagement overview`;
+}
+
+async function sendChat() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  chatInput.value = "";
+  chatSend.disabled = true;
+  chatSuggestions.style.display = "none";
+  addChatUserMsg(text);
+  const typing = addChatTyping();
+  await wait(800 + Math.random() * 600);
+  typing.remove();
+  const response = generateChatResponse(text);
+  addChatAIMsg(response);
+
+  const lq = text.toLowerCase();
+  let followUps = [];
+  if (lq.includes("priority")) followUps = ["MSL action queue", "KOL activity summary", "Engagement overview"];
+  else if (lq.includes("trend")) followUps = ["Priority alerts", "AD engagement signals", "Dr. Chen activity"];
+  else if (lq.includes("chen") || lq.includes("gonzalez")) followUps = ["Priority alerts", "KOL activity summary", "Trending topics"];
+  else if (lq.includes("kol")) followUps = ["Tell me about Dr. Chen", "Dr. Gonzalez signals", "Priority alerts"];
+  else followUps = ["Priority alerts", "What's trending today?", "Engagement overview"];
+
+  chatSuggestions.innerHTML = followUps.map(s => `<button class="chat-suggestion">${escapeHtml(s)}</button>`).join("");
+  chatSuggestions.style.display = "flex";
+  bindSuggestionClicks();
+}
+
+function bindChat() {
+  if (chatInput && chatSend) {
+    chatSend.addEventListener("click", sendChat);
+    chatInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") sendChat();
+    });
+    chatInput.addEventListener("input", () => {
+      chatSend.disabled = !chatInput.value.trim();
+    });
+  }
+  if (chatClearBtn) chatClearBtn.addEventListener("click", resetChat);
+  bindSuggestionClicks();
+}
+
+// ─── CHAT DEMO ───
+
+const CHAT_DEMO_SEQUENCE = [
+  { persona: "MSL", css: "msl", question: "Show me all priority alerts" },
+  { persona: "Med Affairs", css: "med-affairs", question: "What's trending across HCPs today?" },
+  { persona: "MSL", css: "msl", question: "Tell me about Dr. Sarah Chen's engagement" },
+  { persona: "Field Ops", css: "field-ops", question: "What are the AD engagement signals?" },
+  { persona: "Med Affairs", css: "med-affairs", question: "Summarize KOL activity" },
+  { persona: "MSL", css: "msl", question: "What's in the MSL action queue?" },
+  { persona: "Field Ops", css: "field-ops", question: "Give me an engagement overview" },
+  { persona: "MSL", css: "msl", question: "Tell me about Dr. Gonzalez" },
+];
+
+let chatDemoRunning = false;
+
+async function typeIntoChat(text) {
+  chatInput.value = "";
+  for (let i = 0; i < text.length; i++) {
+    chatInput.value += text[i];
+    await wait(25 + Math.random() * 20);
+  }
+}
+
+async function runChatDemo() {
+  if (chatDemoRunning) return;
+  chatDemoRunning = true;
+  chatDemoBtn.disabled = true;
+  chatDemoBtn.innerHTML = '<i class="ti ti-loader-2" style="font-size:13px;animation:spin 1s linear infinite"></i> Running…';
+  resetChat();
+  await wait(600);
+
+  for (const step of CHAT_DEMO_SEQUENCE) {
+    await typeIntoChat(step.question);
+    await wait(300);
+    chatSuggestions.style.display = "none";
+    addChatPersonaMsg(step.question, step.persona, step.css);
+    chatInput.value = "";
+    const typing = addChatTyping();
+    await wait(1000 + Math.random() * 800);
+    typing.remove();
+    const response = generateChatResponse(step.question);
+    addChatAIMsg(response);
+    await wait(2000);
+  }
+
+  addChatAIMsg(`<strong>Demo complete!</strong> ${CHAT_DEMO_SEQUENCE.length} questions answered across ${SIGNALS.length} signals and ${HCP_PROFILES.length} HCP profiles. The Orion Intelligence Agent turns behavioral signals into actionable MSL intelligence.`);
+
+  chatDemoRunning = false;
+  chatDemoBtn.disabled = false;
+  chatDemoBtn.innerHTML = '<i class="ti ti-player-play" style="font-size:13px"></i> Demo';
+}
+
+function bindChatDemo() {
+  if (chatDemoBtn) chatDemoBtn.addEventListener("click", runChatDemo);
+}
+
+bindChat();
+bindChatDemo();
 
 init();

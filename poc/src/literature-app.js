@@ -77,7 +77,7 @@ async function runSearch() {
     <p>Querying PubMed E-Utilities and NEJM…</p>
   </div>`;
 
-  intelPanel.innerHTML = `<div class="intel-card">
+  if (intelPanel) intelPanel.innerHTML = `<div class="intel-card">
     <div class="intel-card-header"><i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Analyzing literature…</div>
     <p style="font-size:12px;color:var(--text-muted)">Running intelligence pipeline on search results…</p>
   </div>`;
@@ -340,7 +340,7 @@ function renderIntelligence(query, articles, totalPubmed, totalNejm) {
     </p>` : ""}
   </div>`;
 
-  intelPanel.innerHTML = html;
+  if (intelPanel) intelPanel.innerHTML = html;
 }
 
 function addOrionSignal(query, articles) {
@@ -363,25 +363,27 @@ function addOrionSignal(query, articles) {
     ? "PRIORITY: High-impact NEJM evidence discovered — flag for medical affairs review"
     : `Literature search logged — ${articles.length} articles, key author: ${topAuthor}`;
 
-  const emptyEl = signalFeed.querySelector("[style]");
-  if (emptyEl && signalCount === 1) signalFeed.innerHTML = "";
+  if (signalFeed) {
+    const emptyEl = signalFeed.querySelector("[style]");
+    if (emptyEl && signalCount === 1) signalFeed.innerHTML = "";
 
-  const card = document.createElement("div");
-  card.className = "signal-card";
-  card.innerHTML = `
-    <div class="signal-header">
-      <div class="signal-dot"></div>
-      <span class="signal-time">${timeStr}</span>
-    </div>
-    <div class="signal-topic">Literature Search — ${esc(query.length > 40 ? query.slice(0, 38) + "…" : query)}</div>
-    <div class="signal-row"><span class="signal-label">Intent</span><span class="signal-value">${esc(intent)}</span></div>
-    <div class="signal-row"><span class="signal-label">Disease</span><span class="signal-value">${esc(diseaseArea)}</span></div>
-    <div class="signal-row"><span class="signal-label">Sources</span><span class="signal-value">${articles.length} PubMed · ${nejmCount} NEJM</span></div>
-    <div class="signal-row"><span class="signal-label">Depth</span><span class="signal-value">${esc(depth)}</span></div>
-    <div class="signal-action"><i class="ti ti-arrow-right"></i><span>${esc(action)}</span></div>
-  `;
+    const card = document.createElement("div");
+    card.className = "signal-card";
+    card.innerHTML = `
+      <div class="signal-header">
+        <div class="signal-dot"></div>
+        <span class="signal-time">${timeStr}</span>
+      </div>
+      <div class="signal-topic">Literature Search — ${esc(query.length > 40 ? query.slice(0, 38) + "…" : query)}</div>
+      <div class="signal-row"><span class="signal-label">Intent</span><span class="signal-value">${esc(intent)}</span></div>
+      <div class="signal-row"><span class="signal-label">Disease</span><span class="signal-value">${esc(diseaseArea)}</span></div>
+      <div class="signal-row"><span class="signal-label">Sources</span><span class="signal-value">${articles.length} PubMed · ${nejmCount} NEJM</span></div>
+      <div class="signal-row"><span class="signal-label">Depth</span><span class="signal-value">${esc(depth)}</span></div>
+      <div class="signal-action"><i class="ti ti-arrow-right"></i><span>${esc(action)}</span></div>
+    `;
 
-  signalFeed.insertBefore(card, signalFeed.firstChild);
+    signalFeed.insertBefore(card, signalFeed.firstChild);
+  }
 }
 
 function inferDiseaseArea(query) {
@@ -885,6 +887,35 @@ async function runSearchDemo() {
   demoSearchBtn.innerHTML = '<i class="ti ti-player-play"></i> Watch literature search demo';
 }
 
+// === CHAT RESET ===
+function resetLitChat() {
+  chatMessages.innerHTML = `<div class="chat-msg chat-msg-agent">
+    <div class="chat-agent-avatar"><i class="ti ti-book-2"></i></div>
+    <div class="chat-msg-content">
+      <div class="chat-msg-bubble chat-agent-bubble">
+        I'm the Literature Intelligence Agent with live connections to <strong>PubMed</strong> (36M+ articles) and the <strong>NEJM</strong>. Ask me about any Sanofi therapeutic area — I'll search, retrieve, and synthesize the evidence.
+      </div>
+    </div>
+  </div>`;
+  chatSuggestions.innerHTML = `<button class="chat-suggestion" data-q="What are the latest publications on dupilumab?">Latest dupilumab pubs</button>
+    <button class="chat-suggestion" data-q="How does dupilumab compare to abrocitinib in head-to-head data?">Dupilumab vs abrocitinib</button>
+    <button class="chat-suggestion" data-q="What is the pediatric safety profile of dupilumab?">Pediatric safety data</button>
+    <button class="chat-suggestion" data-q="What evidence exists for nirsevimab RSV prevention?">Nirsevimab RSV</button>
+    <button class="chat-suggestion" data-q="Tell me about tolebrutinib in multiple sclerosis">Tolebrutinib in MS</button>`;
+  chatSuggestions.style.display = "flex";
+  chatInput.value = "";
+  chatSend.disabled = true;
+  chatSuggestions.querySelectorAll(".chat-suggestion").forEach(btn => {
+    btn.addEventListener("click", () => {
+      chatInput.value = btn.dataset.q;
+      sendChatMessage();
+    });
+  });
+}
+
+const chatClearBtn = document.getElementById("chat-clear-btn");
+if (chatClearBtn) chatClearBtn.addEventListener("click", resetLitChat);
+
 // === DEMO: CHAT ===
 const demoChatBtn = document.getElementById("demo-chat-btn");
 if (demoChatBtn) {
@@ -895,8 +926,7 @@ async function runChatDemo() {
   demoChatBtn.disabled = true;
   demoChatBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running demo…';
 
-  const chatSection = document.querySelector(".chat-section");
-  chatSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  resetLitChat();
   await delay(600);
 
   await typeInto(chatInput, "What are the latest publications on dupilumab?");
