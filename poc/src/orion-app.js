@@ -1,5 +1,5 @@
 import { SIGNALS, HCP_PROFILES, getAnalytics, getHcpProfile, getMslActionQueue, generateTalkingPoints, generateLiveSignal, addSignal } from "./orion-data.js";
-import { speak, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
+import { speak, speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 
 const filterState = { diseaseArea: null, hcpId: null };
 let liveInterval = null;
@@ -498,12 +498,12 @@ let demoRunning = false;
 
 const wait = (ms) => new Promise(r => setTimeout(r, ms));
 
-function narrate(text) {
+async function narrate(text) {
   const el = document.getElementById("demo-narrator");
   el.innerHTML = `<i class="ti ti-sparkles"></i> ${escapeHtml(text)}`;
   if (isCCEnabled()) el.classList.add("visible");
-  speak(text);
   showControls();
+  await speakAndWait(text);
 }
 
 function narrateOff() {
@@ -562,100 +562,94 @@ async function runDemo() {
   await wait(600);
 
   // ── ACT 1: Live Feed ──
-  narrate("Starting the live signal feed — new HCP engagement signals stream in real-time");
+  await narrate("Starting the live signal feed — new HCP engagement signals stream in real-time");
   const liveBtn = document.getElementById("live-toggle");
   highlight(liveBtn);
-  await wait(1500);
+  await wait(500);
 
   liveBtn.click();
   await wait(7000);
 
   unhighlight(liveBtn);
-  narrate("Two new signals detected — stats and action queue updated automatically");
-  await wait(3000);
+  await narrate("Two new signals detected — stats and action queue updated automatically");
 
   liveBtn.click();
-  await wait(1000);
+  await wait(500);
 
   // ── ACT 2: Disease Filter ──
-  narrate("Filtering by disease area — click any disease bar to focus the dashboard");
+  await narrate("Filtering by disease area — click any disease bar to focus the dashboard");
   const dashboard = document.querySelector(".dashboard");
   const diseasePanel = document.getElementById("disease-breakdown");
   scrollIntoViewSmooth(diseasePanel);
-  await wait(1200);
+  await wait(500);
 
   highlight(diseasePanel.closest(".dash-panel"));
-  await wait(1500);
+  await wait(500);
 
   const adRow = diseasePanel.querySelector('.disease-row[data-disease="Atopic Dermatitis"]');
   if (adRow) {
     adRow.click();
     unhighlight(diseasePanel.closest(".dash-panel"));
-    narrate("Filtered to Atopic Dermatitis — all panels now show only AD-related signals");
-    await wait(3500);
+    await narrate("Filtered to Atopic Dermatitis — all panels now show only AD-related signals");
   }
 
   // ── ACT 3: Signal Drill-Down from timeline ──
-  narrate("Click any signal to drill down into full engagement details");
+  await narrate("Click any signal to drill down into full engagement details");
   const timelineContainer = document.getElementById("signal-timeline");
   scrollIntoViewSmooth(timelineContainer);
-  await wait(1200);
+  await wait(500);
 
   const firstTimeline = timelineContainer.querySelector(".timeline-card");
   if (firstTimeline) {
     highlight(firstTimeline);
-    await wait(1500);
+    await wait(500);
     unhighlight(firstTimeline);
     firstTimeline.click();
-    narrate("Signal detail panel — queries asked, content accessed, and AI-generated MSL talking points");
-    await wait(5000);
+    await narrate("Signal detail panel — queries asked, content accessed, and AI-generated MSL talking points");
     closeOverlayIfOpen();
-    await wait(800);
+    await wait(500);
   }
 
   // ── ACT 4: Clear filter, switch to HCP filter ──
-  narrate("Clearing filter — now filtering by HCP to see individual engagement profiles");
+  await narrate("Clearing filter — now filtering by HCP to see individual engagement profiles");
   clearFilterIfActive();
-  await wait(1000);
+  await wait(500);
 
   const hcpGrid = document.getElementById("hcp-profiles");
   scrollIntoViewSmooth(hcpGrid);
-  await wait(1200);
+  await wait(500);
 
   const chenCard = hcpGrid.querySelector('.hcp-card[data-hcp-id="HCP-4821"]');
   if (chenCard) {
     highlight(chenCard);
-    await wait(1500);
+    await wait(500);
     unhighlight(chenCard);
     chenCard.click();
-    narrate("Filtered to Dr. Sarah Chen (KOL) — 2 signals, 34 minutes engaged, Deep+ depth");
-    await wait(3500);
+    await narrate("Filtered to Dr. Sarah Chen (KOL) — 2 signals, 34 minutes engaged, Deep+ depth");
   }
 
   // ── ACT 5: Drill-down from action queue ──
-  narrate("Opening a priority action from the MSL queue");
+  await narrate("Opening a priority action from the MSL queue");
   const actionContainer = document.getElementById("action-queue");
   scrollIntoViewSmooth(actionContainer);
-  await wait(1000);
+  await wait(500);
 
   const firstAction = actionContainer.querySelector(".action-card");
   if (firstAction) {
     highlight(firstAction);
-    await wait(1200);
+    await wait(500);
     unhighlight(firstAction);
     firstAction.click();
-    narrate("Priority alert — deep pipeline interest signals advisory board potential");
-    await wait(5000);
+    await narrate("Priority alert — deep pipeline interest signals advisory board potential");
     closeOverlayIfOpen();
-    await wait(800);
+    await wait(500);
   }
 
   // ── ACT 6: Reset and wrap up ──
   clearFilterIfActive();
   dashboard.scrollTo({ top: 0, behavior: "smooth" });
-  await wait(800);
-  narrate("Orion Signal Intelligence — turning every MedVerse interaction into MSL-ready insight");
-  await wait(4000);
+  await wait(500);
+  await narrate("Orion Signal Intelligence — turning every MedVerse interaction into MSL-ready insight");
   narrateOff();
 
   btn.disabled = false;
@@ -899,11 +893,10 @@ async function runChatDemo() {
   resetChat();
   await wait(600);
 
-  narrate("Orion AI chat demo — multi-persona questions about HCP engagement signals");
-  await wait(2500);
+  await narrate("Orion AI chat demo — multi-persona questions about HCP engagement signals");
 
   for (const step of CHAT_DEMO_SEQUENCE) {
-    narrate(`${step.persona} asks: "${step.question.substring(0, 50)}..."`);
+    await narrate(`${step.persona} asks: "${step.question.substring(0, 50)}..."`);
     await typeIntoChat(step.question);
     await wait(300);
     chatSuggestions.style.display = "none";
@@ -914,8 +907,7 @@ async function runChatDemo() {
     typing.remove();
     const response = generateChatResponse(step.question);
     addChatAIMsg(response);
-    narrate("AI analyzes real-time engagement signals and HCP profiles to generate insights");
-    await wait(2500);
+    await narrate("AI analyzes real-time engagement signals and HCP profiles to generate insights");
   }
 
   addChatAIMsg(`<strong>Demo complete!</strong> ${CHAT_DEMO_SEQUENCE.length} questions answered across ${SIGNALS.length} signals and ${HCP_PROFILES.length} HCP profiles. The Orion Intelligence Agent turns behavioral signals into actionable MSL intelligence.`);

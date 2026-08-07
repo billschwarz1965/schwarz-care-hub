@@ -1,5 +1,5 @@
 import { BUSINESS_AGENTS, COMPLIANCE_AGENTS, SYSTEM_AGENTS, AGENT_DEMOS, CHART_DATA } from "./agents-data.js";
-import { speak, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
+import { speak, speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 
 let activeDemo = null;
 let demoRunning = false;
@@ -1112,13 +1112,13 @@ const CHAT_DEMO_SEQUENCE = [
   { persona: "MSL", css: "msl", question: "What data sources are connected?" },
 ];
 
-function narrate(text) {
+async function narrate(text) {
   const el = document.getElementById("demo-narrator");
   if (!el) return;
   el.innerHTML = `<i class="ti ti-sparkles"></i> ${text}`;
   if (isCCEnabled()) el.classList.add("visible");
-  speak(text);
   showControls();
+  await speakAndWait(text);
 }
 
 function narrateOff() {
@@ -1145,10 +1145,10 @@ async function runChatDemo() {
   chatDemoBtn.innerHTML = '<i class="ti ti-loader-2" style="font-size:13px;animation:spin 1s linear infinite"></i> Running…';
   resetChat();
   await delay(600);
-  narrate("Agent Ecosystem demo — AI answers about architecture, governance, and agent capabilities");
+  await narrate("Agent Ecosystem demo — AI answers about architecture, governance, and agent capabilities");
 
   for (const step of CHAT_DEMO_SEQUENCE) {
-    narrate(step.persona + " asks about the agent ecosystem");
+    await narrate(step.persona + " asks about the agent ecosystem");
     await typeIntoChat(step.question);
     await delay(300);
     chatSuggestions.style.display = "none";
@@ -1158,8 +1158,7 @@ async function runChatDemo() {
     await delay(1000 + Math.random() * 800);
     typing.remove();
     addAIMsg(generateChatResponse(step.question));
-    narrate("AI explains ecosystem across " + BUSINESS_AGENTS.length + " business agents and " + SYSTEM_AGENTS.length + " hubs");
-    await delay(2000);
+    await narrate("AI explains ecosystem across " + BUSINESS_AGENTS.length + " business agents and " + SYSTEM_AGENTS.length + " hubs");
   }
 
   addAIMsg(`<strong>Demo complete!</strong> ${CHAT_DEMO_SEQUENCE.length} questions answered across ${BUSINESS_AGENTS.length} business agents, ${SYSTEM_AGENTS.length} intelligence hubs, and ${COMPLIANCE_AGENTS.length} governance agents.`);

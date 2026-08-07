@@ -1,5 +1,5 @@
 import { DISEASES, PATHWAYS, getDiseaseById, getConnectedDiseases, getDiseasesByPathway, getPathway } from "./disease-data.js";
-import { speak, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
+import { speak, speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 
 const gridEl = document.getElementById("disease-grid");
 const detailEl = document.getElementById("disease-detail");
@@ -182,13 +182,13 @@ function bindFilters() {
 // ─── DEMO ───
 let demoRunning = false;
 
-function narrate(text) {
+async function narrate(text) {
   const el = document.getElementById("demo-narrator");
   if (!el) return;
   el.innerHTML = `<i class="ti ti-sparkles"></i> ${escapeHtml(text)}`;
   if (isCCEnabled()) el.classList.add("visible");
-  speak(text);
   showControls();
+  await speakAndWait(text);
 }
 
 function narrateOff() {
@@ -216,66 +216,54 @@ async function runDemo() {
   closeDetail();
   await delay(400);
 
-  narrate("Welcome to the Disease State Navigator — Sanofi's cross-TA intelligence map");
-  await delay(3000);
+  await narrate("Welcome to the Disease State Navigator — Sanofi's cross-TA intelligence map");
 
-  narrate("Let's start by filtering to Type 2 Inflammation — the pathway behind Dupixent");
-  await delay(2000);
+  await narrate("Let's start by filtering to Type 2 Inflammation — the pathway behind Dupixent");
   const type2Btn = document.querySelector('.filter-btn[data-pathway="type2"]');
   if (type2Btn) type2Btn.click();
-  await delay(2500);
+  await delay(500);
 
-  narrate("7 diseases share this pathway — now let's explore Atopic Dermatitis");
-  await delay(2000);
+  await narrate("7 diseases share this pathway — now let's explore Atopic Dermatitis");
   const adCard = gridEl.querySelector('.disease-card[data-id="ad"]');
   if (adCard) { adCard.scrollIntoView({ behavior: "smooth", block: "center" }); await delay(600); adCard.click(); }
-  await delay(3500);
+  await delay(500);
 
-  narrate("AD connects to 4 other conditions via the atopic march — notice the gold highlights");
-  await delay(3500);
+  await narrate("AD connects to 4 other conditions via the atopic march — notice the gold highlights");
 
-  narrate("Let's follow the connection to Type 2 Asthma — same IL-4/IL-13 pathway");
-  await delay(2000);
+  await narrate("Let's follow the connection to Type 2 Asthma — same IL-4/IL-13 pathway");
   const asthmaLink = detailContent.querySelector('.connected-card[data-id="asthma"]');
   if (asthmaLink) asthmaLink.click();
-  await delay(3500);
+  await delay(500);
 
-  narrate("Asthma connects back to AD, CRSwNP, and EoE — the unified airway concept");
-  await delay(3500);
+  await narrate("Asthma connects back to AD, CRSwNP, and EoE — the unified airway concept");
 
-  narrate("Now let's follow to EoE — type 2 inflammation in the esophagus");
-  await delay(2000);
+  await narrate("Now let's follow to EoE — type 2 inflammation in the esophagus");
   const eoeLink = detailContent.querySelector('.connected-card[data-id="eoe"]');
   if (eoeLink) eoeLink.click();
-  await delay(3500);
+  await delay(500);
 
-  narrate("Dupixent is the first FDA-approved treatment for EoE — ages 1 and up");
-  await delay(3500);
+  await narrate("Dupixent is the first FDA-approved treatment for EoE — ages 1 and up");
 
-  narrate("Let's switch to a different pathway — IL-23/Th17");
-  await delay(2000);
+  await narrate("Let's switch to a different pathway — IL-23/Th17");
   closeDetail();
   await delay(400);
   const th17Btn = document.querySelector('.filter-btn[data-pathway="il23th17"]');
   if (th17Btn) th17Btn.click();
-  await delay(2500);
+  await delay(500);
 
-  narrate("Psoriasis and IBD share the IL-23/Th17 axis — different organs, same biology");
-  await delay(2500);
+  await narrate("Psoriasis and IBD share the IL-23/Th17 axis — different organs, same biology");
   const psoCard = gridEl.querySelector('.disease-card[data-id="psoriasis"]');
   if (psoCard) { psoCard.scrollIntoView({ behavior: "smooth", block: "center" }); await delay(600); psoCard.click(); }
-  await delay(3500);
+  await delay(500);
 
-  narrate("MedVerse maps these connections so MSLs can tell cross-specialty stories");
-  await delay(3000);
+  await narrate("MedVerse maps these connections so MSLs can tell cross-specialty stories");
 
   closeDetail();
   const allBtn = document.querySelector('.filter-btn[data-pathway="all"]');
   if (allBtn) allBtn.click();
   await delay(500);
 
-  narrate("That's the Disease State Navigator — explore freely or use the chat to ask questions");
-  await delay(3500);
+  await narrate("That's the Disease State Navigator — explore freely or use the chat to ask questions");
   narrateOff();
 
   demoRunning = false;

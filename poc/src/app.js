@@ -1,5 +1,5 @@
 import { generateResponse, suggestedPrompts } from "./rag-engine.js";
-import { speak, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
+import { speak, speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 
 const messagesEl = document.getElementById("messages");
 const welcomeEl = document.getElementById("welcome");
@@ -331,13 +331,13 @@ let demoRunning = false;
 if (demoBtn) demoBtn.addEventListener("click", runClinicalDemo);
 if (topicDemoBtn) topicDemoBtn.addEventListener("click", runTopicDemo);
 
-function narrate(text) {
+async function narrate(text) {
   const el = document.getElementById("demo-narrator");
   if (!el) return;
   el.innerHTML = `<i class="ti ti-sparkles"></i> ${escapeHtml(text)}`;
   if (isCCEnabled()) el.classList.add("visible");
-  speak(text);
   showControls();
+  await speakAndWait(text);
 }
 
 function narrateOff() {
@@ -373,32 +373,28 @@ async function runClinicalDemo() {
   resetChat();
   await delay(600);
 
-  narrate("Medical Concierge demo — AI-powered clinical question answering with citations");
-  await delay(3000);
+  await narrate("Medical Concierge demo — AI-powered clinical question answering with citations");
 
   const question1 = "What are my options for a 45-year-old patient with moderate-to-severe atopic dermatitis who failed topicals?";
-  narrate("An HCP asks about treatment options for moderate-to-severe atopic dermatitis");
+  await narrate("An HCP asks about treatment options for moderate-to-severe atopic dermatitis");
   await typeIntoInput(question1);
   await delay(400);
   await submitQuery(question1);
-  narrate("The AI retrieves cited answers from Sanofi medical content and generates an Orion signal");
-  await delay(3500);
+  await narrate("The AI retrieves cited answers from Sanofi medical content and generates an Orion signal");
 
   const question2 = "How does dupilumab compare to abrocitinib in head-to-head data?";
-  narrate("Follow-up: comparing dupilumab versus abrocitinib in head-to-head trials");
+  await narrate("Follow-up: comparing dupilumab versus abrocitinib in head-to-head trials");
   await typeIntoInput(question2);
   await delay(400);
   await submitQuery(question2);
-  narrate("Each response includes source citations and contributes to engagement intelligence");
-  await delay(3000);
+  await narrate("Each response includes source citations and contributes to engagement intelligence");
 
   const question3 = "Explain type 2 inflammation and how it connects multiple diseases";
-  narrate("Cross-therapeutic area question — type 2 inflammation across disease states");
+  await narrate("Cross-therapeutic area question — type 2 inflammation across disease states");
   await typeIntoInput(question3);
   await delay(400);
   await submitQuery(question3);
-  narrate("MedVerse connects knowledge across atopic dermatitis, asthma, and other type 2 diseases");
-  await delay(3000);
+  await narrate("MedVerse connects knowledge across atopic dermatitis, asthma, and other type 2 diseases");
 
   narrateOff();
   demoRunning = false;
@@ -418,8 +414,7 @@ async function runTopicDemo() {
   const promptCards = Array.from(promptsGrid.querySelectorAll(".prompt-card"));
   const topicsToDemo = [0, 1, 2];
 
-  narrate("One-click topic queries — HCPs explore Sanofi medical content with a single tap");
-  await delay(2500);
+  await narrate("One-click topic queries — HCPs explore Sanofi medical content with a single tap");
 
   for (let idx = 0; idx < topicsToDemo.length; idx++) {
     const cardIdx = topicsToDemo[idx];
@@ -427,38 +422,36 @@ async function runTopicDemo() {
     if (!card) continue;
 
     if (welcomeEl && welcomeEl.style.display === "none") {
-      narrate("Resetting for the next topic query");
-      await delay(1200);
+      await narrate("Resetting for the next topic query");
       resetChat();
       await delay(800);
     }
 
     const label = card.querySelector("span")?.textContent || "";
-    narrate(`Topic ${idx + 1} of ${topicsToDemo.length}: "${label}" — highlighting the card`);
+    await narrate(`Topic ${idx + 1} of ${topicsToDemo.length}: "${label}" — highlighting the card`);
     card.classList.add("demo-highlight");
     card.scrollIntoView({ behavior: "smooth", block: "center" });
-    await delay(2000);
+    await delay(800);
 
-    narrate(`Clicking "${label}" — query sent instantly, no typing needed`);
+    await narrate(`Clicking "${label}" — query sent instantly, no typing needed`);
     card.classList.remove("demo-highlight");
     card.click();
     await delay(3000);
 
-    narrate("AI response with citations and Orion signal generated simultaneously");
-    await delay(3000);
+    await narrate("AI response with citations and Orion signal generated simultaneously");
 
     const followUps = messagesEl.querySelectorAll(".follow-up-chip");
     if (followUps.length > 0 && idx < topicsToDemo.length - 1) {
-      narrate("Follow-up suggestions let HCPs dive deeper with one more click");
+      await narrate("Follow-up suggestions let HCPs dive deeper with one more click");
       followUps[0].scrollIntoView({ behavior: "smooth", block: "center" });
-      await delay(2500);
+      await delay(1000);
     }
   }
 
-  narrate("Every interaction generates behavioral intelligence for MSL field teams via Orion");
+  await narrate("Every interaction generates behavioral intelligence for MSL field teams via Orion");
   const sidebar = document.querySelector(".sidebar-content");
   if (sidebar) sidebar.scrollTo({ top: 0, behavior: "smooth" });
-  await delay(4000);
+  await delay(1500);
 
   narrateOff();
   demoRunning = false;

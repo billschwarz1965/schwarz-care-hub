@@ -2,12 +2,17 @@ let voiceEnabled = true;
 let ccEnabled = true;
 let controlsInjected = false;
 
-const RATE = 1.0;
+const RATE = 0.92;
 const PITCH = 1.0;
 
 function getVoice() {
   const voices = speechSynthesis.getVoices();
-  const prefs = ["Zira", "Google US English", "Samantha", "David", "Alex"];
+  const prefs = [
+    "Microsoft Jenny Online", "Microsoft Aria Online", "Microsoft Guy Online",
+    "Microsoft Jenny", "Microsoft Aria",
+    "Google US English", "Samantha", "Alex",
+    "Microsoft Zira", "Microsoft David",
+  ];
   for (const name of prefs) {
     const v = voices.find(v => v.name.includes(name) && v.lang.startsWith("en"));
     if (v) return v;
@@ -88,6 +93,40 @@ export function speak(text) {
   utter.pitch = PITCH;
   utter.volume = 0.85;
   speechSynthesis.speak(utter);
+}
+
+export function speakAndWait(text, minMs = 2000) {
+  return new Promise(resolve => {
+    if (!text) { resolve(); return; }
+
+    const plain = text.replace(/<[^>]+>/g, "").replace(/&[^;]+;/g, "");
+    const start = Date.now();
+
+    if (!voiceEnabled) {
+      setTimeout(resolve, minMs);
+      return;
+    }
+
+    speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(plain);
+    const voice = getVoice();
+    if (voice) utter.voice = voice;
+    utter.rate = RATE;
+    utter.pitch = PITCH;
+    utter.volume = 0.85;
+
+    utter.onend = () => {
+      const elapsed = Date.now() - start;
+      const remaining = Math.max(0, minMs - elapsed);
+      setTimeout(resolve, remaining);
+    };
+    utter.onerror = () => {
+      const elapsed = Date.now() - start;
+      setTimeout(resolve, Math.max(0, minMs - elapsed));
+    };
+
+    speechSynthesis.speak(utter);
+  });
 }
 
 export function stopSpeaking() {
