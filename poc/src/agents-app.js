@@ -35,9 +35,12 @@ function init() {
   renderStats();
   renderArchitecture();
   bindPersonas();
+  bindHubPods();
+  bindGovPods();
   renderHubSection();
   renderComplianceStrip();
   renderAgentGrid();
+  bindStatPills();
   bindClose();
 }
 
@@ -48,6 +51,33 @@ function renderStats() {
   const totalSources = SYSTEM_AGENTS.reduce((s, a) => s + a.dataSources.length, 0);
   document.getElementById("stat-sources").textContent = totalSources;
   document.getElementById("stat-pairings").textContent = BUSINESS_AGENTS.reduce((s, a) => s + a.compliancePartners.length, 0);
+}
+
+function bindStatPills() {
+  const row = document.querySelector(".stats-row");
+  row.addEventListener("click", (e) => {
+    const pill = e.target.closest(".stat-pill[data-target]");
+    if (!pill) return;
+    const targetId = pill.dataset.target;
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    document.querySelectorAll(".stat-pill.stat-active").forEach(el => el.classList.remove("stat-active"));
+    pill.classList.add("stat-active");
+    setTimeout(() => pill.classList.remove("stat-active"), 2000);
+
+    const section = target.closest(".section");
+    if (section) {
+      section.classList.remove("section-highlight");
+      void section.offsetWidth;
+      section.classList.add("section-highlight");
+      setTimeout(() => section.classList.remove("section-highlight"), 1500);
+    }
+
+    const el = section || target;
+    const top = el.getBoundingClientRect().top + window.scrollY - 120;
+    window.scrollTo({ top, behavior: "smooth" });
+  });
 }
 
 function renderArchitecture() {
@@ -162,6 +192,117 @@ function closePersonaPanel() {
   activePersona = null;
 }
 
+function bindGovPods() {
+  const container = document.getElementById("arch-gov-pods");
+  container.innerHTML = COMPLIANCE_AGENTS.map(c =>
+    `<span class="arch-gov-pod" data-gov-id="${c.id}"><i class="ti ti-${c.icon}"></i> ${esc(c.name)}</span>`
+  ).join("");
+
+  container.addEventListener("click", (e) => {
+    const pod = e.target.closest(".arch-gov-pod[data-gov-id]");
+    if (!pod) return;
+    const govId = pod.dataset.govId;
+    const comp = COMPLIANCE_AGENTS.find(c => c.id === govId);
+    if (!comp) return;
+
+    const chip = document.querySelector(`.comp-chip[data-id="${govId}"]`);
+    if (chip) {
+      const section = chip.closest(".section");
+      const top = (section || chip).getBoundingClientRect().top + window.scrollY - 120;
+      window.scrollTo({ top, behavior: "smooth" });
+
+      setTimeout(() => chip.click(), 500);
+    }
+
+    document.querySelectorAll(".arch-gov-pod.gov-pod-active").forEach(el => el.classList.remove("gov-pod-active"));
+    pod.classList.add("gov-pod-active");
+    setTimeout(() => pod.classList.remove("gov-pod-active"), 2500);
+  });
+}
+
+let activeHubPod = null;
+
+function bindHubPods() {
+  const container = document.getElementById("arch-hub-pods");
+  container.innerHTML = SYSTEM_AGENTS.map(hub =>
+    `<span class="arch-hub-pod" data-hub-id="${hub.id}"><i class="ti ti-${hub.icon}"></i> ${esc(hub.name)}</span>`
+  ).join("");
+
+  container.addEventListener("click", (e) => {
+    const pod = e.target.closest(".arch-hub-pod[data-hub-id]");
+    if (!pod) return;
+    const hubId = pod.dataset.hubId;
+
+    if (activeHubPod === hubId) {
+      closeHubDepPanel();
+      return;
+    }
+
+    const hub = SYSTEM_AGENTS.find(h => h.id === hubId);
+    if (!hub) return;
+
+    document.querySelectorAll(".arch-hub-pod.hub-pod-active").forEach(el => el.classList.remove("hub-pod-active"));
+    pod.classList.add("hub-pod-active");
+    activeHubPod = hubId;
+    renderHubDepPanel(hub);
+  });
+}
+
+function renderHubDepPanel(hub) {
+  const panel = document.getElementById("hub-dep-panel");
+  const dependents = BUSINESS_AGENTS.filter(a => (a.hubDependency || []).includes(hub.id));
+
+  panel.innerHTML = `
+    <div class="hub-dep-panel-header">
+      <div>
+        <div class="hub-dep-panel-title"><i class="ti ti-${hub.icon}"></i> ${esc(hub.name)}</div>
+        <div class="hub-dep-panel-desc">${esc(hub.desc)}</div>
+      </div>
+      <button class="hub-dep-panel-close" id="hub-dep-close"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="hub-dep-panel-body">
+      <div class="hub-dep-stat-row">
+        <div class="hub-dep-stat"><div class="hub-dep-stat-num">${dependents.length}</div><div class="hub-dep-stat-label">Dependent agents</div></div>
+        <div class="hub-dep-stat"><div class="hub-dep-stat-num">${dependents.filter(a => a.status === "active").length}</div><div class="hub-dep-stat-label">Active</div></div>
+        <div class="hub-dep-stat"><div class="hub-dep-stat-num">${hub.dataSources.length}</div><div class="hub-dep-stat-label">Data sources</div></div>
+      </div>
+      <div class="hub-dep-agent-list">
+        ${dependents.map(a => `
+          <div class="hub-dep-agent" data-agent-id="${a.id}">
+            <div class="hub-dep-agent-top">
+              <div class="hub-dep-agent-icon"><i class="ti ti-${a.icon}"></i></div>
+              <div class="hub-dep-agent-name">${esc(a.name)}</div>
+            </div>
+            <div class="hub-dep-agent-desc">${esc(a.desc)}</div>
+          </div>
+        `).join("")}
+      </div>
+    </div>`;
+
+  panel.classList.add("visible");
+  panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+  panel.querySelector("#hub-dep-close").addEventListener("click", closeHubDepPanel);
+
+  panel.querySelectorAll(".hub-dep-agent[data-agent-id]").forEach(el => {
+    el.addEventListener("click", () => {
+      const card = document.querySelector(`.agent-card[data-id="${el.dataset.agentId}"]`);
+      if (!card) return;
+      document.querySelectorAll(".agent-card.pod-highlight").forEach(c => c.classList.remove("pod-highlight"));
+      card.classList.add("pod-highlight");
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(() => card.classList.remove("pod-highlight"), 2400);
+    });
+  });
+}
+
+function closeHubDepPanel() {
+  const panel = document.getElementById("hub-dep-panel");
+  panel.classList.remove("visible");
+  document.querySelectorAll(".arch-hub-pod.hub-pod-active").forEach(el => el.classList.remove("hub-pod-active"));
+  activeHubPod = null;
+}
+
 function renderHubSection() {
   const container = document.getElementById("hub-cards");
   container.innerHTML = SYSTEM_AGENTS.map(hub => {
@@ -235,13 +376,17 @@ function renderGovernancePanel(comp) {
   const panel = document.getElementById("governance-panel");
   const supervised = BUSINESS_AGENTS.filter(a => a.compliancePartners.includes(comp.id));
 
+  const hasDemo = !!AGENT_DEMOS[comp.id];
   panel.innerHTML = `
     <div class="governance-panel-header">
       <div>
         <div class="governance-panel-title"><i class="ti ti-${comp.icon}"></i> ${esc(comp.name)}</div>
         <div class="governance-panel-desc">${esc(comp.desc)}</div>
       </div>
-      <button class="governance-panel-close" id="governance-close"><i class="ti ti-x"></i></button>
+      <div style="display:flex;align-items:center;gap:8px;">
+        ${hasDemo ? `<button class="governance-demo-btn" id="governance-demo-btn"><i class="ti ti-player-play"></i> Run demo</button>` : ""}
+        <button class="governance-panel-close" id="governance-close"><i class="ti ti-x"></i></button>
+      </div>
     </div>
     <div class="governance-panel-body">
       <div class="governance-stat-row">
@@ -265,6 +410,9 @@ function renderGovernancePanel(comp) {
   panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
   panel.querySelector("#governance-close").addEventListener("click", closeGovernancePanel);
+
+  const demoBtn = panel.querySelector("#governance-demo-btn");
+  if (demoBtn) demoBtn.addEventListener("click", () => openDemo(comp.id));
 
   panel.querySelectorAll(".governance-agent[data-agent-id]").forEach(el => {
     el.addEventListener("click", () => {
@@ -321,7 +469,7 @@ function renderAgentGrid() {
 
 async function openDemo(agentId) {
   if (demoRunning) return;
-  const agent = BUSINESS_AGENTS.find(a => a.id === agentId) || SYSTEM_AGENTS.find(a => a.id === agentId);
+  const agent = BUSINESS_AGENTS.find(a => a.id === agentId) || SYSTEM_AGENTS.find(a => a.id === agentId) || COMPLIANCE_AGENTS.find(a => a.id === agentId);
   const demo = AGENT_DEMOS[agentId];
   if (!agent || !demo) return;
 
@@ -426,6 +574,8 @@ function renderChart(chartId, data) {
     renderHorizontalBarChart(container, data);
   } else if (chartId === "kolInfluenceGrowth") {
     renderBarChart(container, data);
+  } else if (chartId === "mlrReviewSummary") {
+    renderHorizontalBarChart(container, data);
   } else if (chartId === "gapExpertMatch") {
     renderGapExpertChart(container, data);
   }

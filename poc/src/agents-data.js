@@ -298,6 +298,13 @@ export const CHART_DATA = {
       { label: "Citations", data: [12, 38, 85, 190, 340, 520], color: "#f9c851", yAxis: "right" }
     ]
   },
+  mlrReviewSummary: {
+    title: "MLR Review — Issue severity breakdown",
+    subtitle: "14-slide deck · 23 references · 6 findings",
+    labels: ["Promotional language", "Fair balance", "Data currency", "Claim accuracy", "Off-label risk", "Reference format"],
+    data: [95, 90, 70, 65, 55, 30],
+    colors: ["#ef4444", "#ef4444", "#f59e0b", "#f59e0b", "#f59e0b", "#22c55e"]
+  },
   gapExpertMatch: {
     title: "Evidence gap → Expert match strength",
     subtitle: "Elderly AD real-world outcomes (≥65 years)",
@@ -1227,6 +1234,92 @@ Dupilumab maintains 42% publication share of voice — the largest of any single
         label: "Safety assessment delivered",
         badge: "SAFETY ALERT ISSUED",
         content: "⚠️ Dupixent contains polysorbate 80 — patient has documented severe allergy. Allergist referral recommended for skin-prick testing before initiation. Halal dietary assessment: COMPLIANT — all excipients are synthetic or plant-derived. Full ingredient analysis with literature evidence and alternative options delivered. Pharmacovigilance team notified."
+      }
+    ]
+  },
+  "mlr": {
+    title: "Real-time MLR content review with auto-correction",
+    hasCharts: true,
+    steps: [
+      {
+        type: "input",
+        label: "Content submitted for MLR review",
+        content: "MSL slide deck submitted by Medical Affairs — 'Dupixent in Moderate-to-Severe AD: 5-Year Efficacy & Safety Update.' 14 slides, intended for scientific exchange at upcoming EADV satellite symposium. Requesting expedited MLR clearance."
+      },
+      {
+        type: "processing",
+        label: "MLR Review Agent — automated content analysis",
+        items: [
+          "Ingesting 14-slide deck: parsing text, claims, figures, and references...",
+          "Cross-referencing all claims against approved FDA label (BLA 761055, Rev. 2025)...",
+          "Checking against Sanofi Core Data Sheet (CDS) v12.3...",
+          "Scanning for promotional language patterns (superlatives, unsubstantiated comparisons)...",
+          "Verifying fair balance: efficacy-to-safety mention ratio analysis...",
+          "Validating all 23 literature citations against source publications...",
+          "Checking data currency: flagging any references >24 months old...",
+          "Running competitive claim review: ensuring no off-label comparisons..."
+        ]
+      },
+      {
+        type: "chart",
+        chartId: "mlrReviewSummary"
+      },
+      {
+        type: "draft",
+        label: "MLR review findings — 6 issues identified across 14 slides",
+        content: `**MLR Automated Review — Dupixent AD 5-Year Update Deck**
+Review ID: MLR-2026-08-0412 | Submitted: Aug 6, 2026 | Priority: Expedited
+
+**Overall risk level: MODERATE — 6 issues found, 2 require correction before approval**
+
+| # | Slide | Issue type | Severity | Finding |
+|---|-------|-----------|----------|---------|
+| 1 | Slide 3 | **Promotional language** | 🔴 High | Claim: "Dupixent delivers **superior** long-term disease control" — superlative language without head-to-head superiority claim in label. Must use "sustained" or "durable" instead |
+| 2 | Slide 7 | **Fair balance** | 🔴 High | 4 efficacy claims in sequence with no safety context until Slide 11. FDA guidance requires safety information proximate to efficacy claims |
+| 3 | Slide 5 | **Data currency** | 🟡 Medium | Reference #8 (Cork et al. 2023) superseded by Cork et al. 2025 with updated 5-year OLE data. Replace with current publication |
+| 4 | Slide 9 | **Claim substantiation** | 🟡 Medium | Figure shows "IGA 0/1 response maintained at 5 years: 42%" — correct for all-ages OLE but slide title says "Adult population." Adult-specific figure is 44%. Correction needed |
+| 5 | Slide 12 | **Off-label implication** | 🟡 Medium | Discussion of "potential disease modification" pathway — not an approved claim. Recommend adding qualifier: "Hypothesized mechanism under investigation" |
+| 6 | Slide 14 | **Reference format** | 🟢 Low | 3 of 23 references missing DOI numbers. Complete for traceability |
+
+**Auto-corrections applied (pending reviewer confirmation):**`
+      },
+      {
+        type: "draft",
+        label: "MLR auto-corrections — side-by-side comparison",
+        content: `**Slide 3 — Promotional language correction:**
+- ❌ Original: "Dupixent delivers **superior** long-term disease control vs conventional therapy"
+- ✅ Corrected: "Dupixent demonstrated **sustained** long-term disease control through 5 years of continuous treatment"
+- 📋 Rationale: "Superior" implies comparative superiority claim not supported by label. "Sustained" accurately reflects OLE data without comparative implication
+
+**Slide 7 — Fair balance insertion:**
+- ❌ Original: Slides 5–7 contain 4 consecutive efficacy claims with no safety mention
+- ✅ Corrected: Inserted safety summary after Slide 6: "The most common adverse reactions (incidence ≥1%) are injection site reactions, conjunctivitis, blepharitis, oral herpes, keratitis, eye pruritus, other herpes simplex virus infection, and dry eye (USPI Section 6.1)"
+- 📋 Rationale: FDA expects fair balance — safety information must accompany efficacy claims within reasonable proximity
+
+**Slide 5 — Reference update:**
+- ❌ Original: Cork MJ et al. JAMA Derm 2023; 159(12):1345-52
+- ✅ Corrected: Cork MJ et al. JAMA Derm 2025; 161(3):289-98 (5-year OLE final analysis)
+
+**Slide 9 — Data accuracy correction:**
+- ❌ Original: "Adult population: IGA 0/1 at 5 years: 42%"
+- ✅ Corrected: "Adult population: IGA 0/1 at 5 years: 44%" (source: adult subgroup analysis, Table 3)`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer cross-check",
+        checks: [
+          { agent: "Scientific Verification", agentId: "sci-verify", status: "warn", detail: "Slide 9 data discrepancy confirmed: 42% is the all-ages figure; adult-specific is 44% per OLE Table 3. Auto-correction validated against source publication." },
+          { agent: "Promotional Risk", agentId: "promo-risk", status: "flag", detail: "Slide 3 flagged: 'superior' is a comparative superiority claim requiring Phase 3 head-to-head evidence. Dupilumab does not have a superiority claim in the approved label. Auto-correction to 'sustained' resolves this finding." },
+          { agent: "Fair Balance", agentId: "fair-balance", status: "warn", detail: "Efficacy-to-safety ratio was 4:0 across Slides 5–7. FDA draft guidance recommends ≤2:1 ratio in promotional materials. Safety insertion on Slide 6.5 brings ratio to 2:1. Compliant after correction." },
+          { agent: "Content Expiration", agentId: "expiration", status: "pass", detail: "22 of 23 references are current (<24 months). 1 superseded reference (Cork 2023) flagged and replacement identified (Cork 2025). Post-correction: all references current." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "MLR review logged — 14-slide deck, 23 references checked, 6 findings (2 high, 3 medium, 1 low), 4 auto-corrections generated. Review ID: MLR-2026-08-0412. Reviewer queue: Dr. M. Thompson (Medical Director), L. Huang (Legal), S. Patel (Regulatory)." }
+        ]
+      },
+      {
+        type: "output",
+        label: "MLR review complete — ready for human reviewer",
+        badge: "6 FINDINGS · 4 AUTO-CORRECTIONS",
+        content: "Automated MLR review complete in 47 seconds (vs. avg 4.2 days manual). 6 issues identified: 2 high-severity (promotional language + fair balance), 3 medium (data currency + accuracy + off-label implication), 1 low (reference format). 4 auto-corrections generated with rationale. Deck routed to 3-person review committee with AI pre-annotations. Estimated time to final approval: <24 hours."
       }
     ]
   },

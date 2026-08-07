@@ -48,9 +48,13 @@
 
     /* STATS ROW */
     .stats-row { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
-    .stat-pill { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; flex: 1; min-width: 120px; }
+    .stat-pill { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; flex: 1; min-width: 120px; cursor: pointer; transition: all 0.2s; }
+    .stat-pill:hover { border-color: var(--accent); box-shadow: 0 2px 10px rgba(122,0,230,0.12); transform: translateY(-1px); }
+    .stat-pill.stat-active { border-color: var(--accent); background: linear-gradient(135deg, #f8f0ff, #f0e6ff); box-shadow: 0 2px 10px rgba(122,0,230,0.15); }
     .stat-pill-num { font-size: 22px; font-weight: 700; color: var(--accent); }
     .stat-pill-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
+    .section-highlight { animation: sectionPulse 1.5s ease; }
+    @keyframes sectionPulse { 0% { box-shadow: 0 0 0 0 rgba(122,0,230,0.2); } 50% { box-shadow: 0 0 0 6px rgba(122,0,230,0.08); } 100% { box-shadow: 0 0 0 0 transparent; } }
 
     /* 4-LAYER ARCHITECTURE */
     .arch-layers { display: flex; flex-direction: column; gap: 0; }
@@ -104,16 +108,44 @@
     .arch-consumer i { font-size: 12px; }
     .arch-hub-layer { background: linear-gradient(135deg, #f0e6ff 0%, #e0d4ff 100%); border-color: #c4b5fd; }
     .arch-hub-layer .arch-layer-tag { color: var(--accent); }
-    .arch-hub-inner { display: flex; align-items: center; gap: 12px; }
-    .arch-hub-icon { width: 40px; height: 40px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; flex-shrink: 0; }
-    .arch-hub-text { font-size: 12.5px; color: var(--accent-text); line-height: 1.4; }
-    .arch-hub-text strong { font-weight: 600; }
-    .arch-hub-data-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-    .arch-hub-data-chip { background: #fff; border: 1px solid #c4b5fd; border-radius: 6px; padding: 4px 10px; font-size: 11px; display: flex; align-items: center; gap: 4px; }
-    .arch-hub-data-chip strong { color: var(--accent); font-weight: 700; }
+    .arch-hub-pods { display: flex; gap: 8px; flex-wrap: wrap; }
+    .arch-hub-pod { display: flex; align-items: center; gap: 6px; padding: 7px 14px; background: #fff; border: 1.5px solid #c4b5fd; border-radius: 8px; font-size: 12px; color: var(--accent-text); font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .arch-hub-pod i { font-size: 14px; color: var(--accent); }
+    .arch-hub-pod:hover { background: var(--accent); color: #fff; transform: translateY(-1px); box-shadow: 0 2px 8px rgba(122,0,230,0.2); }
+    .arch-hub-pod:hover i { color: #fff; }
+    .arch-hub-pod.hub-pod-active { background: var(--accent); color: #fff; font-weight: 600; transform: scale(1.05); }
+    .arch-hub-pod.hub-pod-active i { color: #fff; }
+
+    /* HUB DEPENDENCY PANEL */
+    .hub-dep-panel { display: none; background: var(--surface); border: 2px solid #c4b5fd; border-radius: 12px; margin-top: 14px; overflow: hidden; animation: fadeSlideIn 0.3s ease; }
+    .hub-dep-panel.visible { display: block; }
+    .hub-dep-panel-header { padding: 14px 18px; background: linear-gradient(135deg, #f0e6ff, #e8deff); border-bottom: 1px solid #c4b5fd; display: flex; align-items: center; justify-content: space-between; }
+    .hub-dep-panel-title { font-size: 15px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+    .hub-dep-panel-title i { font-size: 18px; }
+    .hub-dep-panel-desc { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+    .hub-dep-panel-close { width: 26px; height: 26px; border-radius: 6px; border: 1px solid #c4b5fd; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--accent); flex-shrink: 0; }
+    .hub-dep-panel-close:hover { background: #f0e6ff; }
+    .hub-dep-panel-body { padding: 14px 18px; }
+    .hub-dep-stat-row { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+    .hub-dep-stat { background: #f0e6ff; border-radius: 8px; padding: 8px 14px; text-align: center; flex: 1; min-width: 100px; }
+    .hub-dep-stat-num { font-size: 20px; font-weight: 700; color: var(--accent); }
+    .hub-dep-stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
+    .hub-dep-agent-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+    .hub-dep-agent { background: var(--surface-dim); border: 1px solid var(--border); border-radius: 10px; padding: 12px; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; }
+    .hub-dep-agent:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(122,0,230,0.08); }
+    .hub-dep-agent-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .hub-dep-agent-icon { width: 28px; height: 28px; background: var(--accent-light); color: var(--accent-text); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+    .hub-dep-agent-name { font-size: 13px; font-weight: 600; }
+    .hub-dep-agent-desc { font-size: 11.5px; color: var(--text-secondary); line-height: 1.4; }
     .arch-gov-layer { background: linear-gradient(135deg, #fef3c7 0%, #fee2e2 100%); border-color: #fbbf24; }
     .arch-gov-layer .arch-layer-tag { color: var(--danger); }
-    .arch-gov-text { font-size: 12px; color: var(--danger); }
+    .arch-gov-pods { display: flex; gap: 5px; flex-wrap: wrap; }
+    .arch-gov-pod { display: flex; align-items: center; gap: 4px; padding: 5px 10px; background: #fff; border: 1px solid #fbbf24; border-radius: 7px; font-size: 11px; color: var(--warn); font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .arch-gov-pod i { font-size: 12px; }
+    .arch-gov-pod:hover { background: var(--warn); color: #fff; transform: translateY(-1px); box-shadow: 0 2px 8px rgba(245,158,11,0.2); }
+    .arch-gov-pod:hover i { color: #fff; }
+    .arch-gov-pod.gov-pod-active { background: var(--warn); color: #fff; font-weight: 600; transform: scale(1.05); }
+    .arch-gov-pod.gov-pod-active i { color: #fff; }
 
     /* HUB CARDS */
     .hub-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 14px; }
@@ -175,6 +207,9 @@
     .governance-agent-icon { width: 28px; height: 28px; background: var(--accent-light); color: var(--accent-text); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
     .governance-agent-name { font-size: 13px; font-weight: 600; }
     .governance-agent-desc { font-size: 11.5px; color: var(--text-secondary); line-height: 1.4; }
+    .governance-demo-btn { display: flex; align-items: center; gap: 5px; padding: 6px 14px; background: var(--warn); color: #fff; border: none; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; white-space: nowrap; }
+    .governance-demo-btn:hover { opacity: 0.85; }
+    .governance-demo-btn i { font-size: 13px; }
 
     /* AGENT GRID */
     .agent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
@@ -362,11 +397,11 @@
   <main class="content">
     <!-- Stats -->
     <div class="stats-row">
-      <div class="stat-pill"><div class="stat-pill-num" id="stat-business">0</div><div class="stat-pill-label">Business agents</div></div>
-      <div class="stat-pill"><div class="stat-pill-num" id="stat-hub">0</div><div class="stat-pill-label">Intelligence hubs</div></div>
-      <div class="stat-pill"><div class="stat-pill-num" id="stat-compliance">0</div><div class="stat-pill-label">Governance agents</div></div>
-      <div class="stat-pill"><div class="stat-pill-num" id="stat-sources">0</div><div class="stat-pill-label">Data sources</div></div>
-      <div class="stat-pill"><div class="stat-pill-num" id="stat-pairings">0</div><div class="stat-pill-label">Governance pairings</div></div>
+      <div class="stat-pill" data-target="agent-grid"><div class="stat-pill-num" id="stat-business">0</div><div class="stat-pill-label">Business agents</div></div>
+      <div class="stat-pill" data-target="hub-cards"><div class="stat-pill-num" id="stat-hub">0</div><div class="stat-pill-label">Intelligence hubs</div></div>
+      <div class="stat-pill" data-target="compliance-strip"><div class="stat-pill-num" id="stat-compliance">0</div><div class="stat-pill-label">Governance agents</div></div>
+      <div class="stat-pill" data-target="hub-cards"><div class="stat-pill-num" id="stat-sources">0</div><div class="stat-pill-label">Data sources</div></div>
+      <div class="stat-pill" data-target="compliance-strip"><div class="stat-pill-num" id="stat-pairings">0</div><div class="stat-pill-label">Governance pairings</div></div>
     </div>
 
     <!-- 4-Layer Architecture -->
@@ -387,27 +422,16 @@
           <div id="arch-hub-consumers" class="arch-consumers"></div>
         </div>
         <div class="arch-layer arch-hub-layer">
-          <div class="arch-layer-tag">Intelligence hub layer</div>
-          <div class="arch-hub-inner">
-            <div class="arch-hub-icon"><i class="ti ti-topology-star-ring-3"></i></div>
-            <div>
-              <div class="arch-hub-text"><strong>Expert Intelligence Hub</strong> (powered by HCP Explorer) — single source of truth for all HCP and KOL intelligence</div>
-              <div class="arch-hub-data-chips">
-                <span class="arch-hub-data-chip"><strong>4.9M</strong> HCP profiles</span>
-                <span class="arch-hub-data-chip"><strong>13.3M</strong> publications</span>
-                <span class="arch-hub-data-chip"><strong>22.5M</strong> congress records</span>
-                <span class="arch-hub-data-chip"><strong>563K</strong> clinical trials</span>
-                <span class="arch-hub-data-chip"><strong>OneCRM</strong> engagements</span>
-              </div>
-            </div>
-          </div>
+          <div class="arch-layer-tag">Intelligence hub layer <span class="h2-sub" style="font-size:10px;opacity:0.7">(click to see dependent agents)</span></div>
+          <div id="arch-hub-pods" class="arch-hub-pods"></div>
         </div>
         <div class="arch-layer arch-gov-layer">
-          <div class="arch-layer-tag">Compliance &amp; governance layer — supervises every interaction</div>
-          <div class="arch-gov-text">Review &bull; Monitor &bull; Approve &bull; Audit &bull; Detect &bull; Protect &bull; Verify &bull; Explain</div>
+          <div class="arch-layer-tag">Compliance &amp; governance layer <span class="h2-sub" style="font-size:10px;opacity:0.7">(click to see supervised agents)</span></div>
+          <div id="arch-gov-pods" class="arch-gov-pods"></div>
         </div>
       </div>
       <div id="persona-panel" class="persona-panel"></div>
+      <div id="hub-dep-panel" class="hub-dep-panel"></div>
     </div>
 
     <!-- Intelligence Hubs -->
