@@ -1046,6 +1046,7 @@ const HCP_AGENTS = [
   { id: "lit-scout",    name: "Literature Scout",        icon: "radar-2" },
   { id: "disease-nav",  name: "Disease Navigator",       icon: "dna" },
   { id: "congress",     name: "Congress Intelligence",   icon: "building-arch" },
+  { id: "assistant",    name: "HCP Concierge Assistant", icon: "message-circle" },
 ];
 
 async function runAgentDemo(index, agent) {
@@ -1183,6 +1184,28 @@ async function runAgentDemo(index, agent) {
       await delay(1500);
       break;
     }
+    case "assistant": {
+      await narrate("The H C P Concierge Assistant — your AI companion for clinical questions, any time");
+      showHub();
+      await delay(600);
+      const fab = document.querySelector(".mv-chat-fab");
+      if (fab) { fab.click(); await delay(800); }
+      const assistInput = document.getElementById("mv-chat-input");
+      if (assistInput) {
+        assistInput.value = "";
+        for (const ch of "Dupixent storage requirements") {
+          assistInput.value += ch; await delay(25);
+        }
+        await delay(400);
+        document.getElementById("mv-chat-send")?.click();
+        await delay(2000);
+      }
+      await narrate("Instant answers drawing from all eleven agents, built for the healthcare professional workflow");
+      await delay(1500);
+      if (fab) fab.click();
+      await delay(400);
+      break;
+    }
   }
 }
 
@@ -1202,14 +1225,14 @@ async function runDemo() {
   demoBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running…';
 
   await delay(500);
-  await narrate("HCP Concierge — a day in the life, featuring ten AI agents supporting healthcare professionals across clinical practice, research, and field engagement");
+  await narrate("H C P Concierge — a day in the life, featuring eleven AI agents supporting healthcare professionals across clinical practice, research, and field engagement");
 
   await demoCtrl.runFullDemo();
 
   // ── Wrap up ──
   showHub();
   await delay(500);
-  await narrate("With ten agents on one platform, from clinical questions to congress coverage — the HCP Concierge gives healthcare professionals the intelligence they need, when they need it");
+  await narrate("With eleven agents on one platform, from clinical questions to congress coverage — the H C P Concierge gives healthcare professionals the intelligence they need, when they need it");
   narrateOff();
 
   demoRunning = false;

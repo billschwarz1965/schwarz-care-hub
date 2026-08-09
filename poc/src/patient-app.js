@@ -967,7 +967,8 @@ const PATIENT_AGENTS = [
   { id: "trial-finder", name: "Clinical Trial Finder",  icon: "flask" },
   { id: "caregiver",    name: "Caregiver Resources",   icon: "friends" },
   { id: "wellness",     name: "Wellness Journal",      icon: "chart-line" },
-  { id: "assistant",    name: "Patient Support Assistant", icon: "message-circle" }
+  { id: "assistant",    name: "Patient Support Assistant", icon: "message-circle" },
+  { id: "trial-match",  name: "Trial Matching Agent",   icon: "flask" }
 ];
 
 const $ = id => document.getElementById(id);
@@ -1137,6 +1138,23 @@ async function runAgentDemo(index, agent) {
       if (fab) fab.click();
       await delay(400);
       break;
+
+    case "trial-match":
+      await narrate("The Trial Matching Agent — it matches patients to eligible Sanofi clinical trials based on diagnosis, demographics, and treatment history, complementing the Clinical Trial Finder with cross-module intelligence from H C P Concierge");
+      showHub();
+      await delay(600);
+      const tmCard = document.querySelector('[data-agent="trial-match"]');
+      if (tmCard) {
+        tmCard.scrollIntoView({ behavior: "smooth", block: "center" });
+        await delay(400);
+        tmCard.classList.add("demo-highlight");
+        await delay(1200);
+        await narrate("Patients see personalized trial recommendations without repeating their medical history — the agent pulls context from their existing profile across modules");
+        await delay(1500);
+        tmCard.classList.remove("demo-highlight");
+      }
+      await delay(400);
+      break;
   }
 }
 
@@ -1156,14 +1174,14 @@ async function runDemo() {
   demoBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running…';
 
   await delay(500);
-  await narrate("Patient Concierge — a day in the life, featuring ten AI agents empowering patients and caregivers to understand their conditions, manage treatment, and navigate the healthcare system");
+  await narrate("Patient Concierge — a day in the life, featuring eleven AI agents empowering patients and caregivers to understand their conditions, manage treatment, and navigate the healthcare system");
 
   await demoCtrl.runFullDemo();
 
   // ── Wrap up ──
   showHub();
   await delay(500);
-  await narrate("With ten agents on one platform, from diagnosis to daily wellness — the Patient Concierge puts patients at the center of their care journey with clear, actionable, and compassionate support");
+  await narrate("With eleven agents on one platform, from diagnosis to daily wellness — the Patient Concierge puts patients at the center of their care journey with clear, actionable, and compassionate support");
   narrateOff();
 
   demoRunning = false;

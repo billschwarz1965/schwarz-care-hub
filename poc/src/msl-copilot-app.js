@@ -982,6 +982,7 @@ const MSL_AGENTS = [
   { id: "postcall", name: "Post-Call Reporting", icon: "send" },
   { id: "orion", name: "Orion Intelligence", icon: "broadcast" },
   { id: "assistant", name: "MSL Copilot Assistant", icon: "message-circle" },
+  { id: "trial-match", name: "Trial Matching Agent", icon: "flask" },
 ];
 
 const $ = id => document.getElementById(id);
@@ -1146,10 +1147,24 @@ async function runAgentDemo(index, agent) {
         document.getElementById("mv-chat-send")?.click();
         await delay(2000);
       }
-      await narrate("Instant KOL intelligence — the assistant draws from all twelve agents to answer any question");
+      await narrate("Instant KOL intelligence — the assistant draws from all thirteen agents to answer any question");
       await delay(1500);
       if (fab) fab.click();
       await delay(400);
+      break;
+    case "trial-match":
+      await narrate("The Trial Matching Agent — linking patients to eligible Sanofi clinical trials based on diagnosis, demographics, and treatment history");
+      showHub();
+      await delay(600);
+      const tmCard = document.querySelector('[data-agent="trial-match"]');
+      if (tmCard) {
+        tmCard.scrollIntoView({ behavior: "smooth", block: "center" });
+        await delay(400);
+        tmCard.classList.add("highlight");
+        await delay(2000);
+        tmCard.classList.remove("highlight");
+      }
+      await delay(1500);
       break;
   }
 }
@@ -1167,10 +1182,10 @@ async function runDemo() {
   demoBtn.disabled = true;
   demoBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running…';
 
-  await narrate("A day in the life of a Sanofi MSL — featuring thirteen AI agents, one mission. Let's follow the journey");
+  await narrate("A day in the life of a Sanofi MSL — featuring fourteen AI agents, one mission. Let's follow the journey");
   await demoCtrl.runFullDemo();
 
-  await narrate("With twelve agents on one platform, from morning prep to post-call intelligence — the MSL Copilot");
+  await narrate("With thirteen agents on one platform, from morning prep to post-call intelligence — the MSL Copilot");
   showHub();
   await delay(1500);
 

@@ -931,6 +931,7 @@ const MEDICAL_AGENTS = [
   { id: "med-ed",        name: "Medical Education",         icon: "school" },
   { id: "congress",      name: "Congress Intelligence",     icon: "calendar-event" },
   { id: "assistant",     name: "Medical Affairs Assistant", icon: "message-circle" },
+  { id: "trial-match",   name: "Trial Matching Agent",      icon: "flask" },
 ];
 
 // ── Per-agent demo logic ──
@@ -1076,10 +1077,24 @@ async function runAgentDemo(index, agent) {
         document.getElementById("mv-chat-send")?.click();
         await delay(2000);
       }
-      await narrate("Instant answers on products, clinical data, and medical affairs processes — the assistant draws from all twelve agents");
+      await narrate("Instant answers on products, clinical data, and medical affairs processes — the assistant draws from all thirteen agents");
       await delay(1500);
       if (fab) fab.click();
       await delay(400);
+      break;
+
+    case "trial-match":
+      await narrate("Trial Matching Agent — matching patients to eligible Sanofi clinical trials based on diagnosis, demographics, and treatment history");
+      showHub();
+      await delay(600);
+      {
+        const card = document.querySelector('[data-agent="trial-match"]');
+        if (card) { card.scrollIntoView({ behavior: "smooth", block: "center" }); card.classList.add("highlight"); }
+        await delay(2000);
+        await narrate("Filters across active protocols, eligibility criteria, and site availability to surface the best-fit trials for each patient");
+        await delay(2000);
+        if (card) card.classList.remove("highlight");
+      }
       break;
   }
 }
@@ -1104,7 +1119,7 @@ async function runDemo() {
 
   // Finale
   if (!demoCtrl.aborted) {
-    await narrate("With eleven agents on one Medical Affairs command center, from strategy to execution — the Medical Concierge");
+    await narrate("With thirteen agents on one Medical Affairs command center, from strategy to execution — the Medical Concierge");
     showHub();
     await delay(1500);
   }
