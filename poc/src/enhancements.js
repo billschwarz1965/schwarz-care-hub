@@ -178,7 +178,7 @@
   }
 
   // ═══ FLOATING CHAT WIDGET ═══
-  const chatPages = ['medical.html', 'patient.html', 'index.html', 'system-tools.html'];
+  const chatPages = ['medical.html', 'patient.html', 'index.html', 'system-tools.html', 'concierge.html'];
   const chatResponses = {
     dupixent: 'Dupixent (dupilumab) is a monoclonal antibody targeting IL-4/IL-13. It is approved for atopic dermatitis, asthma, CRSwNP, EoE, prurigo nodularis, and COPD. For specific clinical questions, please use the Medical Information agent.',
     kevzara: 'Kevzara (sarilumab) is an IL-6 receptor antagonist approved for rheumatoid arthritis. The MONARCH trial demonstrated superiority vs. adalimumab as monotherapy.',
@@ -225,13 +225,16 @@
     const isMedical = page.includes('medical');
     const isMSL = page.includes('index');
     const isPowerApps = page.includes('system-tools');
+    const isHCP = page.includes('concierge');
     const title = isMSL ? 'MSL Copilot Assistant'
       : isPowerApps ? 'Power Agents Assistant'
       : isMedical ? 'Medical Affairs Assistant'
+      : isHCP ? 'HCP Concierge Assistant'
       : 'Patient Support Assistant';
     const greeting = isMSL ? 'MSL Copilot'
       : isPowerApps ? 'Power Agents'
       : isMedical ? 'Medical Affairs'
+      : isHCP ? 'HCP Concierge'
       : 'Patient Support';
     const chips = isMSL
       ? ['Pre-call planning', 'KOL insights', 'Dupixent data', 'Territory overview']
@@ -239,6 +242,8 @@
       ? ['Orion signals', 'Disease landscape', 'Literature search', 'Congress updates']
       : isMedical
       ? ['Dupixent MOA', 'Kevzara safety', 'Find clinical trials', 'Dosing info']
+      : isHCP
+      ? ['Dupixent storage', 'Find a clinical trial', 'MSL connection', 'Ingredient safety']
       : ['Side effects', 'Copay assistance', 'Find a trial', 'Dupixent dosing'];
 
     const fab = document.createElement('button');

@@ -150,6 +150,8 @@
     .agent-card[data-agent="caregiver"]      .agent-card-tag  { background: var(--success-bg); color: var(--success); }
     .agent-card[data-agent="wellness"]       .agent-card-icon { background: #fff7ed; color: #c2410c; }
     .agent-card[data-agent="wellness"]       .agent-card-tag  { background: #fff7ed; color: #c2410c; }
+    .agent-card[data-agent="trial-match"]   .agent-card-icon { background: #d1fae5; color: #059669; }
+    .agent-card[data-agent="trial-match"]   .agent-card-tag  { background: #d1fae5; color: #065f46; }
 
     /* === AGENT PANEL === */
     .agent-panel { display: none; max-width: 960px; margin: 0 auto; padding: 24px; }
@@ -409,6 +411,12 @@
           <p>Track your daily symptoms, mood, energy, and medication adherence. See trends over time and share progress with your care team.</p>
           <span class="agent-card-tag">Self-Tracking</span>
         </div>
+        <a href="/concierge.html#trial-match" class="agent-card" data-agent="trial-match" style="text-decoration:none;color:inherit;">
+          <div class="agent-card-icon"><i class="ti ti-flask"></i></div>
+          <h3>Trial Matching Agent</h3>
+          <p>Match patients to eligible Sanofi clinical trials based on diagnosis, demographics, and treatment history. Includes site locations and enrollment status.</p>
+          <span class="agent-card-tag">Clinical Trials</span>
+        </a>
       </div>
     </div>
 
