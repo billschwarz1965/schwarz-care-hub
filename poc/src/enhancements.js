@@ -178,7 +178,7 @@
   }
 
   // ═══ FLOATING CHAT WIDGET ═══
-  const chatPages = ['medical.html', 'patient.html'];
+  const chatPages = ['medical.html', 'patient.html', 'index.html', 'system-tools.html'];
   const chatResponses = {
     dupixent: 'Dupixent (dupilumab) is a monoclonal antibody targeting IL-4/IL-13. It is approved for atopic dermatitis, asthma, CRSwNP, EoE, prurigo nodularis, and COPD. For specific clinical questions, please use the Medical Information agent.',
     kevzara: 'Kevzara (sarilumab) is an IL-6 receptor antagonist approved for rheumatoid arthritis. The MONARCH trial demonstrated superiority vs. adalimumab as monotherapy.',
@@ -188,11 +188,25 @@
     dosing: 'Dupixent dosing varies by indication and age group. Adults with AD: 600mg loading dose, then 300mg every 2 weeks. For specific dosing, use the Medical Information agent.',
     copay: 'Sanofi offers the Dupixent MyWay copay assistance program. Eligible commercially insured patients may pay as little as $0 per fill. Visit dupixentmyway.com for details.',
     side: 'Common adverse reactions for Dupixent include injection site reactions, conjunctivitis, and oral herpes. Please consult the full prescribing information for complete safety data.',
+    precall: 'Pre-call planning agent activated. Based on your territory data, Dr. Chen has upcoming meetings focused on atopic dermatitis. Key talking points: LIBERTY AD CHRONOS 3-year data, new pediatric indication, and competitive landscape vs. JAK inhibitors.',
+    territory: 'Your Northeast territory covers 42 HCPs across 3 medical centers. This quarter: 12 visits completed, 8 pending. Top priority targets: Dr. Chen (AD KOL), Dr. Patel (asthma specialist), Dr. Williams (EoE researcher).',
+    kol: 'KOL Intelligence: Dr. Sarah Chen — Tier 1 AD specialist, 47 publications, 12 congress presentations. Recent focus: long-term biologic safety in pediatric populations. Sentiment: positive toward Dupixent. Last interaction: June 2025.',
+    orion: 'Orion Signal Intelligence: 3 new signals detected this week. High priority: increased off-label interest in Type 2 inflammation across rheumatology. Medium: competitive launch activity in asthma market. Signal confidence: 87%.',
+    landscape: 'Disease Landscape: Type 2 inflammation spans 8 Sanofi therapeutic areas. Key pathways: IL-4/IL-13 (Dupixent), IL-6 (Kevzara), PCSK9 (Praluent). Emerging targets: OX40, TSLP, IL-33.',
+    literature: 'Literature Intelligence: 127 new publications this month across your therapeutic areas. Top finding: NEJM meta-analysis confirms Dupixent long-term safety profile across all approved indications. 12 publications flagged for field team review.',
+    congress: 'Congress Intelligence: 3 upcoming congresses in your areas. AAD Annual Meeting — 14 Sanofi presentations scheduled. ATS International — 6 respiratory abstracts accepted. EADV — dupilumab real-world evidence symposium confirmed.',
     default: 'I can help with general questions about Sanofi products, clinical data, and medical affairs processes. For detailed queries, please use the specialized agents available in this concierge.',
   };
 
   function matchChatResponse(input) {
     const q = input.toLowerCase();
+    if (/pre.?call|planning/.test(q)) return chatResponses.precall;
+    if (/territory|territor|overview/.test(q)) return chatResponses.territory;
+    if (/kol|key opinion|insight/.test(q)) return chatResponses.kol;
+    if (/orion|signal/.test(q)) return chatResponses.orion;
+    if (/landscape|disease/.test(q)) return chatResponses.landscape;
+    if (/literature|pubmed|publication|search/.test(q)) return chatResponses.literature;
+    if (/congress|meeting|conference/.test(q)) return chatResponses.congress;
     if (/dupix|dupilumab/.test(q)) return chatResponses.dupixent;
     if (/kevzara|sarilumab/.test(q)) return chatResponses.kevzara;
     if (/praluent|alirocumab|pcsk9/.test(q)) return chatResponses.praluent;
@@ -200,7 +214,7 @@
     if (/trial|study|recruit/.test(q)) return chatResponses.trial;
     if (/dos|administ/.test(q)) return chatResponses.dosing;
     if (/copay|cost|assist|afford/.test(q)) return chatResponses.copay;
-    if (/safe|signal|pharma/.test(q)) return chatResponses.safety;
+    if (/pharma/.test(q)) return chatResponses.safety;
     return chatResponses.default;
   }
 
@@ -209,8 +223,21 @@
     if (!chatPages.some(p => page.includes(p.replace('.html', '')))) return;
 
     const isMedical = page.includes('medical');
-    const title = isMedical ? 'Medical Affairs Assistant' : 'Patient Support Assistant';
-    const chips = isMedical
+    const isMSL = page.includes('index');
+    const isPowerApps = page.includes('system-tools');
+    const title = isMSL ? 'MSL Copilot Assistant'
+      : isPowerApps ? 'Power Agents Assistant'
+      : isMedical ? 'Medical Affairs Assistant'
+      : 'Patient Support Assistant';
+    const greeting = isMSL ? 'MSL Copilot'
+      : isPowerApps ? 'Power Agents'
+      : isMedical ? 'Medical Affairs'
+      : 'Patient Support';
+    const chips = isMSL
+      ? ['Pre-call planning', 'KOL insights', 'Dupixent data', 'Territory overview']
+      : isPowerApps
+      ? ['Orion signals', 'Disease landscape', 'Literature search', 'Congress updates']
+      : isMedical
       ? ['Dupixent MOA', 'Kevzara safety', 'Find clinical trials', 'Dosing info']
       : ['Side effects', 'Copay assistance', 'Find a trial', 'Dupixent dosing'];
 
@@ -227,7 +254,7 @@
         <div><div class="mv-chat-header-title">${title}</div><div class="mv-chat-header-sub">Powered by MedVerse AI</div></div>
       </div>
       <div class="mv-chat-body" id="mv-chat-body">
-        <div class="mv-chat-msg bot">Hello! I'm your ${isMedical ? 'Medical Affairs' : 'Patient Support'} assistant. How can I help you today?</div>
+        <div class="mv-chat-msg bot">Hello! I'm your ${greeting} assistant. How can I help you today?</div>
       </div>
       <div class="mv-chat-chips" id="mv-chat-chips">
         ${chips.map(c => `<button class="mv-chat-chip">${c}</button>`).join('')}

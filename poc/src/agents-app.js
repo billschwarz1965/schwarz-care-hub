@@ -1276,4 +1276,183 @@ function renderTrialResults(studies, total, query) {
   trialResults.innerHTML = html;
 }
 
+// ─── FULL UNIFIED DEMO ───
+
+let fullDemoRunning = false;
+
+function scrollTo(el) { if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }
+function highlight(el) { if (el) { el.style.outline = "2px solid #7a00e6"; el.style.outlineOffset = "2px"; } }
+function unhighlight(el) { if (el) { el.style.outline = ""; el.style.outlineOffset = ""; } }
+
+async function runDemo() {
+  if (fullDemoRunning || demoRunning) return;
+  fullDemoRunning = true;
+  const btn = document.getElementById("run-demo");
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running...'; }
+
+  const mainScroll = document.getElementById("main-scroll");
+  if (mainScroll) mainScroll.scrollTo({ top: 0, behavior: "smooth" });
+  closePersonaPanel();
+  await delay(500);
+
+  // ACT 1: Stats overview
+  await narrate("The Agent Ecosystem — fifteen business agents, two intelligence hubs, and twelve governance agents");
+  const statsRow = document.querySelector(".stats-row");
+  highlight(statsRow);
+  await delay(2000);
+  unhighlight(statsRow);
+
+  // ACT 2: Four-layer architecture
+  await narrate("The four-layer architecture — U.X. personas at top, agents, intelligence hubs, and governance at the base");
+  const archSection = document.querySelector(".arch-section");
+  if (archSection) {
+    scrollTo(archSection);
+    await delay(1500);
+  }
+
+  // ACT 3: Persona drill-down - MSLs
+  await narrate("Let's explore the M.S.L. persona — click to see which agents serve field medical teams");
+  const mslSpan = document.querySelector('.arch-ux-personas span');
+  if (mslSpan) {
+    mslSpan.click();
+    await delay(1500);
+    await narrate("M.S.L. field teams have access to agents for territory management, K.O.L. profiling, compliance, and more");
+    await delay(2000);
+    closePersonaPanel();
+    await delay(400);
+  }
+
+  // ACT 4: Intelligence Hub drill-down
+  await narrate("Intelligence hubs power the agents — click the Expert Intelligence Hub");
+  const hubSection = document.getElementById("hub-cards");
+  if (hubSection) {
+    scrollTo(hubSection);
+    await delay(600);
+    const expertHub = hubSection.querySelector('.hub-card[data-hub-id="hcp-explorer"]');
+    if (expertHub) {
+      highlight(expertHub);
+      await delay(1000);
+      unhighlight(expertHub);
+    }
+  }
+  await narrate("The Expert Hub profiles over 4,200 H.C.P.s with publication data, congress activity, and engagement history");
+
+  // ACT 5: Governance layer
+  await narrate("Every agent output passes through the governance layer — twelve compliance agents");
+  const compStrip = document.getElementById("compliance-strip");
+  if (compStrip) {
+    scrollTo(compStrip);
+    await delay(600);
+    highlight(compStrip);
+    await delay(1500);
+    unhighlight(compStrip);
+  }
+  await narrate("M.L.R. review, scientific verification, A.E. detection, P.H.I. protection — all automated");
+
+  // ACT 6: Business agent grid
+  await narrate("The business agent grid — click any agent for a live demo");
+  const agentGrid = document.getElementById("agent-grid");
+  if (agentGrid) {
+    scrollTo(agentGrid);
+    await delay(800);
+  }
+
+  // ACT 7: Demo a key agent - Advisory Board Builder
+  await narrate("Let's demo the Advisory Board Builder — an M.S.L. favorite");
+  const abCard = agentGrid?.querySelector('.agent-card[data-id="advisory-board"]');
+  if (abCard) {
+    scrollTo(abCard);
+    await delay(400);
+    highlight(abCard);
+    await delay(600);
+    unhighlight(abCard);
+    openDemo("advisory-board");
+    await delay(8000);
+    const demoPanel = document.getElementById("demo-panel");
+    if (demoPanel) demoPanel.style.display = "none";
+    document.body.style.overflow = "";
+    clearComplianceHighlights();
+    await delay(400);
+  }
+  await narrate("Advisory Board — automated roster optimization with compliance review built in");
+
+  // ACT 8: Demo Expert Segmentation
+  await narrate("Next, the Expert Segmentation Agent — classifying K.O.L.s by tier and influence");
+  const esCard = agentGrid?.querySelector('.agent-card[data-id="expert-segment"]');
+  if (esCard) {
+    scrollTo(esCard);
+    await delay(400);
+    highlight(esCard);
+    await delay(600);
+    unhighlight(esCard);
+    openDemo("expert-segment");
+    await delay(6000);
+    const demoPanel = document.getElementById("demo-panel");
+    if (demoPanel) demoPanel.style.display = "none";
+    document.body.style.overflow = "";
+    clearComplianceHighlights();
+    await delay(400);
+  }
+
+  // ACT 9: Live clinical trial search
+  await narrate("Live Trial Search — querying ClinicalTrials.gov in real time from the ecosystem");
+  openTrialSearch();
+  await delay(600);
+  if (trialInput) {
+    trialInput.value = "";
+    for (const ch of "dupilumab atopic dermatitis") {
+      trialInput.value += ch;
+      await delay(20);
+    }
+    await delay(300);
+    await runTrialSearch();
+    await delay(2500);
+    await narrate("Real-time results from ClinicalTrials.gov — integrated directly into the agent platform");
+    closeTrialSearch();
+    await delay(400);
+  }
+
+  // ACT 10: Chat demo
+  await narrate("The Ecosystem A.I. agent answers questions about architecture, agents, and governance");
+  if (chatFab && chatPanel) {
+    chatPanel.classList.add("open");
+    chatFab.classList.add("hidden");
+  }
+  resetChat();
+  await delay(400);
+  await typeIntoChat("How many agents are in the MedVerse ecosystem?");
+  await delay(300);
+  chatSuggestions.style.display = "none";
+  addUserMsg("How many agents are in the MedVerse ecosystem?");
+  chatInput.value = "";
+  const typing = addTyping();
+  await delay(1000);
+  typing.remove();
+  addAIMsg(generateChatResponse("How many agents are in the MedVerse ecosystem?"));
+  await delay(1500);
+  await narrate("The ecosystem agent provides instant answers about the full platform architecture");
+
+  // Reset
+  if (chatPanel) {
+    chatPanel.classList.remove("open");
+    chatFab.classList.remove("hidden");
+  }
+  if (mainScroll) mainScroll.scrollTo({ top: 0, behavior: "smooth" });
+  await delay(500);
+
+  await narrate("Agent Ecosystem — fifteen business agents, two intelligence hubs, twelve governance agents. One connected platform.");
+  narrateOff();
+
+  fullDemoRunning = false;
+  if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-player-play"></i> Play Demo'; }
+}
+
+const runDemoBtn = document.getElementById("run-demo");
+if (runDemoBtn) runDemoBtn.addEventListener("click", runDemo);
+
+if (window.location.hash === "#autoplay") {
+  window.location.hash = "";
+  setTimeout(runDemo, 600);
+}
+
 init();

@@ -1,0 +1,59 @@
+{
+  "name": "medverse-operating-system",
+  "version": "0.4.0",
+  "description": "Sanofi MedVerse Operating System — AI-powered scientific engagement gateway",
+  "main": "main.js",
+  "author": {
+    "name": "Sanofi — Digital Product Line",
+    "email": "bill.schwarz@sanofi.com"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win",
+    "dist:mac": "electron-builder --mac"
+  },
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "com.sanofi.medverse",
+    "productName": "MedVerse Operating System",
+    "copyright": "Copyright © 2025 Sanofi",
+    "directories": {
+      "output": "installer"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "icon.ico",
+      "www/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "icon.ico",
+      "uninstallerIcon": "icon.ico",
+      "installerHeaderIcon": "icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MedVerse",
+      "license": "LICENSE.txt"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "category": "public.app-category.medical",
+      "icon": "icon.icns"
+    }
+  }
+}

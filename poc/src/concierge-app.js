@@ -1,6 +1,7 @@
 import { generateResponse, suggestedPrompts } from "./rag-engine.js";
 import { speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 import { broadcastSignal } from "./orion-bridge.js";
+import { createDemoController } from "./demo-nav.js";
 
 // === NAV STATE ===
 const hub = document.getElementById("hub");
@@ -1034,6 +1035,164 @@ function narrateOff() {
   stopSpeaking(); hideControls();
 }
 
+const HCP_AGENTS = [
+  { id: "clinical-qa",  name: "Clinical Q&A",           icon: "stethoscope" },
+  { id: "patient-nav",  name: "Patient Navigator",      icon: "map-pin" },
+  { id: "trial-match",  name: "Trial Matching",         icon: "flask" },
+  { id: "msl-connect",  name: "MSL Connect",            icon: "users" },
+  { id: "ingredient",   name: "Ingredient Safety",      icon: "shield-check" },
+  { id: "temp-stab",    name: "Temperature Stability",  icon: "temperature" },
+  { id: "literature",   name: "Literature Intelligence", icon: "book-2" },
+  { id: "lit-scout",    name: "Literature Scout",        icon: "radar-2" },
+  { id: "disease-nav",  name: "Disease Navigator",       icon: "dna" },
+  { id: "congress",     name: "Congress Intelligence",   icon: "building-arch" },
+];
+
+async function runAgentDemo(index, agent) {
+  const $ = id => document.getElementById(id);
+  const set = (id, v) => { const el = $(id); if (el) el.value = v; };
+  const click = id => { const el = $(id); if (el) el.click(); };
+
+  switch (agent.id) {
+    case "clinical-qa": {
+      await narrate("It starts with a clinical question. A dermatologist asks about treatment options for a patient with moderate-to-severe A.D. who has failed topicals");
+      showPanel("clinical-qa");
+      await delay(600);
+      const q = "What are my options for a 45-year-old patient with moderate-to-severe atopic dermatitis who failed topicals?";
+      chatInput.value = q; chatSend.disabled = false;
+      await delay(400);
+      await submitChat(q);
+      await narrate("Cited evidence returned with treatment guidelines, clinical trial data, and an Orion signal generated for the field team");
+      await delay(1500);
+      break;
+    }
+    case "patient-nav": {
+      await narrate("The answer leads to a treatment decision. The Patient Navigator builds a personalized care pathway");
+      showPanel("patient-nav");
+      await delay(600);
+      set("pn-age", "45"); set("pn-sex", "Female"); set("pn-diagnosis", "Atopic Dermatitis (moderate-to-severe)");
+      await narrate("Entering patient details — 45-year-old female, moderate-to-severe A.D.");
+      await delay(400);
+      click("pn-submit");
+      await delay(2000);
+      await narrate("A step-by-step care pathway generated — from severity assessment through biologic therapy to monitoring and trial enrollment options");
+      await delay(1500);
+      break;
+    }
+    case "trial-match": {
+      await narrate("The patient is interested in clinical trials. The Trial Matching agent searches for eligible studies");
+      showPanel("trial-match");
+      await delay(600);
+      set("tm-indication", "Atopic Dermatitis"); set("tm-age", "45"); set("tm-bio", "Biologic-naïve"); set("tm-region", "United States");
+      await narrate("Filtering by indication, age, biologic status, and region");
+      await delay(400);
+      click("tm-submit");
+      await delay(2000);
+      await narrate("Multiple active trials found — LIBERTY A.D. PED, LIBERTY A.D. HALO, and the DUPIXENT REAL observational registry, with enrollment status and site locations");
+      await delay(1500);
+      break;
+    }
+    case "msl-connect": {
+      await narrate("The H.C.P. wants to discuss the latest data with a field medical liaison. M.S.L. Connect finds the right person");
+      showPanel("msl-connect");
+      await delay(600);
+      set("msl-ta", "Dermatology / Atopic Dermatitis"); set("msl-region", "Northeast US");
+      await narrate("Searching for a dermatology M.S.L. in the Northeast");
+      await delay(400);
+      click("msl-submit");
+      await delay(1500);
+      await narrate("Dr. Amanda Rodriguez, PharmD — available this week, specializing in Dupixent clinical data and A.D. real-world evidence. Meeting request, email, and phone options ready");
+      await delay(1500);
+      break;
+    }
+    case "ingredient": {
+      await narrate("Before prescribing, the H.C.P. checks a patient allergy concern. The Ingredient Safety agent cross-references drug excipients");
+      showPanel("ingredient");
+      await delay(600);
+      set("ing-product", "Dupixent (dupilumab)"); set("ing-allergy", "latex");
+      await narrate("Checking Dupixent against a latex allergy");
+      await delay(400);
+      click("ing-submit");
+      await delay(2000);
+      await narrate("Allergy alert — the pre-filled syringe needle cap contains a latex derivative. Agent recommends the pen device instead. Full excipient list, contraindications, and monitoring requirements displayed");
+      await delay(1500);
+      break;
+    }
+    case "temp-stab": {
+      await narrate("The patient asks about traveling with their medication. Temperature Stability provides storage guidance");
+      showPanel("temp-stab");
+      await delay(600);
+      set("ts-product", "Dupixent (dupilumab) — Pre-filled pen"); set("ts-scenario", "Patient travel / transport");
+      await narrate("Looking up travel storage conditions for the Dupixent pre-filled pen");
+      await delay(400);
+      click("ts-submit");
+      await delay(1500);
+      await narrate("Room temperature up to 25 degrees Celsius for 14 days. Pen device is travel-friendly — insulated case recommended. Full freeze protection and visual inspection guidance included");
+      await delay(1500);
+      break;
+    }
+    case "literature": {
+      await narrate("Meanwhile, the H.C.P. wants to review the latest evidence. The Literature agent searches the Sanofi clinical database");
+      showPanel("literature");
+      await delay(600);
+      set("lit-query", "dupilumab atopic dermatitis long-term safety"); set("lit-type", "Clinical Trial");
+      await narrate("Searching for dupilumab long-term safety data in A.D.");
+      await delay(400);
+      click("lit-submit");
+      await delay(2000);
+      await narrate("Results include the LIBERTY A.D. CHRONOS 4-year data, the JADE DARE head-to-head trial, and real-world effectiveness meta-analysis — with impact ratings and PubMed links");
+      await delay(1500);
+      break;
+    }
+    case "lit-scout": {
+      await narrate("Literature Scout proactively monitors for new publications. Let's check recent alerts for Atopic Dermatitis");
+      showPanel("lit-scout");
+      await delay(600);
+      set("scout-ta", "Atopic Dermatitis");
+      await narrate("Scanning recent publications in A.D.");
+      await delay(400);
+      click("scout-submit");
+      await delay(2000);
+      await narrate("Four alerts — including a competitor J.A.K. inhibitor safety concern, an A.A.D. guideline update promoting biologics first-line, and positive Dupixent adherence data. Each tagged by type and priority");
+      await delay(1500);
+      break;
+    }
+    case "disease-nav": {
+      await narrate("The Disease Navigator provides a comprehensive disease landscape — pathophysiology, treatment positioning, and cross-T.A. connections");
+      showPanel("disease-nav");
+      await delay(600);
+      set("dn-disease", "Atopic Dermatitis");
+      await narrate("Loading the Atopic Dermatitis disease profile");
+      await delay(400);
+      click("dn-submit");
+      await delay(2000);
+      await narrate("Full profile — type 2 inflammation mechanism, competitive treatment landscape with Dupixent as first-line biologic, cross-T.A. links to asthma and C.R.S.w.N.P., and the pipeline expansion strategy");
+      await delay(1500);
+      break;
+    }
+    case "congress": {
+      await narrate("Finally — Congress Intelligence delivers coverage from major medical meetings. Let's review A.A.D. 2026");
+      showPanel("congress");
+      await delay(600);
+      set("cg-congress", "AAD 2026 — American Academy of Dermatology");
+      await narrate("Loading A.A.D. 2026 congress coverage");
+      await delay(400);
+      click("cg-submit");
+      await delay(2000);
+      await narrate("Four presentations including the CHRONOS 4-year oral, PRIME 2 prurigo nodularis poster, and competitor intelligence on J.A.K. inhibitor safety data. Full highlights, Sanofi presentations, and competitive landscape");
+      await delay(1500);
+      break;
+    }
+  }
+}
+
+const demoCtrl = createDemoController({
+  moduleName: "HCP Concierge",
+  moduleIcon: "heart-rate-monitor",
+  agents: HCP_AGENTS,
+  runAgent: runAgentDemo,
+});
+
 if (demoBtn) demoBtn.addEventListener("click", runDemo);
 
 async function runDemo() {
@@ -1043,58 +1202,22 @@ async function runDemo() {
   demoBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running…';
 
   await delay(500);
-  await narrate("HCP Concierge demo — six AI-powered agents for healthcare professionals");
+  await narrate("H.C.P. Concierge — a day in the life. Ten A.I. agents supporting healthcare professionals across clinical practice, research, and field engagement");
 
-  await narrate("The hub shows all available agents — Clinical Q&A, Patient Navigator, Trial Matching, MSL Connect, Ingredient Safety, and Temperature Stability");
-  await delay(1500);
+  await demoCtrl.runFullDemo();
 
-  // Demo 1: Clinical Q&A
-  await narrate("Let's start with Clinical Q&A — the core evidence-based question-answering agent");
-  showPanel("clinical-qa");
-  await delay(800);
-
-  const q = "What are my options for a 45-year-old patient with moderate-to-severe atopic dermatitis who failed topicals?";
-  await narrate("An HCP asks about treatment options for atopic dermatitis");
-  chatInput.value = q; chatSend.disabled = false;
-  await delay(500);
-  await submitChat(q);
-  await narrate("The agent retrieves cited answers and generates an Orion signal for field teams");
-  await delay(2000);
-
-  // Demo 2: Trial Matching
-  await narrate("Next — the Trial Matching Agent finds eligible clinical trials for patients");
-  showPanel("trial-match");
-  await delay(800);
-  document.getElementById("tm-indication").value = "Atopic Dermatitis";
-  document.getElementById("tm-age").value = "32";
-  document.getElementById("tm-bio").value = "Biologic-naïve";
-  await narrate("We enter the patient's indication, age, and biologic history");
-  await delay(800);
-  document.getElementById("tm-submit").click();
-  await delay(2000);
-  await narrate("Multiple matching trials found — with enrollment status, sites, and contact options");
-  await delay(1500);
-
-  // Demo 3: Ingredient Safety
-  await narrate("The Ingredient Safety agent checks drug safety profiles and allergy cross-references");
-  showPanel("ingredient");
-  await delay(800);
-  document.getElementById("ing-product").value = "Dupixent (dupilumab)";
-  document.getElementById("ing-allergy").value = "latex";
-  await narrate("Checking Dupixent safety with a patient latex allergy concern");
-  await delay(500);
-  document.getElementById("ing-submit").click();
-  await delay(2000);
-  await narrate("Allergy alert flagged — latex in needle cap. Agent recommends pen device instead");
-  await delay(2000);
-
-  // Back to hub
-  await narrate("All six agents work together to give HCPs a complete clinical intelligence experience");
+  // ── Wrap up ──
   showHub();
-  await delay(1000);
-
+  await delay(500);
+  await narrate("Ten agents. One platform. From clinical questions to congress coverage — the H.C.P. Concierge gives healthcare professionals the intelligence they need, when they need it");
   narrateOff();
+
   demoRunning = false;
   demoBtn.disabled = false;
   demoBtn.innerHTML = '<i class="ti ti-player-play"></i> Run Demo';
+}
+
+if (window.location.hash === "#autoplay") {
+  window.location.hash = "";
+  setTimeout(runDemo, 600);
 }

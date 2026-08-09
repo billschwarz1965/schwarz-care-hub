@@ -1,5 +1,6 @@
 import { speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 import { broadcastSignal } from "./orion-bridge.js";
+import { createDemoController } from "./demo-nav.js";
 
 // === NAV STATE ===
 const hub = document.getElementById("hub");
@@ -967,7 +968,198 @@ function narrateOff() {
   stopSpeaking(); hideControls();
 }
 
-if (demoBtn) demoBtn.addEventListener("click", runDemo);
+const MSL_AGENTS = [
+  { id: "territory", name: "Territory Dashboard", icon: "map" },
+  { id: "precall", name: "Pre-Call Intelligence", icon: "report-search" },
+  { id: "kol", name: "KOL Profiling", icon: "user-star" },
+  { id: "compliance", name: "Compliance Advisor", icon: "shield-check" },
+  { id: "literature", name: "Literature Intelligence", icon: "book-2" },
+  { id: "lit-scout", name: "Literature Scout", icon: "bell" },
+  { id: "competitive", name: "Competitive Intelligence", icon: "arrows-exchange" },
+  { id: "disease-nav", name: "Disease Navigator", icon: "dna" },
+  { id: "congress", name: "Congress Planner", icon: "calendar-event" },
+  { id: "medinfo", name: "Medical Information", icon: "file-text" },
+  { id: "postcall", name: "Post-Call Reporting", icon: "send" },
+  { id: "orion", name: "Orion Intelligence", icon: "broadcast" },
+  { id: "assistant", name: "MSL Copilot Assistant", icon: "message-circle" },
+];
+
+const $ = id => document.getElementById(id);
+const set = (id, v) => { const el = $(id); if (el) el.value = v; };
+const click = id => { const el = $(id); if (el) el.click(); };
+const type = (id, v) => { const el = $(id); if (el) { el.value = v; el.dispatchEvent(new Event("input", {bubbles:true})); } };
+
+async function runAgentDemo(index, agent) {
+  switch (agent.id) {
+    case "territory":
+      await narrate("Morning starts at the Territory Dashboard — your mission control");
+      showPanel("territory");
+      await delay(2000);
+      await narrate("Forty-seven H.C.P.s, three meetings this week, and thirty-eight Orion signals to review");
+      await delay(2000);
+      break;
+    case "precall":
+      await narrate("First meeting today: Dr. Sarah Chen. Let's pull her pre-call briefing");
+      showPanel("precall");
+      await delay(600);
+      type("pc-hcp-search", "Dr. Sarah Chen");
+      await delay(400);
+      click("pc-submit");
+      await delay(2200);
+      await narrate("Profile loaded — Tier 1 K.O.L., LIBERTY A.D. investigator, interested in long-term dupilumab data");
+      await delay(1800);
+      break;
+    case "kol":
+      await narrate("Deeper K.O.L. analysis — what's her influence score and recent activity?");
+      showPanel("kol");
+      await delay(600);
+      type("kol-name", "Dr. Sarah Chen");
+      set("kol-focus", "Publication Impact");
+      await delay(400);
+      click("kol-submit");
+      await delay(2200);
+      await narrate("K.O.L. score 87, h-index 24 — high influence. Six advisory boards, active in A.A.D. and E.A.D.V.");
+      await delay(1800);
+      break;
+    case "compliance":
+      await narrate("Before any meeting — the Compliance Advisor checks everything");
+      showPanel("compliance");
+      await delay(600);
+      type("comp-hcp", "Dr. Sarah Chen");
+      set("comp-type", "Scientific Exchange (1:1)");
+      type("comp-topics", "Dupilumab long-term safety data, EADV 2026 preview");
+      set("comp-meal", "modest");
+      await delay(400);
+      click("comp-submit");
+      await delay(1800);
+      await narrate("All clear — topics approved, modest meal within PhRMA limits, documentation reminders set");
+      await delay(1800);
+      break;
+    case "literature":
+      await narrate("Dr. Chen will ask about long-term data — let's search the latest evidence");
+      showPanel("literature");
+      await delay(600);
+      type("msl-lit-query", "dupilumab long-term safety efficacy");
+      set("msl-lit-type", "Clinical Trial");
+      set("msl-lit-date", "Last 1 year");
+      await delay(400);
+      click("msl-lit-submit");
+      await delay(1800);
+      await narrate("LIBERTY A.D. CHRONOS four-year results and real-world effectiveness data — exactly what we need");
+      await delay(1800);
+      break;
+    case "lit-scout":
+      await narrate("Any new publications we should know about? Literature Scout monitors the landscape");
+      showPanel("lit-scout");
+      await delay(600);
+      set("msl-scout-ta", "Atopic Dermatitis");
+      await delay(400);
+      click("msl-scout-submit");
+      await delay(1800);
+      await narrate("Three alerts — new J.A.K. safety concerns, updated A.A.D. guidelines, and Dupixent persistence data");
+      await delay(1800);
+      break;
+    case "competitive":
+      await narrate("Dr. Chen may ask about J.A.K. inhibitors. Let's prepare the head-to-head data");
+      showPanel("competitive");
+      await delay(600);
+      set("ci-ta", "Atopic Dermatitis");
+      set("ci-product", "Dupixent (dupilumab)");
+      set("ci-competitor", "Abrocitinib (Cibinqo) — Pfizer");
+      await delay(400);
+      click("ci-submit");
+      await delay(2200);
+      await narrate("JADE DARE comparison — efficacy, safety, and the key message: no J.A.K. class warnings with Dupixent");
+      await delay(1800);
+      break;
+    case "disease-nav":
+      await narrate("Quick disease landscape review before the meeting");
+      showPanel("disease-nav");
+      await delay(600);
+      set("msl-dn-disease", "Atopic Dermatitis");
+      set("msl-dn-focus", "Treatment Landscape");
+      await delay(400);
+      click("msl-dn-submit");
+      await delay(1800);
+      await narrate("Full A.D. landscape — pathophysiology, treatment options, cross-T.A. connections, and pipeline");
+      await delay(1800);
+      break;
+    case "congress":
+      await narrate("E.A.D.V. is next month — let's check the congress plan");
+      showPanel("congress");
+      await delay(600);
+      set("cg-congress", "EADV 2026 — European Academy of Dermatology (Sep 2026)");
+      await delay(400);
+      click("cg-submit");
+      await delay(1800);
+      await narrate("Two orals, five posters, and Dr. Chen is attending. Schedule a one-on-one to preview the data");
+      await delay(1800);
+      break;
+    case "medinfo":
+      await narrate("During the meeting, Dr. Chen asks about pediatric dosing — an unsolicited M.I.R.");
+      showPanel("medinfo");
+      await delay(600);
+      type("mi-hcp", "Dr. Sarah Chen");
+      set("mi-type", "Dosing & Administration");
+      set("mi-product", "Dupixent (dupilumab)");
+      type("mi-question", "What is the dosing regimen for pediatric patients under 30kg?");
+      await delay(400);
+      click("mi-submit");
+      await delay(2000);
+      await narrate("Approved dosing information with citations — compliant response ready to share");
+      await delay(1800);
+      break;
+    case "postcall":
+      await narrate("Meeting complete. Now we submit the signal to Orion");
+      showPanel("postcall");
+      await delay(600);
+      type("sig-hcp", "Dr. Sarah Chen");
+      set("sig-type", "Requested head-to-head comparative data");
+      set("sig-meeting-type", "Scientific Exchange (1:1)");
+      type("sig-notes", "Discussed JADE DARE H2H data, CHRONOS 4yr safety. Interested in EADV CHRONOS presentation. Follow up with pediatric MIR response.");
+      await delay(400);
+      click("sig-submit");
+      await delay(2200);
+      await narrate("Signal submitted — routed to Orion for the entire field team to see");
+      await delay(1800);
+      break;
+    case "orion":
+      await narrate("Finally, the Orion dashboard — where every signal becomes field intelligence");
+      showPanel("orion");
+      await delay(2000);
+      await narrate("One hundred forty-two signals this month, trending topics, and priority actions — the M.S.L. network, connected");
+      await delay(2000);
+      break;
+    case "assistant":
+      await narrate("The M.S.L. Copilot Assistant — your A.I. companion for any question, any time");
+      showHub();
+      await delay(600);
+      const fab = document.querySelector(".mv-chat-fab");
+      if (fab) { fab.click(); await delay(800); }
+      const chatInput = document.getElementById("mv-chat-input");
+      if (chatInput) {
+        chatInput.value = "";
+        for (const ch of "KOL insights for Dr. Chen") {
+          chatInput.value += ch; await delay(25);
+        }
+        await delay(400);
+        document.getElementById("mv-chat-send")?.click();
+        await delay(2000);
+      }
+      await narrate("Instant K.O.L. intelligence — the assistant draws from all twelve agents to answer any question");
+      await delay(1500);
+      if (fab) fab.click();
+      await delay(400);
+      break;
+  }
+}
+
+const demoCtrl = createDemoController({
+  moduleName: "MSL Copilot",
+  moduleIcon: "briefcase",
+  agents: MSL_AGENTS,
+  runAgent: runAgentDemo,
+});
 
 async function runDemo() {
   if (demoRunning) return;
@@ -975,58 +1167,22 @@ async function runDemo() {
   demoBtn.disabled = true;
   demoBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running…';
 
-  await delay(500);
-  await narrate("MSL Copilot demo — eight AI-powered business agents for Medical Science Liaisons");
+  await narrate("A day in the life of a Sanofi M.S.L. — thirteen A.I. agents, one mission. Let's follow the journey");
+  await demoCtrl.runFullDemo();
 
-  await narrate("The hub shows all agents — Pre-Call Intelligence, Territory Dashboard, Post-Call Reporting, Medical Information, Competitive Intelligence, Congress Planning, KOL Profiling, and Compliance Advisor");
-  await delay(1500);
-
-  // Demo 1: Pre-Call
-  await narrate("Let's start with Pre-Call Intelligence — preparing for a meeting with Dr. Sarah Chen");
-  showPanel("precall");
-  await delay(800);
-  const pcInput = document.getElementById("pc-hcp-search");
-  pcInput.value = "Dr. Sarah Chen";
-  await delay(500);
-  document.getElementById("pc-submit").click();
-  await delay(2500);
-  await narrate("The agent pulls her profile, scientific interests, Orion signals, trial involvement, and recommended talking points");
-  await delay(2000);
-
-  // Demo 2: Competitive Intelligence
-  await narrate("Next — Competitive Intelligence for a head-to-head discussion");
-  showPanel("competitive");
-  await delay(800);
-  document.getElementById("ci-ta").value = "Atopic Dermatitis";
-  document.getElementById("ci-product").value = "Dupixent (dupilumab)";
-  document.getElementById("ci-competitor").value = "Abrocitinib (Cibinqo) — Pfizer";
-  await delay(800);
-  document.getElementById("ci-submit").click();
-  await delay(2500);
-  await narrate("Full comparison table with JADE DARE trial data and key scientific exchange messages for fair-balance discussions");
-  await delay(2000);
-
-  // Demo 3: Compliance
-  await narrate("Before the meeting — the Compliance Advisor runs a pre-meeting check");
-  showPanel("compliance");
-  await delay(800);
-  document.getElementById("comp-hcp").value = "Dr. Sarah Chen";
-  document.getElementById("comp-type").value = "Scientific Exchange (1:1)";
-  document.getElementById("comp-topics").value = "Dupilumab long-term safety, EADV preview";
-  document.getElementById("comp-meal").value = "modest";
-  await delay(800);
-  document.getElementById("comp-submit").click();
-  await delay(2000);
-  await narrate("All checks passed — interaction type, topics, meal value, frequency, and documentation requirements verified");
-  await delay(2000);
-
-  // Back to hub
-  await narrate("Eight agents working together — from preparation through execution to reporting. The MSL Copilot command center");
+  await narrate("Twelve agents. One platform. From morning prep to post-call intelligence — the M.S.L. Copilot");
   showHub();
-  await delay(1000);
+  await delay(1500);
 
   narrateOff();
   demoRunning = false;
   demoBtn.disabled = false;
   demoBtn.innerHTML = '<i class="ti ti-player-play"></i> Run Demo';
+}
+
+if (demoBtn) demoBtn.addEventListener("click", runDemo);
+
+if (window.location.hash === "#autoplay") {
+  window.location.hash = "";
+  setTimeout(runDemo, 600);
 }

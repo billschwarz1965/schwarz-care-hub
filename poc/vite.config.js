@@ -16,6 +16,7 @@ export default defineConfig({
         patient: resolve(__dirname, 'patient.html'),
         medical: resolve(__dirname, 'medical.html'),
         systemtools: resolve(__dirname, 'system-tools.html'),
+        demo: resolve(__dirname, 'demo.html'),
       }
     }
   },

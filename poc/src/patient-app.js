@@ -1,4 +1,6 @@
 /* Patient Concierge — 10 patient-focused agents */
+import { speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
+import { createDemoController } from "./demo-nav.js";
 
 // ── NAV STATE ──
 const hub = document.getElementById('hub');
@@ -929,3 +931,248 @@ const observer = new MutationObserver(() => {
   if (wellnessPanel.classList.contains('active')) renderWellness();
 });
 observer.observe(wellnessPanel, { attributes: true, attributeFilter: ['class'] });
+
+// ============================================================
+// DEMO
+// ============================================================
+const demoBtn = document.getElementById("run-demo");
+let demoRunning = false;
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function escapeHtmlDemo(s) { const d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
+async function narrate(text) {
+  const el = document.getElementById("demo-narrator");
+  if (!el) return;
+  el.innerHTML = `<i class="ti ti-sparkles"></i> ${escapeHtmlDemo(text)}`;
+  if (isCCEnabled()) el.classList.add("visible");
+  showControls();
+  await speakAndWait(text);
+}
+function narrateOff() {
+  const el = document.getElementById("demo-narrator");
+  if (el) el.classList.remove("visible");
+  stopSpeaking(); hideControls();
+}
+
+const PATIENT_AGENTS = [
+  { id: "conditions",   name: "Condition Library",     icon: "book-2" },
+  { id: "treatment",    name: "Treatment Explorer",    icon: "list-check" },
+  { id: "medications",  name: "My Medications",        icon: "pill" },
+  { id: "symptoms",     name: "Symptom Checker",       icon: "heartbeat" },
+  { id: "side-effects", name: "Side Effect Tracker",   icon: "alert-triangle" },
+  { id: "appt-prep",    name: "Appointment Prep",      icon: "clipboard-check" },
+  { id: "insurance",    name: "Insurance & Access",     icon: "wallet" },
+  { id: "trial-finder", name: "Clinical Trial Finder",  icon: "flask" },
+  { id: "caregiver",    name: "Caregiver Resources",   icon: "friends" },
+  { id: "wellness",     name: "Wellness Journal",      icon: "chart-line" },
+  { id: "assistant",    name: "Patient Support Assistant", icon: "message-circle" }
+];
+
+const $ = id => document.getElementById(id);
+const set = (id, v) => { const el = $(id); if (el) el.value = v; };
+const click = id => { const el = $(id); if (el) el.click(); };
+const selectChip = (containerId, val) => {
+  const container = $(containerId);
+  if (!container) return;
+  container.querySelectorAll('.form-chip').forEach(c => {
+    if (c.dataset.val === val && !c.classList.contains('selected')) c.click();
+  });
+};
+
+async function runAgentDemo(index, agent) {
+  switch (agent.id) {
+    case "conditions":
+      await narrate("It starts with learning. A patient recently diagnosed with eczema opens the Condition Library to understand their disease");
+      showPanel('conditions');
+      await delay(600);
+      set('cond-select', 'Atopic Dermatitis (Eczema)');
+      await narrate("Looking up Atopic Dermatitis");
+      await delay(400);
+      click('cond-submit');
+      await delay(1500);
+      await narrate("A clear overview — what it is, what causes it, symptoms to watch for, common triggers, and practical tips for living with it. All in patient-friendly language");
+      await delay(1500);
+      break;
+
+    case "treatment":
+      await narrate("Understanding the condition, the patient explores treatment options. The Treatment Explorer shows the stepwise approach");
+      showPanel('treatment');
+      await delay(600);
+      set('tx-condition', 'Atopic Dermatitis (Eczema)');
+      await narrate("Loading treatment options for eczema");
+      await delay(400);
+      click('tx-submit');
+      await delay(1500);
+      await narrate("Five treatment steps — from basic moisturizing through topicals, phototherapy, systemic therapy, to biologic therapy with Dupixent. Each explained in plain language with what to expect");
+      await delay(1500);
+      break;
+
+    case "medications":
+      await narrate("The doctor prescribes Dupixent. The patient looks it up in My Medications to learn everything about their new treatment");
+      showPanel('medications');
+      await delay(600);
+      set('med-search', 'Dupixent');
+      await narrate("Searching for Dupixent");
+      await delay(400);
+      click('med-submit');
+      await delay(1500);
+      await narrate("A complete medication card — dosing schedule of 300 milligrams every other week, common side effects like injection site reactions, storage at 36 to 46 degrees, injection tips, and drug interactions. Everyday language, no medical jargon");
+      await delay(1500);
+      break;
+
+    case "symptoms":
+      await narrate("Two weeks into treatment, the patient notices symptoms. The Symptom Checker helps assess whether they need to call their doctor");
+      showPanel('symptoms');
+      await delay(600);
+      set('sym-description', 'Itchy skin on my arms and legs, worse at night, some redness around injection site');
+      set('sym-duration', '1-3 days'); set('sym-severity', '5');
+      await narrate("Describing itchy skin worse at night, with injection site redness, severity 5 out of 10");
+      await delay(400);
+      click('sym-submit');
+      await delay(1500);
+      await narrate("Moderate urgency assessment — guidance to apply moisturizer, avoid triggers, and specific red flags that mean call your doctor immediately");
+      await delay(1500);
+      break;
+
+    case "side-effects":
+      await narrate("The patient logs the injection site reaction in the Side Effect Tracker to share with their doctor at the next visit");
+      showPanel('side-effects');
+      await delay(600);
+      set('se-med', 'Dupixent'); set('se-effect', 'Injection site redness and mild swelling');
+      set('se-severity', 'Mild'); set('se-notes', 'Resolved within 2 days');
+      await narrate("Logging a mild injection site reaction — redness and swelling that resolved in 2 days");
+      await delay(400);
+      click('se-submit');
+      await delay(1500);
+      await narrate("Entry logged with date, severity, and notes. The tracker builds a printable history to share with your healthcare team");
+      await delay(1500);
+      break;
+
+    case "appt-prep":
+      await narrate("A follow-up appointment is coming. Appointment Prep generates a personalized question list so the patient makes the most of their visit");
+      showPanel('appt-prep');
+      await delay(600);
+      set('appt-type', 'Follow-up visit'); set('appt-condition', 'Atopic Dermatitis');
+      set('appt-concern', 'Injection site reactions and when to expect improvement');
+      await narrate("Preparing for a follow-up visit about eczema, with concerns about injection reactions and timeline");
+      await delay(400);
+      click('appt-submit');
+      await delay(1500);
+      await narrate("Six tailored questions generated — from treatment effectiveness to dosage adjustments, plus practical tips like bringing a medication list and noting symptoms since last visit");
+      await delay(1500);
+      break;
+
+    case "insurance":
+      await narrate("The patient needs help with medication costs. The Insurance and Access agent finds financial assistance programs");
+      showPanel('insurance');
+      await delay(600);
+      set('ins-med', 'Dupixent (dupilumab)');
+      selectChip('ins-status', 'commercial');
+      await narrate("Searching assistance programs for Dupixent with commercial insurance");
+      await delay(400);
+      click('ins-submit');
+      await delay(1500);
+      await narrate("Two programs found — the DUPIXENT MyWay Copay Card for as little as zero dollars per month, plus free nurse educator support for injection training and ongoing encouragement");
+      await delay(1500);
+      break;
+
+    case "trial-finder":
+      await narrate("The patient asks about clinical trials. The Trial Finder searches for studies accepting participants");
+      showPanel('trial-finder');
+      await delay(600);
+      set('tf-age', '38'); set('tf-condition', 'Atopic Dermatitis');
+      await narrate("Searching trials for a 38-year-old with Atopic Dermatitis");
+      await delay(400);
+      click('tf-submit');
+      await delay(1500);
+      await narrate("Matching trials found with plain-language descriptions, recruiting status, locations, and age eligibility — empowering the patient to discuss options with their doctor");
+      await delay(1500);
+      break;
+
+    case "caregiver":
+      await narrate("The patient's partner needs support too. Caregiver Resources provides practical guides and emotional support");
+      showPanel('caregiver');
+      await delay(600);
+      set('cg-condition', 'Atopic Dermatitis (adult)');
+      selectChip('cg-needs', 'daily-care');
+      selectChip('cg-needs', 'emotional');
+      await narrate("Finding daily care and emotional support resources for an eczema caregiver");
+      await delay(400);
+      click('cg-submit');
+      await delay(1500);
+      await narrate("Six resources — from daily skin care routines and injection day tips to managing caregiver burnout and talking to children about their condition. Real support for the whole family");
+      await delay(1500);
+      break;
+
+    case "wellness":
+      await narrate("Finally — the Wellness Journal tracks symptoms, mood, energy, and medication adherence over time");
+      showPanel('wellness');
+      renderWellness();
+      await delay(600);
+      await narrate("Seven days of data visualized — average symptom score, mood trends, and 86 percent medication adherence. The patient missed one injection due to a pharmacy delay, clearly tracked");
+      await delay(1500);
+      await narrate("Patients can log daily entries and share the trend data with their healthcare team to optimize treatment together");
+      await delay(1500);
+      break;
+    case "assistant":
+      await narrate("The Patient Support Assistant — your A.I. companion for questions about conditions, treatments, and access programs");
+      showHub();
+      await delay(600);
+      const fab = document.querySelector(".mv-chat-fab");
+      if (fab) { fab.click(); await delay(800); }
+      const chatIn = document.getElementById("mv-chat-input");
+      if (chatIn) {
+        chatIn.value = "";
+        for (const ch of "Copay assistance for Dupixent") {
+          chatIn.value += ch; await delay(25);
+        }
+        await delay(400);
+        document.getElementById("mv-chat-send")?.click();
+        await delay(2000);
+      }
+      await narrate("Instant answers on copay programs, dosing, side effects, and clinical trials — the assistant helps patients navigate their care journey");
+      await delay(1500);
+      if (fab) fab.click();
+      await delay(400);
+      break;
+  }
+}
+
+const demoCtrl = createDemoController({
+  moduleName: "Patient Concierge",
+  moduleIcon: "heart-handshake",
+  agents: PATIENT_AGENTS,
+  runAgent: runAgentDemo
+});
+
+if (demoBtn) demoBtn.addEventListener("click", runDemo);
+
+async function runDemo() {
+  if (demoRunning) return;
+  demoRunning = true;
+  demoBtn.disabled = true;
+  demoBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running…';
+
+  await delay(500);
+  await narrate("Patient Concierge — a day in the life. Ten A.I. agents empowering patients and caregivers to understand their conditions, manage treatment, and navigate the healthcare system");
+
+  await demoCtrl.runFullDemo();
+
+  // ── Wrap up ──
+  showHub();
+  await delay(500);
+  await narrate("Ten agents. One platform. From diagnosis to daily wellness — the Patient Concierge puts patients at the center of their care journey with clear, actionable, and compassionate support");
+  narrateOff();
+
+  demoRunning = false;
+  demoBtn.disabled = false;
+  demoBtn.innerHTML = '<i class="ti ti-player-play"></i> Run Demo';
+}
+
+// ── Autoplay support ──
+if (window.location.hash === "#autoplay") {
+  window.location.hash = "";
+  setTimeout(runDemo, 600);
+}

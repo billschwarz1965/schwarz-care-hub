@@ -378,7 +378,7 @@ async function runClinicalDemo() {
   await narrate("Medical Concierge demo — AI-powered clinical question answering with citations");
 
   const question1 = "What are my options for a 45-year-old patient with moderate-to-severe atopic dermatitis who failed topicals?";
-  await narrate("An HCP asks about treatment options for moderate-to-severe atopic dermatitis");
+  await narrate("An H.C.P. asks about treatment options for moderate-to-severe atopic dermatitis");
   await typeIntoInput(question1);
   await delay(400);
   await submitQuery(question1);
@@ -416,7 +416,7 @@ async function runTopicDemo() {
   const promptCards = Array.from(promptsGrid.querySelectorAll(".prompt-card"));
   const topicsToDemo = [0, 1, 2];
 
-  await narrate("One-click topic queries — HCPs explore Sanofi medical content with a single tap");
+  await narrate("One-click topic queries — H.C.P.s explore Sanofi medical content with a single tap");
 
   for (let idx = 0; idx < topicsToDemo.length; idx++) {
     const cardIdx = topicsToDemo[idx];
@@ -444,13 +444,13 @@ async function runTopicDemo() {
 
     const followUps = messagesEl.querySelectorAll(".follow-up-chip");
     if (followUps.length > 0 && idx < topicsToDemo.length - 1) {
-      await narrate("Follow-up suggestions let HCPs dive deeper with one more click");
+      await narrate("Follow-up suggestions let H.C.P.s dive deeper with one more click");
       followUps[0].scrollIntoView({ behavior: "smooth", block: "center" });
       await delay(1000);
     }
   }
 
-  await narrate("Every interaction generates behavioral intelligence for MSL field teams via Orion");
+  await narrate("Every interaction generates behavioral intelligence for M.S.L. field teams via Orion");
   const sidebar = document.querySelector(".sidebar-content");
   if (sidebar) sidebar.scrollTo({ top: 0, behavior: "smooth" });
   await delay(1500);

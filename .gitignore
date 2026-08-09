@@ -22,6 +22,15 @@ intake/inbox/*
 *.zip
 *.pptx
 *.xlsx
+*.exe
+*.7z
+
+# Electron build artifacts
+poc/desktop/installer/
+poc/desktop/node_modules/
+
+# Old release snapshots
+poc/MedVerse-v0.3/
 
 # Dependencies and build caches
 node_modules/

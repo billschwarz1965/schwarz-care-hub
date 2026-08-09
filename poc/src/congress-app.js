@@ -617,9 +617,190 @@ function bindChatDemo() {
   if (chatDemoBtn) chatDemoBtn.addEventListener("click", runChatDemo);
 }
 
+// ─── FULL DEMO ───
+
+let demoRunning = false;
+
+function highlight(el) { if (el) el.style.outline = "2px solid #7a00e6"; }
+function unhighlight(el) { if (el) el.style.outline = ""; }
+function scrollSmooth(el) { if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }
+
+async function runDemo() {
+  if (demoRunning) return;
+  demoRunning = true;
+  const btn = document.getElementById("run-demo");
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running...'; }
+
+  const mainEl = document.querySelector(".main");
+  if (mainEl) mainEl.scrollTo({ top: 0, behavior: "smooth" });
+  activeCongressId = null;
+  activeFilter = "all";
+  activeChip = null;
+  renderTimeline();
+  renderHighlights();
+  renderPresentations();
+  await delay(500);
+
+  // ACT 1: Overview stats
+  await narrate("Congress Intelligence — tracking scientific data across 6 major medical congresses");
+  const statsRow = document.getElementById("stats-row");
+  highlight(statsRow);
+  await delay(2500);
+  await narrate("10 tracked presentations, 7 with Sanofi data, spanning 5 disease areas");
+  unhighlight(statsRow);
+
+  // ACT 2: Congress timeline
+  await narrate("The congress timeline shows all tracked congresses — completed and upcoming");
+  const timeline = document.getElementById("congress-timeline");
+  scrollSmooth(timeline);
+  await delay(1000);
+
+  await narrate("Let's filter to A.A.D. 2026 — the dermatology congress with the most Sanofi data");
+  const aadCard = document.querySelector('.congress-card[data-id="aad-2026"]');
+  if (aadCard) {
+    highlight(aadCard);
+    await delay(600);
+    unhighlight(aadCard);
+    aadCard.click();
+    await delay(800);
+  }
+  await narrate("Filtered to A.A.D. — highlights and presentations now show only dermatology congress data");
+
+  // ACT 3: Highlights
+  const highlightsGrid = document.getElementById("highlights");
+  scrollSmooth(highlightsGrid);
+  await delay(800);
+  await narrate("High-impact highlights — late-breaker results and oral presentations at the top");
+  const firstHighlight = highlightsGrid.querySelector(".highlight-card");
+  if (firstHighlight) {
+    highlight(firstHighlight);
+    await delay(1500);
+    unhighlight(firstHighlight);
+  }
+
+  // ACT 4: Poster drill-down
+  await narrate("Click any presentation for the full poster view — abstract, findings, and M.S.L. talking points");
+  if (firstHighlight) {
+    firstHighlight.click();
+    await delay(1500);
+    await narrate("The 5-year dupilumab open-label extension — high impact late-breaker with Sanofi data");
+    await delay(2000);
+    closePoster();
+    await delay(500);
+  }
+
+  // ACT 5: Filter by Sanofi data
+  await narrate("Filtering to Sanofi data only — see all presentations with company-sponsored results");
+  const sanofiChip = document.querySelector('.stat-chip[data-chip="sanofi"]');
+  if (sanofiChip) {
+    scrollSmooth(sanofiChip);
+    await delay(400);
+    sanofiChip.click();
+    await delay(800);
+  }
+  await narrate("Seven Sanofi presentations across dermatology, respiratory, rheumatology, and G.I.");
+
+  // ACT 6: Switch to ATS
+  await narrate("Switching to A.T.S. 2026 — the respiratory congress");
+  activeCongressId = null;
+  activeChip = null;
+  activeFilter = "all";
+  document.querySelectorAll(".pres-filter").forEach(b => b.classList.remove("active"));
+  const allFilterBtn = document.querySelector('.pres-filter[data-filter="all"]');
+  if (allFilterBtn) allFilterBtn.classList.add("active");
+  const row = document.getElementById("stats-row");
+  if (row) row.querySelectorAll(".stat-chip").forEach(c => c.classList.remove("chip-active"));
+  renderTimeline();
+  renderHighlights();
+  renderPresentations();
+  await delay(300);
+
+  const atsCard = document.querySelector('.congress-card[data-id="ats-2026"]');
+  if (atsCard) {
+    scrollSmooth(atsCard);
+    await delay(400);
+    atsCard.click();
+    await delay(800);
+  }
+  await narrate("A.T.S. respiratory data — C.O.P.D. and asthma presentations with field-ready talking points");
+
+  // ACT 7: High impact filter
+  const presList = document.getElementById("presentations-list");
+  scrollSmooth(presList);
+  await delay(600);
+  await narrate("Filtering to high-impact only — the presentations that matter most to M.S.L. conversations");
+  const hiFilterBtn = document.querySelector('.pres-filter[data-filter="high-impact"]');
+  if (hiFilterBtn) {
+    hiFilterBtn.click();
+    await delay(800);
+  }
+  const firstPres = presList.querySelector(".pres-card");
+  if (firstPres) {
+    highlight(firstPres);
+    await delay(1500);
+    unhighlight(firstPres);
+    firstPres.click();
+    await delay(1500);
+    await narrate("Full poster detail — every presentation includes M.S.L. talking points for field conversations");
+    await delay(1500);
+    closePoster();
+  }
+
+  // ACT 8: Chat demo
+  await narrate("The Congress A.I. agent answers questions across all 6 congresses");
+  const chatPanel = document.querySelector(".chat-sidebar");
+  if (chatPanel) scrollSmooth(chatPanel);
+  await delay(600);
+
+  resetChat();
+  await delay(400);
+  await typeIntoChat("What were the key Dupixent presentations at AAD 2026?");
+  await delay(300);
+  chatSuggestions.style.display = "none";
+  addPersonaUserMsg("What were the key Dupixent presentations at AAD 2026?", "MSL", "msl");
+  chatInput.value = "";
+  const typing = addTyping();
+  await delay(1200);
+  typing.remove();
+  const response = generateResponse("What were the key Dupixent presentations at AAD 2026?");
+  addAIMsg(response);
+  await delay(1000);
+  await narrate("M.S.L. asks about A.A.D. Dupixent data — the agent surfaces presentations with key findings");
+
+  // Reset and wrap up
+  activeCongressId = null;
+  activeChip = null;
+  activeFilter = "all";
+  document.querySelectorAll(".pres-filter").forEach(b => b.classList.remove("active"));
+  if (allFilterBtn) allFilterBtn.classList.add("active");
+  if (row) row.querySelectorAll(".stat-chip").forEach(c => c.classList.remove("chip-active"));
+  renderTimeline();
+  renderHighlights();
+  renderPresentations();
+  if (mainEl) mainEl.scrollTo({ top: 0, behavior: "smooth" });
+  await delay(500);
+
+  await narrate("Congress Intelligence — six congresses, ten presentations, field-ready insights for every M.S.L. conversation");
+  narrateOff();
+
+  demoRunning = false;
+  if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-player-play"></i> Play Demo'; }
+}
+
+function bindDemo() {
+  const btn = document.getElementById("run-demo");
+  if (btn) btn.addEventListener("click", runDemo);
+}
+
 init();
 bindChat();
 bindChatDemo();
+bindDemo();
+
+if (window.location.hash === "#autoplay") {
+  window.location.hash = "";
+  setTimeout(runDemo, 600);
+}
 
 // Hash-based deep linking: #congress=aad-2026 or #poster=P-001
 (function handleHash() {

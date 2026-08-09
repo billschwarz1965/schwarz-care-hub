@@ -564,7 +564,7 @@ async function runDemo() {
   await wait(600);
 
   // ── ACT 1: Live Feed ──
-  await narrate("Starting the live signal feed — new HCP engagement signals stream in real-time");
+  await narrate("Starting the live signal feed — new H.C.P. engagement signals stream in real-time");
   const liveBtn = document.getElementById("live-toggle");
   highlight(liveBtn);
   await wait(500);
@@ -592,7 +592,7 @@ async function runDemo() {
   if (adRow) {
     adRow.click();
     unhighlight(diseasePanel.closest(".dash-panel"));
-    await narrate("Filtered to Atopic Dermatitis — all panels now show only AD-related signals");
+    await narrate("Filtered to Atopic Dermatitis — all panels now show only A.D.-related signals");
   }
 
   // ── ACT 3: Signal Drill-Down from timeline ──
@@ -607,13 +607,13 @@ async function runDemo() {
     await wait(500);
     unhighlight(firstTimeline);
     firstTimeline.click();
-    await narrate("Signal detail panel — queries asked, content accessed, and AI-generated MSL talking points");
+    await narrate("Signal detail panel — queries asked, content accessed, and A.I.-generated M.S.L. talking points");
     closeOverlayIfOpen();
     await wait(500);
   }
 
   // ── ACT 4: Clear filter, switch to HCP filter ──
-  await narrate("Clearing filter — now filtering by HCP to see individual engagement profiles");
+  await narrate("Clearing filter — now filtering by H.C.P. to see individual engagement profiles");
   clearFilterIfActive();
   await wait(500);
 
@@ -627,11 +627,11 @@ async function runDemo() {
     await wait(500);
     unhighlight(chenCard);
     chenCard.click();
-    await narrate("Filtered to Dr. Sarah Chen (KOL) — 2 signals, 34 minutes engaged, Deep+ depth");
+    await narrate("Filtered to Dr. Sarah Chen, K.O.L. — 2 signals, 34 minutes engaged, Deep+ depth");
   }
 
   // ── ACT 5: Drill-down from action queue ──
-  await narrate("Opening a priority action from the MSL queue");
+  await narrate("Opening a priority action from the M.S.L. queue");
   const actionContainer = document.getElementById("action-queue");
   scrollIntoViewSmooth(actionContainer);
   await wait(500);
@@ -651,7 +651,7 @@ async function runDemo() {
   clearFilterIfActive();
   dashboard.scrollTo({ top: 0, behavior: "smooth" });
   await wait(500);
-  await narrate("Orion Signal Intelligence — turning every MedVerse interaction into MSL-ready insight");
+  await narrate("Orion Signal Intelligence — turning every MedVerse interaction into M.S.L.-ready insight");
   narrateOff();
 
   btn.disabled = false;
@@ -660,6 +660,11 @@ async function runDemo() {
 }
 
 document.getElementById("demo-play-btn").addEventListener("click", runDemo);
+
+if (window.location.hash === "#autoplay") {
+  window.location.hash = "";
+  setTimeout(runDemo, 600);
+}
 
 // ─── CHAT ───
 
@@ -896,7 +901,7 @@ async function runChatDemo() {
   resetChat();
   await wait(600);
 
-  await narrate("Orion AI chat demo — multi-persona questions about HCP engagement signals");
+  await narrate("Orion AI chat demo — multi-persona questions about H.C.P. engagement signals");
 
   for (const step of CHAT_DEMO_SEQUENCE) {
     await narrate(`${step.persona} asks: "${step.question.substring(0, 50)}..."`);
@@ -910,7 +915,7 @@ async function runChatDemo() {
     typing.remove();
     const response = generateChatResponse(step.question);
     addChatAIMsg(response);
-    await narrate("AI analyzes real-time engagement signals and HCP profiles to generate insights");
+    await narrate("AI analyzes real-time engagement signals and H.C.P. profiles to generate insights");
   }
 
   addChatAIMsg(`<strong>Demo complete!</strong> ${CHAT_DEMO_SEQUENCE.length} questions answered across ${SIGNALS.length} signals and ${HCP_PROFILES.length} HCP profiles. The Orion Intelligence Agent turns behavioral signals into actionable MSL intelligence.`);

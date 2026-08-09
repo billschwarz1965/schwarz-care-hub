@@ -60,6 +60,9 @@
     .header-subtitle { font-size: 12px; color: var(--text-muted); }
     .header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
     .header-badge { font-size: 11px; padding: 3px 10px; background: var(--warning-bg); color: var(--warning); border-radius: 20px; font-weight: 500; }
+    .demo-btn { display: flex; align-items: center; gap: 6px; padding: 6px 14px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .demo-btn:hover { background: var(--accent-hover); }
+    .demo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
     /* MODULE NAV */
     .module-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; flex-shrink: 0; }
@@ -336,8 +339,8 @@
     .demo-narrator.visible { opacity: 1; }
     .demo-narrator i { margin-right: 6px; }
   </style>
-  <script type="module" crossorigin src="/assets/congress-B5FCz1AC.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/enhancements-DokCBmAo.js">
+  <script type="module" crossorigin src="/assets/congress-BbaZIIIC.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/enhancements-B7N07bcB.js">
   <link rel="modulepreload" crossorigin href="/assets/narrator-Gu1jBQbu.js">
   <link rel="stylesheet" crossorigin href="/assets/enhancements-Dgdrl367.css">
 </head>
@@ -353,6 +356,7 @@
         </div>
       </a>
       <div class="header-actions">
+        <button class="demo-btn" id="run-demo"><i class="ti ti-player-play"></i> Play Demo</button>
         <div class="header-badge">POC v0.1</div>
       </div>
     </div>
@@ -363,7 +367,7 @@
     <a class="module-tab" href="/medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
     <a class="module-tab" href="/concierge.html"><i class="ti ti-message-circle"></i> HCP Concierge</a>
     <a class="module-tab" href="/patient.html"><i class="ti ti-heart"></i> Patient Concierge</a>
-    <a class="module-tab active" href="/system-tools.html"><i class="ti ti-settings"></i> System Tools</a>
+    <a class="module-tab active" href="/system-tools.html"><i class="ti ti-settings"></i> Power Agents</a>
   </nav>
 
   <div class="layout">

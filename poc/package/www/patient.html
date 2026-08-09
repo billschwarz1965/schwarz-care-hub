@@ -73,6 +73,10 @@
     .hub-icon { width: 64px; height: 64px; background: var(--accent-light); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-size: 28px; color: var(--accent); }
     .hub h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
     .hub-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.6; max-width: 600px; margin: 0 auto; }
+    .demo-cta-row { text-align: center; margin: 18px 0 0; }
+    .demo-run-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 10px 22px; font-size: 13px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: background .15s; }
+    .demo-run-btn:hover { background: var(--accent-hover); }
+    .demo-run-btn:disabled { opacity: .5; cursor: not-allowed; }
 
     /* UNIVERSAL SEARCH */
     .hub-search { max-width: 620px; margin: 24px auto 28px; position: relative; }
@@ -261,8 +265,10 @@
     .demo-narrator i { margin-right: 6px; }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
-  <script type="module" crossorigin src="/assets/patient-CGOSeban.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/enhancements-DokCBmAo.js">
+  <script type="module" crossorigin src="/assets/patient-Bqidm7bL.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/enhancements-B7N07bcB.js">
+  <link rel="modulepreload" crossorigin href="/assets/narrator-Gu1jBQbu.js">
+  <link rel="modulepreload" crossorigin href="/assets/demo-nav-SVkr63C-.js">
   <link rel="stylesheet" crossorigin href="/assets/enhancements-Dgdrl367.css">
 </head>
 <body>
@@ -288,7 +294,7 @@
     <a class="module-tab" href="/medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
     <a class="module-tab" href="/concierge.html"><i class="ti ti-message-circle"></i> HCP Concierge</a>
     <a class="module-tab active" href="/patient.html"><i class="ti ti-heart"></i> Patient Concierge</a>
-    <a class="module-tab" href="/system-tools.html"><i class="ti ti-settings"></i> System Tools</a>
+    <a class="module-tab" href="/system-tools.html"><i class="ti ti-settings"></i> Power Agents</a>
   </nav>
 
   <div class="main-scroll" id="main-scroll">
@@ -299,6 +305,9 @@
         <div class="hub-icon"><i class="ti ti-heart"></i></div>
         <h1>Patient Concierge</h1>
         <p class="hub-sub">Your personal health companion. Medication information, symptom guidance, treatment options, clinical trials, insurance support, and wellness tracking — all in plain language, designed for you.</p>
+        <div class="demo-cta-row">
+          <button class="demo-run-btn" id="run-demo"><i class="ti ti-player-play"></i> Run Demo</button>
+        </div>
       </div>
 
       <div class="hub-search" id="hub-search">

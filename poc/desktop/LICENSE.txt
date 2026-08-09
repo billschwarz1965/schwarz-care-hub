@@ -1,0 +1,8 @@
+MedVerse Operating System
+Copyright (c) 2025 Sanofi. All rights reserved.
+
+This software is proprietary and confidential. It is provided for internal
+Sanofi use only and may not be copied, distributed, or disclosed to third
+parties without prior written consent from the Digital Product Line team.
+
+For questions, contact: bill.schwarz@sanofi.com

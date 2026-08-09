@@ -8,6 +8,23 @@ HOW TO RUN
 2. Your browser will open automatically to http://localhost:8080
 3. To stop: close the terminal window or press Ctrl+C
 
+SHAREPOINT / ONE-CLICK LINK SETUP
+----------------------------------
+To launch MedVerse from a SharePoint page, Teams message, or email:
+
+1. Run "Install-MedVerse.bat" once (no admin required)
+   — This registers the medverse:// URL protocol on your machine
+
+2. Create a link on SharePoint (or anywhere) pointing to:
+
+       medverse://launch
+
+3. Clicking the link opens MedVerse automatically
+
+NOTE: Each user needs their own copy of the package folder
+and must run the installer once. The link works from any
+browser, SharePoint page, Teams chat, or Outlook email.
+
 REQUIREMENTS
 ------------
 - Windows 10 or 11 (PowerShell is built in)
@@ -24,11 +41,14 @@ MODULES (10 pages)
 - Literature Intelligence — Scientific publication search (live PubMed)
 - Congress Intelligence — Medical congress coverage with poster overviews
 - Agent Ecosystem — AI agent architecture overview with interactive demos
-- System Tools — Platform configuration and diagnostics
+- Power Agents — Platform configuration and diagnostics
 
 WHAT'S NEW IN v0.3
 -------------------
 - Medical Concierge page with 11 agents including Congress Intelligence
+- Patient Concierge page with 10 patient-focused agents
+- Interactive demos on all module pages (click "Run Demo" on each hub)
+- SharePoint URL protocol launcher (Install-MedVerse.bat)
 - Cross-module Orion signal broadcasting — actions in any module generate
   real-time signals on the Orion dashboard via localStorage bridge
 - Congress deep linking — poster overview links from concierge pages to

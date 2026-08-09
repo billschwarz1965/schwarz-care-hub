@@ -216,7 +216,7 @@ async function runDemo() {
   closeDetail();
   await delay(400);
 
-  await narrate("Welcome to the Disease State Navigator — Sanofi's cross-TA intelligence map");
+  await narrate("Welcome to the Disease State Navigator — Sanofi's cross-T.A. intelligence map");
 
   await narrate("Let's start by filtering to Type 2 Inflammation — the pathway behind Dupixent");
   const type2Btn = document.querySelector('.filter-btn[data-pathway="type2"]');
@@ -228,35 +228,35 @@ async function runDemo() {
   if (adCard) { adCard.scrollIntoView({ behavior: "smooth", block: "center" }); await delay(600); adCard.click(); }
   await delay(500);
 
-  await narrate("AD connects to 4 other conditions via the atopic march — notice the gold highlights");
+  await narrate("A.D. connects to 4 other conditions via the atopic march — notice the gold highlights");
 
-  await narrate("Let's follow the connection to Type 2 Asthma — same IL-4/IL-13 pathway");
+  await narrate("Let's follow the connection to Type 2 Asthma — same I.L.-4 / I.L.-13 pathway");
   const asthmaLink = detailContent.querySelector('.connected-card[data-id="asthma"]');
   if (asthmaLink) asthmaLink.click();
   await delay(500);
 
-  await narrate("Asthma connects back to AD, CRSwNP, and EoE — the unified airway concept");
+  await narrate("Asthma connects back to A.D., C.R.S.w.N.P., and E.o.E. — the unified airway concept");
 
-  await narrate("Now let's follow to EoE — type 2 inflammation in the esophagus");
+  await narrate("Now let's follow to E.o.E. — type 2 inflammation in the esophagus");
   const eoeLink = detailContent.querySelector('.connected-card[data-id="eoe"]');
   if (eoeLink) eoeLink.click();
   await delay(500);
 
-  await narrate("Dupixent is the first FDA-approved treatment for EoE — ages 1 and up");
+  await narrate("Dupixent is the first F.D.A.-approved treatment for E.o.E. — ages 1 and up");
 
-  await narrate("Let's switch to a different pathway — IL-23/Th17");
+  await narrate("Let's switch to a different pathway — I.L.-23 / Th17");
   closeDetail();
   await delay(400);
   const th17Btn = document.querySelector('.filter-btn[data-pathway="il23th17"]');
   if (th17Btn) th17Btn.click();
   await delay(500);
 
-  await narrate("Psoriasis and IBD share the IL-23/Th17 axis — different organs, same biology");
+  await narrate("Psoriasis and I.B.D. share the I.L.-23 / Th17 axis — different organs, same biology");
   const psoCard = gridEl.querySelector('.disease-card[data-id="psoriasis"]');
   if (psoCard) { psoCard.scrollIntoView({ behavior: "smooth", block: "center" }); await delay(600); psoCard.click(); }
   await delay(500);
 
-  await narrate("MedVerse maps these connections so MSLs can tell cross-specialty stories");
+  await narrate("MedVerse maps these connections so M.S.L.s can tell cross-specialty stories");
 
   closeDetail();
   const allBtn = document.querySelector('.filter-btn[data-pathway="all"]');
@@ -657,3 +657,8 @@ function escapeHtml(str) {
 }
 
 init();
+
+if (window.location.hash === "#autoplay") {
+  window.location.hash = "";
+  setTimeout(() => { const b = document.getElementById("run-demo"); if (b) b.click(); }, 600);
+}

@@ -1,5 +1,7 @@
-// ── Medical Concierge — 10-agent hub for Medical Affairs ──
+// ── Medical Concierge — 11-agent hub for Medical Affairs ──
 import { broadcastSignal } from "./orion-bridge.js";
+import { speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
+import { createDemoController } from "./demo-nav.js";
 
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
@@ -890,3 +892,231 @@ document.getElementById("cg-submit").addEventListener("click", () => {
     broadcastSignal({ topic: `Congress Coverage — ${data.fullName}`, intent: "Congress intelligence", diseaseArea: "Multi-indication", depth: "Deep engagement", orionAction: `PRIORITY: Congress data accessed — ${data.presentations.length} presentations reviewed via Medical Concierge`, queries: [`${data.fullName} presentations and highlights`], contentAccessed: data.presentations.map(p => p.title), _source: "Medical Concierge" });
   }, 1200);
 });
+
+// ============================================================
+// DEMO
+// ============================================================
+const demoBtn = document.getElementById("run-demo");
+let demoRunning = false;
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function escapeHtmlDemo(s) { const d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
+async function narrate(text) {
+  const el = document.getElementById("demo-narrator");
+  if (!el) return;
+  el.innerHTML = `<i class="ti ti-sparkles"></i> ${escapeHtmlDemo(text)}`;
+  if (isCCEnabled()) el.classList.add("visible");
+  showControls();
+  await speakAndWait(text);
+}
+function narrateOff() {
+  const el = document.getElementById("demo-narrator");
+  if (el) el.classList.remove("visible");
+  stopSpeaking(); hideControls();
+}
+
+// ── Agent roster ──
+const MEDICAL_AGENTS = [
+  { id: "med-strategy",  name: "Medical Strategy",          icon: "chart-pie" },
+  { id: "regulatory",    name: "Regulatory Intelligence",   icon: "gavel" },
+  { id: "literature",    name: "Literature Intelligence",   icon: "book-2" },
+  { id: "evidence",      name: "Evidence Synthesis",        icon: "chart-dots-3" },
+  { id: "med-info",      name: "Medical Information",       icon: "file-description" },
+  { id: "pharma-vig",    name: "Pharmacovigilance",         icon: "shield-check" },
+  { id: "sci-comms",     name: "Scientific Communications", icon: "writing" },
+  { id: "pub-planner",   name: "Publication Planner",       icon: "notebook" },
+  { id: "advisory",      name: "Advisory Board",            icon: "users-group" },
+  { id: "med-ed",        name: "Medical Education",         icon: "school" },
+  { id: "congress",      name: "Congress Intelligence",     icon: "calendar-event" },
+  { id: "assistant",     name: "Medical Affairs Assistant", icon: "message-circle" },
+];
+
+// ── Per-agent demo logic ──
+const set = (sel, v) => { const el = $(sel); if (el) el.value = v; };
+const type = (sel, v) => { const el = $(sel); if (el) { el.value = v; el.dispatchEvent(new Event("input", {bubbles:true})); } };
+const click = (sel) => { const el = $(sel); if (el) el.click(); };
+
+async function runAgentDemo(index, agent) {
+  switch (agent.id) {
+    case "med-strategy":
+      await narrate("Morning starts with the Medical Strategy dashboard — brand plans, K.P.I.s, and competitive positioning");
+      showPanel('med-strategy');
+      await delay(2000);
+      await narrate("Six therapeutic areas tracked — Dupixent A.D. leading at 42 percent share, C.O.P.D. launch prep is critical priority");
+      await delay(2000);
+      break;
+
+    case "regulatory":
+      await narrate("Regulatory Intelligence — real-time tracking of approvals, submissions, and competitor filings");
+      showPanel('regulatory');
+      await delay(2000);
+      await narrate("Dupixent C.O.P.D. supplemental N.D.A. under review, target P.D.U.F.A. date January 2027. Two competitor approvals flagged");
+      await delay(2000);
+      break;
+
+    case "literature":
+      await narrate("Time to check the latest publications — Literature Intelligence searches PubMed and medical databases");
+      showPanel('literature');
+      await delay(600);
+      type('#lit-query', 'dupilumab atopic dermatitis long-term');
+      await delay(400);
+      click('#lit-submit');
+      await delay(1800);
+      await narrate("Multiple high-impact results — CHRONOS four-year data and real-world registry updates");
+      await delay(1800);
+      break;
+
+    case "evidence":
+      await narrate("Now let's synthesize the evidence — pulling together clinical trials, meta-analyses, and real-world data");
+      showPanel('evidence');
+      await delay(600);
+      type('#ev-query', 'Dupixent atopic dermatitis');
+      await delay(400);
+      click('#ev-submit');
+      await delay(2000);
+      await narrate("Four evidence sources graded by quality, plus identified gaps — head-to-head data and long-term radiographic data still needed");
+      await delay(1800);
+      break;
+
+    case "med-info":
+      await narrate("An unsolicited M.I.R. comes in — the Medical Information agent generates a compliant response");
+      showPanel('med-info');
+      await delay(600);
+      set('#mir-product', 'Dupixent (dupilumab)');
+      set('#mir-topic', 'Safety / Adverse Events');
+      type('#mir-details', 'HCP requesting long-term safety profile data for patient counseling');
+      await delay(400);
+      click('#mir-submit');
+      await delay(2200);
+      await narrate("Standard response letter generated with approved safety data, citations, and compliance routing");
+      await delay(1800);
+      break;
+
+    case "pharma-vig":
+      await narrate("The safety question triggers a Pharmacovigilance check — are there any active signals?");
+      showPanel('pharma-vig');
+      await delay(600);
+      set('#pv-product', 'Dupixent (dupilumab)');
+      await delay(400);
+      click('#pv-submit');
+      await delay(1800);
+      await narrate("Four signals tracked — conjunctivitis under ongoing monitoring, one new eosinophilia signal under review");
+      await delay(1800);
+      break;
+
+    case "sci-comms":
+      await narrate("We need a congress abstract drafted — the Scientific Communications agent helps");
+      showPanel('sci-comms');
+      await delay(600);
+      set('#sc-type', 'Congress Abstract');
+      type('#sc-product', 'Dupixent, Atopic Dermatitis');
+      type('#sc-message', 'LIBERTY AD CHRONOS 4-year safety and efficacy data for EADV 2026 submission');
+      await delay(400);
+      click('#sc-submit');
+      await delay(2200);
+      await narrate("Draft abstract generated with structured sections, word count, and compliance review checklist");
+      await delay(1800);
+      break;
+
+    case "pub-planner":
+      await narrate("Publication Planner tracks the full manuscript pipeline — timelines, status, and target journals");
+      showPanel('pub-planner');
+      await delay(2000);
+      await narrate("Six manuscripts in the pipeline — two submitted, one in medical review, and three in preparation");
+      await delay(2000);
+      break;
+
+    case "advisory":
+      await narrate("Planning an advisory board — the agent generates the engagement plan");
+      showPanel('advisory');
+      await delay(600);
+      set('#ab-ta', 'Atopic Dermatitis');
+      set('#ab-objective', 'Real-World Evidence Discussion');
+      await delay(400);
+      click('#ab-submit');
+      await delay(2000);
+      await narrate("Full advisory board plan with recommended K.O.L.s, agenda topics, logistics, and compliance requirements");
+      await delay(1800);
+      break;
+
+    case "med-ed":
+      await narrate("Medical Education — tracking C.M.E. programs, speaker training, and internal education initiatives");
+      showPanel('med-ed');
+      await delay(2000);
+      await narrate("Four active programs across dermatology and immunology — completion rates, upcoming sessions, and accreditation status");
+      await delay(2000);
+      break;
+
+    case "congress":
+      await narrate("Finally, Congress Intelligence — full coverage of upcoming medical congresses");
+      showPanel('congress');
+      await delay(600);
+      set('#cg-congress', 'EADV 2026 — European Academy of Dermatology');
+      await delay(400);
+      click('#cg-submit');
+      await delay(1800);
+      await narrate("E.A.D.V. 2026 in Vienna — Sanofi presentations, competitor activity, and key sessions to attend");
+      await delay(2000);
+      break;
+    case "assistant":
+      await narrate("The Medical Affairs Assistant — your A.I. companion for strategy, regulatory, and evidence questions");
+      showHub();
+      await delay(600);
+      const fab = document.querySelector(".mv-chat-fab");
+      if (fab) { fab.click(); await delay(800); }
+      const chatIn = document.getElementById("mv-chat-input");
+      if (chatIn) {
+        chatIn.value = "";
+        for (const ch of "Dupixent MOA") {
+          chatIn.value += ch; await delay(25);
+        }
+        await delay(400);
+        document.getElementById("mv-chat-send")?.click();
+        await delay(2000);
+      }
+      await narrate("Instant answers on products, clinical data, and medical affairs processes — the assistant draws from all twelve agents");
+      await delay(1500);
+      if (fab) fab.click();
+      await delay(400);
+      break;
+  }
+}
+
+// ── Demo controller ──
+const demoCtrl = createDemoController({
+  moduleName: "Medical Concierge",
+  moduleIcon: "building-hospital",
+  agents: MEDICAL_AGENTS,
+  runAgent: runAgentDemo,
+});
+
+if (demoBtn) demoBtn.addEventListener("click", runDemo);
+
+async function runDemo() {
+  if (demoRunning) return;
+  demoRunning = true;
+  demoBtn.disabled = true;
+  demoBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running…';
+
+  await demoCtrl.runFullDemo();
+
+  // Finale
+  if (!demoCtrl.aborted) {
+    await narrate("Eleven agents. One Medical Affairs command center. From strategy to execution — the Medical Concierge");
+    showHub();
+    await delay(1500);
+  }
+
+  narrateOff();
+  demoRunning = false;
+  demoBtn.disabled = false;
+  demoBtn.innerHTML = '<i class="ti ti-player-play"></i> Run Demo';
+}
+
+// ── Autoplay support ──
+if (window.location.hash === "#autoplay") {
+  window.location.hash = "";
+  setTimeout(runDemo, 600);
+}
