@@ -655,7 +655,7 @@ async function runDemo() {
   scrollSmooth(timeline);
   await delay(1000);
 
-  await narrate("Let's filter to A.A.D. 2026 — the dermatology congress with the most Sanofi data");
+  await narrate("Let's filter to AAD 2026 — the dermatology congress with the most Sanofi data");
   const aadCard = document.querySelector('.congress-card[data-id="aad-2026"]');
   if (aadCard) {
     highlight(aadCard);
@@ -664,7 +664,7 @@ async function runDemo() {
     aadCard.click();
     await delay(800);
   }
-  await narrate("Filtered to A.A.D. — highlights and presentations now show only dermatology congress data");
+  await narrate("Filtered to AAD — highlights and presentations now show only dermatology congress data");
 
   // ACT 3: Highlights
   const highlightsGrid = document.getElementById("highlights");
@@ -679,7 +679,7 @@ async function runDemo() {
   }
 
   // ACT 4: Poster drill-down
-  await narrate("Click any presentation for the full poster view — abstract, findings, and M.S.L. talking points");
+  await narrate("Click any presentation for the full poster view — abstract, findings, and MSL talking points");
   if (firstHighlight) {
     firstHighlight.click();
     await delay(1500);
@@ -698,10 +698,10 @@ async function runDemo() {
     sanofiChip.click();
     await delay(800);
   }
-  await narrate("Seven Sanofi presentations across dermatology, respiratory, rheumatology, and G.I.");
+  await narrate("Seven Sanofi presentations across dermatology, respiratory, rheumatology, and GI");
 
   // ACT 6: Switch to ATS
-  await narrate("Switching to A.T.S. 2026 — the respiratory congress");
+  await narrate("Switching to ATS 2026 — the respiratory congress");
   activeCongressId = null;
   activeChip = null;
   activeFilter = "all";
@@ -722,13 +722,13 @@ async function runDemo() {
     atsCard.click();
     await delay(800);
   }
-  await narrate("A.T.S. respiratory data — C.O.P.D. and asthma presentations with field-ready talking points");
+  await narrate("ATS respiratory data — COPD and asthma presentations with field-ready talking points");
 
   // ACT 7: High impact filter
   const presList = document.getElementById("presentations-list");
   scrollSmooth(presList);
   await delay(600);
-  await narrate("Filtering to high-impact only — the presentations that matter most to M.S.L. conversations");
+  await narrate("Filtering to high-impact only — the presentations that matter most to MSL conversations");
   const hiFilterBtn = document.querySelector('.pres-filter[data-filter="high-impact"]');
   if (hiFilterBtn) {
     hiFilterBtn.click();
@@ -741,13 +741,13 @@ async function runDemo() {
     unhighlight(firstPres);
     firstPres.click();
     await delay(1500);
-    await narrate("Full poster detail — every presentation includes M.S.L. talking points for field conversations");
+    await narrate("Full poster detail — every presentation includes MSL talking points for field conversations");
     await delay(1500);
     closePoster();
   }
 
   // ACT 8: Chat demo
-  await narrate("The Congress A.I. agent answers questions across all 6 congresses");
+  await narrate("The Congress AI agent answers questions across all 6 congresses");
   const chatPanel = document.querySelector(".chat-sidebar");
   if (chatPanel) scrollSmooth(chatPanel);
   await delay(600);
@@ -765,7 +765,7 @@ async function runDemo() {
   const response = generateResponse("What were the key Dupixent presentations at AAD 2026?");
   addAIMsg(response);
   await delay(1000);
-  await narrate("M.S.L. asks about A.A.D. Dupixent data — the agent surfaces presentations with key findings");
+  await narrate("MSL asks about AAD Dupixent data — the agent surfaces presentations with key findings");
 
   // Reset and wrap up
   activeCongressId = null;
@@ -780,7 +780,7 @@ async function runDemo() {
   if (mainEl) mainEl.scrollTo({ top: 0, behavior: "smooth" });
   await delay(500);
 
-  await narrate("Congress Intelligence — six congresses, ten presentations, field-ready insights for every M.S.L. conversation");
+  await narrate("Congress Intelligence — six congresses, ten presentations, field-ready insights for every MSL conversation");
   narrateOff();
 
   demoRunning = false;

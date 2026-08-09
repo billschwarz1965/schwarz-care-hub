@@ -995,7 +995,7 @@ async function runAgentDemo(index, agent) {
       await narrate("Morning starts at the Territory Dashboard — your mission control");
       showPanel("territory");
       await delay(2000);
-      await narrate("Forty-seven H.C.P.s, three meetings this week, and thirty-eight Orion signals to review");
+      await narrate("Forty-seven HCPs, three meetings this week, and thirty-eight Orion signals to review");
       await delay(2000);
       break;
     case "precall":
@@ -1006,11 +1006,11 @@ async function runAgentDemo(index, agent) {
       await delay(400);
       click("pc-submit");
       await delay(2200);
-      await narrate("Profile loaded — Tier 1 K.O.L., LIBERTY A.D. investigator, interested in long-term dupilumab data");
+      await narrate("Profile loaded — Tier 1 KOL, LIBERTY AD investigator, interested in long-term dupilumab data");
       await delay(1800);
       break;
     case "kol":
-      await narrate("Deeper K.O.L. analysis — what's her influence score and recent activity?");
+      await narrate("Deeper KOL analysis — what's her influence score and recent activity?");
       showPanel("kol");
       await delay(600);
       type("kol-name", "Dr. Sarah Chen");
@@ -1018,7 +1018,7 @@ async function runAgentDemo(index, agent) {
       await delay(400);
       click("kol-submit");
       await delay(2200);
-      await narrate("K.O.L. score 87, h-index 24 — high influence. Six advisory boards, active in A.A.D. and E.A.D.V.");
+      await narrate("KOL score 87, h-index 24 — high influence. Six advisory boards, active in AAD and EADV");
       await delay(1800);
       break;
     case "compliance":
@@ -1045,7 +1045,7 @@ async function runAgentDemo(index, agent) {
       await delay(400);
       click("msl-lit-submit");
       await delay(1800);
-      await narrate("LIBERTY A.D. CHRONOS four-year results and real-world effectiveness data — exactly what we need");
+      await narrate("LIBERTY AD CHRONOS four-year results and real-world effectiveness data — exactly what we need");
       await delay(1800);
       break;
     case "lit-scout":
@@ -1056,11 +1056,11 @@ async function runAgentDemo(index, agent) {
       await delay(400);
       click("msl-scout-submit");
       await delay(1800);
-      await narrate("Three alerts — new J.A.K. safety concerns, updated A.A.D. guidelines, and Dupixent persistence data");
+      await narrate("Three alerts — new JAK safety concerns, updated AAD guidelines, and Dupixent persistence data");
       await delay(1800);
       break;
     case "competitive":
-      await narrate("Dr. Chen may ask about J.A.K. inhibitors. Let's prepare the head-to-head data");
+      await narrate("Dr. Chen may ask about JAK inhibitors. Let's prepare the head-to-head data");
       showPanel("competitive");
       await delay(600);
       set("ci-ta", "Atopic Dermatitis");
@@ -1069,7 +1069,7 @@ async function runAgentDemo(index, agent) {
       await delay(400);
       click("ci-submit");
       await delay(2200);
-      await narrate("JADE DARE comparison — efficacy, safety, and the key message: no J.A.K. class warnings with Dupixent");
+      await narrate("JADE DARE comparison — efficacy, safety, and the key message: no JAK class warnings with Dupixent");
       await delay(1800);
       break;
     case "disease-nav":
@@ -1081,11 +1081,11 @@ async function runAgentDemo(index, agent) {
       await delay(400);
       click("msl-dn-submit");
       await delay(1800);
-      await narrate("Full A.D. landscape — pathophysiology, treatment options, cross-T.A. connections, and pipeline");
+      await narrate("Full AD landscape — pathophysiology, treatment options, cross-TA connections, and pipeline");
       await delay(1800);
       break;
     case "congress":
-      await narrate("E.A.D.V. is next month — let's check the congress plan");
+      await narrate("EADV is next month — let's check the congress plan");
       showPanel("congress");
       await delay(600);
       set("cg-congress", "EADV 2026 — European Academy of Dermatology (Sep 2026)");
@@ -1096,7 +1096,7 @@ async function runAgentDemo(index, agent) {
       await delay(1800);
       break;
     case "medinfo":
-      await narrate("During the meeting, Dr. Chen asks about pediatric dosing — an unsolicited M.I.R.");
+      await narrate("During the meeting, Dr. Chen asks about pediatric dosing — an unsolicited MIR");
       showPanel("medinfo");
       await delay(600);
       type("mi-hcp", "Dr. Sarah Chen");
@@ -1127,11 +1127,11 @@ async function runAgentDemo(index, agent) {
       await narrate("Finally, the Orion dashboard — where every signal becomes field intelligence");
       showPanel("orion");
       await delay(2000);
-      await narrate("One hundred forty-two signals this month, trending topics, and priority actions — the M.S.L. network, connected");
+      await narrate("One hundred forty-two signals this month, trending topics, and priority actions — the MSL network, connected");
       await delay(2000);
       break;
     case "assistant":
-      await narrate("The M.S.L. Copilot Assistant — your A.I. companion for any question, any time");
+      await narrate("The MSL Copilot Assistant — your AI companion for any question, any time");
       showHub();
       await delay(600);
       const fab = document.querySelector(".mv-chat-fab");
@@ -1146,7 +1146,7 @@ async function runAgentDemo(index, agent) {
         document.getElementById("mv-chat-send")?.click();
         await delay(2000);
       }
-      await narrate("Instant K.O.L. intelligence — the assistant draws from all twelve agents to answer any question");
+      await narrate("Instant KOL intelligence — the assistant draws from all twelve agents to answer any question");
       await delay(1500);
       if (fab) fab.click();
       await delay(400);
@@ -1167,10 +1167,10 @@ async function runDemo() {
   demoBtn.disabled = true;
   demoBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running…';
 
-  await narrate("A day in the life of a Sanofi M.S.L. — thirteen A.I. agents, one mission. Let's follow the journey");
+  await narrate("A day in the life of a Sanofi MSL — featuring thirteen AI agents, one mission. Let's follow the journey");
   await demoCtrl.runFullDemo();
 
-  await narrate("Twelve agents. One platform. From morning prep to post-call intelligence — the M.S.L. Copilot");
+  await narrate("With twelve agents on one platform, from morning prep to post-call intelligence — the MSL Copilot");
   showHub();
   await delay(1500);
 

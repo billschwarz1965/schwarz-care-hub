@@ -1058,7 +1058,7 @@ function generateChatResponse(query) {
   }
 
   // Fallback
-  return `The MedVerse ecosystem has <strong>${BUSINESS_AGENTS.length} business agents</strong>, <strong>${SYSTEM_AGENTS.length} intelligence hubs</strong>, and <strong>${COMPLIANCE_AGENTS.length} governance agents</strong>. Try asking about:<br><br>` +
+  return `MedVerse has <strong>${BUSINESS_AGENTS.length} business agents</strong>, <strong>${SYSTEM_AGENTS.length} intelligence hubs</strong>, and <strong>${COMPLIANCE_AGENTS.length} governance agents</strong>. Try asking about:<br><br>` +
     `• Agent count or architecture overview<br>` +
     `• Agents for a persona (MSLs, HCPs, patients)<br>` +
     `• A specific agent (MSL Copilot, Advisory Board Builder)<br>` +
@@ -1117,7 +1117,7 @@ if (chatFab && chatPanel) {
 // ─── CHAT DEMO ───
 
 const CHAT_DEMO_SEQUENCE = [
-  { persona: "Med Affairs", css: "med-affairs", question: "How many agents are in the MedVerse ecosystem?" },
+  { persona: "Med Affairs", css: "med-affairs", question: "How many agents are in MedVerse?" },
   { persona: "MSL", css: "msl", question: "What agents are available for MSL field teams?" },
   { persona: "Med Affairs", css: "med-affairs", question: "Explain the governance layer" },
   { persona: "MSL", css: "msl", question: "What is the Expert Intelligence Hub?" },
@@ -1296,14 +1296,14 @@ async function runDemo() {
   await delay(500);
 
   // ACT 1: Stats overview
-  await narrate("The Agent Ecosystem — fifteen business agents, two intelligence hubs, and twelve governance agents");
+  await narrate("The Agent Ecosystem — featuring fifteen business agents, two intelligence hubs, and twelve governance agents");
   const statsRow = document.querySelector(".stats-row");
   highlight(statsRow);
   await delay(2000);
   unhighlight(statsRow);
 
   // ACT 2: Four-layer architecture
-  await narrate("The four-layer architecture — U.X. personas at top, agents, intelligence hubs, and governance at the base");
+  await narrate("The four-layer architecture — UX personas at top, agents, intelligence hubs, and governance at the base");
   const archSection = document.querySelector(".arch-section");
   if (archSection) {
     scrollTo(archSection);
@@ -1311,12 +1311,12 @@ async function runDemo() {
   }
 
   // ACT 3: Persona drill-down - MSLs
-  await narrate("Let's explore the M.S.L. persona — click to see which agents serve field medical teams");
+  await narrate("Let's explore the MSL persona — click to see which agents serve field medical teams");
   const mslSpan = document.querySelector('.arch-ux-personas span');
   if (mslSpan) {
     mslSpan.click();
     await delay(1500);
-    await narrate("M.S.L. field teams have access to agents for territory management, K.O.L. profiling, compliance, and more");
+    await narrate("MSL field teams have access to agents for territory management, KOL profiling, compliance, and more");
     await delay(2000);
     closePersonaPanel();
     await delay(400);
@@ -1335,10 +1335,10 @@ async function runDemo() {
       unhighlight(expertHub);
     }
   }
-  await narrate("The Expert Hub profiles over 4,200 H.C.P.s with publication data, congress activity, and engagement history");
+  await narrate("The Expert Hub profiles over 4,200 HCPs with publication data, congress activity, and engagement history");
 
   // ACT 5: Governance layer
-  await narrate("Every agent output passes through the governance layer — twelve compliance agents");
+  await narrate("Every agent output passes through the governance layer — featuring twelve compliance agents");
   const compStrip = document.getElementById("compliance-strip");
   if (compStrip) {
     scrollTo(compStrip);
@@ -1347,7 +1347,7 @@ async function runDemo() {
     await delay(1500);
     unhighlight(compStrip);
   }
-  await narrate("M.L.R. review, scientific verification, A.E. detection, P.H.I. protection — all automated");
+  await narrate("MLR review, scientific verification, AE detection, PHI protection — all automated");
 
   // ACT 6: Business agent grid
   await narrate("The business agent grid — click any agent for a live demo");
@@ -1358,7 +1358,7 @@ async function runDemo() {
   }
 
   // ACT 7: Demo a key agent - Advisory Board Builder
-  await narrate("Let's demo the Advisory Board Builder — an M.S.L. favorite");
+  await narrate("Let's demo the Advisory Board Builder — an MSL favorite");
   const abCard = agentGrid?.querySelector('.agent-card[data-id="advisory-board"]');
   if (abCard) {
     scrollTo(abCard);
@@ -1377,7 +1377,7 @@ async function runDemo() {
   await narrate("Advisory Board — automated roster optimization with compliance review built in");
 
   // ACT 8: Demo Expert Segmentation
-  await narrate("Next, the Expert Segmentation Agent — classifying K.O.L.s by tier and influence");
+  await narrate("Next, the Expert Segmentation Agent — classifying KOLs by tier and influence");
   const esCard = agentGrid?.querySelector('.agent-card[data-id="expert-segment"]');
   if (esCard) {
     scrollTo(esCard);
@@ -1413,22 +1413,22 @@ async function runDemo() {
   }
 
   // ACT 10: Chat demo
-  await narrate("The Ecosystem A.I. agent answers questions about architecture, agents, and governance");
+  await narrate("The Ecosystem AI agent answers questions about architecture, agents, and governance");
   if (chatFab && chatPanel) {
     chatPanel.classList.add("open");
     chatFab.classList.add("hidden");
   }
   resetChat();
   await delay(400);
-  await typeIntoChat("How many agents are in the MedVerse ecosystem?");
+  await typeIntoChat("How many agents are in MedVerse?");
   await delay(300);
   chatSuggestions.style.display = "none";
-  addUserMsg("How many agents are in the MedVerse ecosystem?");
+  addUserMsg("How many agents are in MedVerse?");
   chatInput.value = "";
   const typing = addTyping();
   await delay(1000);
   typing.remove();
-  addAIMsg(generateChatResponse("How many agents are in the MedVerse ecosystem?"));
+  addAIMsg(generateChatResponse("How many agents are in MedVerse?"));
   await delay(1500);
   await narrate("The ecosystem agent provides instant answers about the full platform architecture");
 
@@ -1440,7 +1440,7 @@ async function runDemo() {
   if (mainScroll) mainScroll.scrollTo({ top: 0, behavior: "smooth" });
   await delay(500);
 
-  await narrate("Agent Ecosystem — fifteen business agents, two intelligence hubs, twelve governance agents. One connected platform.");
+  await narrate("Agent Ecosystem — featuring fifteen business agents, two intelligence hubs, and twelve governance agents. One connected platform.");
   narrateOff();
 
   fullDemoRunning = false;

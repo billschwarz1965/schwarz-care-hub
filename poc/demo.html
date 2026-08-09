@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MedVerse Operating System — Master Demo</title>
+  <title>MedVerse — Master Demo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
@@ -26,6 +26,23 @@
       --blue: #60a5fa;
       --red: #f87171;
       --font: 'Work Sans', sans-serif;
+    }
+    html.light {
+      --bg: #f5f3f8;
+      --surface: #ffffff;
+      --surface-2: #f0edf5;
+      --surface-3: #e8e4f0;
+      --text: #1a1225;
+      --text-secondary: #4a4260;
+      --text-muted: #8078a0;
+      --border: #d8d2e8;
+      --accent: #7a00e6;
+      --accent-light: #6b00cc;
+      --accent-glow: rgba(122,0,230,0.08);
+      --gold: #b58900;
+      --green: #0d9060;
+      --blue: #2563eb;
+      --red: #dc2626;
     }
     body {
       font-family: var(--font);
@@ -231,16 +248,66 @@
       font-size: 12px; border-top: 1px solid var(--border);
     }
     .demo-footer a { color: var(--accent-light); text-decoration: none; }
+
+    /* THEME TOGGLE */
+    .theme-toggle {
+      position: fixed; top: 20px; right: 20px; z-index: 200;
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--surface); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 18px; color: var(--text);
+      transition: all 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.08); }
+    .theme-toggle .ti-sun { display: none; }
+    html.light .theme-toggle .ti-sun { display: block; }
+    html.light .theme-toggle .ti-moon { display: none; }
+
+    /* LIGHT MODE OVERRIDES */
+    html.light .hero {
+      background: radial-gradient(ellipse at 50% 0%, rgba(122,0,230,0.06) 0%, transparent 60%);
+    }
+    html.light .hero h1 {
+      background: linear-gradient(135deg, #1a1225 30%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    html.light .hero-logo { box-shadow: 0 8px 30px rgba(122,0,230,0.15); }
+    html.light .hero-badge { background: rgba(122,0,230,0.06); border-color: rgba(122,0,230,0.15); }
+    html.light .arch-layer-ux { background: linear-gradient(90deg, rgba(37,99,235,0.06), rgba(37,99,235,0.02)); }
+    html.light .arch-layer-agent { background: linear-gradient(90deg, rgba(122,0,230,0.06), rgba(122,0,230,0.02)); }
+    html.light .arch-layer-hub { background: linear-gradient(90deg, rgba(13,144,96,0.06), rgba(13,144,96,0.02)); }
+    html.light .arch-layer-gov { background: linear-gradient(90deg, rgba(181,137,0,0.06), rgba(181,137,0,0.02)); }
+    html.light .arch-layer-ux .arch-layer-icon { background: rgba(37,99,235,0.08); }
+    html.light .arch-layer-agent .arch-layer-icon { background: rgba(122,0,230,0.08); }
+    html.light .arch-layer-hub .arch-layer-icon { background: rgba(13,144,96,0.08); }
+    html.light .arch-layer-gov .arch-layer-icon { background: rgba(181,137,0,0.08); }
+    html.light .fw-card:hover { border-color: rgba(122,0,230,0.2); }
+    html.light .fw-card-icon[style*="96,165,250"] { background: rgba(37,99,235,0.06) !important; }
+    html.light .fw-card-icon[style*="52,211,153"] { background: rgba(13,144,96,0.06) !important; }
+    html.light .fw-card-icon[style*="122,0,230"] { background: rgba(122,0,230,0.06) !important; }
+    html.light .fw-tag { background: rgba(122,0,230,0.04); border-color: rgba(122,0,230,0.1); }
+    html.light .toc-card:hover { border-color: rgba(122,0,230,0.25); box-shadow: 0 8px 24px rgba(122,0,230,0.06); }
+    html.light .toc-meta-agents { background: rgba(122,0,230,0.06); }
+    html.light .toc-meta-demo { background: rgba(13,144,96,0.06); }
+    html.light .agent-chip { background: var(--surface-2); }
+    html.light .playall-bar { background: rgba(245,243,248,0.92); }
+    html.light .playall-btn { box-shadow: 0 4px 20px rgba(122,0,230,0.15); }
   </style>
 </head>
 <body>
+
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+    <i class="ti ti-moon"></i>
+    <i class="ti ti-sun"></i>
+  </button>
 
   <!-- HERO -->
   <section class="hero">
     <div class="hero-badge"><i class="ti ti-sparkles"></i> Master Demo Recording</div>
     <div class="hero-logo">Mv</div>
-    <h1>MedVerse Operating System</h1>
-    <p class="hero-sub">An AI-powered scientific engagement gateway connecting MSLs, HCPs, patients, and medical affairs through intelligent agents, real-time data, and automated governance.</p>
+    <h1>MedVerse</h1>
+    <p class="hero-sub" style="font-size:1.15em;font-weight:500;margin-bottom:8px;">Scientific Intelligence Ecosystem</p>
+    <p class="hero-sub">Connecting MSLs, HCPs, patients, and medical affairs through intelligent agents, real-time data, and automated governance.</p>
     <div class="hero-presenter">
       <i class="ti ti-user-circle" style="font-size:20px;color:var(--accent-light)"></i>
       Presented by <strong>Bill Schwarz</strong> — Digital Product Line &amp; Program Owner, MedVerse
@@ -280,7 +347,7 @@
         <div class="arch-layer-icon"><i class="ti ti-database"></i></div>
         <div class="arch-layer-info">
           <div class="arch-layer-name">Intelligence Hub Layer</div>
-          <div class="arch-layer-desc">Expert Intelligence Hub (4,200+ HCP profiles), Literature Intelligence (36M+ PubMed articles, NEJM), Orion Signal Intelligence, Disease Navigator, and Congress Intelligence — all connected via live APIs.</div>
+          <div class="arch-layer-desc">Expert Intelligence Hub (4.9M+ HCP profiles), Literature Intelligence (36M+ PubMed articles, NEJM), Orion Signal Intelligence, Disease Navigator, and Congress Intelligence — all connected via live APIs.</div>
         </div>
         <div>
           <div class="arch-layer-count" style="color:var(--green)">5</div>
@@ -362,9 +429,9 @@
             <div class="toc-card-subtitle">Field Medical AI Assistant</div>
           </div>
         </div>
-        <div class="toc-card-desc">A day in the life of a Sanofi MSL — from morning prep to post-call intelligence, powered by 12 AI agents.</div>
+        <div class="toc-card-desc">A day in the life of a Sanofi MSL — from morning prep to post-call intelligence, powered by 13 AI agents.</div>
         <div class="toc-card-meta">
-          <span class="toc-meta-badge toc-meta-agents"><i class="ti ti-robot"></i> 12 agents</span>
+          <span class="toc-meta-badge toc-meta-agents"><i class="ti ti-robot"></i> 13 agents</span>
           <span class="toc-meta-badge toc-meta-demo"><i class="ti ti-player-play"></i> Full demo</span>
         </div>
       </a>
@@ -377,9 +444,9 @@
             <div class="toc-card-subtitle">Medical Affairs Intelligence</div>
           </div>
         </div>
-        <div class="toc-card-desc">Eleven AI agents supporting medical affairs — from field intelligence to advisory boards, evidence generation, and competitive analysis.</div>
+        <div class="toc-card-desc">Twelve AI agents supporting medical affairs — from field intelligence to advisory boards, evidence generation, and competitive analysis.</div>
         <div class="toc-card-meta">
-          <span class="toc-meta-badge toc-meta-agents"><i class="ti ti-robot"></i> 11 agents</span>
+          <span class="toc-meta-badge toc-meta-agents"><i class="ti ti-robot"></i> 12 agents</span>
           <span class="toc-meta-badge toc-meta-demo"><i class="ti ti-player-play"></i> Full demo</span>
         </div>
       </a>
@@ -407,9 +474,9 @@
             <div class="toc-card-subtitle">Patient & Caregiver Support</div>
           </div>
         </div>
-        <div class="toc-card-desc">Ten AI agents empowering patients — from condition education to medication tracking, symptom checking, and wellness journaling.</div>
+        <div class="toc-card-desc">Eleven AI agents empowering patients — from condition education to medication tracking, symptom checking, and wellness journaling.</div>
         <div class="toc-card-meta">
-          <span class="toc-meta-badge toc-meta-agents"><i class="ti ti-robot"></i> 10 agents</span>
+          <span class="toc-meta-badge toc-meta-agents"><i class="ti ti-robot"></i> 11 agents</span>
           <span class="toc-meta-badge toc-meta-demo"><i class="ti ti-player-play"></i> Full demo</span>
         </div>
       </a>
@@ -497,7 +564,7 @@
       </div>
     </div>
     <div class="detail-body">
-      <p>The MSL Copilot follows a field medical scientist through a full day — from morning territory review to post-call intelligence reporting. Each agent handles a specific task in the MSL workflow, and all outputs flow to Orion for field-wide visibility. Includes the MSL Copilot Assistant for on-demand AI support.</p>
+      <p>The MSL Copilot follows a field Medical Science Liaison through a full day — from morning territory review to post-call intelligence reporting. Each agent handles a specific task in the MSL workflow, and all outputs flow to Orion for field-wide visibility. Includes the MSL Copilot Assistant for on-demand AI support.</p>
       <h4>Agent Inventory</h4>
       <div class="agent-list">
         <div class="agent-chip"><i class="ti ti-map"></i> Territory Dashboard</div>
@@ -609,7 +676,7 @@
   </div>
 
   <footer class="demo-footer" style="padding-bottom:80px">
-    <p>MedVerse Operating System &mdash; Sanofi Medical Affairs &amp; Discovery</p>
+    <p>MedVerse &mdash; Sanofi Medical Affairs &amp; Discovery</p>
     <p style="margin-top:6px">POC v0.3 &mdash; <a href="/index.html">Return to MSL Copilot</a></p>
   </footer>
 
@@ -641,6 +708,15 @@
       }
       playNext();
     });
+
+    function toggleTheme() {
+      document.documentElement.classList.toggle("light");
+      localStorage.setItem("medverse-theme",
+        document.documentElement.classList.contains("light") ? "light" : "dark");
+    }
+    if (localStorage.getItem("medverse-theme") === "light") {
+      document.documentElement.classList.add("light");
+    }
   </script>
 
 </body>

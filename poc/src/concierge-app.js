@@ -1055,7 +1055,7 @@ async function runAgentDemo(index, agent) {
 
   switch (agent.id) {
     case "clinical-qa": {
-      await narrate("It starts with a clinical question. A dermatologist asks about treatment options for a patient with moderate-to-severe A.D. who has failed topicals");
+      await narrate("It starts with a clinical question. A dermatologist asks about treatment options for a patient with moderate-to-severe AD who has failed topicals");
       showPanel("clinical-qa");
       await delay(600);
       const q = "What are my options for a 45-year-old patient with moderate-to-severe atopic dermatitis who failed topicals?";
@@ -1071,7 +1071,7 @@ async function runAgentDemo(index, agent) {
       showPanel("patient-nav");
       await delay(600);
       set("pn-age", "45"); set("pn-sex", "Female"); set("pn-diagnosis", "Atopic Dermatitis (moderate-to-severe)");
-      await narrate("Entering patient details — 45-year-old female, moderate-to-severe A.D.");
+      await narrate("Entering patient details — 45-year-old female, moderate-to-severe AD");
       await delay(400);
       click("pn-submit");
       await delay(2000);
@@ -1088,25 +1088,25 @@ async function runAgentDemo(index, agent) {
       await delay(400);
       click("tm-submit");
       await delay(2000);
-      await narrate("Multiple active trials found — LIBERTY A.D. PED, LIBERTY A.D. HALO, and the DUPIXENT REAL observational registry, with enrollment status and site locations");
+      await narrate("Multiple active trials found — LIBERTY AD PED, LIBERTY AD HALO, and the DUPIXENT REAL observational registry, with enrollment status and site locations");
       await delay(1500);
       break;
     }
     case "msl-connect": {
-      await narrate("The H.C.P. wants to discuss the latest data with a field medical liaison. M.S.L. Connect finds the right person");
+      await narrate("The HCP wants to discuss the latest data with a field medical liaison. MSL Connect finds the right person");
       showPanel("msl-connect");
       await delay(600);
       set("msl-ta", "Dermatology / Atopic Dermatitis"); set("msl-region", "Northeast US");
-      await narrate("Searching for a dermatology M.S.L. in the Northeast");
+      await narrate("Searching for a dermatology MSL in the Northeast");
       await delay(400);
       click("msl-submit");
       await delay(1500);
-      await narrate("Dr. Amanda Rodriguez, PharmD — available this week, specializing in Dupixent clinical data and A.D. real-world evidence. Meeting request, email, and phone options ready");
+      await narrate("Dr. Amanda Rodriguez, PharmD — available this week, specializing in Dupixent clinical data and AD real-world evidence. Meeting request, email, and phone options ready");
       await delay(1500);
       break;
     }
     case "ingredient": {
-      await narrate("Before prescribing, the H.C.P. checks a patient allergy concern. The Ingredient Safety agent cross-references drug excipients");
+      await narrate("Before prescribing, the HCP checks a patient allergy concern. The Ingredient Safety agent cross-references drug excipients");
       showPanel("ingredient");
       await delay(600);
       set("ing-product", "Dupixent (dupilumab)"); set("ing-allergy", "latex");
@@ -1132,15 +1132,15 @@ async function runAgentDemo(index, agent) {
       break;
     }
     case "literature": {
-      await narrate("Meanwhile, the H.C.P. wants to review the latest evidence. The Literature agent searches the Sanofi clinical database");
+      await narrate("Meanwhile, the HCP wants to review the latest evidence. The Literature agent searches the Sanofi clinical database");
       showPanel("literature");
       await delay(600);
       set("lit-query", "dupilumab atopic dermatitis long-term safety"); set("lit-type", "Clinical Trial");
-      await narrate("Searching for dupilumab long-term safety data in A.D.");
+      await narrate("Searching for dupilumab long-term safety data in AD");
       await delay(400);
       click("lit-submit");
       await delay(2000);
-      await narrate("Results include the LIBERTY A.D. CHRONOS 4-year data, the JADE DARE head-to-head trial, and real-world effectiveness meta-analysis — with impact ratings and PubMed links");
+      await narrate("Results include the LIBERTY AD CHRONOS 4-year data, the JADE DARE head-to-head trial, and real-world effectiveness meta-analysis — with impact ratings and PubMed links");
       await delay(1500);
       break;
     }
@@ -1149,16 +1149,16 @@ async function runAgentDemo(index, agent) {
       showPanel("lit-scout");
       await delay(600);
       set("scout-ta", "Atopic Dermatitis");
-      await narrate("Scanning recent publications in A.D.");
+      await narrate("Scanning recent publications in AD");
       await delay(400);
       click("scout-submit");
       await delay(2000);
-      await narrate("Four alerts — including a competitor J.A.K. inhibitor safety concern, an A.A.D. guideline update promoting biologics first-line, and positive Dupixent adherence data. Each tagged by type and priority");
+      await narrate("Four alerts — including a competitor JAK inhibitor safety concern, an AAD guideline update promoting biologics first-line, and positive Dupixent adherence data. Each tagged by type and priority");
       await delay(1500);
       break;
     }
     case "disease-nav": {
-      await narrate("The Disease Navigator provides a comprehensive disease landscape — pathophysiology, treatment positioning, and cross-T.A. connections");
+      await narrate("The Disease Navigator provides a comprehensive disease landscape — pathophysiology, treatment positioning, and cross-TA connections");
       showPanel("disease-nav");
       await delay(600);
       set("dn-disease", "Atopic Dermatitis");
@@ -1166,20 +1166,20 @@ async function runAgentDemo(index, agent) {
       await delay(400);
       click("dn-submit");
       await delay(2000);
-      await narrate("Full profile — type 2 inflammation mechanism, competitive treatment landscape with Dupixent as first-line biologic, cross-T.A. links to asthma and C.R.S.w.N.P., and the pipeline expansion strategy");
+      await narrate("Full profile — type 2 inflammation mechanism, competitive treatment landscape with Dupixent as first-line biologic, cross-TA links to asthma and CRSwNP, and the pipeline expansion strategy");
       await delay(1500);
       break;
     }
     case "congress": {
-      await narrate("Finally — Congress Intelligence delivers coverage from major medical meetings. Let's review A.A.D. 2026");
+      await narrate("Finally — Congress Intelligence delivers coverage from major medical meetings. Let's review AAD 2026");
       showPanel("congress");
       await delay(600);
       set("cg-congress", "AAD 2026 — American Academy of Dermatology");
-      await narrate("Loading A.A.D. 2026 congress coverage");
+      await narrate("Loading AAD 2026 congress coverage");
       await delay(400);
       click("cg-submit");
       await delay(2000);
-      await narrate("Four presentations including the CHRONOS 4-year oral, PRIME 2 prurigo nodularis poster, and competitor intelligence on J.A.K. inhibitor safety data. Full highlights, Sanofi presentations, and competitive landscape");
+      await narrate("Four presentations including the CHRONOS 4-year oral, PRIME 2 prurigo nodularis poster, and competitor intelligence on JAK inhibitor safety data. Full highlights, Sanofi presentations, and competitive landscape");
       await delay(1500);
       break;
     }
@@ -1202,14 +1202,14 @@ async function runDemo() {
   demoBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running…';
 
   await delay(500);
-  await narrate("H.C.P. Concierge — a day in the life. Ten A.I. agents supporting healthcare professionals across clinical practice, research, and field engagement");
+  await narrate("HCP Concierge — a day in the life, featuring ten AI agents supporting healthcare professionals across clinical practice, research, and field engagement");
 
   await demoCtrl.runFullDemo();
 
   // ── Wrap up ──
   showHub();
   await delay(500);
-  await narrate("Ten agents. One platform. From clinical questions to congress coverage — the H.C.P. Concierge gives healthcare professionals the intelligence they need, when they need it");
+  await narrate("With ten agents on one platform, from clinical questions to congress coverage — the HCP Concierge gives healthcare professionals the intelligence they need, when they need it");
   narrateOff();
 
   demoRunning = false;

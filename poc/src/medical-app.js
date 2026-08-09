@@ -941,10 +941,10 @@ const click = (sel) => { const el = $(sel); if (el) el.click(); };
 async function runAgentDemo(index, agent) {
   switch (agent.id) {
     case "med-strategy":
-      await narrate("Morning starts with the Medical Strategy dashboard — brand plans, K.P.I.s, and competitive positioning");
+      await narrate("Morning starts with the Medical Strategy dashboard — brand plans, KPIs, and competitive positioning");
       showPanel('med-strategy');
       await delay(2000);
-      await narrate("Six therapeutic areas tracked — Dupixent A.D. leading at 42 percent share, C.O.P.D. launch prep is critical priority");
+      await narrate("Six therapeutic areas tracked — Dupixent AD leading at 42 percent share, COPD launch prep is critical priority");
       await delay(2000);
       break;
 
@@ -952,7 +952,7 @@ async function runAgentDemo(index, agent) {
       await narrate("Regulatory Intelligence — real-time tracking of approvals, submissions, and competitor filings");
       showPanel('regulatory');
       await delay(2000);
-      await narrate("Dupixent C.O.P.D. supplemental N.D.A. under review, target P.D.U.F.A. date January 2027. Two competitor approvals flagged");
+      await narrate("Dupixent COPD supplemental NDA under review, target PDUFA date January 2027. Two competitor approvals flagged");
       await delay(2000);
       break;
 
@@ -981,7 +981,7 @@ async function runAgentDemo(index, agent) {
       break;
 
     case "med-info":
-      await narrate("An unsolicited M.I.R. comes in — the Medical Information agent generates a compliant response");
+      await narrate("An unsolicited MIR comes in — the Medical Information agent generates a compliant response");
       showPanel('med-info');
       await delay(600);
       set('#mir-product', 'Dupixent (dupilumab)');
@@ -1037,12 +1037,12 @@ async function runAgentDemo(index, agent) {
       await delay(400);
       click('#ab-submit');
       await delay(2000);
-      await narrate("Full advisory board plan with recommended K.O.L.s, agenda topics, logistics, and compliance requirements");
+      await narrate("Full advisory board plan with recommended KOLs, agenda topics, logistics, and compliance requirements");
       await delay(1800);
       break;
 
     case "med-ed":
-      await narrate("Medical Education — tracking C.M.E. programs, speaker training, and internal education initiatives");
+      await narrate("Medical Education — tracking CME programs, speaker training, and internal education initiatives");
       showPanel('med-ed');
       await delay(2000);
       await narrate("Four active programs across dermatology and immunology — completion rates, upcoming sessions, and accreditation status");
@@ -1057,11 +1057,11 @@ async function runAgentDemo(index, agent) {
       await delay(400);
       click('#cg-submit');
       await delay(1800);
-      await narrate("E.A.D.V. 2026 in Vienna — Sanofi presentations, competitor activity, and key sessions to attend");
+      await narrate("EADV 2026 in Vienna — Sanofi presentations, competitor activity, and key sessions to attend");
       await delay(2000);
       break;
     case "assistant":
-      await narrate("The Medical Affairs Assistant — your A.I. companion for strategy, regulatory, and evidence questions");
+      await narrate("The Medical Affairs Assistant — your AI companion for strategy, regulatory, and evidence questions");
       showHub();
       await delay(600);
       const fab = document.querySelector(".mv-chat-fab");
@@ -1104,7 +1104,7 @@ async function runDemo() {
 
   // Finale
   if (!demoCtrl.aborted) {
-    await narrate("Eleven agents. One Medical Affairs command center. From strategy to execution — the Medical Concierge");
+    await narrate("With eleven agents on one Medical Affairs command center, from strategy to execution — the Medical Concierge");
     showHub();
     await delay(1500);
   }

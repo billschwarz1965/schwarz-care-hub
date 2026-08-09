@@ -42,7 +42,7 @@ function createWindow() {
     height: 900,
     minWidth: 1024,
     minHeight: 700,
-    title: "MedVerse Operating System",
+    title: "MedVerse",
     icon: path.join(__dirname, "icon.ico"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -133,10 +133,10 @@ function createWindow() {
             const { dialog } = require("electron");
             dialog.showMessageBox(mainWindow, {
               type: "info",
-              title: "About MedVerse Operating System",
-              message: "MedVerse Operating System v0.4",
+              title: "About MedVerse",
+              message: "MedVerse v0.4",
               detail:
-                "An AI-powered scientific engagement gateway connecting MSLs, HCPs, patients, and medical affairs through intelligent agents, real-time data, and automated governance.\n\nPresented by Bill Schwarz\nDigital Product Line & Program Owner\n\n© 2025 Sanofi",
+                "Scientific Intelligence Ecosystem — connecting MSLs, HCPs, patients, and medical affairs through intelligent agents, real-time data, and automated governance.\n\nPresented by Bill Schwarz\nDigital Product Line & Program Owner\n\n© 2025 Sanofi",
             });
           },
         },

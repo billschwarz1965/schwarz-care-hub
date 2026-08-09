@@ -883,21 +883,21 @@ async function runSearchDemo() {
 
   searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
   await delay(600);
-  await narrate("Literature search demo — querying PubMed and N.E.J.M. in real time");
+  await narrate("Literature search demo — querying PubMed and NEJM in real time");
 
   await typeInto(searchInput, "dupilumab atopic dermatitis long-term safety");
   await delay(500);
   await runSearch();
-  await narrate("Results include N.E.J.M. articles, auto deep-dive summaries, and Sanofi pipeline intelligence");
+  await narrate("Results include NEJM articles, auto deep-dive summaries, and Sanofi pipeline intelligence");
 
   searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
   await delay(1000);
   searchInput.value = "";
-  await narrate("Running a second search — nirsevimab R.S.V. prevention");
+  await narrate("Running a second search — nirsevimab RSV prevention");
   await typeInto(searchInput, "nirsevimab RSV prevention infants");
   await delay(500);
   await runSearch();
-  await narrate("Each search generates intelligence signals for M.S.L. field teams via Orion");
+  await narrate("Each search generates intelligence signals for MSL field teams via Orion");
 
   narrateOff();
   demoSearchBtn.disabled = false;
@@ -961,15 +961,15 @@ async function runChatDemo() {
 
   resetLitChat();
   await delay(600);
-  await narrate("Literature Intelligence demo — live PubMed and N.E.J.M. searches with AI synthesis");
+  await narrate("Literature Intelligence demo — live PubMed and NEJM searches with AI synthesis");
 
   await typeInto(chatInput, "What are the latest publications on dupilumab?");
-  await narrate("Searching PubMed and N.E.J.M. for dupilumab publications");
+  await narrate("Searching PubMed and NEJM for dupilumab publications");
   chatSend.disabled = false;
   await sendChatMessage();
   await delay(2000);
 
-  await narrate("First query complete — now searching for nirsevimab R.S.V. evidence");
+  await narrate("First query complete — now searching for nirsevimab RSV evidence");
   await typeInto(chatInput, "What evidence exists for nirsevimab RSV prevention?");
   chatSend.disabled = false;
   await sendChatMessage();
@@ -1002,7 +1002,7 @@ async function runDemo() {
   await delay(500);
 
   // ACT 1: Introduction
-  await narrate("Literature Intelligence — live PubMed and N.E.J.M. search with A.I. synthesis and Orion integration");
+  await narrate("Literature Intelligence — live PubMed and NEJM search with AI synthesis and Orion integration");
 
   // ACT 2: Governance bar
   const govBar = document.getElementById("governance-bar");
@@ -1021,7 +1021,7 @@ async function runDemo() {
   await delay(600);
   await runSearch();
   await delay(4000);
-  await narrate("Results include N.E.J.M. articles with auto deep-dive summaries and Sanofi pipeline intelligence");
+  await narrate("Results include NEJM articles with auto deep-dive summaries and Sanofi pipeline intelligence");
 
   // ACT 4: Intelligence panel
   const intel = document.getElementById("intel-panel");
@@ -1033,13 +1033,13 @@ async function runDemo() {
   }
 
   // ACT 5: Source toggle
-  await narrate("Filtering to N.E.J.M. only — the highest impact journal results");
+  await narrate("Filtering to NEJM only — the highest impact journal results");
   const nejmBtn = document.querySelector('.source-btn[data-source="nejm"]');
   if (nejmBtn) {
     nejmBtn.click();
     await delay(800);
   }
-  await narrate("N.E.J.M. filter applied — showing only New England Journal of Medicine publications");
+  await narrate("NEJM filter applied — showing only New England Journal of Medicine publications");
   const allBtn = document.querySelector('.source-btn[data-source="all"]');
   if (allBtn) allBtn.click();
   await delay(400);
@@ -1056,16 +1056,16 @@ async function runDemo() {
   // ACT 7: Second search - different TA
   searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
   await delay(400);
-  await narrate("Second search — nirsevimab R.S.V. prevention to demonstrate cross-T.A. capabilities");
+  await narrate("Second search — nirsevimab RSV prevention to demonstrate cross-TA capabilities");
   searchInput.value = "";
   await typeInto(searchInput, "nirsevimab RSV prevention infants");
   await delay(600);
   await runSearch();
   await delay(4000);
-  await narrate("Each search generates an intelligence signal for M.S.L. field teams via Orion");
+  await narrate("Each search generates an intelligence signal for MSL field teams via Orion");
 
   // ACT 8: Chat demo
-  await narrate("The Literature A.I. agent answers questions with live PubMed searches and A.I. synthesis");
+  await narrate("The Literature AI agent answers questions with live PubMed searches and AI synthesis");
   resetLitChat();
   await delay(400);
   await typeInto(chatInput, "What are the latest publications on dupilumab?");
@@ -1080,12 +1080,12 @@ async function runDemo() {
   chatSend.disabled = false;
   await sendChatMessage();
   await delay(4000);
-  await narrate("Cross-T.A. search — the agent covers all Sanofi therapeutic areas with live evidence");
+  await narrate("Cross-TA search — the agent covers all Sanofi therapeutic areas with live evidence");
 
   // Wrap up
   if (mainPanel) mainPanel.scrollTo({ top: 0, behavior: "smooth" });
   await delay(500);
-  await narrate("Literature Intelligence — live PubMed, N.E.J.M., A.I. synthesis, and Orion signals in one platform");
+  await narrate("Literature Intelligence — live PubMed, NEJM, AI synthesis, and Orion signals in one platform");
   narrateOff();
 
   fullDemoRunning = false;

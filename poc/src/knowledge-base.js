@@ -138,17 +138,17 @@ export const knowledgeBase = [
     content: "The JADE DARE trial (NCT04345367) is the first head-to-head randomized controlled trial comparing dupilumab 300 mg Q2W vs abrocitinib 200 mg QD in adults with moderate-to-severe AD. At Week 26, both achieved similar IGA 0/1 response rates. However, key differentiators emerged: Abrocitinib showed faster onset of itch relief (NRS ≥4 improvement) within the first 2 weeks. Dupilumab demonstrated more durable response and a more favorable long-term safety profile. Safety comparison: Dupilumab — no routine lab monitoring required, most common AEs were injection site reactions and conjunctivitis. Abrocitinib — requires baseline and periodic CBC, liver function, and lipid monitoring; notable AEs include nausea (15%), headache (11%), and herpes zoster reactivation risk. Considerations: JAK inhibitors carry a class-wide boxed warning for serious infections, malignancy, MACE, and thrombosis (based on tofacitinib ORAL Surveillance data). This safety differentiation is particularly relevant for long-term management decisions in younger patients and those with cardiovascular risk factors.",
     keywords: ["dupilumab", "abrocitinib", "head-to-head", "JADE DARE", "comparison", "JAK inhibitor", "safety", "onset", "boxed warning"]
   },
-  // --- PLATFORM / MEDVERSE ---
+  // --- PLATFORM / MedVerse ---
   {
     id: "MV-001",
-    title: "MedVerse Platform — Scientific Engagement Orchestration",
+    title: "MedVerse — Scientific Engagement Orchestration",
     category: "platform",
     diseaseArea: "General",
     therapeuticArea: "General",
-    source: "MedVerse Operating System — Program Identity",
+    source: "MedVerse — Program Identity",
     sourceType: "Platform Documentation",
     date: "July 2026",
-    content: "MedVerse is Sanofi Medical's unified global medical education and scientific engagement platform — enterprise infrastructure for Medical Affairs. MedVerse orchestrates scientific knowledge across owned channels (Campus+, program hubs), third-party platforms (OpenEvidence, UpToDate), and AI discovery channels (ChatGPT, Claude, Gemini). Core programs: IMMERSE (immunology, live globally), ADVENT (integration in progress), Br1dge, RDU, Nerve Nexus, Library of Congresses. Platform stack: Magnolia CMS, TalentLMS, Campus+ foundation, NOVA components, Migrator (~80% automation). Content is structured for AI-native discoverability: open crawlable pages, semantic HTML, DOI-linked citations, schema markup. The MedVerse vision is to evolve from a content platform to an AI-powered medical intelligence gateway connecting HCPs with the right science at the right time.",
+    content: "MedVerse is Sanofi Medical's unified global medical education and scientific engagement platform — enterprise infrastructure for Medical Affairs. MedVerse orchestrates scientific knowledge across owned channels (Campus+, program hubs), third-party platforms (OpenEvidence, UpToDate), and AI discovery channels (ChatGPT, Claude, Gemini). Core programs: IMMERSE (immunology, live globally), ADVENT (integration in progress), Br1dge, RDU, Nerve Nexus, Library of Congresses. Platform stack: Magnolia CMS, TalentLMS, Campus+ foundation, NOVA components, Migrator (~80% automation). Content is structured for AI-native discoverability: open crawlable pages, semantic HTML, DOI-linked citations, schema markup. MedVerse vision is to evolve from a content platform to an AI-powered medical intelligence gateway connecting HCPs with the right science at the right time.",
     keywords: ["MedVerse", "platform", "IMMERSE", "ADVENT", "Campus+", "AI", "orchestration", "medical education"]
   },
   // --- DISEASE STATE ---

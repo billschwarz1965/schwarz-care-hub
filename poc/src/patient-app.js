@@ -1117,7 +1117,7 @@ async function runAgentDemo(index, agent) {
       await delay(1500);
       break;
     case "assistant":
-      await narrate("The Patient Support Assistant — your A.I. companion for questions about conditions, treatments, and access programs");
+      await narrate("The Patient Support Assistant — your AI companion for questions about conditions, treatments, and access programs");
       showHub();
       await delay(600);
       const fab = document.querySelector(".mv-chat-fab");
@@ -1156,14 +1156,14 @@ async function runDemo() {
   demoBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running…';
 
   await delay(500);
-  await narrate("Patient Concierge — a day in the life. Ten A.I. agents empowering patients and caregivers to understand their conditions, manage treatment, and navigate the healthcare system");
+  await narrate("Patient Concierge — a day in the life, featuring ten AI agents empowering patients and caregivers to understand their conditions, manage treatment, and navigate the healthcare system");
 
   await demoCtrl.runFullDemo();
 
   // ── Wrap up ──
   showHub();
   await delay(500);
-  await narrate("Ten agents. One platform. From diagnosis to daily wellness — the Patient Concierge puts patients at the center of their care journey with clear, actionable, and compassionate support");
+  await narrate("With ten agents on one platform, from diagnosis to daily wellness — the Patient Concierge puts patients at the center of their care journey with clear, actionable, and compassionate support");
   narrateOff();
 
   demoRunning = false;
