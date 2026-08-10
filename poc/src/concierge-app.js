@@ -1052,7 +1052,7 @@ const HCP_AGENTS = [
 
 async function runAgentDemo(index, agent) {
   const $ = id => document.getElementById(id);
-  const set = (id, v) => { const el = $(id); if (el) el.value = v; };
+  const set = (id, v) => { const el = $(id); if (el) { el.value = v; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); } };
   const click = id => { const el = $(id); if (el) el.click(); };
 
   switch (agent.id) {

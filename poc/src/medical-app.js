@@ -942,7 +942,7 @@ const MEDICAL_AGENTS = [
 ];
 
 // ── Per-agent demo logic ──
-const set = (sel, v) => { const el = $(sel); if (el) el.value = v; };
+const set = (sel, v) => { const el = $(sel); if (el) { el.value = v; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); } };
 const type = (sel, v) => { const el = $(sel); if (el) { el.value = v; el.dispatchEvent(new Event("input", {bubbles:true})); } };
 const click = (sel) => { const el = $(sel); if (el) el.click(); };
 
