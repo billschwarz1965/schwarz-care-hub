@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedVerse — Congress Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5fa;
+      --surface: #ffffff;
+      --surface-dim: #f3eff8;
+      --text: #1a1a2e;
+      --text-secondary: #5a5672;
+      --text-muted: #918da3;
+      --border: #e4dff0;
+      --border-strong: #cdc6de;
+      --accent: #7a00e6;
+      --accent-hover: #6600c2;
+      --accent-light: #f0e6ff;
+      --accent-text: #6b21a8;
+      --accent-secondary: #aa46a3;
+      --gold: #f9c851;
+      --gold-dark: #e5a800;
+      --success: #166534;
+      --success-bg: #dcfce7;
+      --warning: #854d0e;
+      --warning-bg: #fef9c3;
+      --danger: #991b1b;
+      --danger-bg: #fee2e2;
+      --orion-accent: #0f6e56;
+      --orion-bg: #e1f5ee;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --font: 'Work Sans', 'Raleway', 'Roboto', sans-serif;
+    }
+    html.dark {
+      --bg: #0a0a14;
+      --surface: #13131f;
+      --surface-dim: #1a1a2e;
+      --text: #f0eef5;
+      --text-secondary: #a8a3b8;
+      --text-muted: #6b6580;
+      --border: #2a2840;
+      --border-strong: #3a3555;
+      --accent: #7a00e6;
+      --accent-hover: #8c1aff;
+      --accent-light: #2a1a40;
+      --accent-text: #c084fc;
+      --accent-secondary: #aa46a3;
+      --gold: #f9c851;
+      --gold-dark: #e5a800;
+      --success: #34d399;
+      --success-bg: rgba(52,211,153,0.1);
+      --warning: #f9c851;
+      --warning-bg: rgba(249,200,81,0.1);
+      --danger: #f87171;
+      --danger-bg: rgba(248,113,113,0.1);
+      --orion-accent: #34d399;
+      --orion-bg: rgba(52,211,153,0.1);
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* HEADER */
+    .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0; flex-shrink: 0; }
+    .header-brand-bar { height: 3px; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 50%, var(--gold) 100%); }
+    .header-inner { padding: 10px 24px; display: flex; align-items: center; gap: 12px; }
+    .header-home { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; color: inherit; border-radius: 8px; padding: 4px 8px 4px 4px; margin: -4px; transition: background 0.15s; }
+    .header-home:hover { background: var(--surface-dim); }
+    .header-logo { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px; }
+    .header-title { font-size: 16px; font-weight: 600; color: var(--text); }
+    .header-subtitle { font-size: 12px; color: var(--text-muted); }
+    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .header-badge { font-size: 11px; padding: 3px 10px; background: var(--warning-bg); color: var(--warning); border-radius: 20px; font-weight: 500; }
+    .demo-btn { display: flex; align-items: center; gap: 6px; padding: 6px 14px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .demo-btn:hover { background: var(--accent-hover); }
+    .demo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* MODULE NAV */
+    .module-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; flex-shrink: 0; }
+    .module-tab { padding: 10px 20px; font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
+    .module-tab:hover { color: var(--text); }
+    .module-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .module-tab i { font-size: 16px; }
+
+    /* MAIN */
+    .main { flex: 1; overflow-y: auto; padding: 24px; }
+    .main::-webkit-scrollbar { width: 6px; }
+    .main::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .page-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .page-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
+
+    /* STATS */
+    .stats-row { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+    .stat-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 13px; display: flex; align-items: center; gap: 6px; cursor: pointer; transition: all 0.15s; user-select: none; }
+    .stat-chip:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(122,0,230,0.08); transform: translateY(-1px); }
+    .stat-chip:active { transform: translateY(0); }
+    .stat-chip.chip-active { border-color: var(--accent); background: var(--accent-light); box-shadow: 0 0 0 2px rgba(122,0,230,0.15); }
+    .stat-chip strong { font-weight: 700; }
+    .stat-chip i { font-size: 15px; }
+    .stat-chip.purple i { color: var(--accent); }
+    .stat-chip.gold i { color: var(--gold-dark); }
+    .stat-chip.green i { color: var(--orion-accent); }
+    .stat-chip.red i { color: var(--danger); }
+
+    /* CONGRESS TIMELINE */
+    .section-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .section-title i { color: var(--accent-secondary); font-size: 18px; }
+
+    .timeline-scroll { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 24px; }
+    .timeline-scroll::-webkit-scrollbar { height: 4px; }
+    .timeline-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .congress-card { min-width: 220px; max-width: 240px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: all 0.15s; flex-shrink: 0; }
+    .congress-card:hover { border-color: var(--accent-secondary); box-shadow: 0 2px 10px rgba(122,0,230,0.06); }
+    .congress-card.congress-active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-light); }
+    .congress-color-bar { height: 4px; }
+    .congress-card-body { padding: 14px; }
+    .congress-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .congress-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    .congress-status-badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
+    .congress-status-badge.completed { background: var(--success-bg); color: var(--success); }
+    .congress-status-badge.upcoming { background: var(--accent-light); color: var(--accent-text); }
+    .congress-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .congress-society { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .congress-meta { font-size: 11px; color: var(--text-muted); display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; }
+    .congress-meta span { display: flex; align-items: center; gap: 4px; }
+    .congress-meta i { font-size: 13px; }
+    .congress-tags { display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 8px; }
+    .congress-tag { font-size: 10px; padding: 1px 6px; background: var(--surface-dim); border-radius: 3px; color: var(--text-muted); }
+    .congress-pres-count { font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; }
+    .congress-pres-count i { font-size: 13px; }
+    .congress-upcoming { border-style: dashed; }
+
+    /* HIGHLIGHTS */
+    .highlights-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+    .highlight-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .highlight-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .highlight-congress { font-size: 11px; font-weight: 700; }
+    .highlight-type { font-size: 10px; color: var(--text-muted); background: var(--surface-dim); padding: 1px 6px; border-radius: 3px; }
+    .highlight-title { font-size: 12px; font-weight: 600; line-height: 1.4; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .highlight-findings { margin-bottom: 10px; }
+    .highlight-finding { font-size: 11px; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 4px; margin-bottom: 3px; line-height: 1.3; }
+    .highlight-finding i { font-size: 12px; color: var(--orion-accent); flex-shrink: 0; margin-top: 1px; }
+    .highlight-impact { font-size: 10px; font-weight: 600; color: var(--danger); display: flex; align-items: center; gap: 4px; }
+    .highlight-impact i { font-size: 12px; }
+
+    /* PRESENTATIONS */
+    .pres-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+    .pres-toolbar-left { display: flex; align-items: center; gap: 10px; }
+    .pres-heading { font-size: 15px; font-weight: 700; }
+    .pres-count { font-size: 12px; color: var(--text-muted); }
+    .pres-filters { display: flex; gap: 6px; }
+    .pres-filter { padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface); font-family: var(--font); font-size: 11px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; }
+    .pres-filter:hover { border-color: var(--accent); color: var(--accent); }
+    .pres-filter.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+    .pres-list { display: flex; flex-direction: column; gap: 14px; padding-bottom: 24px; }
+
+    .pres-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; }
+    .pres-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .pres-type-badge { font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 5px; }
+    .pres-congress-label { font-size: 11px; font-weight: 600; }
+    .pres-sanofi { font-size: 10px; font-weight: 600; color: var(--accent); display: flex; align-items: center; gap: 3px; background: var(--accent-light); padding: 2px 8px; border-radius: 4px; }
+    .pres-sanofi i { font-size: 10px; color: var(--gold-dark); }
+    .pres-impact { font-size: 10px; font-weight: 600; color: var(--danger); display: flex; align-items: center; gap: 3px; background: var(--danger-bg); padding: 2px 8px; border-radius: 4px; }
+    .pres-impact i { font-size: 10px; }
+    .pres-title { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 6px; }
+    .pres-authors { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+    .pres-abstract { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px; }
+    .pres-findings-section { margin-bottom: 14px; }
+    .pres-findings-label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; margin-bottom: 6px; }
+    .pres-finding { font-size: 12px; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px; }
+    .pres-finding i { font-size: 13px; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+    .pres-msl-section { background: var(--orion-bg); border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; }
+    .pres-msl-label { font-size: 11px; font-weight: 600; color: var(--orion-accent); margin-bottom: 4px; display: flex; align-items: center; gap: 4px; }
+    .pres-msl-label i { font-size: 14px; }
+    .pres-msl-section p { font-size: 12px; color: #085041; line-height: 1.5; }
+    .pres-disease-tag { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 10px; background: var(--surface-dim); border-radius: 5px; color: var(--text-secondary); }
+    .pres-empty { text-align: center; padding: 40px; color: var(--text-muted); font-size: 13px; }
+    .pres-empty i { font-size: 28px; display: block; margin-bottom: 8px; }
+
+    /* LAYOUT */
+    .layout { display: flex; flex: 1; overflow: hidden; }
+    .main { flex: 1; overflow-y: auto; }
+
+    /* CHAT SIDEBAR */
+    .chat-sidebar {
+      width: 360px; min-width: 360px; flex-shrink: 0;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    .chat-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+      flex-shrink: 0;
+    }
+    .chat-header-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 18px; flex-shrink: 0;
+    }
+    .chat-header-title { font-size: 14px; font-weight: 700; }
+    .chat-header-sub { font-size: 11px; color: var(--text-muted); }
+    .chat-header-actions { margin-left: auto; display: flex; gap: 6px; }
+    .chat-action-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 5px 12px; border-radius: 16px;
+      font-family: var(--font); font-size: 11px; font-weight: 600;
+      border: none; cursor: pointer; transition: all 0.15s;
+    }
+    .chat-demo-btn { background: var(--accent); color: white; }
+    .chat-demo-btn:hover { background: var(--accent-hover); }
+    .chat-demo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .chat-clear-btn { background: var(--surface-dim); color: var(--text-muted); }
+    .chat-clear-btn:hover { color: var(--accent); }
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 16px; min-height: 0;
+    }
+    .chat-msg { margin-bottom: 14px; }
+    .chat-msg.user { display: flex; justify-content: flex-end; }
+    .chat-msg.user .chat-bubble { background: var(--accent); color: white; border-bottom-right-radius: 4px; }
+    .chat-msg.ai { display: flex; gap: 10px; }
+    .chat-bubble {
+      max-width: 88%; padding: 10px 14px;
+      border-radius: 12px; font-size: 13px; line-height: 1.55;
+    }
+    .chat-ai-bubble { background: var(--surface-dim); color: var(--text); border-bottom-left-radius: 4px; }
+    .chat-ai-bubble strong { color: var(--accent-text); }
+    .chat-ai-avatar {
+      width: 28px; height: 28px; flex-shrink: 0;
+      background: var(--accent-light); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); font-size: 14px;
+    }
+    .chat-persona-label {
+      font-size: 10px; font-weight: 700; padding: 1px 8px;
+      border-radius: 4px; margin-bottom: 4px; display: inline-block;
+    }
+    .chat-persona-label.msl { background: #dbeafe; color: #1e40af; }
+    .chat-persona-label.hcp { background: #dcfce7; color: #166534; }
+    .chat-persona-label.med-affairs { background: var(--accent-light); color: var(--accent-text); }
+    .chat-persona-label.patient { background: #fce7f3; color: #9d174d; }
+    .chat-suggestions {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      padding: 10px 16px; border-top: 1px solid var(--border);
+      background: var(--surface-dim); flex-shrink: 0;
+    }
+    .chat-suggestion {
+      padding: 5px 12px; font-family: var(--font); font-size: 11px;
+      border: 1px solid var(--border); border-radius: 16px;
+      background: var(--surface); color: var(--text-secondary);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .chat-suggestion:hover { border-color: var(--accent); color: var(--accent); }
+    .chat-input-row {
+      display: flex; border-top: 1px solid var(--border); flex-shrink: 0;
+    }
+    .chat-input-row input {
+      flex: 1; padding: 12px 16px;
+      font-family: var(--font); font-size: 13px;
+      border: none; outline: none; background: transparent; color: var(--text);
+    }
+    .chat-input-row input::placeholder { color: var(--text-muted); }
+    .chat-input-row button {
+      padding: 0 16px; background: var(--accent); color: white;
+      border: none; cursor: pointer; font-size: 16px; transition: background 0.15s;
+    }
+    .chat-input-row button:hover { background: var(--accent-hover); }
+    .chat-input-row button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .chat-typing { display: inline-flex; gap: 4px; align-items: center; }
+    .chat-typing span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--text-muted); animation: chatBounce 1.2s infinite;
+    }
+    .chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes chatBounce {
+      0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+      40% { transform: translateY(-6px); opacity: 1; }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* HIGHLIGHT CARD CLICKABLE */
+    .highlight-card { cursor: pointer; transition: all 0.15s; }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(122,0,230,0.08); transform: translateY(-1px); }
+    .highlight-card:active { transform: translateY(0); }
+
+    /* PRES CARD CLICKABLE */
+    .pres-card { cursor: pointer; transition: all 0.15s; }
+    .pres-card:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(122,0,230,0.08); }
+
+    /* POSTER MODAL */
+    .poster-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: none; align-items: flex-start; justify-content: center; padding: 32px 24px; overflow-y: auto; backdrop-filter: blur(3px); }
+    .poster-overlay.visible { display: flex; }
+
+    .poster-modal { background: var(--surface); border-radius: var(--radius-lg); width: 100%; max-width: 800px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; animation: posterIn 0.2s ease-out; }
+    @keyframes posterIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .poster-banner { padding: 24px 28px 20px; position: relative; color: white; }
+    .poster-banner-close { position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; font-size: 18px; transition: background 0.15s; }
+    .poster-banner-close:hover { background: rgba(255,255,255,0.35); }
+    .poster-banner-badges { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+    .poster-badge { font-size: 10px; font-weight: 600; padding: 2px 10px; border-radius: 4px; background: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.3px; }
+    .poster-badge.sanofi { background: rgba(249,200,81,0.3); }
+    .poster-badge.impact { background: rgba(255,100,100,0.3); }
+    .poster-title { font-size: 20px; font-weight: 700; line-height: 1.4; margin-bottom: 10px; }
+    .poster-authors { font-size: 13px; opacity: 0.85; line-height: 1.4; }
+    .poster-congress-info { font-size: 12px; opacity: 0.7; margin-top: 8px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .poster-congress-info span { display: flex; align-items: center; gap: 4px; }
+    .poster-congress-info i { font-size: 14px; }
+
+    .poster-body { padding: 24px 28px 28px; }
+
+    .poster-section { margin-bottom: 22px; }
+    .poster-section:last-child { margin-bottom: 0; }
+    .poster-section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .poster-section-label i { font-size: 14px; }
+
+    .poster-abstract { font-size: 14px; color: var(--text); line-height: 1.7; }
+
+    .poster-findings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .poster-finding-item { display: flex; align-items: flex-start; gap: 8px; padding: 10px 12px; background: var(--surface-dim); border-radius: 8px; font-size: 13px; line-height: 1.4; color: var(--text-secondary); }
+    .poster-finding-item i { color: var(--accent); font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+    .poster-msl-box { background: var(--orion-bg); border-radius: 10px; padding: 16px 18px; }
+    .poster-msl-box .poster-section-label { color: var(--orion-accent); }
+    .poster-msl-text { font-size: 13px; color: #085041; line-height: 1.6; }
+
+    .poster-footer { display: flex; align-items: center; gap: 10px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .poster-footer-tag { font-size: 12px; font-weight: 500; padding: 4px 12px; background: var(--surface-dim); border-radius: 6px; color: var(--text-secondary); }
+    .poster-footer-id { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+
+    .demo-narrator {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      z-index: 1100;
+      background: var(--text, #1a1a2e); color: white;
+      font-family: var(--font, 'Work Sans', sans-serif); font-size: 13px; font-weight: 500;
+      padding: 10px 22px; border-radius: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+      opacity: 0; transition: opacity 0.3s;
+      pointer-events: none; white-space: nowrap;
+      max-width: 90vw; overflow: hidden; text-overflow: ellipsis;
+    }
+    .demo-narrator.visible { opacity: 1; }
+    .demo-narrator i { margin-right: 6px; }
+    .theme-toggle {
+      position: fixed; top: 20px; right: 20px; z-index: 200;
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--surface); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 16px; color: var(--text);
+      transition: all 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.08); }
+    .theme-toggle .ti-moon { display: none; }
+    html.dark .theme-toggle .ti-moon { display: block; }
+    html.dark .theme-toggle .ti-sun { display: none; }
+  </style>
+  <script type="module" crossorigin src="/assets/congress-Bqm-rAeP.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/enhancements-DKu5NQJa.js">
+  <link rel="modulepreload" crossorigin href="/assets/narrator-Gu1jBQbu.js">
+  <link rel="stylesheet" crossorigin href="/assets/enhancements-BwV9TaLn.css">
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+    <i class="ti ti-sun"></i>
+    <i class="ti ti-moon"></i>
+  </button>
+  <div class="header">
+    <div class="header-brand-bar"></div>
+    <div class="header-inner">
+      <a class="header-home" href="/index.html" title="MedVerse home">
+        <div class="header-logo"><i class="ti ti-brain"></i></div>
+        <div>
+          <div class="header-title">MedVerse</div>
+          <div class="header-subtitle">Scientific Intelligence Ecosystem</div>
+        </div>
+      </a>
+      <div class="header-actions">
+        <button class="demo-btn" id="run-demo"><i class="ti ti-player-play"></i> Play Demo</button>
+        <div class="header-badge">POC v0.1</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="module-nav">
+    <a class="module-tab" href="/index.html"><i class="ti ti-home"></i> Home</a>
+    <a class="module-tab" href="/concierge.html"><i class="ti ti-message-circle"></i> HCP Concierge</a>
+    <a class="module-tab" href="/patient.html"><i class="ti ti-heart"></i> Patient Concierge</a>
+    <a class="module-tab" href="/msl-copilot.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
+    <a class="module-tab" href="/medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
+    <a class="module-tab" href="/system-tools.html"><i class="ti ti-settings"></i> Power Agents</a>
+    <a class="module-tab" href="/demo.html"><i class="ti ti-player-play"></i> Demo</a>
+    <a class="module-tab" href="/about.html"><i class="ti ti-info-circle"></i> About</a>
+  </nav>
+
+  <div class="layout">
+  <div class="main">
+    <div class="page-title">Congress Intelligence</div>
+    <div class="page-subtitle">Scientific data from major medical congresses — curated presentations, key findings, and MSL talking points. Content sourced from congress.sanofimedical.com and society proceedings.</div>
+
+    <div class="stats-row" id="stats-row">
+      <div class="stat-chip purple" data-chip="congresses"><i class="ti ti-calendar-event"></i> <strong id="stat-congresses">0</strong> Congresses</div>
+      <div class="stat-chip green" data-chip="presentations"><i class="ti ti-file-text"></i> <strong id="stat-presentations">0</strong> Presentations</div>
+      <div class="stat-chip gold" data-chip="sanofi"><i class="ti ti-star-filled"></i> <strong id="stat-sanofi">0</strong> Sanofi data</div>
+      <div class="stat-chip purple" data-chip="diseases"><i class="ti ti-dna"></i> <strong id="stat-diseases">0</strong> Disease areas</div>
+      <div class="stat-chip red" data-chip="high-impact"><i class="ti ti-flame"></i> <strong id="stat-high-impact">0</strong> High impact</div>
+    </div>
+
+    <div class="section-title"><i class="ti ti-calendar-event"></i> Congress Timeline</div>
+    <div class="timeline-scroll" id="congress-timeline"></div>
+
+    <div class="section-title"><i class="ti ti-flame"></i> <span id="highlights-heading">High impact highlights</span></div>
+    <div class="highlights-grid" id="highlights"></div>
+
+    <div class="pres-toolbar">
+      <div class="pres-toolbar-left">
+        <div class="pres-heading" id="pres-heading">All Congresses</div>
+        <div class="pres-count" id="pres-count"></div>
+      </div>
+      <div class="pres-filters">
+        <button class="pres-filter active" data-filter="all">All</button>
+        <button class="pres-filter" data-filter="sanofi"><i class="ti ti-star-filled" style="font-size:12px"></i> Sanofi Data</button>
+        <button class="pres-filter" data-filter="high-impact"><i class="ti ti-flame" style="font-size:12px"></i> High Impact</button>
+      </div>
+    </div>
+    <div class="pres-list" id="presentations-list"></div>
+  </div>
+
+  <!-- CHAT SIDEBAR -->
+  <div class="chat-sidebar">
+    <div class="chat-header">
+      <div class="chat-header-icon"><i class="ti ti-message-chatbot"></i></div>
+      <div>
+        <div class="chat-header-title">Congress AI</div>
+        <div class="chat-header-sub">Ask about presentations, findings & data</div>
+      </div>
+      <div class="chat-header-actions">
+        <button class="chat-action-btn chat-demo-btn" id="chatDemoBtn"><i class="ti ti-player-play" style="font-size:13px"></i> Demo</button>
+        <button class="chat-action-btn chat-clear-btn" id="chatClearBtn"><i class="ti ti-refresh" style="font-size:13px"></i></button>
+      </div>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="chat-msg ai">
+        <div class="chat-ai-avatar"><i class="ti ti-calendar-event"></i></div>
+        <div class="chat-bubble chat-ai-bubble">
+          I'm the Congress Intelligence Agent. I track presentations across <strong>6 congresses</strong> — AAD, EADV, ATS, ACR, AAAAI, and DDW. Ask me about key findings, MSL talking points, or Sanofi data from any congress.
+        </div>
+      </div>
+    </div>
+    <div class="chat-suggestions" id="chat-suggestions">
+      <button class="chat-suggestion">Key Dupixent data at AAD</button>
+      <button class="chat-suggestion">High-impact findings</button>
+      <button class="chat-suggestion">COPD data from ATS</button>
+      <button class="chat-suggestion">EoE evidence at DDW</button>
+      <button class="chat-suggestion">What's upcoming at EADV?</button>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="chat-input" placeholder="Ask about congress data…">
+      <button id="chat-send" disabled><i class="ti ti-send"></i></button>
+    </div>
+  </div>
+  </div>
+
+  <div class="poster-overlay" id="poster-overlay">
+    <div class="poster-modal" id="poster-modal"></div>
+  </div>
+
+  <script>
+function toggleTheme(){document.documentElement.classList.toggle("dark");localStorage.setItem("medverse-theme",document.documentElement.classList.contains("dark")?"dark":"light")}
+if(localStorage.getItem("medverse-theme")==="dark")document.documentElement.classList.add("dark");
+</script>
+  <div class="demo-narrator" id="demo-narrator"></div>
+  <script>
+  function toggleTheme() {
+    document.documentElement.classList.toggle("dark");
+    localStorage.setItem("medverse-theme",
+      document.documentElement.classList.contains("dark") ? "dark" : "light");
+  }
+  if (localStorage.getItem("medverse-theme") === "dark") {
+    document.documentElement.classList.add("dark");
+  }
+  </script>
+</body>
+</html>

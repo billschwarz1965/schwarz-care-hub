@@ -499,3 +499,8 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
+
+// ═══ SERVICE WORKER REGISTRATION ═══
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
