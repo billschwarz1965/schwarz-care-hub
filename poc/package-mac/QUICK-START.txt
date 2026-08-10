@@ -1,13 +1,13 @@
 ═══════════════════════════════════════════════════════════════
   MedVerse Scientific Intelligence Ecosystem
-  Mac Quick Start Guide — POC v0.4
+  Mac Quick Start Guide — POC v0.4.5
 ═══════════════════════════════════════════════════════════════
 
 
   STEP 1: UNZIP
   ─────────────
-  Double-click the downloaded MedVerse-Mac-v0.4.zip file.
-  macOS will create a "MedVerse-Mac-v0.4" folder automatically.
+  Double-click the downloaded MedVerse-Mac-v0.4.5.zip file.
+  macOS will create a "MedVerse-Mac-v0.4.5" folder automatically.
 
   You can move this folder anywhere you like — Desktop,
   Documents, or Downloads all work fine.
@@ -22,7 +22,7 @@
 
     b) Type this command (adjust the path if you moved the folder):
 
-         chmod +x ~/Downloads/MedVerse-Mac-v0.4/start-medverse.command
+         chmod +x ~/Downloads/MedVerse-Mac-v0.4.5/start-medverse.command
 
     c) Close Terminal. You won't need it again.
 
@@ -68,7 +68,7 @@
 
   "Permission denied"
   → Open Terminal and run:
-    chmod +x ~/Downloads/MedVerse-Mac-v0.4/start-medverse.command
+    chmod +x ~/Downloads/MedVerse-Mac-v0.4.5/start-medverse.command
 
   "Python not found"
   → macOS 12.3+ removed Python 2. Install Python 3:
