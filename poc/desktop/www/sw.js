@@ -1,5 +1,5 @@
 // MedVerse Service Worker
-const CACHE_VERSION = 'medverse-v1';
+const CACHE_VERSION = 'medverse-v2';
 const APP_SHELL = [
   '/',
   '/index.html',
@@ -16,7 +16,9 @@ const APP_SHELL = [
   '/demo.html',
   '/about.html',
   '/manifest.json',
-  '/icons/icon.svg'
+  '/icons/icon.svg',
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png'
 ];
 
 // Install: cache app shell
