@@ -957,6 +957,7 @@ function narrateOff() {
 }
 
 const PATIENT_AGENTS = [
+  { id: "voice-search", name: "Voice Search",          icon: "microphone" },
   { id: "conditions",   name: "Condition Library",     icon: "book-2" },
   { id: "treatment",    name: "Treatment Explorer",    icon: "list-check" },
   { id: "medications",  name: "My Medications",        icon: "pill" },
@@ -984,6 +985,23 @@ const selectChip = (containerId, val) => {
 
 async function runAgentDemo(index, agent) {
   switch (agent.id) {
+    case "voice-search": {
+      await narrate("Let's start with voice search — just tap the microphone and say what you need");
+      showHub();
+      await delay(600);
+      const vsMic = searchInput?.parentElement?.querySelector('.mv-voice-btn');
+      if (vsMic) { vsMic.classList.add('listening'); vsMic.innerHTML = '<i class="ti ti-loader-2 mv-spin"></i>'; }
+      await delay(1200);
+      if (searchInput) { searchInput.value = ''; for (const ch of "What are Dupixent side effects") { searchInput.value += ch; searchInput.dispatchEvent(new Event('input', { bubbles: true })); await delay(30); } }
+      await delay(400);
+      if (vsMic) { vsMic.classList.remove('listening'); vsMic.innerHTML = '<i class="ti ti-microphone"></i>'; }
+      await delay(300);
+      routeSearch("What are Dupixent side effects");
+      await delay(1800);
+      await narrate("Voice recognized and routed — no typing needed, just speak naturally and the right agent responds");
+      await delay(1500);
+      break;
+    }
     case "conditions":
       await narrate("It starts with learning. A patient recently diagnosed with eczema opens the Condition Library to understand their disease");
       showPanel('conditions');
@@ -1181,7 +1199,7 @@ async function runDemo() {
   // ── Wrap up ──
   showHub();
   await delay(500);
-  await narrate("With eleven agents on one platform, from diagnosis to daily wellness — the Patient Concierge puts patients at the center of their care journey with clear, actionable, and compassionate support");
+  await narrate("With twelve agents on one platform, from diagnosis to daily wellness — the Patient Concierge puts patients at the center of their care journey with clear, actionable, and compassionate support");
   narrateOff();
 
   demoRunning = false;

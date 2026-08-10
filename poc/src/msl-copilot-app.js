@@ -969,6 +969,7 @@ function narrateOff() {
 }
 
 const MSL_AGENTS = [
+  { id: "voice-search", name: "Voice Search", icon: "microphone" },
   { id: "territory", name: "Territory Dashboard", icon: "map" },
   { id: "precall", name: "Pre-Call Intelligence", icon: "report-search" },
   { id: "kol", name: "KOL Profiling", icon: "user-star" },
@@ -992,6 +993,24 @@ const type = (id, v) => { const el = $(id); if (el) { el.value = v; el.dispatchE
 
 async function runAgentDemo(index, agent) {
   switch (agent.id) {
+    case "voice-search": {
+      await narrate("Let's start with voice search — tap the microphone and speak your query, completely hands-free");
+      showHub();
+      await delay(600);
+      const vsInput = $("hub-search-input");
+      const vsMic = vsInput?.parentElement?.querySelector('.mv-voice-btn');
+      if (vsMic) { vsMic.classList.add('listening'); vsMic.innerHTML = '<i class="ti ti-loader-2 mv-spin"></i>'; }
+      await delay(1200);
+      if (vsInput) { vsInput.value = ''; for (const ch of "Dupixent long-term safety data") { vsInput.value += ch; vsInput.dispatchEvent(new Event('input', { bubbles: true })); await delay(30); } }
+      await delay(400);
+      if (vsMic) { vsMic.classList.remove('listening'); vsMic.innerHTML = '<i class="ti ti-microphone"></i>'; }
+      await delay(300);
+      routeSearch("Dupixent long-term safety data");
+      await delay(1800);
+      await narrate("Voice recognized and query routed — the hub search dispatches to the right agent automatically");
+      await delay(1500);
+      break;
+    }
     case "territory":
       await narrate("Morning starts at the Territory Dashboard — your mission control");
       showPanel("territory");
@@ -1182,7 +1201,7 @@ async function runDemo() {
   demoBtn.disabled = true;
   demoBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running…';
 
-  await narrate("A day in the life of a Sanofi MSL — featuring fourteen AI agents, one mission. Let's follow the journey");
+  await narrate("A day in the life of a Sanofi MSL — featuring fifteen AI agents, one mission. Let's follow the journey");
   await demoCtrl.runFullDemo();
 
   await narrate("With thirteen agents on one platform, from morning prep to post-call intelligence — the MSL Copilot");

@@ -1036,6 +1036,7 @@ function narrateOff() {
 }
 
 const HCP_AGENTS = [
+  { id: "voice-search", name: "Voice Search",           icon: "microphone" },
   { id: "clinical-qa",  name: "Clinical Q&A",           icon: "stethoscope" },
   { id: "patient-nav",  name: "Patient Navigator",      icon: "map-pin" },
   { id: "trial-match",  name: "Trial Matching",         icon: "flask" },
@@ -1055,6 +1056,23 @@ async function runAgentDemo(index, agent) {
   const click = id => { const el = $(id); if (el) el.click(); };
 
   switch (agent.id) {
+    case "voice-search": {
+      await narrate("Let's start with voice search — tap the microphone and speak your clinical question, completely hands-free");
+      showHub();
+      await delay(600);
+      const vsMic = hubSearchInput?.parentElement?.querySelector('.mv-voice-btn');
+      if (vsMic) { vsMic.classList.add('listening'); vsMic.innerHTML = '<i class="ti ti-loader-2 mv-spin"></i>'; }
+      await delay(1200);
+      if (hubSearchInput) { hubSearchInput.value = ''; for (const ch of "Dupixent dosing for atopic dermatitis") { hubSearchInput.value += ch; hubSearchInput.dispatchEvent(new Event('input', { bubbles: true })); await delay(30); } }
+      await delay(400);
+      if (vsMic) { vsMic.classList.remove('listening'); vsMic.innerHTML = '<i class="ti ti-microphone"></i>'; }
+      await delay(300);
+      routeSearch("Dupixent dosing for atopic dermatitis");
+      await delay(1800);
+      await narrate("Voice recognized and query routed — the H C P Concierge finds the right agent automatically");
+      await delay(1500);
+      break;
+    }
     case "clinical-qa": {
       await narrate("It starts with a clinical question. A dermatologist asks about treatment options for a patient with moderate-to-severe AD who has failed topicals");
       showPanel("clinical-qa");
@@ -1200,7 +1218,7 @@ async function runAgentDemo(index, agent) {
         document.getElementById("mv-chat-send")?.click();
         await delay(2000);
       }
-      await narrate("Instant answers drawing from all eleven agents, built for the healthcare professional workflow");
+      await narrate("Instant answers drawing from all twelve agents, built for the healthcare professional workflow");
       await delay(1500);
       if (fab) fab.click();
       await delay(400);
@@ -1232,7 +1250,7 @@ async function runDemo() {
   // ── Wrap up ──
   showHub();
   await delay(500);
-  await narrate("With eleven agents on one platform, from clinical questions to congress coverage — the H C P Concierge gives healthcare professionals the intelligence they need, when they need it");
+  await narrate("With twelve agents on one platform, from clinical questions to congress coverage — the H C P Concierge gives healthcare professionals the intelligence they need, when they need it");
   narrateOff();
 
   demoRunning = false;

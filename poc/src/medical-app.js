@@ -919,6 +919,7 @@ function narrateOff() {
 
 // ── Agent roster ──
 const MEDICAL_AGENTS = [
+  { id: "voice-search",  name: "Voice Search",              icon: "microphone" },
   { id: "med-strategy",  name: "Medical Strategy",          icon: "chart-pie" },
   { id: "regulatory",    name: "Regulatory Intelligence",   icon: "gavel" },
   { id: "literature",    name: "Literature Intelligence",   icon: "book-2" },
@@ -941,6 +942,23 @@ const click = (sel) => { const el = $(sel); if (el) el.click(); };
 
 async function runAgentDemo(index, agent) {
   switch (agent.id) {
+    case "voice-search": {
+      await narrate("Let's start with voice search — tap the microphone and speak your query, completely hands-free");
+      showHub();
+      await delay(600);
+      const vsMic = searchInput?.parentElement?.querySelector('.mv-voice-btn');
+      if (vsMic) { vsMic.classList.add('listening'); vsMic.innerHTML = '<i class="ti ti-loader-2 mv-spin"></i>'; }
+      await delay(1200);
+      if (searchInput) { searchInput.value = ''; for (const ch of "Dupixent COPD regulatory update") { searchInput.value += ch; searchInput.dispatchEvent(new Event('input', { bubbles: true })); await delay(30); } }
+      await delay(400);
+      if (vsMic) { vsMic.classList.remove('listening'); vsMic.innerHTML = '<i class="ti ti-microphone"></i>'; }
+      await delay(300);
+      routeSearch("Dupixent COPD regulatory update");
+      await delay(1800);
+      await narrate("Voice recognized and query routed — hands-free search across all medical affairs agents");
+      await delay(1500);
+      break;
+    }
     case "med-strategy":
       await narrate("Morning starts with the Medical Strategy dashboard — brand plans, KPIs, and competitive positioning");
       showPanel('med-strategy');
@@ -1077,7 +1095,7 @@ async function runAgentDemo(index, agent) {
         document.getElementById("mv-chat-send")?.click();
         await delay(2000);
       }
-      await narrate("Instant answers on products, clinical data, and medical affairs processes — the assistant draws from all thirteen agents");
+      await narrate("Instant answers on products, clinical data, and medical affairs processes — the assistant draws from all fourteen agents");
       await delay(1500);
       if (fab) fab.click();
       await delay(400);
@@ -1119,7 +1137,7 @@ async function runDemo() {
 
   // Finale
   if (!demoCtrl.aborted) {
-    await narrate("With thirteen agents on one Medical Affairs command center, from strategy to execution — the Medical Concierge");
+    await narrate("With fourteen agents on one Medical Affairs command center, from strategy to execution — the Medical Concierge");
     showHub();
     await delay(1500);
   }
