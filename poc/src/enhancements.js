@@ -178,7 +178,7 @@
   }
 
   // ═══ FLOATING CHAT WIDGET ═══
-  const chatPages = ['medical.html', 'patient.html', 'index.html', 'system-tools.html', 'concierge.html'];
+  const chatPages = ['medical.html', 'patient.html', 'msl-copilot.html', 'system-tools.html', 'concierge.html'];
   const chatResponses = {
     dupixent: 'Dupixent (dupilumab) is a monoclonal antibody targeting IL-4/IL-13. It is approved for atopic dermatitis, asthma, CRSwNP, EoE, prurigo nodularis, and COPD. For specific clinical questions, please use the Medical Information agent.',
     kevzara: 'Kevzara (sarilumab) is an IL-6 receptor antagonist approved for rheumatoid arthritis. The MONARCH trial demonstrated superiority vs. adalimumab as monotherapy.',

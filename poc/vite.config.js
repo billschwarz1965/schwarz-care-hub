@@ -6,9 +6,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        home: resolve(__dirname, 'home.html'),
+        home: resolve(__dirname, 'index.html'),
         about: resolve(__dirname, 'about.html'),
-        main: resolve(__dirname, 'index.html'),
+        mslcopilot: resolve(__dirname, 'msl-copilot.html'),
         concierge: resolve(__dirname, 'concierge.html'),
         orion: resolve(__dirname, 'orion.html'),
         disease: resolve(__dirname, 'disease.html'),

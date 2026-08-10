@@ -69,7 +69,7 @@ function createWindow() {
       submenu: [
         { label: "Master Demo", click: () => navigateTo("demo.html") },
         { type: "separator" },
-        { label: "MSL Copilot", click: () => navigateTo("index.html") },
+        { label: "MSL Copilot", click: () => navigateTo("msl-copilot.html") },
         {
           label: "Medical Concierge",
           click: () => navigateTo("medical.html"),
