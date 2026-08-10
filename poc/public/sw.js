@@ -1,25 +1,27 @@
 // MedVerse Service Worker
-const CACHE_VERSION = 'medverse-v2';
-const APP_SHELL = [
-  '/',
-  '/index.html',
-  '/concierge.html',
-  '/patient.html',
-  '/msl-copilot.html',
-  '/medical.html',
-  '/agents.html',
-  '/disease.html',
-  '/literature.html',
-  '/congress.html',
-  '/orion.html',
-  '/system-tools.html',
-  '/demo.html',
-  '/about.html',
-  '/manifest.json',
-  '/icons/icon.svg',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png'
+const CACHE_VERSION = 'medverse-v3';
+const BASE = self.registration.scope;
+const APP_SHELL_PATHS = [
+  '',
+  'index.html',
+  'concierge.html',
+  'patient.html',
+  'msl-copilot.html',
+  'medical.html',
+  'agents.html',
+  'disease.html',
+  'literature.html',
+  'congress.html',
+  'orion.html',
+  'system-tools.html',
+  'demo.html',
+  'about.html',
+  'manifest.json',
+  'icons/icon.svg',
+  'icons/icon-192x192.png',
+  'icons/icon-512x512.png'
 ];
+const APP_SHELL = APP_SHELL_PATHS.map(p => BASE + p);
 
 // Install: cache app shell
 self.addEventListener('install', (event) => {
