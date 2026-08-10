@@ -319,6 +319,171 @@
     });
   }
 
+  // ═══ VOICE SEARCH ═══
+  function initVoiceSearch() {
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRec) return;
+
+    const targets = document.querySelectorAll(
+      '.hub-search-input, #search-input, #chat-input, #trial-search-input, #demo-prompt-input, #mv-chat-input, .form-input[type="text"], input.form-input:not([type])'
+    );
+
+    targets.forEach(input => {
+      if (input._mvMic) return;
+      input._mvMic = true;
+
+      const wrap = input.parentElement;
+      if (!wrap) return;
+      if (getComputedStyle(wrap).position === 'static') wrap.style.position = 'relative';
+
+      const mic = document.createElement('button');
+      mic.type = 'button';
+      mic.className = 'mv-voice-btn';
+      mic.title = 'Voice search';
+      mic.innerHTML = '<i class="ti ti-microphone"></i>';
+      input.after(mic);
+
+      let recognition = null;
+
+      mic.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (mic.classList.contains('listening')) {
+          if (recognition) recognition.stop();
+          return;
+        }
+        recognition = new SpeechRec();
+        recognition.lang = 'en-US';
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 1;
+
+        mic.classList.add('listening');
+        mic.innerHTML = '<i class="ti ti-loader-2 mv-spin"></i>';
+
+        recognition.onresult = (ev) => {
+          let transcript = '';
+          for (let i = ev.resultIndex; i < ev.results.length; i++) {
+            transcript += ev.results[i][0].transcript;
+          }
+          input.value = transcript;
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+        };
+        recognition.onend = () => {
+          mic.classList.remove('listening');
+          mic.innerHTML = '<i class="ti ti-microphone"></i>';
+          recognition = null;
+          if (input.value.trim()) {
+            const form = input.closest('form');
+            const goBtn = input.parentElement.querySelector('.hub-search-go, [id$="-submit"], .mv-chat-send, button[type="submit"]')
+              || input.nextElementSibling?.matches?.('button') && input.nextElementSibling;
+            if (goBtn && goBtn !== mic) goBtn.click();
+            else input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+          }
+        };
+        recognition.onerror = (ev) => {
+          mic.classList.remove('listening');
+          mic.innerHTML = '<i class="ti ti-microphone"></i>';
+          if (ev.error !== 'aborted' && ev.error !== 'no-speech') {
+            if (window.mvToast) mvToast('Voice input unavailable: ' + ev.error, 'warning');
+          }
+        };
+        recognition.start();
+      });
+    });
+  }
+
+  // ═══ SEARCHABLE SELECTS ═══
+  function initSearchableSelects() {
+    document.querySelectorAll('select.form-select, select[class*="form-"]').forEach(sel => {
+      if (sel._mvSearchable || sel.options.length < 4) return;
+      sel._mvSearchable = true;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'mv-searchsel';
+      sel.parentNode.insertBefore(wrapper, sel);
+
+      const display = document.createElement('button');
+      display.type = 'button';
+      display.className = 'mv-searchsel-btn';
+      const selText = () => sel.options[sel.selectedIndex]?.text || 'Select…';
+      display.innerHTML = `<span class="mv-searchsel-text">${selText()}</span><i class="ti ti-chevron-down mv-searchsel-arrow"></i>`;
+
+      const dropdown = document.createElement('div');
+      dropdown.className = 'mv-searchsel-dropdown';
+
+      const searchInput = document.createElement('input');
+      searchInput.type = 'text';
+      searchInput.className = 'mv-searchsel-search';
+      searchInput.placeholder = 'Type to filter…';
+
+      const list = document.createElement('div');
+      list.className = 'mv-searchsel-list';
+
+      function buildOptions(filter) {
+        list.innerHTML = '';
+        const f = (filter || '').toLowerCase();
+        Array.from(sel.options).forEach((opt, i) => {
+          if (f && !opt.text.toLowerCase().includes(f)) return;
+          const item = document.createElement('div');
+          item.className = 'mv-searchsel-item' + (i === sel.selectedIndex ? ' selected' : '');
+          item.textContent = opt.text;
+          item.addEventListener('click', () => {
+            sel.selectedIndex = i;
+            sel.dispatchEvent(new Event('change', { bubbles: true }));
+            display.querySelector('.mv-searchsel-text').textContent = opt.text;
+            close();
+          });
+          list.appendChild(item);
+        });
+      }
+
+      searchInput.addEventListener('input', () => buildOptions(searchInput.value));
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const first = list.querySelector('.mv-searchsel-item');
+          if (first) first.click();
+        }
+        if (e.key === 'Escape') close();
+      });
+
+      dropdown.appendChild(searchInput);
+      dropdown.appendChild(list);
+      wrapper.appendChild(display);
+      wrapper.appendChild(dropdown);
+
+      sel.style.display = 'none';
+      wrapper.appendChild(sel);
+
+      function open() {
+        wrapper.classList.add('open');
+        searchInput.value = '';
+        buildOptions('');
+        requestAnimationFrame(() => searchInput.focus());
+      }
+      function close() {
+        wrapper.classList.remove('open');
+      }
+
+      display.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (wrapper.classList.contains('open')) close();
+        else {
+          document.querySelectorAll('.mv-searchsel.open').forEach(w => w.classList.remove('open'));
+          open();
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!wrapper.contains(e.target)) close();
+      });
+
+      sel.addEventListener('change', () => {
+        display.querySelector('.mv-searchsel-text').textContent = selText();
+      });
+    });
+  }
+
   // ═══ INIT ═══
   function init() {
     initDarkMode();
@@ -327,6 +492,8 @@
     setTimeout(autoEnhanceButtons, 500);
     wireDeadButtons();
     initChatWidget();
+    setTimeout(initVoiceSearch, 600);
+    setTimeout(initSearchableSelects, 400);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
