@@ -2,71 +2,92 @@
   MedVerse Scientific Intelligence Ecosystem — POC v0.4
 ===========================================================
 
-HOW TO RUN
-----------
-1. Double-click "Start-MedVerse.bat"
-2. Your browser will open automatically to http://localhost:8080
-3. To stop: close the terminal window or press Ctrl+C
+MAC INSTALLATION
+----------------
+1. Unzip MedVerse-Mac-Portable-v0.4.zip to any folder
+   (Desktop, Documents, Downloads — anywhere you like)
 
-SHAREPOINT / ONE-CLICK LINK SETUP
-----------------------------------
-To launch MedVerse from a SharePoint page, Teams message, or email:
+2. Open Terminal:
+   - Press Cmd+Space, type "Terminal", hit Enter
 
-1. Run "Install-MedVerse.bat" once (no admin required)
-   — This registers the medverse:// URL protocol on your machine
+3. Navigate to the folder and run:
 
-2. Create a link on SharePoint (or anywhere) pointing to:
+       cd ~/Desktop/MedVerse    (adjust path to where you unzipped)
+       chmod +x start-medverse.sh
+       ./start-medverse.sh
 
-       medverse://launch
+4. Your browser will open automatically to http://localhost:8080
 
-3. Clicking the link opens MedVerse automatically
+5. To stop: press Ctrl+C in the Terminal window
 
-NOTE: Each user needs their own copy of the package folder
-and must run the installer once. The link works from any
-browser, SharePoint page, Teams chat, or Outlook email.
+ALTERNATIVE (no Terminal needed):
+   - Open the "www" folder inside the package
+   - Right-click "index.html" → Open With → Chrome or Safari
+   - Note: PubMed and ClinicalTrials.gov live search
+     won't work without the server (CORS restrictions)
 
-REQUIREMENTS
-------------
-- Windows 10 or 11 (PowerShell is built in)
-- No additional software needed
+REQUIREMENTS (Mac):
+   - macOS 10.15 or later
+   - Python 3 (pre-installed on macOS)
+   - No additional software needed
 
-MODULES (10 pages)
+
+WINDOWS INSTALLATION
+--------------------
+1. Unzip the package to any folder
+2. Double-click "Start-MedVerse.bat"
+3. Your browser will open automatically to http://localhost:8080
+4. To stop: close the terminal window or press Ctrl+C
+
+SHAREPOINT / ONE-CLICK LINK SETUP (Windows):
+   1. Run "Install-MedVerse.bat" once (no admin required)
+   2. Create a link on SharePoint pointing to: medverse://launch
+   3. Clicking the link opens MedVerse automatically
+
+REQUIREMENTS (Windows):
+   - Windows 10 or 11 (PowerShell is built in)
+   - No additional software needed
+
+
+WINDOWS DESKTOP APP (Electron)
+------------------------------
+For the native desktop experience, use the Windows portable
+edition (MedVerse-Portable-v0.4.zip) instead:
+   1. Extract the folder
+   2. Double-click "Launch MedVerse.bat" or
+      "MedVerse Operating System.exe"
+   No installation required. No admin rights needed.
+
+
+MODULES (11 pages)
 ------------------
-- MSL Copilot — 12-agent field engagement hub for Medical Science Liaisons
-- Medical Concierge — 11-agent medical affairs hub
-- HCP Concierge — 9-agent clinical hub for healthcare professionals
-- Patient Concierge — 10-agent health companion for patients and caregivers
-- Orion Signal Intelligence — Real-time HCP engagement signals with cross-module feed
+- MSL Copilot — 14-agent field engagement hub for MSLs
+- Medical Concierge — 13-agent medical affairs hub
+- HCP Concierge — 11-agent clinical hub for HCPs
+- Patient Concierge — 11-agent health companion
+- Orion Signal Intelligence — Real-time HCP engagement signals
 - Disease State Navigator — Cross-TA disease landscape
 - Literature Intelligence — Scientific publication search (live PubMed)
-- Congress Intelligence — Medical congress coverage with poster overviews
-- Agent Ecosystem — AI agent architecture overview with interactive demos
+- Congress Intelligence — Medical congress coverage
+- Agent Ecosystem — AI agent architecture with interactive demos
 - Power Agents — Platform configuration and diagnostics
+- Demo — Master demo page with Play All mode
 
-WHAT'S NEW IN v0.3
+WHAT'S NEW IN v0.4
 -------------------
-- Medical Concierge page with 11 agents including Congress Intelligence
-- Patient Concierge page with 10 patient-focused agents
-- Interactive demos on all module pages (click "Run Demo" on each hub)
-- SharePoint URL protocol launcher (Install-MedVerse.bat)
-- Cross-module Orion signal broadcasting — actions in any module generate
-  real-time signals on the Orion dashboard via localStorage bridge
-- Congress deep linking — poster overview links from concierge pages to
-  full congress coverage with hash-based navigation
-- UI modernization across all pages:
-  - Glassmorphism header and nav with backdrop blur
-  - Refined card design with layered shadows and hover lift
-  - Gradient accent bars on hub and stat cards
-  - Frosted-glass modal overlays
-  - Custom scrollbar styling
-  - Dark mode shadow and glass variable support
-  - Responsive grid breakpoints for stats and card layouts
-- Shared enhancement layer (dark mode, toasts, animations) on all pages
+- Trial Matching Agent on MSL Copilot, Medical, and Patient pages
+- HCP Concierge chat assistant widget
+- Light/dark mode toggle on all pages
+- Master Demo page with one-click Play All
+- Narrated demos updated with natural TTS (acronyms spoken as letters)
+- Electron desktop app (Windows portable edition)
+- Renamed to MedVerse Scientific Intelligence Ecosystem
 
 NOTES
 -----
 - This is a self-contained demo. All data is simulated.
-- PubMed and ClinicalTrials.gov live search require internet.
+- PubMed and ClinicalTrials.gov live search require internet
+  AND the local server running (for CORS proxy).
 - Best viewed in Chrome or Edge.
 
 CONTACT
