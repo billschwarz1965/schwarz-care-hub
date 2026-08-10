@@ -1,4 +1,4 @@
-$port = 8080
+﻿$port = 8080
 $root = Join-Path $PSScriptRoot "www"
 
 $mimeTypes = @{
@@ -41,7 +41,7 @@ try {
 Write-Host ""
 Write-Host "  ================================================" -ForegroundColor Magenta
 Write-Host "    MedVerse Scientific Intelligence Ecosystem" -ForegroundColor White
-Write-Host "    POC v0.4.5 — Sanofi" -ForegroundColor White
+Write-Host "    POC v0.4.5 - Sanofi" -ForegroundColor White
 Write-Host "  ================================================" -ForegroundColor Magenta
 Write-Host ""
 Write-Host "    Running at: " -NoNewline

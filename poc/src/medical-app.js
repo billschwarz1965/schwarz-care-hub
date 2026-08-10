@@ -44,7 +44,7 @@ const hints = [
   'EADV publication timeline',
   'AD advisory board plan',
   'dupilumab safety signals',
-  'CME program dermatology',
+  'Disease state education atopic dermatitis',
   'atopic dermatitis evidence gap',
 ];
 const hintsEl = $('#hub-search-hints');
@@ -64,7 +64,7 @@ function routeSearch(q) {
   else if (/safety|signal|adverse|pharmacovig|icsr/i.test(lq)) showPanel('pharma-vig');
   else if (/publicat|manuscript|journal|pub plan/i.test(lq)) showPanel('pub-planner');
   else if (/advisory|board|kol/i.test(lq)) showPanel('advisory');
-  else if (/cme|education|training|speaker/i.test(lq)) showPanel('med-ed');
+  else if (/education|training|disease state|patient education|hcp education/i.test(lq)) showPanel('med-ed');
   else if (/evidence|rwe|systematic|meta.analy|slr/i.test(lq)) showPanel('evidence');
   else if (/strategy|landscape|unmet|kpi|medical plan/i.test(lq)) showPanel('med-strategy');
   else if (/literature|pubmed|search|citation/i.test(lq)) showPanel('literature');
@@ -540,18 +540,24 @@ $('#ab-submit').addEventListener('click', () => {
 // 7. MEDICAL EDUCATION
 // ══════════════════════════════════════════════
 const medEdPrograms = [
-  { title: 'Advances in Type 2 Inflammation Management', type: 'CME', accreditor: 'ACCME', hours: 3.0, status: 'Active', audience: 'Dermatologists, Allergists', enrollment: 1240, completion: 89, ta: 'AD / Asthma' },
-  { title: 'IL-6 Inhibition in RA: From Mechanism to Practice', type: 'CME', accreditor: 'ACCME', hours: 1.5, status: 'Active', audience: 'Rheumatologists', enrollment: 680, completion: 92, ta: 'RA' },
-  { title: 'Hemophilia A: Evolving Prophylaxis Paradigms', type: 'CME', accreditor: 'EACCME', hours: 2.0, status: 'In Development', audience: 'Hematologists', enrollment: 0, completion: 0, ta: 'Hemophilia' },
-  { title: 'Speaker Training: Dupixent Clinical Data (US)', type: 'Speaker Training', accreditor: 'Internal', hours: 8.0, status: 'Active', audience: 'Speakers Bureau', enrollment: 45, completion: 100, ta: 'Multi-TA' },
-  { title: 'MSL Onboarding: Immunology Portfolio Deep Dive', type: 'Internal Training', accreditor: 'Internal', hours: 16.0, status: 'Active', audience: 'MSLs', enrollment: 32, completion: 78, ta: 'Immunology' },
-  { title: 'EoE: Disease Burden & Emerging Therapies', type: 'CME', accreditor: 'ACCME', hours: 1.0, status: 'Planning', audience: 'Gastroenterologists', enrollment: 0, completion: 0, ta: 'EoE' },
+  { title: 'Type 2 Inflammation: Pathophysiology & Therapeutic Targets', type: 'Disease State', source: 'Medical Affairs', hours: 2.5, status: 'Active', audience: 'MSLs, Medical Advisors', enrollment: 185, completion: 94, ta: 'AD / Asthma / CRSwNP' },
+  { title: 'Atopic Dermatitis: From Immune Dysregulation to Biologic Therapy', type: 'Disease State', source: 'Medical Affairs', hours: 3.0, status: 'Active', audience: 'Field Medical, MSLs', enrollment: 142, completion: 91, ta: 'Atopic Dermatitis' },
+  { title: 'Dupixent Clinical Evidence Compendium — 2026 Update', type: 'Scientific Training', source: 'Medical Affairs', hours: 4.0, status: 'Active', audience: 'MSLs, Medical Advisors', enrollment: 210, completion: 88, ta: 'Multi-TA' },
+  { title: 'Eosinophilic Esophagitis: Disease Landscape & Unmet Need', type: 'Disease State', source: 'Medical Affairs', hours: 1.5, status: 'Active', audience: 'Field Medical', enrollment: 98, completion: 85, ta: 'EoE' },
+  { title: 'COPD with Type 2 Inflammation: Scientific Rationale & Pipeline', type: 'Scientific Training', source: 'Medical Affairs', hours: 2.0, status: 'In Development', audience: 'MSLs, Medical Directors', enrollment: 0, completion: 0, ta: 'COPD' },
+  { title: 'Rheumatoid Arthritis: IL-6 Pathway & Clinical Data Deep Dive', type: 'Disease State', source: 'Medical Affairs', hours: 2.0, status: 'Active', audience: 'MSLs, Rheumatology Team', enrollment: 76, completion: 92, ta: 'RA' },
+  { title: 'Hemophilia A: Factor VIII Biology & Treatment Evolution', type: 'Disease State', source: 'Medical Affairs', hours: 2.5, status: 'Planning', audience: 'Field Medical, MSLs', enrollment: 0, completion: 0, ta: 'Hemophilia' },
+  { title: 'MSL Onboarding: Immunology Portfolio Scientific Deep Dive', type: 'Scientific Training', source: 'Medical Affairs', hours: 16.0, status: 'Active', audience: 'New MSLs', enrollment: 32, completion: 78, ta: 'Immunology' },
+  { title: 'Understanding Atopic Dermatitis: A Guide for HCPs', type: 'HCP Education', source: 'Medical Affairs', hours: 1.5, status: 'Active', audience: 'HCPs, Dermatologists', enrollment: 320, completion: 87, ta: 'Atopic Dermatitis' },
+  { title: 'Living with Eczema: Patient & Caregiver Education Series', type: 'Patient Education', source: 'Medical Affairs', hours: 1.0, status: 'Active', audience: 'Patients, Caregivers', enrollment: 540, completion: 72, ta: 'Atopic Dermatitis' },
+  { title: 'Asthma Management: Biologic Therapy Overview for HCPs', type: 'HCP Education', source: 'Medical Affairs', hours: 2.0, status: 'Active', audience: 'HCPs, Pulmonologists', enrollment: 198, completion: 90, ta: 'Asthma' },
+  { title: 'Caregiver Support: Navigating Pediatric Asthma Treatment', type: 'Patient Education', source: 'Medical Affairs', hours: 0.5, status: 'In Development', audience: 'Caregivers, Parents', enrollment: 0, completion: 0, ta: 'Asthma' },
 ];
 
 function renderMedEd() {
   const container = $('#med-ed-content');
   const statusColors = { 'Active': 'badge-success', 'In Development': 'badge-warning', 'Planning': 'badge-accent', 'Archived': 'badge-info' };
-  const typeColors = { 'CME': 'badge-info', 'Speaker Training': 'badge-pink', 'Internal Training': 'badge-accent' };
+  const typeColors = { 'Disease State': 'badge-info', 'Scientific Training': 'badge-pink', 'HCP Education': 'badge-accent', 'Patient Education': 'badge-success' };
 
   container.innerHTML = `
     <div class="stats-grid" style="margin-bottom:20px">
@@ -569,7 +575,7 @@ function renderMedEd() {
         <div class="result-title" style="margin-bottom:6px">${p.title}</div>
         <div class="result-body">
           <p><strong>TA:</strong> ${p.ta} &nbsp;|&nbsp; <strong>Audience:</strong> ${p.audience}</p>
-          <p><strong>Credits:</strong> ${p.hours} hrs (${p.accreditor}) ${p.enrollment > 0 ? `&nbsp;|&nbsp; <strong>Enrolled:</strong> ${p.enrollment} &nbsp;|&nbsp; <strong>Completion:</strong> ${p.completion}%` : ''}</p>
+          <p><strong>Duration:</strong> ${p.hours} hrs ${p.enrollment > 0 ? `&nbsp;|&nbsp; <strong>Enrolled:</strong> ${p.enrollment} &nbsp;|&nbsp; <strong>Completion:</strong> ${p.completion}%` : ''}</p>
         </div>
       </div>`).join('')}`;
 }
@@ -1061,10 +1067,10 @@ async function runAgentDemo(index, agent) {
       break;
 
     case "med-ed":
-      await narrate("Medical Education — tracking CME programs, speaker training, and internal education initiatives");
+      await narrate("Medical Education — our scientific and disease state education library for MSLs, HCPs, patients, and caregivers");
       showPanel('med-ed');
       await delay(2000);
-      await narrate("Four active programs across dermatology and immunology — completion rates, upcoming sessions, and accreditation status");
+      await narrate("Twelve programs covering disease pathophysiology, clinical evidence, HCP education, and patient resources — developed by Medical Affairs for all audiences");
       await delay(2000);
       break;
 

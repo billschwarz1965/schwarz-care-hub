@@ -6,6 +6,8 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
+        home: resolve(__dirname, 'home.html'),
+        about: resolve(__dirname, 'about.html'),
         main: resolve(__dirname, 'index.html'),
         concierge: resolve(__dirname, 'concierge.html'),
         orion: resolve(__dirname, 'orion.html'),
