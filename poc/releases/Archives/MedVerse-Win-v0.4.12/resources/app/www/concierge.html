@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MedVerse">
+  <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+  <meta name="theme-color" content="#7a00e6">
+  <title>MedVerse — HCP Concierge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5fa;
+      --surface: #ffffff;
+      --surface-dim: #f3eff8;
+      --text: #1a1a2e;
+      --text-secondary: #5a5672;
+      --text-muted: #918da3;
+      --border: #e4dff0;
+      --border-strong: #cdc6de;
+      --accent: #7a00e6;
+      --accent-hover: #6600c2;
+      --accent-light: #f0e6ff;
+      --accent-text: #6b21a8;
+      --accent-secondary: #aa46a3;
+      --gold: #f9c851;
+      --gold-dark: #e5a800;
+      --success: #166534;
+      --success-bg: #dcfce7;
+      --warning: #854d0e;
+      --warning-bg: #fef9c3;
+      --danger: #991b1b;
+      --danger-bg: #fee2e2;
+      --orion-accent: #0f6e56;
+      --orion-bg: #e1f5ee;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --font: 'Work Sans', 'Raleway', 'Roboto', sans-serif;
+    }
+
+    html.dark {
+      --bg: #0a0a14;
+      --surface: #13131f;
+      --surface-dim: #1a1a2e;
+      --text: #f0eef5;
+      --text-secondary: #a8a3b8;
+      --text-muted: #6b6580;
+      --border: #2a2840;
+      --border-strong: #3a3555;
+      --accent: #7a00e6;
+      --accent-hover: #8c1aff;
+      --accent-light: #2a1a40;
+      --accent-text: #c084fc;
+      --accent-secondary: #aa46a3;
+      --gold: #f9c851;
+      --gold-dark: #e5a800;
+      --success: #34d399;
+      --success-bg: rgba(52,211,153,0.1);
+      --warning: #f9c851;
+      --warning-bg: rgba(249,200,81,0.1);
+      --danger: #f87171;
+      --danger-bg: rgba(248,113,113,0.1);
+      --orion-accent: #34d399;
+      --orion-bg: rgba(52,211,153,0.1);
+    }
+
+    body { font-family: var(--font); background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* HEADER */
+    .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0; flex-shrink: 0; }
+    .header-brand-bar { height: 3px; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 50%, var(--gold) 100%); }
+    .header-inner { padding: 10px 24px; display: flex; align-items: center; gap: 12px; }
+    .header-home { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; color: inherit; border-radius: 8px; padding: 4px 8px 4px 4px; margin: -4px; transition: background 0.15s; }
+    .header-home:hover { background: var(--surface-dim); }
+    .header-logo { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px; }
+    .header-title { font-size: 16px; font-weight: 600; color: var(--text); }
+    .header-subtitle { font-size: 12px; color: var(--text-muted); }
+    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .header-badge { font-size: 11px; padding: 3px 10px; background: var(--warning-bg); color: var(--warning); border-radius: 20px; font-weight: 500; }
+    .back-btn { display: none; align-items: center; gap: 6px; padding: 6px 14px; background: var(--accent-light); color: var(--accent-text); border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+    .back-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+    .back-btn.visible { display: flex; }
+
+    /* MODULE NAV */
+    .module-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; flex-shrink: 0; overflow-x: auto; }
+    .module-tab { padding: 10px 20px; font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .module-tab:hover { color: var(--text); }
+    .module-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .module-tab i { font-size: 16px; }
+
+    /* MAIN SCROLL AREA */
+    .main-scroll { flex: 1; overflow-y: auto; }
+    .main-scroll::-webkit-scrollbar { width: 6px; }
+    .main-scroll::-webkit-scrollbar-track { background: transparent; }
+    .main-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* === WELCOME HUB === */
+    .hub { max-width: 1100px; margin: 0 auto; padding: 28px 24px 40px; }
+    .hub-header { text-align: center; margin-bottom: 32px; }
+    .hub-icon { width: 64px; height: 64px; background: var(--accent-light); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-size: 28px; color: var(--accent); }
+    .hub h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+    .hub-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.6; max-width: 560px; margin: 0 auto; }
+    .demo-cta-row { text-align: center; margin: 18px 0 0; }
+    .demo-run-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 10px 22px; font-size: 13px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: background .15s; }
+    .demo-run-btn:hover { background: var(--accent-hover); }
+    .demo-run-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* UNIVERSAL SEARCH */
+    .hub-search { max-width: 620px; margin: 0 auto 28px; position: relative; }
+    .hub-search-wrap { display: flex; gap: 10px; }
+    .hub-search-input { flex: 1; padding: 14px 18px 14px 44px; border: 2px solid var(--border); border-radius: 14px; font-family: var(--font); font-size: 14px; outline: none; background: var(--surface); transition: border-color .2s, box-shadow .2s; }
+    .hub-search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(122,0,230,.08); }
+    .hub-search-input::placeholder { color: var(--text-muted); }
+    .hub-search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 18px; color: var(--text-muted); pointer-events: none; }
+    .hub-search-btn { padding: 14px 22px; background: var(--accent); color: white; border: none; border-radius: 14px; font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background .15s; white-space: nowrap; }
+    .hub-search-btn:hover { background: var(--accent-hover); }
+    .hub-search-hint { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 10px; }
+    .hub-search-hint-chip { background: var(--surface-dim); border: 1px solid var(--border); border-radius: 16px; padding: 4px 12px; font-size: 11px; font-family: var(--font); cursor: pointer; color: var(--text-secondary); transition: all .15s; }
+    .hub-search-hint-chip:hover { background: var(--accent-light); color: var(--accent-text); border-color: var(--accent)44; }
+
+    /* AGENT GRID */
+    .agent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 900px) { .agent-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .agent-grid { grid-template-columns: 1fr; } }
+
+    .agent-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 20px; cursor: pointer; transition: all .2s; position: relative; display: flex; flex-direction: column; }
+    .agent-card:hover { border-color: var(--accent-secondary); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(122,0,230,.08); }
+    .agent-card-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 14px; flex-shrink: 0; }
+    .agent-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .agent-card p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; flex: 1; }
+    .agent-card-tag { display: inline-block; margin-top: 12px; padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; }
+
+    /* card colour themes */
+    .agent-card[data-agent="clinical-qa"]  .agent-card-icon { background: var(--accent-light); color: var(--accent); }
+    .agent-card[data-agent="clinical-qa"]  .agent-card-tag  { background: var(--accent-light); color: var(--accent-text); }
+    .agent-card[data-agent="patient-nav"]  .agent-card-icon { background: #dbeafe; color: #2563eb; }
+    .agent-card[data-agent="patient-nav"]  .agent-card-tag  { background: #dbeafe; color: #1d4ed8; }
+    .agent-card[data-agent="trial-match"]  .agent-card-icon { background: var(--orion-bg); color: var(--orion-accent); }
+    .agent-card[data-agent="trial-match"]  .agent-card-tag  { background: var(--orion-bg); color: var(--orion-accent); }
+    .agent-card[data-agent="msl-connect"]  .agent-card-icon { background: #fce7f3; color: #be185d; }
+    .agent-card[data-agent="msl-connect"]  .agent-card-tag  { background: #fce7f3; color: #be185d; }
+    .agent-card[data-agent="ingredient"]   .agent-card-icon { background: #fef3c7; color: #b45309; }
+    .agent-card[data-agent="ingredient"]   .agent-card-tag  { background: #fef3c7; color: #92400e; }
+    .agent-card[data-agent="temp-stab"]    .agent-card-icon { background: #e0f2fe; color: #0369a1; }
+    .agent-card[data-agent="temp-stab"]    .agent-card-tag  { background: #e0f2fe; color: #0c4a6e; }
+    .agent-card[data-agent="literature"]   .agent-card-icon { background: #fae8ff; color: #a21caf; }
+    .agent-card[data-agent="literature"]   .agent-card-tag  { background: #fae8ff; color: #86198f; }
+    .agent-card[data-agent="lit-scout"]    .agent-card-icon { background: #fef3c7; color: #b45309; }
+    .agent-card[data-agent="lit-scout"]    .agent-card-tag  { background: #fef3c7; color: #92400e; }
+    .agent-card[data-agent="disease-nav"]  .agent-card-icon { background: var(--success-bg); color: var(--success); }
+    .agent-card[data-agent="disease-nav"]  .agent-card-tag  { background: var(--success-bg); color: var(--success); }
+    .agent-card[data-agent="congress"]     .agent-card-icon { background: #fee2e2; color: #dc2626; }
+    .agent-card[data-agent="congress"]     .agent-card-tag  { background: #fee2e2; color: #991b1b; }
+
+    /* === AGENT PANEL (full-page, replaces hub) === */
+    .agent-panel { display: none; max-width: 960px; margin: 0 auto; padding: 24px; }
+    .agent-panel.active { display: block; }
+
+    .panel-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .panel-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .panel-title { font-size: 18px; font-weight: 700; }
+    .panel-desc { font-size: 13px; color: var(--text-secondary); }
+
+    /* CHAT PANEL (Clinical Q&A reuse) */
+    .chat-layout { display: flex; gap: 20px; min-height: 0; }
+    .chat-main { flex: 1; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; min-height: 520px; }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 20px; scroll-behavior: smooth; }
+    .chat-messages::-webkit-scrollbar { width: 5px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .chat-welcome { text-align: center; padding: 30px 20px; }
+    .chat-welcome-icon { width: 48px; height: 48px; background: var(--accent-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 22px; color: var(--accent); }
+    .chat-welcome h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+    .chat-welcome p { font-size: 13px; color: var(--text-secondary); max-width: 380px; margin: 0 auto 16px; line-height: 1.5; }
+    .chat-prompts { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; max-width: 460px; margin: 0 auto; }
+    .chat-prompt-chip { background: var(--surface-dim); border: 1px solid var(--border); border-radius: 18px; padding: 6px 14px; font-size: 12px; font-family: var(--font); cursor: pointer; transition: all .15s; color: var(--text-secondary); font-weight: 500; }
+    .chat-prompt-chip:hover { background: var(--accent-light); color: var(--accent-text); border-color: var(--accent)44; }
+    .chat-input-area { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-end; flex-shrink: 0; }
+    .chat-input-wrap { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; transition: border-color .15s; }
+    .chat-input-wrap:focus-within { border-color: var(--accent); }
+    .chat-input-wrap textarea { flex: 1; border: none; background: none; font-family: var(--font); font-size: 13px; resize: none; outline: none; color: var(--text); max-height: 100px; line-height: 1.4; }
+    .chat-input-wrap textarea::placeholder { color: var(--text-muted); }
+    .chat-send-btn { width: 36px; height: 36px; background: var(--accent); color: white; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: opacity .15s; flex-shrink: 0; }
+    .chat-send-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+    /* Chat sidebar (signals) */
+    .chat-sidebar { width: 300px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; min-height: 520px; }
+    .chat-sidebar-header { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .chat-sidebar-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--orion-accent), #34d399); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 15px; flex-shrink: 0; }
+    .chat-sidebar-title { font-size: 13px; font-weight: 600; }
+    .chat-sidebar-sub { font-size: 10px; color: var(--text-muted); }
+    .chat-sidebar-content { flex: 1; padding: 14px; overflow-y: auto; }
+    @media (max-width: 900px) { .chat-sidebar { display: none; } }
+
+    /* MESSAGES */
+    .msg { max-width: 640px; margin: 0 auto 16px; }
+    .msg-user { display: flex; justify-content: flex-end; }
+    .msg-user .msg-bubble { background: var(--accent); color: white; border-radius: 16px 16px 4px 16px; padding: 10px 16px; max-width: 85%; font-size: 13px; line-height: 1.5; }
+    .msg-ai { display: flex; gap: 10px; align-items: flex-start; }
+    .msg-ai-avatar { width: 28px; height: 28px; background: var(--accent-light); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+    .msg-ai-content { flex: 1; min-width: 0; }
+    .msg-ai-text { background: var(--surface-dim); border: 1px solid var(--border); border-radius: 4px 16px 16px 16px; padding: 12px 16px; font-size: 13px; line-height: 1.7; }
+    .msg-ai-text strong { font-weight: 600; }
+    .msg-ai-text p { margin: 0 0 10px; }
+    .msg-ai-text p:last-child { margin-bottom: 0; }
+    .msg-ai-text ul, .msg-ai-text ol { padding-left: 18px; margin: 6px 0; }
+    .msg-ai-text li { margin-bottom: 3px; }
+    .msg-ai-text table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+    .msg-ai-text th, .msg-ai-text td { padding: 5px 8px; border: 1px solid var(--border); text-align: left; }
+    .msg-ai-text th { background: var(--surface); font-weight: 600; }
+    .msg-ai-text h3 { font-size: 13px; font-weight: 600; margin: 0 0 4px; }
+    .rendered blockquote { border-left: 3px solid var(--accent-light); padding-left: 10px; color: var(--text-secondary); margin: 6px 0; }
+    .cite-ref { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; background: var(--accent-light); color: var(--accent-text); font-size: 10px; font-weight: 600; border-radius: 3px; cursor: pointer; vertical-align: super; margin: 0 1px; }
+    .citations-panel { margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
+    .citation-card { background: var(--surface); border-radius: 6px; padding: 8px 10px; font-size: 11px; display: flex; gap: 8px; align-items: flex-start; }
+    .citation-num { width: 20px; height: 20px; background: var(--accent-light); color: var(--accent-text); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; flex-shrink: 0; }
+    .citation-title { font-weight: 600; margin-bottom: 1px; }
+    .citation-meta { color: var(--text-muted); }
+    .citation-type { display: inline-block; padding: 0 5px; background: var(--surface-dim); border-radius: 3px; font-size: 9px; font-weight: 500; margin-left: 4px; }
+    .follow-ups { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .follow-up-chip { background: var(--accent-light); color: var(--accent-text); border: none; border-radius: 16px; padding: 5px 12px; font-size: 11px; font-family: var(--font); cursor: pointer; transition: all .15s; }
+    .follow-up-chip:hover { background: var(--accent); color: #fff; }
+    .typing { display: flex; gap: 4px; padding: 6px 0; }
+    .typing span { width: 7px; height: 7px; background: var(--border-strong); border-radius: 50%; animation: bounce 1.4s infinite; }
+    .typing span:nth-child(2) { animation-delay: .2s; }
+    .typing span:nth-child(3) { animation-delay: .4s; }
+    @keyframes bounce { 0%,80%,100%{transform:scale(.7);opacity:.4} 40%{transform:scale(1);opacity:1} }
+
+    /* SIGNAL CARDS */
+    .signal-card { background: var(--orion-bg); border: 1px solid #9fe1cb; border-radius: var(--radius); padding: 12px; margin-bottom: 10px; animation: slideIn .3s ease; }
+    @keyframes slideIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    .signal-header { display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
+    .signal-dot { width: 7px; height: 7px; background: var(--orion-accent); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .signal-time { font-size: 10px; color: var(--text-muted); }
+    .signal-topic { font-size: 12px; font-weight: 600; color: #085041; margin-bottom: 6px; }
+    .signal-row { display: flex; gap: 5px; margin-bottom: 3px; font-size: 11px; }
+    .signal-label { color: var(--text-muted); min-width: 60px; flex-shrink: 0; }
+    .signal-value { color: #085041; }
+    .signal-action { margin-top: 8px; padding-top: 8px; border-top: 1px solid #9fe1cb; font-size: 11px; color: #0f6e56; font-weight: 500; display: flex; align-items: flex-start; gap: 5px; }
+    .signal-action i { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+    .signal-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .signal-stat { background: var(--surface-dim); border-radius: 6px; padding: 8px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: all .2s; }
+    .signal-stat:hover { background: var(--accent-light); }
+    .signal-stat.active { border-color: var(--accent); background: var(--accent-light); }
+    .signal-stat-num { font-size: 18px; font-weight: 600; }
+    .signal-stat-label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .4px; }
+    .sidebar-empty { text-align: center; padding: 24px 16px; color: var(--text-muted); font-size: 11px; }
+    .sidebar-empty i { font-size: 24px; display: block; margin-bottom: 6px; opacity: .3; }
+
+    /* === FORM AGENT PANELS (Patient Nav, Trial Match, etc.) === */
+    .form-panel { display: flex; gap: 20px; }
+    .form-main { flex: 1; }
+    .form-results { flex: 1; max-width: 480px; }
+    @media (max-width: 800px) { .form-panel { flex-direction: column; } .form-results { max-width: none; } }
+
+    .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; margin-bottom: 16px; }
+    .form-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .form-card h4 i { font-size: 16px; color: var(--accent); }
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 5px; }
+    .form-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; outline: none; background: var(--bg); transition: border-color .15s; }
+    .form-input:focus { border-color: var(--accent); }
+    .form-select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; outline: none; background: var(--bg); }
+    .form-row { display: flex; gap: 12px; }
+    .form-row > * { flex: 1; }
+    .form-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border: none; border-radius: 8px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .form-btn-primary { background: var(--accent); color: white; }
+    .form-btn-primary:hover { background: var(--accent-hover); }
+    .form-btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+    .form-btn-secondary { background: var(--surface-dim); color: var(--text-secondary); border: 1px solid var(--border); }
+    .form-btn-secondary:hover { background: var(--accent-light); color: var(--accent-text); }
+    .form-chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+    .form-chip { padding: 5px 12px; border-radius: 16px; font-size: 11px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--surface); transition: all .15s; }
+    .form-chip:hover { border-color: var(--accent); }
+    .form-chip.selected { background: var(--accent); color: white; border-color: var(--accent); }
+
+    /* RESULT CARDS */
+    .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; animation: slideIn .3s ease; }
+    .result-card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .result-badge { padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; white-space: nowrap; }
+    .result-title { font-size: 14px; font-weight: 600; flex: 1; }
+    .result-body { font-size: 12.5px; line-height: 1.6; color: var(--text-secondary); }
+    .result-body strong { color: var(--text); }
+    .result-meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 11px; color: var(--text-muted); }
+    .result-meta-item { display: flex; align-items: center; gap: 4px; }
+    .result-meta-item i { font-size: 13px; }
+    .result-actions { display: flex; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .result-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 13px; }
+    .result-empty i { font-size: 32px; display: block; margin-bottom: 8px; opacity: .3; }
+
+    /* STATUS BADGE COLOURS */
+    .badge-success { background: var(--success-bg); color: var(--success); }
+    .badge-warning { background: var(--warning-bg); color: var(--warning); }
+    .badge-info { background: #dbeafe; color: #1d4ed8; }
+    .badge-accent { background: var(--accent-light); color: var(--accent-text); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger); }
+    .badge-orion { background: var(--orion-bg); color: var(--orion-accent); }
+
+    /* MSL Connect special */
+    .msl-profile { display: flex; gap: 14px; align-items: center; padding: 14px; background: var(--surface-dim); border-radius: var(--radius); margin-bottom: 10px; }
+    .msl-avatar { width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; flex-shrink: 0; }
+    .msl-name { font-size: 14px; font-weight: 600; }
+    .msl-meta { font-size: 12px; color: var(--text-secondary); }
+    .msl-actions { display: flex; gap: 8px; margin-top: 6px; }
+
+    /* NARRATOR */
+    .demo-narrator { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 1100; background: var(--text); color: white; font-family: var(--font); font-size: 13px; font-weight: 500; padding: 10px 22px; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,.25); opacity: 0; transition: opacity .3s; pointer-events: none; white-space: nowrap; max-width: 90vw; overflow: hidden; text-overflow: ellipsis; }
+    .demo-narrator.visible { opacity: 1; }
+    .demo-narrator i { margin-right: 6px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .theme-toggle { position:fixed;top:20px;right:20px;z-index:200;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text);transition:all .2s;box-shadow:0 2px 10px rgba(0,0,0,.08); }
+    .theme-toggle:hover { border-color:var(--accent);transform:scale(1.08); }
+    .theme-toggle .ti-moon { display:none; }
+    html.dark .theme-toggle .ti-moon { display:block; }
+    html.dark .theme-toggle .ti-sun { display:none; }
+  </style>
+  <script type="module" crossorigin src="/assets/concierge-CWiHlNVJ.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/enhancements-Bi3CpGlT.js">
+  <link rel="modulepreload" crossorigin href="/assets/narrator-Gu1jBQbu.js">
+  <link rel="modulepreload" crossorigin href="/assets/orion-bridge-Bxojkdb6.js">
+  <link rel="modulepreload" crossorigin href="/assets/demo-nav-SVkr63C-.js">
+  <link rel="stylesheet" crossorigin href="/assets/enhancements-BwV9TaLn.css">
+</head>
+<body>
+<button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode"><i class="ti ti-sun"></i><i class="ti ti-moon"></i></button>
+  <div class="header">
+    <div class="header-brand-bar"></div>
+    <div class="header-inner">
+      <a class="header-home" id="header-home" title="Return to HCP Concierge hub">
+        <div class="header-logo"><i class="ti ti-brain"></i></div>
+        <div>
+          <div class="header-title">MedVerse</div>
+          <div class="header-subtitle">Scientific Intelligence Ecosystem</div>
+        </div>
+      </a>
+      <div class="header-actions">
+        <button class="back-btn" id="back-btn"><i class="ti ti-arrow-left"></i> All Agents</button>
+        <div class="header-badge">POC v0.1</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="module-nav">
+    <a class="module-tab" href="/index.html"><i class="ti ti-home"></i> Home</a>
+    <a class="module-tab active" href="/concierge.html"><i class="ti ti-message-circle"></i> HCP Concierge</a>
+    <a class="module-tab" href="/patient.html"><i class="ti ti-heart"></i> Patient Concierge</a>
+    <a class="module-tab" href="/msl-copilot.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
+    <a class="module-tab" href="/medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
+    <a class="module-tab" href="/system-tools.html"><i class="ti ti-settings"></i> Power Agents</a>
+    <a class="module-tab" href="/demo.html"><i class="ti ti-player-play"></i> Demo</a>
+    <a class="module-tab" href="/about.html"><i class="ti ti-info-circle"></i> About</a>
+  </nav>
+
+  <div class="main-scroll" id="main-scroll">
+
+    <!-- ===== HUB (Agent Grid) ===== -->
+    <div class="hub" id="hub">
+      <div class="hub-header">
+        <div class="hub-icon"><i class="ti ti-message-circle"></i></div>
+        <h1>HCP Concierge</h1>
+        <p class="hub-sub">AI-powered agents for healthcare professionals. Clinical Q&A, patient navigation, trial matching, MSL connection, ingredient safety, and temperature stability — all in one place.</p>
+        <div class="demo-cta-row">
+          <button class="demo-run-btn" id="run-demo"><i class="ti ti-player-play"></i> Run Demo</button>
+        </div>
+      </div>
+
+      <div class="hub-search" id="hub-search">
+        <div class="hub-search-wrap">
+          <i class="ti ti-sparkles hub-search-icon"></i>
+          <input class="hub-search-input" id="hub-search-input" type="text" placeholder="Ask anything — e.g. &quot;What are Dupixent storage requirements?&quot; or &quot;Find trials for asthma&quot;">
+          <button class="hub-search-btn" id="hub-search-btn"><i class="ti ti-arrow-right"></i> Ask</button>
+        </div>
+        <div class="hub-search-hint" id="hub-search-hints"></div>
+      </div>
+
+      <div class="agent-grid">
+        <div class="agent-card" data-agent="clinical-qa">
+          <div class="agent-card-icon"><i class="ti ti-stethoscope"></i></div>
+          <h3>Clinical Q&A</h3>
+          <p>Ask evidence-based clinical questions. Every response includes citations from governed Sanofi medical content with Orion signal generation.</p>
+          <span class="agent-card-tag">Core Agent</span>
+        </div>
+        <div class="agent-card" data-agent="patient-nav">
+          <div class="agent-card-icon"><i class="ti ti-route"></i></div>
+          <h3>Patient Navigator</h3>
+          <p>Enter patient profile and clinical context to receive personalized care pathway recommendations, treatment sequencing, and referral guidance.</p>
+          <span class="agent-card-tag">Care Pathways</span>
+        </div>
+        <div class="agent-card" data-agent="trial-match">
+          <div class="agent-card-icon"><i class="ti ti-flask"></i></div>
+          <h3>Trial Matching Agent</h3>
+          <p>Match patients to eligible Sanofi clinical trials based on diagnosis, demographics, and treatment history. Includes site locations and enrollment status.</p>
+          <span class="agent-card-tag">Clinical Trials</span>
+        </div>
+        <div class="agent-card" data-agent="msl-connect">
+          <div class="agent-card-icon"><i class="ti ti-users"></i></div>
+          <h3>MSL Connect</h3>
+          <p>Find and request a meeting with your regional Medical Science Liaison. Browse MSL profiles, expertise areas, and schedule scientific exchanges.</p>
+          <span class="agent-card-tag">Field Team</span>
+        </div>
+        <div class="agent-card" data-agent="ingredient">
+          <div class="agent-card-icon"><i class="ti ti-shield-check"></i></div>
+          <h3>Ingredient Safety</h3>
+          <p>Search drug ingredients for safety profiles, known interactions, contraindications, and excipient information. Includes allergy cross-reference.</p>
+          <span class="agent-card-tag">Safety</span>
+        </div>
+        <div class="agent-card" data-agent="temp-stab">
+          <div class="agent-card-icon"><i class="ti ti-temperature"></i></div>
+          <h3>Temperature Stability</h3>
+          <p>Look up storage conditions, cold chain requirements, temperature excursion limits, and in-use stability for Sanofi products.</p>
+          <span class="agent-card-tag">Storage &amp; Handling</span>
+        </div>
+        <div class="agent-card" data-agent="literature">
+          <div class="agent-card-icon"><i class="ti ti-book-2"></i></div>
+          <h3>Literature Intelligence</h3>
+          <p>Search PubMed and medical databases for evidence-based publications. Find clinical trials, meta-analyses, and review articles with citation summaries.</p>
+          <span class="agent-card-tag">Evidence</span>
+        </div>
+        <div class="agent-card" data-agent="lit-scout">
+          <div class="agent-card-icon"><i class="ti ti-radar-2"></i></div>
+          <h3>Literature Scout</h3>
+          <p>Proactive monitoring of new publications in your therapeutic areas. Get alerts on competitor papers, guideline updates, and emerging evidence.</p>
+          <span class="agent-card-tag">Monitoring</span>
+        </div>
+        <div class="agent-card" data-agent="disease-nav">
+          <div class="agent-card-icon"><i class="ti ti-dna"></i></div>
+          <h3>Disease Navigator</h3>
+          <p>Explore disease state profiles, pathophysiology, treatment landscapes, and cross-TA connections. Understand the science behind Sanofi therapeutic areas.</p>
+          <span class="agent-card-tag">Disease Intel</span>
+        </div>
+        <div class="agent-card" data-agent="congress">
+          <div class="agent-card-icon"><i class="ti ti-calendar-event"></i></div>
+          <h3>Congress Intelligence</h3>
+          <p>Medical congress coverage — presentations, abstracts, highlights, and competitive intelligence from key dermatology, allergy, and rheumatology meetings.</p>
+          <span class="agent-card-tag">Congress</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CLINICAL Q&A PANEL ===== -->
+    <div class="agent-panel" id="panel-clinical-qa">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:var(--accent-light);color:var(--accent);"><i class="ti ti-stethoscope"></i></div>
+        <div><div class="panel-title">Clinical Q&A</div><div class="panel-desc">Evidence-based answers with citations from Sanofi medical content</div></div>
+      </div>
+      <div class="chat-layout">
+        <div class="chat-main">
+          <div class="chat-messages" id="chat-messages">
+            <div class="chat-welcome" id="chat-welcome">
+              <div class="chat-welcome-icon"><i class="ti ti-stethoscope"></i></div>
+              <h3>Ask a Clinical Question</h3>
+              <p>Get cited answers from governed Sanofi medical content. Every interaction generates intelligence signals for field teams.</p>
+              <div class="chat-prompts" id="chat-prompts"></div>
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <div class="chat-input-wrap">
+              <textarea id="chat-input" rows="1" placeholder="Ask a clinical question…"></textarea>
+            </div>
+            <button class="chat-send-btn" id="chat-send" disabled><i class="ti ti-arrow-up"></i></button>
+          </div>
+        </div>
+        <div class="chat-sidebar">
+          <div class="chat-sidebar-header">
+            <div class="chat-sidebar-icon"><i class="ti ti-radar-2"></i></div>
+            <div><div class="chat-sidebar-title">Orion Signals</div><div class="chat-sidebar-sub">Engagement intelligence</div></div>
+          </div>
+          <div class="chat-sidebar-content">
+            <div class="signal-stats" id="signal-stats">
+              <div class="signal-stat" data-filter="all"><div class="signal-stat-num" id="stat-signals">0</div><div class="signal-stat-label">Signals</div></div>
+              <div class="signal-stat" data-filter="topics"><div class="signal-stat-num" id="stat-topics">0</div><div class="signal-stat-label">Topics</div></div>
+              <div class="signal-stat" data-filter="deep"><div class="signal-stat-num" id="stat-depth">—</div><div class="signal-stat-label">Avg Depth</div></div>
+              <div class="signal-stat" data-filter="priority"><div class="signal-stat-num" id="stat-priority">—</div><div class="signal-stat-label">Priority</div></div>
+            </div>
+            <div id="signals-container">
+              <div class="sidebar-empty"><i class="ti ti-radar-2"></i>No signals yet. Ask a question to generate engagement intelligence.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PATIENT NAVIGATOR PANEL ===== -->
+    <div class="agent-panel" id="panel-patient-nav">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#dbeafe;color:#2563eb;"><i class="ti ti-route"></i></div>
+        <div><div class="panel-title">Patient Navigator</div><div class="panel-desc">Personalized care pathway recommendations based on patient profile</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-user-circle"></i> Patient Profile</h4>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Age</label><input class="form-input" id="pn-age" type="number" placeholder="e.g. 45"></div>
+              <div class="form-group"><label class="form-label">Sex</label><select class="form-select" id="pn-sex"><option value="">Select…</option><option>Male</option><option>Female</option></select></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Primary Diagnosis</label>
+              <select class="form-select" id="pn-diagnosis">
+                <option value="">Select condition…</option>
+                <option>Atopic Dermatitis (moderate-to-severe)</option>
+                <option>Asthma (moderate-to-severe eosinophilic)</option>
+                <option>Rheumatoid Arthritis</option>
+                <option>CRSwNP (Chronic Rhinosinusitis with Nasal Polyps)</option>
+                <option>Eosinophilic Esophagitis</option>
+                <option>Prurigo Nodularis</option>
+                <option>COPD (Type 2 high)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Comorbidities</label>
+              <div class="form-chip-group" id="pn-comorbidities">
+                <span class="form-chip" data-val="Asthma">Asthma</span>
+                <span class="form-chip" data-val="CRSwNP">CRSwNP</span>
+                <span class="form-chip" data-val="Food allergies">Food allergies</span>
+                <span class="form-chip" data-val="Depression">Depression</span>
+                <span class="form-chip" data-val="Cardiovascular risk">CV risk</span>
+                <span class="form-chip" data-val="Diabetes">Diabetes</span>
+                <span class="form-chip" data-val="None">None</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Prior Treatments Failed</label>
+              <div class="form-chip-group" id="pn-prior-tx">
+                <span class="form-chip" data-val="Topical corticosteroids">Topical CS</span>
+                <span class="form-chip" data-val="Topical calcineurin inhibitors">TCI</span>
+                <span class="form-chip" data-val="Methotrexate">MTX</span>
+                <span class="form-chip" data-val="Cyclosporine">Cyclosporine</span>
+                <span class="form-chip" data-val="Phototherapy">Phototherapy</span>
+                <span class="form-chip" data-val="Oral JAK inhibitor">JAK inhibitor</span>
+              </div>
+            </div>
+            <button class="form-btn form-btn-primary" id="pn-submit"><i class="ti ti-route"></i> Generate Care Pathway</button>
+          </div>
+        </div>
+        <div class="form-results" id="pn-results">
+          <div class="result-empty"><i class="ti ti-route"></i>Enter patient details to generate a personalized care pathway recommendation.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TRIAL MATCHING PANEL ===== -->
+    <div class="agent-panel" id="panel-trial-match">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:var(--orion-bg);color:var(--orion-accent);"><i class="ti ti-flask"></i></div>
+        <div><div class="panel-title">Trial Matching Agent</div><div class="panel-desc">Find eligible Sanofi clinical trials based on patient criteria</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-filter"></i> Patient Eligibility Criteria</h4>
+            <div class="form-group">
+              <label class="form-label">Indication / Disease Area</label>
+              <select class="form-select" id="tm-indication">
+                <option value="">Select indication…</option>
+                <option>Atopic Dermatitis</option>
+                <option>Asthma</option>
+                <option>CRSwNP</option>
+                <option>Eosinophilic Esophagitis</option>
+                <option>Prurigo Nodularis</option>
+                <option>COPD</option>
+                <option>Chronic Spontaneous Urticaria</option>
+                <option>Bullous Pemphigoid</option>
+                <option>Rheumatoid Arthritis</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Age</label><input class="form-input" id="tm-age" type="number" placeholder="e.g. 32"></div>
+              <div class="form-group"><label class="form-label">Prior Biologics</label><select class="form-select" id="tm-bio"><option value="">Select…</option><option>Biologic-naïve</option><option>1 prior biologic</option><option>2+ prior biologics</option></select></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Region / Country</label>
+              <select class="form-select" id="tm-region"><option value="">Any region</option><option>United States</option><option>EU (Germany, France, UK)</option><option>Japan</option><option>Rest of World</option></select>
+            </div>
+            <button class="form-btn form-btn-primary" id="tm-submit"><i class="ti ti-flask"></i> Find Matching Trials</button>
+          </div>
+        </div>
+        <div class="form-results" id="tm-results">
+          <div class="result-empty"><i class="ti ti-flask"></i>Enter patient eligibility criteria to search for matching clinical trials.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MSL CONNECT PANEL ===== -->
+    <div class="agent-panel" id="panel-msl-connect">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fce7f3;color:#be185d;"><i class="ti ti-users"></i></div>
+        <div><div class="panel-title">MSL Connect</div><div class="panel-desc">Find and schedule meetings with your Medical Science Liaison</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-search"></i> Find Your MSL</h4>
+            <div class="form-group">
+              <label class="form-label">Therapeutic Area</label>
+              <select class="form-select" id="msl-ta"><option value="">Select…</option><option>Dermatology / Atopic Dermatitis</option><option>Immunology / Rheumatology</option><option>Respiratory / Asthma</option><option>Rare Diseases</option><option>Oncology</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Your Region</label>
+              <select class="form-select" id="msl-region"><option value="">Select…</option><option>Northeast US</option><option>Southeast US</option><option>Midwest US</option><option>West US</option><option>EU — Germany</option><option>EU — France</option><option>EU — UK</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Topic of Interest</label>
+              <input class="form-input" id="msl-topic" placeholder="e.g. Dupixent long-term safety data, trial referral">
+            </div>
+            <button class="form-btn form-btn-primary" id="msl-submit"><i class="ti ti-users"></i> Find MSL</button>
+          </div>
+        </div>
+        <div class="form-results" id="msl-results">
+          <div class="result-empty"><i class="ti ti-users"></i>Select your therapeutic area and region to find your dedicated MSL.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== INGREDIENT SAFETY PANEL ===== -->
+    <div class="agent-panel" id="panel-ingredient">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fef3c7;color:#b45309;"><i class="ti ti-shield-check"></i></div>
+        <div><div class="panel-title">Ingredient Safety</div><div class="panel-desc">Drug ingredient safety profiles, interactions, and contraindications</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-pill"></i> Search Ingredient or Product</h4>
+            <div class="form-group">
+              <label class="form-label">Product / Active Ingredient</label>
+              <select class="form-select" id="ing-product">
+                <option value="">Select product…</option>
+                <option>Dupixent (dupilumab)</option>
+                <option>Kevzara (sarilumab)</option>
+                <option>Aubagio (teriflunomide)</option>
+                <option>Praluent (alirocumab)</option>
+                <option>Sarclisa (isatuximab)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Patient Allergy / Concern (optional)</label>
+              <input class="form-input" id="ing-allergy" placeholder="e.g. latex, polysorbate, histidine">
+            </div>
+            <button class="form-btn form-btn-primary" id="ing-submit"><i class="ti ti-shield-check"></i> Check Safety Profile</button>
+          </div>
+        </div>
+        <div class="form-results" id="ing-results">
+          <div class="result-empty"><i class="ti ti-shield-check"></i>Select a product to view its ingredient safety profile and allergy cross-reference.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TEMPERATURE STABILITY PANEL ===== -->
+    <div class="agent-panel" id="panel-temp-stab">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#e0f2fe;color:#0369a1;"><i class="ti ti-temperature"></i></div>
+        <div><div class="panel-title">Temperature Stability</div><div class="panel-desc">Storage conditions, cold chain requirements, and temperature excursion data</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-package"></i> Product Lookup</h4>
+            <div class="form-group">
+              <label class="form-label">Product</label>
+              <select class="form-select" id="ts-product">
+                <option value="">Select product…</option>
+                <option>Dupixent (dupilumab) — Pre-filled syringe</option>
+                <option>Dupixent (dupilumab) — Pre-filled pen</option>
+                <option>Kevzara (sarilumab) — Pre-filled syringe</option>
+                <option>Praluent (alirocumab) — Pre-filled pen</option>
+                <option>Sarclisa (isatuximab) — IV vial</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Scenario (optional)</label>
+              <select class="form-select" id="ts-scenario"><option value="">General storage info</option><option>Room temperature excursion</option><option>Patient travel / transport</option><option>Pharmacy storage requirements</option><option>In-use stability after first dose</option></select>
+            </div>
+            <button class="form-btn form-btn-primary" id="ts-submit"><i class="ti ti-temperature"></i> Get Storage Info</button>
+          </div>
+        </div>
+        <div class="form-results" id="ts-results">
+          <div class="result-empty"><i class="ti ti-temperature"></i>Select a product to view storage conditions and temperature stability data.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== LITERATURE INTELLIGENCE PANEL ===== -->
+    <div class="agent-panel" id="panel-literature">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fae8ff;color:#a21caf;"><i class="ti ti-book-2"></i></div>
+        <div><div class="panel-title">Literature Intelligence</div><div class="panel-desc">Search medical literature for evidence-based publications and clinical data</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-search"></i> Literature Search</h4>
+            <div class="form-group">
+              <label class="form-label">Search Query</label>
+              <input class="form-input" id="lit-query" type="text" placeholder="e.g. dupilumab atopic dermatitis long-term safety">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Publication Type</label>
+                <select class="form-select" id="lit-type">
+                  <option value="">All types</option>
+                  <option>Clinical Trial</option>
+                  <option>Meta-Analysis</option>
+                  <option>Systematic Review</option>
+                  <option>Real-World Evidence</option>
+                  <option>Case Report</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Date Range</label>
+                <select class="form-select" id="lit-date">
+                  <option value="">Any time</option>
+                  <option>Last 6 months</option>
+                  <option>Last 1 year</option>
+                  <option>Last 3 years</option>
+                  <option>Last 5 years</option>
+                </select>
+              </div>
+            </div>
+            <button class="form-btn form-btn-primary" id="lit-submit"><i class="ti ti-book-2"></i> Search Literature</button>
+          </div>
+        </div>
+        <div class="form-results" id="lit-results">
+          <div class="result-empty"><i class="ti ti-book-2"></i>Enter a search query to find relevant medical publications.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== LITERATURE SCOUT PANEL ===== -->
+    <div class="agent-panel" id="panel-lit-scout">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fef3c7;color:#b45309;"><i class="ti ti-radar-2"></i></div>
+        <div><div class="panel-title">Literature Scout</div><div class="panel-desc">Proactive monitoring of new publications and guideline updates</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-bell-ringing"></i> Set Monitoring Alert</h4>
+            <div class="form-group">
+              <label class="form-label">Therapeutic Area</label>
+              <select class="form-select" id="scout-ta">
+                <option value="">Select…</option>
+                <option>Atopic Dermatitis</option>
+                <option>Asthma (Type 2)</option>
+                <option>Rheumatoid Arthritis</option>
+                <option>CRSwNP</option>
+                <option>Eosinophilic Esophagitis</option>
+                <option>COPD</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Keywords (optional)</label>
+              <input class="form-input" id="scout-keywords" type="text" placeholder="e.g. biologic sequencing, real-world evidence">
+            </div>
+            <button class="form-btn form-btn-primary" id="scout-submit"><i class="ti ti-radar-2"></i> View Recent Publications</button>
+          </div>
+        </div>
+        <div class="form-results" id="scout-results">
+          <div class="result-empty"><i class="ti ti-radar-2"></i>Select a therapeutic area to see recent publications and set up monitoring alerts.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DISEASE NAVIGATOR PANEL ===== -->
+    <div class="agent-panel" id="panel-disease-nav">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:var(--success-bg);color:var(--success);"><i class="ti ti-dna"></i></div>
+        <div><div class="panel-title">Disease Navigator</div><div class="panel-desc">Explore disease states, pathophysiology, and treatment landscapes</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-microscope"></i> Disease Lookup</h4>
+            <div class="form-group">
+              <label class="form-label">Disease / Condition</label>
+              <select class="form-select" id="dn-disease">
+                <option value="">Select…</option>
+                <option>Atopic Dermatitis</option>
+                <option>Asthma (Type 2 Eosinophilic)</option>
+                <option>Rheumatoid Arthritis</option>
+                <option>CRSwNP</option>
+                <option>Eosinophilic Esophagitis</option>
+                <option>Prurigo Nodularis</option>
+                <option>COPD (Type 2 High)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Focus Area</label>
+              <select class="form-select" id="dn-focus">
+                <option value="">Full overview</option>
+                <option>Pathophysiology</option>
+                <option>Treatment Landscape</option>
+                <option>Cross-TA Connections</option>
+                <option>Epidemiology</option>
+                <option>Sanofi Pipeline</option>
+              </select>
+            </div>
+            <button class="form-btn form-btn-primary" id="dn-submit"><i class="ti ti-dna"></i> Explore Disease</button>
+          </div>
+        </div>
+        <div class="form-results" id="dn-results">
+          <div class="result-empty"><i class="ti ti-dna"></i>Select a disease to explore its pathophysiology, treatment landscape, and Sanofi portfolio connections.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CONGRESS INTELLIGENCE PANEL ===== -->
+    <div class="agent-panel" id="panel-congress">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fee2e2;color:#dc2626;"><i class="ti ti-calendar-event"></i></div>
+        <div><div class="panel-title">Congress Intelligence</div><div class="panel-desc">Medical congress coverage, presentations, and competitive intelligence</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-search"></i> Congress Search</h4>
+            <div class="form-group">
+              <label class="form-label">Congress</label>
+              <select class="form-select" id="cg-congress">
+                <option value="">Select congress…</option>
+                <option>AAD 2026 — American Academy of Dermatology</option>
+                <option>EADV 2026 — European Academy of Dermatology</option>
+                <option>ATS 2026 — American Thoracic Society</option>
+                <option>ACR 2026 — American College of Rheumatology</option>
+                <option>AAAAI 2026 — Allergy, Asthma & Immunology</option>
+                <option>DDW 2026 — Digestive Disease Week</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Focus</label>
+              <div class="form-chip-group" id="cg-focus">
+                <span class="form-chip" data-val="sanofi">Sanofi Data</span>
+                <span class="form-chip" data-val="competitor">Competitor Intel</span>
+                <span class="form-chip" data-val="guidelines">Guidelines</span>
+              </div>
+            </div>
+            <button class="form-btn form-btn-primary" id="cg-submit"><i class="ti ti-calendar-event"></i> Get Coverage</button>
+          </div>
+        </div>
+        <div class="form-results" id="cg-results">
+          <div class="result-empty"><i class="ti ti-calendar-event"></i>Select a congress to view presentations, highlights, and competitive intelligence.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main-scroll -->
+
+  <div class="demo-narrator" id="demo-narrator"></div>
+  <script>
+function toggleTheme(){document.documentElement.classList.toggle("dark");localStorage.setItem("medverse-theme",document.documentElement.classList.contains("dark")?"dark":"light")}
+if(localStorage.getItem("medverse-theme")==="dark")document.documentElement.classList.add("dark");
+</script>
+</body>
+</html>

@@ -504,3 +504,7 @@
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
 }
+
+// ═══ UI SOUNDS ═══
+import('./audio.js');
+
