@@ -1,0 +1,88 @@
+flowchart LR
+  PM[PubMed E-Utilities]
+  CT[ClinicalTrials.gov API]
+  Journals[NEJM / JAMA / Medscape]
+  UpToDate[UpToDate / OpenEvidence / OTIS]
+  Orion[Orion Signal Source]
+  ExpertHub[Expert Hub\n(HCP profiles)]
+  CRM[OneCRM / Sanofi CRM]
+  Campus[Campus+\nMagnolia / TalentLMS / Nova]
+  Vimeo[Vimeo\n(media host)]
+  KB[Internal KB\n(OS CSV / OS Complete)]
+
+  APIProxy[API Proxies & Ingestion\n(CORS proxy, /api/pubmed)]
+  PM --> APIProxy
+  CT --> APIProxy
+  Journals --> APIProxy
+  UpToDate --> APIProxy
+  Orion --> APIProxy
+  ExpertHub --> APIProxy
+  CRM --> APIProxy
+  Campus --> APIProxy
+  Vimeo --> APIProxy
+  KB --> APIProxy
+
+  Index[Ingestion & Indexing\n(Parsing, metadata, RAG indexes)]
+  APIProxy --> Index
+
+  Literature[Literature Intelligence\n(PubMed index, article cache)]
+  Trials[Trials Intelligence\n(trial records)]
+  OrionHub[Orion Signal Intelligence]
+  ExpertHubNode[Expert / HCP Hub]
+  KBNode[Authoritative Knowledge Base]
+
+  Index --> Literature
+  Index --> Trials
+  Index --> OrionHub
+  Index --> ExpertHubNode
+  Index --> KBNode
+
+  Agents[RAG + Agents Layer\n(Retriever, tooling, business rules)]
+  LLMs[LLMs\n(Claude / ChatGPT / Gemini)]
+
+  Literature --> Agents
+  Trials --> Agents
+  OrionHub --> Agents
+  ExpertHubNode --> Agents
+  KBNode --> Agents
+  CRM --> Agents
+  LLMs --> Agents
+
+  Platform[MedVerse Platform - Magnolia / Desktop App / POC web]
+  Agents --> Platform
+  ExpertHubNode --> Platform
+  KBNode --> Platform
+  Vimeo --> Platform
+  Campus --> Platform
+
+  Users[MSLs / HCPs / Medical Affairs / Patients]
+  Platform --> Users
+  CRM -->|Engagement logging| Platform
+  Users -->|Interactions / feedback| CRM
+  Users -->|Queries| Platform
+  Users -->|Signals| OrionHub
+
+  Audit[Audit & Compliance Logs]
+  Agents --> Audit
+  CRM --> Audit
+  Platform --> Audit
+
+  %% Styling: Sanofi-like color scheme
+  classDef external fill:#ffffff,stroke:#005EB8,color:#003a75,stroke-width:2px;
+  classDef proxy fill:#ff7a00,stroke:#cc5f00,color:#ffffff,stroke-width:2px;
+  classDef index fill:#5BC0FF,stroke:#0072b1,color:#003a75,stroke-width:2px;
+  classDef hub fill:#e6f7ff,stroke:#005EB8,color:#003a75,stroke-width:1.5px;
+  classDef agents fill:#6f42c1,stroke:#59309a,color:#ffffff,stroke-width:1.5px;
+  classDef platform fill:#005EB8,stroke:#003a75,color:#ffffff,stroke-width:2px;
+  classDef users fill:#34d399,stroke:#1f9a6f,color:#ffffff,stroke-width:1.5px;
+  classDef audit fill:#f4f6f8,stroke:#cfd8e3,color:#333333,stroke-width:1px;
+
+  %% Assign classes to nodes
+  class PM,CT,Journals,UpToDate,ExpertHub,CRM,Campus,Vimeo,KB external;
+  class APIProxy proxy;
+  class Index index;
+  class Literature,Trials,OrionHub,ExpertHubNode,KBNode hub;
+  class Agents,LLMs agents;
+  class Platform platform;
+  class Users users;
+  class Audit audit;
