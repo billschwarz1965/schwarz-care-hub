@@ -4,13 +4,13 @@ flowchart LR
   Journals[NEJM / JAMA / Medscape]
   UpToDate[UpToDate / OpenEvidence / OTIS]
   Orion[Orion Signal Source]
-  ExpertHub[Expert Hub\n(HCP profiles)]
+  ExpertHub[Expert Hub - HCP profiles]
   CRM[OneCRM / Sanofi CRM]
-  Campus[Campus+\nMagnolia / TalentLMS / Nova]
-  Vimeo[Vimeo\n(media host)]
-  KB[Internal KB\n(OS CSV / OS Complete)]
+  Campus[Campus+ - Magnolia / TalentLMS / Nova]
+  Vimeo[Vimeo - media host]
+  KB[Internal KB - OS CSV / OS Complete]
 
-  APIProxy[API Proxies & Ingestion\n(CORS proxy, /api/pubmed)]
+  APIProxy[API Proxies & Ingestion: CORS proxy /api/pubmed]
   PM --> APIProxy
   CT --> APIProxy
   Journals --> APIProxy
@@ -22,11 +22,11 @@ flowchart LR
   Vimeo --> APIProxy
   KB --> APIProxy
 
-  Index[Ingestion & Indexing\n(Parsing, metadata, RAG indexes)]
+  Index[Ingestion & Indexing: Parsing, metadata, RAG indexes]
   APIProxy --> Index
 
-  Literature[Literature Intelligence\n(PubMed index, article cache)]
-  Trials[Trials Intelligence\n(trial records)]
+  Literature[Literature Intelligence: PubMed index, article cache]
+  Trials[Trials Intelligence: trial records]
   OrionHub[Orion Signal Intelligence]
   ExpertHubNode[Expert / HCP Hub]
   KBNode[Authoritative Knowledge Base]
@@ -37,8 +37,8 @@ flowchart LR
   Index --> ExpertHubNode
   Index --> KBNode
 
-  Agents[RAG + Agents Layer\n(Retriever, tooling, business rules)]
-  LLMs[LLMs\n(Claude / ChatGPT / Gemini)]
+  Agents[RAG + Agents Layer: Retriever, tooling, business rules]
+  LLMs[LLMs: Claude / ChatGPT / Gemini]
 
   Literature --> Agents
   Trials --> Agents
