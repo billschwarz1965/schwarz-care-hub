@@ -1,0 +1,23 @@
+flowchart TB
+  %% High-level architecture
+  Users[MSLs / HCPs / Medical Affairs / Patients]
+  Platform[MedVerse Platform - Web and Desktop]
+  Agents[RAG + Agents Layer]
+  Hubs[Literature / Trials / Expert Hub / KB]
+  DataSources[External Sources and CRM]
+  Infra[Cloud Infra & Services]
+
+  Users -->|use| Platform
+  Platform --> Agents
+  Agents -->|retrieve| Hubs
+  Hubs -->|ingest from| DataSources
+  Agents -->|call| Infra
+  Platform -->|store/publish| Infra
+
+  classDef core fill:#005EB8,stroke:#003a75,color:#fff,stroke-width:1px;
+  classDef hub fill:#e6f7ff,stroke:#005EB8,color:#003a75,stroke-width:1px;
+  classDef ext fill:#ffffff,stroke:#005EB8,color:#003a75,stroke-width:1px;
+
+  class Platform,Agents core;
+  class Hubs hub;
+  class DataSources,Users ext;
