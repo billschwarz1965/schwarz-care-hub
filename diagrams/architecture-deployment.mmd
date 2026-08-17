@@ -1,0 +1,39 @@
+flowchart TB
+  %% Deployment architecture
+  Users[Users]
+  CDN[CDN / Static Web]
+  WebApp[Web App (Vite / SPA)]
+  Desktop[Desktop App (Electron)]
+  API[API Proxy / Ingestion]
+  Ingest[Ingestion & Indexing]
+  DB[Search Index / Postgres / Blob Storage]
+  Auth[Azure AD / SSO]
+  Monitoring[Logging & Monitoring]
+
+  Users --> CDN
+  CDN --> WebApp
+  Users --> Desktop
+  WebApp --> API
+  Desktop --> API
+  API --> Ingest
+  Ingest --> DB
+  API --> Auth
+  Ingest --> Monitoring
+  %% Sanofi color scheme classDefs
+  classDef external fill:#ffffff,stroke:#005EB8,color:#003a75,stroke-width:2px;
+  classDef proxy fill:#ff7a00,stroke:#cc5f00,color:#ffffff,stroke-width:2px;
+  classDef index fill:#5BC0FF,stroke:#0072b1,color:#003a75,stroke-width:2px;
+  classDef hub fill:#e6f7ff,stroke:#005EB8,color:#003a75,stroke-width:1.5px;
+  classDef agents fill:#6f42c1,stroke:#59309a,color:#ffffff,stroke-width:1.5px;
+  classDef platform fill:#005EB8,stroke:#003a75,color:#ffffff,stroke-width:2px;
+  classDef users fill:#34d399,stroke:#1f9a6f,color:#ffffff,stroke-width:1.5px;
+  classDef audit fill:#f4f6f8,stroke:#cfd8e3,color:#333333,stroke-width:1px;
+
+  %% Assign classes
+  class Users users;
+  class CDN external;
+  class WebApp,Desktop platform;
+  class API proxy;
+  class Ingest,DB index;
+  class Auth external;
+  class Monitoring audit;

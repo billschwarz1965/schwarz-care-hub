@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="520" viewBox="0 0 1000 520" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .platform { fill:#005EB8; stroke:#003a75; rx:8; ry:8; }
+    .external { fill:#ffffff; stroke:#005EB8; rx:8; ry:8; }
+    .proxy { fill:#ff7a00; stroke:#cc5f00; rx:8; ry:8; }
+    .index { fill:#5BC0FF; stroke:#0072b1; rx:8; ry:8; }
+    .audit { fill:#f4f6f8; stroke:#cfd8e3; rx:8; ry:8; }
+    .label { font:600 12px Arial; fill:#333; }
+    .connector { stroke:#003a75; stroke-width:1.5; fill:none; }
+  </style>
+  <rect x="80" y="60" width="180" height="44" class="external"/>
+  <text x="100" y="90" class="label">CDN / Static Web</text>
+
+  <rect x="300" y="60" width="220" height="52" class="platform"/>
+  <text x="320" y="90" class="label">Web App (Vite SPA)</text>
+
+  <rect x="300" y="140" width="220" height="52" class="platform"/>
+  <text x="320" y="170" class="label">Desktop App (Electron)</text>
+
+  <rect x="560" y="60" width="220" height="56" class="proxy"/>
+  <text x="580" y="90" class="label">API Proxy / Ingestion</text>
+
+  <rect x="560" y="140" width="220" height="56" class="index"/>
+  <text x="580" y="170" class="label">Ingestion & Indexing</text>
+
+  <rect x="560" y="240" width="240" height="72" class="index"/>
+  <text x="580" y="270" class="label">Search Index / DB / Blob Storage</text>
+
+  <rect x="300" y="240" width="200" height="44" class="external"/>
+  <text x="320" y="270" class="label">Azure AD / SSO</text>
+
+  <path d="M260 82 L300 82" class="connector" marker-end="url(#arrow)"/>
+  <path d="M520 82 L560 82" class="connector" marker-end="url(#arrow)"/>
+  <path d="M520 170 L560 170" class="connector" marker-end="url(#arrow)"/>
+  <path d="M780 116 L780 140" class="connector" marker-end="url(#arrow)"/>
+
+</svg>

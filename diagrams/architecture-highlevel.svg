@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="420" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .platform { fill:#005EB8; stroke:#003a75; rx:8; ry:8; }
+    .hub { fill:#e6f7ff; stroke:#005EB8; rx:6; ry:6; }
+    .external { fill:#ffffff; stroke:#005EB8; rx:6; ry:6; }
+    .label { font:600 12px Arial; fill:#003a75; }
+    .label-white { font:600 12px Arial; fill:#ffffff; }
+  </style>
+  <rect x="50" y="40" width="180" height="48" class="ext"/>
+  <text x="60" y="70" class="label">MSLs / HCPs / Patients</text>
+
+  <rect x="270" y="40" width="220" height="56" class="platform"/>
+  <text x="290" y="70" class="label-white">MedVerse Platform (Web & Desktop)</text>
+
+  <rect x="540" y="40" width="180" height="56" class="platform"/>
+  <text x="560" y="70" class="label-white">Agents (RAG)</text>
+
+  <rect x="540" y="140" width="320" height="72" class="hub"/>
+  <text x="560" y="170" class="label">Literature / Trials / Expert Hub / KB</text>
+
+  <rect x="50" y="140" width="220" height="56" class="external"/>
+  <text x="60" y="170" class="label">External Sources & CRM</text>
+
+  <path d="M230 64 L270 64" stroke="#003a75" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M490 68 L540 68" stroke="#003a75" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M620 96 L620 140" stroke="#003a75" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M260 170 L540 170" stroke="#003a75" stroke-width="2" marker-end="url(#arrow)"/>
+
+</svg>

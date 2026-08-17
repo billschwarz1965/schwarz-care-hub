@@ -1,0 +1,45 @@
+flowchart TB
+  %% Integrations and connectors
+  PubMed[PubMed E-Utilities]
+  CTgov[ClinicalTrials.gov API]
+  Journals[NEJM / JAMA / Publisher Feeds]
+  Orion[Orion Bridge]
+  ExpertHub[Expert Hub API]
+  OneCRM[OneCRM / Salesforce]
+  Campus[Campus+ CMS]
+  Vimeo[Vimeo CDN]
+  LLMs[LLM Providers (Claude / OpenAI)]
+  KB[Internal Knowledge Base]
+
+  API[API Proxy]
+  Ingest[Ingestion Pipeline]
+  Index[Index / Vector DB]
+
+  PubMed --> API
+  CTgov --> API
+  Journals --> API
+  Orion --> API
+  ExpertHub --> API
+  OneCRM --> API
+  Campus --> API
+  Vimeo --> API
+  KB --> Ingest
+
+  API --> Ingest
+  Ingest --> Index
+  Index --> LLMs
+
+  %% Sanofi color scheme classDefs
+  classDef external fill:#ffffff,stroke:#005EB8,color:#003a75,stroke-width:2px;
+  classDef proxy fill:#ff7a00,stroke:#cc5f00,color:#ffffff,stroke-width:2px;
+  classDef index fill:#5BC0FF,stroke:#0072b1,color:#003a75,stroke-width:2px;
+  classDef hub fill:#e6f7ff,stroke:#005EB8,color:#003a75,stroke-width:1.5px;
+  classDef agents fill:#6f42c1,stroke:#59309a,color:#ffffff,stroke-width:1.5px;
+  classDef platform fill:#005EB8,stroke:#003a75,color:#ffffff,stroke-width:2px;
+
+  %% Assign classes
+  class PubMed,CTgov,Journals,Orion,ExpertHub,OneCRM,Campus,Vimeo external;
+  class API proxy;
+  class Ingest,Index index;
+  class KB hub;
+  class LLMs agents;
