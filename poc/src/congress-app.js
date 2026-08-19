@@ -546,13 +546,13 @@ function bindChat() {
 
 const CHAT_DEMO_SEQUENCE = [
   { persona: "MSL", css: "msl", question: "What were the key Dupixent presentations at AAD 2026?" },
-  { persona: "HCP", css: "hcp", question: "Tell me about the head-to-head comparison data" },
-  { persona: "Med Affairs", css: "med-affairs", question: "Summarize the high-impact findings across all congresses" },
+  { persona: "Med Affairs", css: "med-affairs", question: "Tell me about the head-to-head comparison data" },
   { persona: "MSL", css: "msl", question: "What are the MSL talking points for COPD data?" },
-  { persona: "HCP", css: "hcp", question: "What EoE data was presented at DDW?" },
+  { persona: "Med Affairs", css: "med-affairs", question: "Summarize the high-impact findings across all congresses" },
+  { persona: "MSL", css: "msl", question: "What EoE data was presented at DDW?" },
   { persona: "Med Affairs", css: "med-affairs", question: "What's upcoming at EADV 2026?" },
-  { persona: "Patient Advocate", css: "patient", question: "What findings were reported for prurigo nodularis?" },
-  { persona: "MSL", css: "msl", question: "What Sanofi data was presented at ATS 2026?" },
+  { persona: "MSL", css: "msl", question: "What findings were reported for prurigo nodularis?" },
+  { persona: "Med Affairs", css: "med-affairs", question: "What Sanofi data was presented at ATS 2026?" },
 ];
 
 async function narrate(text) {

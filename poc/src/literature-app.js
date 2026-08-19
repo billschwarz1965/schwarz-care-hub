@@ -548,7 +548,7 @@ async function sendChatMessage() {
 
   try {
     const articles = await searchPubMed(searchQuery, 8);
-    await delay(300);
+    await delay(1200);
     const nejmArticles = await searchPubMed(`${searchQuery} AND ${NEJM_JOURNAL}`, 3);
 
     const nejmPmids = new Set(nejmArticles.map(a => a.uid));
@@ -742,7 +742,7 @@ window.runComparison = async function() {
       const text = await res.text();
       const match = text.match(/\n\n([\s\S]*?)(?:\n\n(?:Copyright|DOI|PMID|©)|\n\nPMID:)/i);
       abstracts.push(match ? match[1].trim() : "Abstract not available.");
-      if (abstracts.length < articles.length) await delay(400);
+      if (abstracts.length < articles.length) await delay(1000);
     } catch { abstracts.push("Failed to fetch abstract."); }
   }
 
@@ -806,25 +806,58 @@ window.runComparison = async function() {
 };
 
 // === AUTO DEEP DIVE ===
-const DEEP_DIVE_SUMMARIES = {
-  dupilumab: "IL-4Rα inhibitor for Type 2 inflammation — first-in-class biologic with broadest approved indication set in atopic diseases.",
-  nirsevimab: "Long-acting monoclonal antibody for RSV prevention — single-dose passive immunization providing ~5 months protection in infants.",
-  tolebrutinib: "Brain-penetrant BTK inhibitor — novel dual mechanism targeting B-cells and microglia for relapsing and progressive MS.",
-  fitusiran: "Anti-TFPI siRNA — subcutaneous prophylaxis for hemophilia A and B with and without inhibitors.",
-  duvakitug: "Anti-TL1A antibody — targeting a novel TNF superfamily member in inflammatory bowel disease with cross-indication potential.",
-  tezepelumab: "Anti-TSLP antibody — upstream mechanism blocking Type 2 inflammation cascade in severe asthma.",
-  insulin: "Basal insulin analog — long-acting glycemic control with established cardiovascular safety profile.",
-  "atopic dermatitis": "Chronic Type 2 inflammatory skin disease — dupilumab has transformed treatment landscape with sustained efficacy through 4+ years.",
-  rsv: "Leading cause of infant hospitalization — passive immunization with nirsevimab provides first universal prevention strategy.",
-  "multiple sclerosis": "Chronic neuroinflammatory disease — BTK inhibitors represent next-generation mechanism targeting both inflammation and neurodegeneration.",
+const DRUG_CONTEXT = {
+  dupilumab: "IL-4Rα inhibitor for Type 2 inflammation",
+  nirsevimab: "Long-acting monoclonal antibody for RSV prevention",
+  tolebrutinib: "Brain-penetrant BTK inhibitor targeting B-cells and microglia",
+  fitusiran: "Anti-TFPI siRNA for hemophilia prophylaxis",
+  duvakitug: "Anti-TL1A antibody for inflammatory bowel disease",
+  tezepelumab: "Anti-TSLP antibody for severe asthma",
+  insulin: "Basal insulin analog for glycemic control",
+  "atopic dermatitis": "Chronic Type 2 inflammatory skin disease",
+  rsv: "Leading cause of infant hospitalization",
+  "multiple sclerosis": "Chronic neuroinflammatory disease",
 };
+
+function buildDeepDiveSummary(article) {
+  const titleLower = (article.title + " " + article.fulljournalname).toLowerCase();
+  let drugNote = "";
+  for (const [key, ctx] of Object.entries(DRUG_CONTEXT)) {
+    if (titleLower.includes(key)) { drugNote = ctx; break; }
+  }
+
+  const year = article.pubdate.match(/\d{4}/)?.[0] || "";
+  const authCount = article.authors.length;
+  const journal = article.fulljournalname || article.source;
+  const isNejm = article.isNejm;
+
+  const studyCues = [];
+  if (/phase\s*[23]/i.test(article.title)) studyCues.push("pivotal trial");
+  else if (/phase\s*1/i.test(article.title)) studyCues.push("early-phase study");
+  else if (/randomis|randomiz|placebo.controlled/i.test(article.title)) studyCues.push("randomized controlled trial");
+  else if (/meta.analysis|systematic review/i.test(article.title)) studyCues.push("systematic review");
+  else if (/real.world|retrospective|cohort/i.test(article.title)) studyCues.push("real-world evidence");
+  else if (/long.term|safety|efficacy/i.test(article.title)) studyCues.push("long-term outcomes data");
+  else if (/case.report|case.series/i.test(article.title)) studyCues.push("case report");
+
+  const parts = [];
+  if (drugNote) parts.push(drugNote);
+  if (studyCues.length) parts.push(studyCues[0]);
+  if (isNejm) parts.push("published in NEJM (highest impact)");
+  else if (journal) parts.push(`published in ${journal}`);
+  if (authCount > 15) parts.push(`large multi-center study (${authCount} authors)`);
+  else if (authCount > 0) parts.push(`${authCount} authors`);
+  if (year) parts.push(year);
+
+  return parts.length > 1 ? parts.join(" — ") + "." : `${authCount} authors from ${journal} (${year}) — review abstract for study design and key endpoints.`;
+}
 
 async function autoDeepDive(articles) {
   const topArticles = articles.filter(a => a.isNejm).slice(0, 2);
   if (topArticles.length < 2) topArticles.push(...articles.filter(a => !a.isNejm).slice(0, 3 - topArticles.length));
 
   for (const article of topArticles) {
-    await delay(600);
+    await delay(1200);
     const area = document.getElementById(`abstract-${article.pmid}`);
     if (!area) continue;
 
@@ -838,14 +871,7 @@ async function autoDeepDive(articles) {
       const abstract = abstractMatch ? abstractMatch[1].trim() : "";
 
       if (abstract && abstract.length > 50) {
-        const titleLower = (article.title + " " + article.fulljournalname).toLowerCase();
-        let summaryText = "";
-        for (const [key, summary] of Object.entries(DEEP_DIVE_SUMMARIES)) {
-          if (titleLower.includes(key)) { summaryText = summary; break; }
-        }
-        if (!summaryText) {
-          summaryText = `${article.authors.length} authors from ${article.fulljournalname} (${article.pubdate.match(/\d{4}/)?.[0] || ""}) — review abstract for study design and key endpoints.`;
-        }
+        const summaryText = buildDeepDiveSummary(article);
 
         area.innerHTML = `
           <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
@@ -886,16 +912,17 @@ async function runSearchDemo() {
   await narrate("Literature search demo — querying PubMed and NEJM in real time");
 
   await typeInto(searchInput, "dupilumab atopic dermatitis long-term safety");
-  await delay(500);
+  await delay(600);
   await runSearch();
+  await delay(3000);
   await narrate("Results include NEJM articles, auto deep-dive summaries, and Sanofi pipeline intelligence");
 
   searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
-  await delay(1000);
+  await delay(1500);
   searchInput.value = "";
   await narrate("Running a second search — nirsevimab RSV prevention");
   await typeInto(searchInput, "nirsevimab RSV prevention infants");
-  await delay(500);
+  await delay(600);
   await runSearch();
   await narrate("Each search generates intelligence signals for MSL field teams via Orion");
 
@@ -967,19 +994,19 @@ async function runChatDemo() {
   await narrate("Searching PubMed and NEJM for dupilumab publications");
   chatSend.disabled = false;
   await sendChatMessage();
-  await delay(2000);
+  await delay(4000);
 
   await narrate("First query complete — now searching for nirsevimab RSV evidence");
   await typeInto(chatInput, "What evidence exists for nirsevimab RSV prevention?");
   chatSend.disabled = false;
   await sendChatMessage();
-  await delay(2000);
+  await delay(4000);
 
   await narrate("Second query complete — searching for tolebrutinib in multiple sclerosis");
   await typeInto(chatInput, "Tell me about tolebrutinib in multiple sclerosis");
   chatSend.disabled = false;
   await sendChatMessage();
-  await delay(1500);
+  await delay(3000);
 
   await narrate("Three live PubMed searches with AI synthesis — all citations link to original papers");
   narrateOff();
@@ -1065,17 +1092,17 @@ async function runDemo() {
   await narrate("Each search generates an intelligence signal for MSL field teams via Orion");
 
   // ACT 8: Chat demo
-  await narrate("The Literature AI agent answers questions with live PubMed searches and AI synthesis");
+  await narrate("The Literature Intelligence Agent answers questions with live PubMed searches and AI synthesis");
   resetLitChat();
   await delay(400);
   await typeInto(chatInput, "What are the latest publications on dupilumab?");
-  await delay(300);
+  await delay(600);
   chatSend.disabled = false;
   await sendChatMessage();
-  await delay(4000);
+  await delay(5000);
   await narrate("First chat query complete — live PubMed results with citations and source links");
 
-  await delay(800);
+  await delay(1500);
   await typeInto(chatInput, "Tell me about tolebrutinib in multiple sclerosis");
   chatSend.disabled = false;
   await sendChatMessage();

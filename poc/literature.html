@@ -215,13 +215,18 @@
       color: var(--text);
     }
     .search-bar input::placeholder { color: var(--text-muted); }
-    .search-bar button {
+    .search-bar button#search-btn {
       padding: 0 20px;
       background: var(--accent); color: white;
       border: none; cursor: pointer;
       font-family: var(--font); font-size: 14px; font-weight: 600;
       display: flex; align-items: center; gap: 6px;
       transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .search-bar .mv-voice-btn {
+      position: static; transform: none; flex-shrink: 0;
+      width: 36px; height: 36px; margin: auto 0;
     }
     .search-bar button:hover { background: var(--accent-hover); }
     .search-bar button:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -928,7 +933,7 @@
       <div class="sidebar-chat-header">
         <div class="sidebar-chat-icon"><i class="ti ti-message-chatbot"></i></div>
         <div>
-          <div class="sidebar-chat-title">Literature AI</div>
+          <div class="sidebar-chat-title">Literature Intelligence Agent</div>
           <div class="sidebar-chat-sub">Ask about publications, evidence & research</div>
         </div>
         <button class="demo-play-btn" id="demo-chat-btn" style="margin-left:auto;padding:5px 12px;font-size:11px;border-radius:16px;"><i class="ti ti-player-play" style="font-size:13px"></i> Demo</button>
