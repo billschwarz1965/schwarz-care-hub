@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MedVerse">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <meta name="theme-color" content="#7a00e6">
+  <title>MedVerse — Patient Concierge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5fa;
+      --surface: #ffffff;
+      --surface-dim: #f3eff8;
+      --text: #1a1a2e;
+      --text-secondary: #5a5672;
+      --text-muted: #918da3;
+      --border: #e4dff0;
+      --border-strong: #cdc6de;
+      --accent: #7a00e6;
+      --accent-hover: #6600c2;
+      --accent-light: #f0e6ff;
+      --accent-text: #6b21a8;
+      --accent-secondary: #aa46a3;
+      --gold: #f9c851;
+      --gold-dark: #e5a800;
+      --success: #166534;
+      --success-bg: #dcfce7;
+      --warning: #854d0e;
+      --warning-bg: #fef9c3;
+      --danger: #991b1b;
+      --danger-bg: #fee2e2;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --font: 'Work Sans', 'Raleway', 'Roboto', sans-serif;
+    }
+
+    html.dark {
+      --bg: #0a0a14;
+      --surface: #13131f;
+      --surface-dim: #1a1a2e;
+      --text: #f0eef5;
+      --text-secondary: #a8a3b8;
+      --text-muted: #6b6580;
+      --border: #2a2840;
+      --border-strong: #3a3555;
+      --accent: #7a00e6;
+      --accent-hover: #8c1aff;
+      --accent-light: #2a1a40;
+      --accent-text: #c084fc;
+      --accent-secondary: #aa46a3;
+      --gold: #f9c851;
+      --gold-dark: #e5a800;
+      --success: #34d399;
+      --success-bg: rgba(52,211,153,0.1);
+      --warning: #f9c851;
+      --warning-bg: rgba(249,200,81,0.1);
+      --danger: #f87171;
+      --danger-bg: rgba(248,113,113,0.1);
+      --orion-accent: #34d399;
+      --orion-bg: rgba(52,211,153,0.1);
+    }
+
+    body { font-family: var(--font); background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* HEADER */
+    .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0; flex-shrink: 0; }
+    .header-brand-bar { height: 3px; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 50%, var(--gold) 100%); }
+    .header-inner { padding: 10px 24px; display: flex; align-items: center; gap: 12px; }
+    .header-home { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; color: inherit; border-radius: 8px; padding: 4px 8px 4px 4px; margin: -4px; transition: background 0.15s; }
+    .header-home:hover { background: var(--surface-dim); }
+    .header-logo { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px; }
+    .header-title { font-size: 16px; font-weight: 600; color: var(--text); }
+    .header-subtitle { font-size: 12px; color: var(--text-muted); }
+    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .header-badge { font-size: 11px; padding: 3px 10px; background: var(--warning-bg); color: var(--warning); border-radius: 20px; font-weight: 500; }
+    .back-btn { display: none; align-items: center; gap: 6px; padding: 6px 14px; background: var(--accent-light); color: var(--accent-text); border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+    .back-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+    .back-btn.visible { display: flex; }
+
+    /* MODULE NAV */
+    .module-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; flex-shrink: 0; overflow-x: auto; }
+    .module-tab { padding: 10px 20px; font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .module-tab:hover { color: var(--text); }
+    .module-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .module-tab i { font-size: 16px; }
+
+    /* MAIN SCROLL AREA */
+    .main-scroll { flex: 1; overflow-y: auto; }
+    .main-scroll::-webkit-scrollbar { width: 6px; }
+    .main-scroll::-webkit-scrollbar-track { background: transparent; }
+    .main-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* === WELCOME HUB === */
+    .hub { max-width: 1100px; margin: 0 auto; padding: 28px 24px 40px; }
+    .hub-header { text-align: center; margin-bottom: 32px; }
+    .hub-icon { width: 64px; height: 64px; background: var(--accent-light); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-size: 28px; color: var(--accent); }
+    .hub h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+    .hub-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.6; max-width: 600px; margin: 0 auto; }
+    .demo-cta-row { text-align: center; margin: 18px 0 0; }
+    .demo-run-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 10px 22px; font-size: 13px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: background .15s; }
+    .demo-run-btn:hover { background: var(--accent-hover); }
+    .demo-run-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* UNIVERSAL SEARCH */
+    .hub-search { max-width: 620px; margin: 24px auto 28px; position: relative; }
+    .hub-search-wrap { display: flex; gap: 10px; }
+    .hub-search-input { flex: 1; padding: 14px 18px 14px 44px; border: 2px solid var(--border); border-radius: 14px; font-family: var(--font); font-size: 14px; outline: none; background: var(--surface); transition: border-color .2s, box-shadow .2s; }
+    .hub-search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(122,0,230,.08); }
+    .hub-search-input::placeholder { color: var(--text-muted); }
+    .hub-search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 18px; color: var(--text-muted); pointer-events: none; }
+    .hub-search-btn { padding: 14px 22px; background: var(--accent); color: white; border: none; border-radius: 14px; font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background .15s; white-space: nowrap; }
+    .hub-search-btn:hover { background: var(--accent-hover); }
+    .hub-search-hints { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 10px; }
+    .hub-search-hint-chip { background: var(--surface-dim); border: 1px solid var(--border); border-radius: 16px; padding: 4px 12px; font-size: 11px; font-family: var(--font); cursor: pointer; color: var(--text-secondary); transition: all .15s; }
+    .hub-search-hint-chip:hover { background: var(--accent-light); color: var(--accent-text); border-color: var(--accent)44; }
+
+    /* AGENT GRID */
+    .agent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 900px) { .agent-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .agent-grid { grid-template-columns: 1fr; } }
+
+    .agent-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 20px; cursor: pointer; transition: all .2s; position: relative; display: flex; flex-direction: column; }
+    .agent-card:hover { border-color: var(--accent-secondary); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(122,0,230,.08); }
+    .agent-card-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 14px; flex-shrink: 0; }
+    .agent-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .agent-card p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; flex: 1; }
+    .agent-card-tag { display: inline-block; margin-top: 12px; padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; }
+
+    /* card colour themes */
+    .agent-card[data-agent="medications"]    .agent-card-icon { background: var(--accent-light); color: var(--accent); }
+    .agent-card[data-agent="medications"]    .agent-card-tag  { background: var(--accent-light); color: var(--accent-text); }
+    .agent-card[data-agent="symptoms"]       .agent-card-icon { background: #fee2e2; color: #dc2626; }
+    .agent-card[data-agent="symptoms"]       .agent-card-tag  { background: #fee2e2; color: #991b1b; }
+    .agent-card[data-agent="treatment"]      .agent-card-icon { background: #dbeafe; color: #2563eb; }
+    .agent-card[data-agent="treatment"]      .agent-card-tag  { background: #dbeafe; color: #1d4ed8; }
+    .agent-card[data-agent="trial-finder"]   .agent-card-icon { background: #ecfdf5; color: #059669; }
+    .agent-card[data-agent="trial-finder"]   .agent-card-tag  { background: #ecfdf5; color: #059669; }
+    .agent-card[data-agent="insurance"]      .agent-card-icon { background: #fef3c7; color: #b45309; }
+    .agent-card[data-agent="insurance"]      .agent-card-tag  { background: #fef3c7; color: #92400e; }
+    .agent-card[data-agent="appt-prep"]      .agent-card-icon { background: #e0f2fe; color: #0369a1; }
+    .agent-card[data-agent="appt-prep"]      .agent-card-tag  { background: #e0f2fe; color: #0c4a6e; }
+    .agent-card[data-agent="side-effects"]   .agent-card-icon { background: #fce7f3; color: #be185d; }
+    .agent-card[data-agent="side-effects"]   .agent-card-tag  { background: #fce7f3; color: #be185d; }
+    .agent-card[data-agent="conditions"]     .agent-card-icon { background: #fae8ff; color: #a21caf; }
+    .agent-card[data-agent="conditions"]     .agent-card-tag  { background: #fae8ff; color: #86198f; }
+    .agent-card[data-agent="caregiver"]      .agent-card-icon { background: var(--success-bg); color: var(--success); }
+    .agent-card[data-agent="caregiver"]      .agent-card-tag  { background: var(--success-bg); color: var(--success); }
+    .agent-card[data-agent="wellness"]       .agent-card-icon { background: #fff7ed; color: #c2410c; }
+    .agent-card[data-agent="wellness"]       .agent-card-tag  { background: #fff7ed; color: #c2410c; }
+    .agent-card[data-agent="trial-match"]   .agent-card-icon { background: #d1fae5; color: #059669; }
+    .agent-card[data-agent="trial-match"]   .agent-card-tag  { background: #d1fae5; color: #065f46; }
+
+    /* === AGENT PANEL === */
+    .agent-panel { display: none; max-width: 960px; margin: 0 auto; padding: 24px; }
+    .agent-panel.active { display: block; }
+
+    .panel-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .panel-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .panel-title { font-size: 18px; font-weight: 700; }
+    .panel-desc { font-size: 13px; color: var(--text-secondary); }
+
+    /* FORM PANELS */
+    .form-panel { display: flex; gap: 20px; }
+    .form-main { flex: 1; }
+    .form-results { flex: 1; max-width: 480px; }
+    @media (max-width: 800px) { .form-panel { flex-direction: column; } .form-results { max-width: none; } }
+
+    .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; margin-bottom: 16px; }
+    .form-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .form-card h4 i { font-size: 16px; color: var(--accent); }
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 5px; }
+    .form-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; outline: none; background: var(--bg); transition: border-color .15s; }
+    .form-input:focus { border-color: var(--accent); }
+    .form-select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; outline: none; background: var(--bg); }
+    .form-textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; outline: none; background: var(--bg); resize: vertical; min-height: 80px; transition: border-color .15s; }
+    .form-textarea:focus { border-color: var(--accent); }
+    .form-row { display: flex; gap: 12px; }
+    .form-row > * { flex: 1; }
+    .form-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border: none; border-radius: 8px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .form-btn-primary { background: var(--accent); color: white; }
+    .form-btn-primary:hover { background: var(--accent-hover); }
+    .form-btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+    .form-btn-secondary { background: var(--surface-dim); color: var(--text-secondary); border: 1px solid var(--border); }
+    .form-btn-secondary:hover { background: var(--accent-light); color: var(--accent-text); }
+    .form-chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+    .form-chip { padding: 5px 12px; border-radius: 16px; font-size: 11px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--surface); transition: all .15s; }
+    .form-chip:hover { border-color: var(--accent); }
+    .form-chip.selected { background: var(--accent); color: white; border-color: var(--accent); }
+
+    /* RESULT CARDS */
+    .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; animation: slideIn .3s ease; }
+    @keyframes slideIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    .result-card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .result-badge { padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; white-space: nowrap; }
+    .result-title { font-size: 14px; font-weight: 600; flex: 1; }
+    .result-body { font-size: 12.5px; line-height: 1.6; color: var(--text-secondary); }
+    .result-body strong { color: var(--text); }
+    .result-meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 11px; color: var(--text-muted); }
+    .result-meta-item { display: flex; align-items: center; gap: 4px; }
+    .result-meta-item i { font-size: 13px; }
+    .result-actions { display: flex; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .result-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 13px; }
+    .result-empty i { font-size: 32px; display: block; margin-bottom: 8px; opacity: .3; }
+
+    /* BADGES */
+    .badge-success { background: var(--success-bg); color: var(--success); }
+    .badge-warning { background: var(--warning-bg); color: var(--warning); }
+    .badge-info { background: #dbeafe; color: #1d4ed8; }
+    .badge-accent { background: var(--accent-light); color: var(--accent-text); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger); }
+    .badge-pink { background: #fce7f3; color: #be185d; }
+
+    /* MED CARD */
+    .med-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 14px; animation: slideIn .3s ease; }
+    .med-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .med-icon { width: 40px; height: 40px; background: var(--accent-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--accent); flex-shrink: 0; }
+    .med-name { font-size: 16px; font-weight: 700; }
+    .med-generic { font-size: 12px; color: var(--text-muted); }
+    .med-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 600px) { .med-grid { grid-template-columns: 1fr; } }
+    .med-section { background: var(--surface-dim); border-radius: var(--radius); padding: 14px; }
+    .med-section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+    .med-section-title i { font-size: 14px; }
+    .med-section-body { font-size: 12.5px; line-height: 1.6; color: var(--text-secondary); }
+    .med-section.full-width { grid-column: 1 / -1; }
+    .med-section.warning-section { background: var(--warning-bg); border: 1px solid #fde68a; }
+    .med-section.danger-section { background: var(--danger-bg); border: 1px solid #fecaca; }
+    .med-tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 500; margin: 2px 3px 2px 0; }
+
+    /* SYMPTOM ASSESSMENT */
+    .symptom-step { display: none; }
+    .symptom-step.active { display: block; }
+    .urgency-banner { padding: 14px 18px; border-radius: var(--radius); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; }
+    .urgency-banner i { font-size: 20px; }
+    .urgency-low { background: var(--success-bg); color: var(--success); border: 1px solid #86efac; }
+    .urgency-moderate { background: var(--warning-bg); color: var(--warning); border: 1px solid #fde68a; }
+    .urgency-high { background: var(--danger-bg); color: var(--danger); border: 1px solid #fecaca; }
+
+    /* QUESTION LIST BUILDER */
+    .question-list { list-style: none; padding: 0; }
+    .question-list li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; margin-bottom: 6px; background: var(--surface-dim); font-size: 13px; animation: slideIn .2s ease; }
+    .question-list li i { color: var(--accent); font-size: 16px; flex-shrink: 0; }
+    .question-list li .q-remove { margin-left: auto; color: var(--text-muted); cursor: pointer; font-size: 14px; }
+    .question-list li .q-remove:hover { color: var(--danger); }
+
+    /* SIDE EFFECT LOG */
+    .se-log-entry { display: flex; gap: 12px; padding: 12px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 8px; background: var(--surface); animation: slideIn .3s ease; }
+    .se-log-date { font-size: 12px; font-weight: 600; color: var(--accent); min-width: 60px; text-align: center; }
+    .se-log-body { flex: 1; }
+    .se-log-title { font-size: 13px; font-weight: 600; }
+    .se-log-detail { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+    .severity-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+    .severity-mild { background: #22c55e; }
+    .severity-moderate { background: #f59e0b; }
+    .severity-severe { background: #ef4444; }
+
+    /* WELLNESS TRACKER */
+    .wellness-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    @media (max-width: 600px) { .wellness-grid { grid-template-columns: 1fr; } }
+    .wellness-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+    .wellness-stat-num { font-size: 28px; font-weight: 700; color: var(--accent); }
+    .wellness-stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .3px; margin-top: 4px; }
+    .wellness-chart-row { display: flex; align-items: flex-end; gap: 4px; height: 80px; margin-top: 10px; }
+    .wellness-bar { flex: 1; background: var(--accent-light); border-radius: 4px 4px 0 0; transition: height .3s; min-height: 4px; }
+    .wellness-bar.today { background: var(--accent); }
+
+    /* CAREGIVER RESOURCE CARD */
+    .resource-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 10px; display: flex; gap: 14px; align-items: flex-start; animation: slideIn .3s ease; }
+    .resource-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .resource-body { flex: 1; }
+    .resource-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .resource-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+    .resource-tag { display: inline-block; margin-top: 6px; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 500; }
+
+    /* INSURANCE CARD */
+    .program-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 12px; animation: slideIn .3s ease; }
+    .program-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .program-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .program-name { font-size: 14px; font-weight: 600; }
+    .program-type { font-size: 11px; color: var(--text-muted); }
+    .program-details { font-size: 12.5px; line-height: 1.6; color: var(--text-secondary); }
+    .program-details strong { color: var(--text); }
+    .program-eligibility { margin-top: 10px; padding: 10px 12px; background: var(--success-bg); border-radius: 8px; font-size: 12px; color: var(--success); display: flex; align-items: center; gap: 6px; }
+    .program-eligibility i { font-size: 16px; }
+
+    /* NARRATOR */
+    .demo-narrator { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 1100; background: var(--text); color: white; font-family: var(--font); font-size: 13px; font-weight: 500; padding: 10px 22px; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,.25); opacity: 0; transition: opacity .3s; pointer-events: none; white-space: nowrap; max-width: 90vw; overflow: hidden; text-overflow: ellipsis; }
+    .demo-narrator.visible { opacity: 1; }
+    .demo-narrator i { margin-right: 6px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .theme-toggle { position:fixed;top:20px;right:20px;z-index:200;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text);transition:all .2s;box-shadow:0 2px 10px rgba(0,0,0,.08); }
+    .theme-toggle:hover { border-color:var(--accent);transform:scale(1.08); }
+    .theme-toggle .ti-moon { display:none; }
+    html.dark .theme-toggle .ti-moon { display:block; }
+    html.dark .theme-toggle .ti-sun { display:none; }
+  </style>
+  <link rel="stylesheet" href="/src/enhancements.css">
+</head>
+<body>
+<button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode"><i class="ti ti-sun"></i><i class="ti ti-moon"></i></button>
+  <div class="header">
+    <div class="header-brand-bar"></div>
+    <div class="header-inner">
+      <a class="header-home" id="header-home" title="Return to Patient Concierge hub">
+        <div class="header-logo"><i class="ti ti-brain"></i></div>
+        <div>
+          <div class="header-title">MedVerse</div>
+          <div class="header-subtitle">Scientific Intelligence Ecosystem</div>
+        </div>
+      </a>
+      <div class="header-actions">
+        <button class="back-btn" id="back-btn"><i class="ti ti-arrow-left"></i> All Agents</button>
+        <div class="header-badge">POC v0.1</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="module-nav">
+    <a class="module-tab" href="index.html"><i class="ti ti-home"></i> Home</a>
+    <a class="module-tab" href="concierge.html"><i class="ti ti-message-circle"></i> HCP Concierge</a>
+    <a class="module-tab active" href="patient.html"><i class="ti ti-heart"></i> Patient Concierge</a>
+    <a class="module-tab" href="disease.html"><i class="ti ti-dna"></i> Disease Navigator</a>
+    <a class="module-tab" href="literature.html"><i class="ti ti-book"></i> Literature</a>
+    <a class="module-tab" href="congress.html"><i class="ti ti-calendar-event"></i> Congress</a>
+    <a class="module-tab" href="agents.html"><i class="ti ti-cpu"></i> Agent Ecosystem</a>
+    <a class="module-tab" href="demo.html"><i class="ti ti-player-play"></i> Demo</a>
+    <a class="module-tab" href="about.html"><i class="ti ti-info-circle"></i> About</a>
+  </nav>
+
+  <div class="main-scroll" id="main-scroll">
+
+    <!-- ===== HUB (Agent Grid) ===== -->
+    <div class="hub" id="hub">
+      <div class="hub-header">
+        <div class="hub-icon"><i class="ti ti-heart"></i></div>
+        <h1>Patient Concierge</h1>
+        <p class="hub-sub">Your personal health companion. Medication information, symptom guidance, treatment options, clinical trials, insurance support, and wellness tracking — all in plain language, designed for you.</p>
+        <div class="demo-cta-row">
+          <button class="demo-run-btn" id="run-demo"><i class="ti ti-player-play"></i> Run Demo</button>
+        </div>
+      </div>
+
+      <div class="hub-search" id="hub-search">
+        <div class="hub-search-wrap">
+          <i class="ti ti-sparkles hub-search-icon"></i>
+          <input class="hub-search-input" id="hub-search-input" type="text" placeholder="Ask anything — e.g. &quot;What are Dupixent side effects?&quot; or &quot;Am I eligible for a clinical trial?&quot;">
+          <button class="hub-search-btn" id="hub-search-btn"><i class="ti ti-arrow-right"></i> Ask</button>
+        </div>
+        <div class="hub-search-hints" id="hub-search-hints"></div>
+      </div>
+
+      <div class="agent-grid">
+        <div class="agent-card" data-agent="medications">
+          <div class="agent-card-icon"><i class="ti ti-pill"></i></div>
+          <h3>My Medications</h3>
+          <p>Look up any medication for dosing schedules, side effects, drug interactions, and storage instructions. Written in plain, easy-to-understand language.</p>
+          <span class="agent-card-tag">Medication Info</span>
+        </div>
+        <div class="agent-card" data-agent="symptoms">
+          <div class="agent-card-icon"><i class="ti ti-heartbeat"></i></div>
+          <h3>Symptom Checker</h3>
+          <p>Describe your symptoms to get guidance on urgency, possible causes, and when to contact your healthcare provider. Not a substitute for medical advice.</p>
+          <span class="agent-card-tag">Assessment</span>
+        </div>
+        <div class="agent-card" data-agent="treatment">
+          <div class="agent-card-icon"><i class="ti ti-list-check"></i></div>
+          <h3>Treatment Explorer</h3>
+          <p>Understand your treatment options in plain language. Compare therapies, learn what to expect, and prepare informed questions for your doctor.</p>
+          <span class="agent-card-tag">Education</span>
+        </div>
+        <div class="agent-card" data-agent="trial-finder">
+          <div class="agent-card-icon"><i class="ti ti-flask"></i></div>
+          <h3>Clinical Trial Finder</h3>
+          <p>Find clinical trials you may be eligible for based on your condition, age, and treatment history. Includes trial details, locations, and how to enroll.</p>
+          <span class="agent-card-tag">Clinical Trials</span>
+        </div>
+        <div class="agent-card" data-agent="insurance">
+          <div class="agent-card-icon"><i class="ti ti-wallet"></i></div>
+          <h3>Insurance &amp; Access</h3>
+          <p>Explore patient assistance programs, copay savings cards, and insurance coverage support. Find help paying for your medications.</p>
+          <span class="agent-card-tag">Financial Support</span>
+        </div>
+        <div class="agent-card" data-agent="appt-prep">
+          <div class="agent-card-icon"><i class="ti ti-clipboard-check"></i></div>
+          <h3>Appointment Prep</h3>
+          <p>Build a personalized question list for your next doctor visit. Get coaching on what to discuss, what to bring, and how to advocate for yourself.</p>
+          <span class="agent-card-tag">Visit Planning</span>
+        </div>
+        <div class="agent-card" data-agent="side-effects">
+          <div class="agent-card-icon"><i class="ti ti-alert-triangle"></i></div>
+          <h3>Side Effect Tracker</h3>
+          <p>Log and monitor medication side effects over time. Track severity, patterns, and generate reports to share with your healthcare team.</p>
+          <span class="agent-card-tag">Monitoring</span>
+        </div>
+        <div class="agent-card" data-agent="conditions">
+          <div class="agent-card-icon"><i class="ti ti-book-2"></i></div>
+          <h3>Condition Library</h3>
+          <p>Learn about health conditions in plain language. Understand causes, symptoms, treatment options, and living well with your diagnosis.</p>
+          <span class="agent-card-tag">Health Education</span>
+        </div>
+        <div class="agent-card" data-agent="caregiver">
+          <div class="agent-card-icon"><i class="ti ti-friends"></i></div>
+          <h3>Caregiver Resources</h3>
+          <p>Tools and guidance for family caregivers. Find support groups, manage care schedules, and learn how to support a loved one's treatment journey.</p>
+          <span class="agent-card-tag">Caregiver Support</span>
+        </div>
+        <div class="agent-card" data-agent="wellness">
+          <div class="agent-card-icon"><i class="ti ti-chart-line"></i></div>
+          <h3>Wellness Journal</h3>
+          <p>Track your daily symptoms, mood, energy, and medication adherence. See trends over time and share progress with your care team.</p>
+          <span class="agent-card-tag">Self-Tracking</span>
+        </div>
+        <a href="/concierge.html#trial-match" class="agent-card" data-agent="trial-match" style="text-decoration:none;color:inherit;">
+          <div class="agent-card-icon"><i class="ti ti-flask"></i></div>
+          <h3>Trial Matching Agent</h3>
+          <p>Match patients to eligible Sanofi clinical trials based on diagnosis, demographics, and treatment history. Includes site locations and enrollment status.</p>
+          <span class="agent-card-tag">Clinical Trials</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ===== MY MEDICATIONS PANEL ===== -->
+    <div class="agent-panel" id="panel-medications">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:var(--accent-light);color:var(--accent);"><i class="ti ti-pill"></i></div>
+        <div><div class="panel-title">My Medications</div><div class="panel-desc">Search for medication information in plain, easy-to-understand language</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-search"></i> Search Medication</h4>
+            <div class="form-group">
+              <label class="form-label">Medication Name</label>
+              <input class="form-input" id="med-search" type="text" placeholder="e.g. Dupixent, methotrexate, prednisone…">
+            </div>
+            <button class="form-btn form-btn-primary" id="med-submit"><i class="ti ti-pill"></i> Look Up Medication</button>
+          </div>
+          <div class="form-card">
+            <h4><i class="ti ti-exchange"></i> Check Drug Interaction</h4>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Drug 1</label><input class="form-input" id="med-drug1" type="text" placeholder="e.g. Dupixent"></div>
+              <div class="form-group"><label class="form-label">Drug 2</label><input class="form-input" id="med-drug2" type="text" placeholder="e.g. ibuprofen"></div>
+            </div>
+            <button class="form-btn form-btn-secondary" id="med-interact-btn"><i class="ti ti-exchange"></i> Check Interaction</button>
+          </div>
+        </div>
+        <div class="form-results" id="med-results">
+          <div class="result-empty"><i class="ti ti-pill"></i>Search for a medication to see dosing, side effects, and more.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SYMPTOM CHECKER PANEL ===== -->
+    <div class="agent-panel" id="panel-symptoms">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fee2e2;color:#dc2626;"><i class="ti ti-heartbeat"></i></div>
+        <div><div class="panel-title">Symptom Checker</div><div class="panel-desc">Describe your symptoms for guidance — not a substitute for medical advice</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-stethoscope"></i> Describe Your Symptoms</h4>
+            <div class="form-group">
+              <label class="form-label">What symptoms are you experiencing?</label>
+              <textarea class="form-textarea" id="sym-description" placeholder="Describe what you're feeling, e.g. 'Itchy skin on my arms and legs that gets worse at night'"></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">How long?</label>
+                <select class="form-select" id="sym-duration">
+                  <option value="">Select…</option>
+                  <option>Less than a day</option>
+                  <option>1-3 days</option>
+                  <option>4-7 days</option>
+                  <option>1-2 weeks</option>
+                  <option>More than 2 weeks</option>
+                  <option>Ongoing / Chronic</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Severity (1-10)</label>
+                <input class="form-input" id="sym-severity" type="number" min="1" max="10" placeholder="e.g. 6">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Current Medications</label>
+              <input class="form-input" id="sym-meds" type="text" placeholder="List current medications (optional)">
+            </div>
+            <button class="form-btn form-btn-primary" id="sym-submit"><i class="ti ti-heartbeat"></i> Check Symptoms</button>
+          </div>
+        </div>
+        <div class="form-results" id="sym-results">
+          <div class="result-empty"><i class="ti ti-heartbeat"></i>Describe your symptoms for an initial assessment and guidance.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TREATMENT EXPLORER PANEL ===== -->
+    <div class="agent-panel" id="panel-treatment">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#dbeafe;color:#2563eb;"><i class="ti ti-list-check"></i></div>
+        <div><div class="panel-title">Treatment Explorer</div><div class="panel-desc">Understand your treatment options in plain language</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-search"></i> Explore Treatments</h4>
+            <div class="form-group">
+              <label class="form-label">Condition</label>
+              <select class="form-select" id="tx-condition">
+                <option value="">Select your condition…</option>
+                <option>Atopic Dermatitis (Eczema)</option>
+                <option>Asthma</option>
+                <option>Rheumatoid Arthritis</option>
+                <option>Nasal Polyps (CRSwNP)</option>
+                <option>Eosinophilic Esophagitis</option>
+                <option>Prurigo Nodularis</option>
+                <option>COPD</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Treatment Stage</label>
+              <div class="form-chip-group" id="tx-stage">
+                <span class="form-chip" data-val="newly-diagnosed">Newly Diagnosed</span>
+                <span class="form-chip" data-val="tried-topicals">Tried Topicals</span>
+                <span class="form-chip" data-val="on-biologic">On a Biologic</span>
+                <span class="form-chip" data-val="switching">Considering Switching</span>
+              </div>
+            </div>
+            <button class="form-btn form-btn-primary" id="tx-submit"><i class="ti ti-list-check"></i> Explore Options</button>
+          </div>
+        </div>
+        <div class="form-results" id="tx-results">
+          <div class="result-empty"><i class="ti ti-list-check"></i>Select a condition to explore treatment options.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CLINICAL TRIAL FINDER PANEL ===== -->
+    <div class="agent-panel" id="panel-trial-finder">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#ecfdf5;color:#059669;"><i class="ti ti-flask"></i></div>
+        <div><div class="panel-title">Clinical Trial Finder</div><div class="panel-desc">Find clinical trials you may be eligible for</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-user-circle"></i> Your Profile</h4>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Age</label><input class="form-input" id="tf-age" type="number" placeholder="e.g. 35"></div>
+              <div class="form-group"><label class="form-label">Sex</label><select class="form-select" id="tf-sex"><option value="">Select…</option><option>Male</option><option>Female</option></select></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Condition</label>
+              <select class="form-select" id="tf-condition">
+                <option value="">Select condition…</option>
+                <option>Atopic Dermatitis</option>
+                <option>Asthma (eosinophilic)</option>
+                <option>Rheumatoid Arthritis</option>
+                <option>CRSwNP</option>
+                <option>Eosinophilic Esophagitis</option>
+                <option>Prurigo Nodularis</option>
+                <option>COPD</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Previous Treatments</label>
+              <input class="form-input" id="tf-prior" type="text" placeholder="e.g. topical steroids, methotrexate">
+            </div>
+            <button class="form-btn form-btn-primary" id="tf-submit"><i class="ti ti-flask"></i> Find Trials</button>
+          </div>
+        </div>
+        <div class="form-results" id="tf-results">
+          <div class="result-empty"><i class="ti ti-flask"></i>Enter your information to find clinical trials near you.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== INSURANCE & ACCESS PANEL ===== -->
+    <div class="agent-panel" id="panel-insurance">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fef3c7;color:#b45309;"><i class="ti ti-wallet"></i></div>
+        <div><div class="panel-title">Insurance &amp; Access</div><div class="panel-desc">Patient assistance programs, copay cards, and financial support</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-search"></i> Find Assistance Programs</h4>
+            <div class="form-group">
+              <label class="form-label">Medication</label>
+              <select class="form-select" id="ins-med">
+                <option value="">Select medication…</option>
+                <option>Dupixent (dupilumab)</option>
+                <option>Kevzara (sarilumab)</option>
+                <option>Aubagio (teriflunomide)</option>
+                <option>Praluent (alirocumab)</option>
+                <option>Altuviiio (efanesoctocog alfa)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Insurance Status</label>
+              <div class="form-chip-group" id="ins-status">
+                <span class="form-chip" data-val="commercial">Commercial Insurance</span>
+                <span class="form-chip" data-val="medicare">Medicare</span>
+                <span class="form-chip" data-val="medicaid">Medicaid</span>
+                <span class="form-chip" data-val="uninsured">Uninsured</span>
+              </div>
+            </div>
+            <button class="form-btn form-btn-primary" id="ins-submit"><i class="ti ti-wallet"></i> Find Programs</button>
+          </div>
+        </div>
+        <div class="form-results" id="ins-results">
+          <div class="result-empty"><i class="ti ti-wallet"></i>Select a medication and insurance status to find assistance programs.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== APPOINTMENT PREP PANEL ===== -->
+    <div class="agent-panel" id="panel-appt-prep">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#e0f2fe;color:#0369a1;"><i class="ti ti-clipboard-check"></i></div>
+        <div><div class="panel-title">Appointment Prep</div><div class="panel-desc">Build a question list and prepare for your next doctor visit</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-calendar"></i> Visit Details</h4>
+            <div class="form-group">
+              <label class="form-label">Type of Appointment</label>
+              <select class="form-select" id="appt-type">
+                <option value="">Select…</option>
+                <option>New patient / First visit</option>
+                <option>Follow-up visit</option>
+                <option>Treatment review</option>
+                <option>Second opinion</option>
+                <option>Specialist referral</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Condition</label>
+              <input class="form-input" id="appt-condition" type="text" placeholder="e.g. Atopic Dermatitis">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Main Concern</label>
+              <textarea class="form-textarea" id="appt-concern" placeholder="What's the main thing you want to discuss? e.g. 'My symptoms are getting worse despite treatment'"></textarea>
+            </div>
+            <button class="form-btn form-btn-primary" id="appt-submit"><i class="ti ti-clipboard-check"></i> Generate Question List</button>
+          </div>
+          <div class="form-card" id="appt-custom-card" style="display:none">
+            <h4><i class="ti ti-plus"></i> Add Your Own Question</h4>
+            <div class="form-group" style="margin-bottom:8px">
+              <input class="form-input" id="appt-custom-q" type="text" placeholder="Type your question…">
+            </div>
+            <button class="form-btn form-btn-secondary" id="appt-add-q"><i class="ti ti-plus"></i> Add</button>
+          </div>
+        </div>
+        <div class="form-results" id="appt-results">
+          <div class="result-empty"><i class="ti ti-clipboard-check"></i>Fill in your visit details to generate a personalized question list.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SIDE EFFECT TRACKER PANEL ===== -->
+    <div class="agent-panel" id="panel-side-effects">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fce7f3;color:#be185d;"><i class="ti ti-alert-triangle"></i></div>
+        <div><div class="panel-title">Side Effect Tracker</div><div class="panel-desc">Log and monitor medication side effects over time</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-plus"></i> Log a Side Effect</h4>
+            <div class="form-group">
+              <label class="form-label">Medication</label>
+              <input class="form-input" id="se-med" type="text" placeholder="e.g. Dupixent">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Side Effect</label>
+              <input class="form-input" id="se-effect" type="text" placeholder="e.g. injection site reaction, headache">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Severity</label>
+                <select class="form-select" id="se-severity">
+                  <option value="">Select…</option>
+                  <option>Mild</option>
+                  <option>Moderate</option>
+                  <option>Severe</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Date</label>
+                <input class="form-input" id="se-date" type="date">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Notes</label>
+              <textarea class="form-textarea" id="se-notes" placeholder="Any additional details…" style="min-height:50px"></textarea>
+            </div>
+            <button class="form-btn form-btn-primary" id="se-submit"><i class="ti ti-plus"></i> Log Side Effect</button>
+          </div>
+        </div>
+        <div class="form-results" id="se-results">
+          <div class="result-empty"><i class="ti ti-alert-triangle"></i>No side effects logged yet. Use the form to start tracking.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CONDITION LIBRARY PANEL ===== -->
+    <div class="agent-panel" id="panel-conditions">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fae8ff;color:#a21caf;"><i class="ti ti-book-2"></i></div>
+        <div><div class="panel-title">Condition Library</div><div class="panel-desc">Learn about health conditions in plain, easy-to-understand language</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-search"></i> Find a Condition</h4>
+            <div class="form-group">
+              <label class="form-label">Search or Select</label>
+              <select class="form-select" id="cond-select">
+                <option value="">Choose a condition…</option>
+                <option>Atopic Dermatitis (Eczema)</option>
+                <option>Asthma</option>
+                <option>Rheumatoid Arthritis</option>
+                <option>Nasal Polyps (CRSwNP)</option>
+                <option>Eosinophilic Esophagitis</option>
+                <option>Prurigo Nodularis</option>
+                <option>Type 2 Diabetes</option>
+                <option>High Cholesterol</option>
+                <option>Multiple Sclerosis</option>
+                <option>Hemophilia A</option>
+              </select>
+            </div>
+            <button class="form-btn form-btn-primary" id="cond-submit"><i class="ti ti-book-2"></i> Learn About This Condition</button>
+          </div>
+        </div>
+        <div class="form-results" id="cond-results">
+          <div class="result-empty"><i class="ti ti-book-2"></i>Select a condition to learn about it in plain language.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CAREGIVER RESOURCES PANEL ===== -->
+    <div class="agent-panel" id="panel-caregiver">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:var(--success-bg);color:var(--success);"><i class="ti ti-friends"></i></div>
+        <div><div class="panel-title">Caregiver Resources</div><div class="panel-desc">Support and tools for family caregivers</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-heart"></i> Your Caregiving Situation</h4>
+            <div class="form-group">
+              <label class="form-label">Condition You're Supporting</label>
+              <select class="form-select" id="cg-condition">
+                <option value="">Select condition…</option>
+                <option>Atopic Dermatitis (child)</option>
+                <option>Atopic Dermatitis (adult)</option>
+                <option>Asthma (child)</option>
+                <option>Rheumatoid Arthritis</option>
+                <option>Multiple Sclerosis</option>
+                <option>Hemophilia A</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">What do you need help with?</label>
+              <div class="form-chip-group" id="cg-needs">
+                <span class="form-chip" data-val="daily-care">Daily Care Tips</span>
+                <span class="form-chip" data-val="emotional">Emotional Support</span>
+                <span class="form-chip" data-val="financial">Financial Help</span>
+                <span class="form-chip" data-val="education">Understanding the Condition</span>
+                <span class="form-chip" data-val="community">Finding Community</span>
+              </div>
+            </div>
+            <button class="form-btn form-btn-primary" id="cg-submit"><i class="ti ti-friends"></i> Find Resources</button>
+          </div>
+        </div>
+        <div class="form-results" id="cg-results">
+          <div class="result-empty"><i class="ti ti-friends"></i>Tell us about your situation to find helpful caregiver resources.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== WELLNESS JOURNAL PANEL ===== -->
+    <div class="agent-panel" id="panel-wellness">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fff7ed;color:#c2410c;"><i class="ti ti-chart-line"></i></div>
+        <div><div class="panel-title">Wellness Journal</div><div class="panel-desc">Track symptoms, mood, and medication adherence</div></div>
+      </div>
+      <div id="wellness-content"></div>
+    </div>
+
+  </div><!-- /main-scroll -->
+
+  <div class="demo-narrator" id="demo-narrator"></div>
+
+  <script>
+function toggleTheme(){document.documentElement.classList.toggle("dark");localStorage.setItem("medverse-theme",document.documentElement.classList.contains("dark")?"dark":"light")}
+if(localStorage.getItem("medverse-theme")==="dark")document.documentElement.classList.add("dark");
+</script>
+  <script type="module" src="/src/patient-app.js"></script>
+  <script type="module" src="/src/enhancements.js"></script>
+</body>
+</html>
