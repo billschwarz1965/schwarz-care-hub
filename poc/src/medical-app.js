@@ -189,6 +189,14 @@ const mirDB = {
   },
 };
 
+const mirDiseaseArea = {
+  'Dupixent (dupilumab)': 'Atopic Dermatitis',
+  'Kevzara (sarilumab)': 'Rheumatoid Arthritis',
+  'Praluent (alirocumab)': 'Cardiovascular',
+  'Aubagio (teriflunomide)': 'Multiple Sclerosis',
+  'Altuviiio (efanesoctocog alfa)': 'Hemophilia A',
+};
+
 $('#mir-submit').addEventListener('click', () => {
   const product = $('#mir-product').value;
   const topic = $('#mir-topic').value;
@@ -234,7 +242,7 @@ $('#mir-submit').addEventListener('click', () => {
     if (window.mvBtnSuccess) mvBtnSuccess(btn, 'Generated');
     if (window.mvToast) mvToast('Standard response letter generated', 'success');
     if (window.mvPulse) mvPulse(container.querySelector('.mir-letter'));
-    broadcastSignal({ topic: `MIR Response — ${data.drug}`, intent: "Medical information request", diseaseArea: data.indication || "General", depth: "Deep engagement", orionAction: "Queue for MSL follow-up — HCP submitted MIR via Medical Concierge", _source: "Medical Concierge" });
+    broadcastSignal({ topic: `MIR Response — ${product} · ${topic}`, intent: "Medical information request", diseaseArea: mirDiseaseArea[product] || "General", depth: "Deep engagement", orionAction: "Queue for MSL follow-up — HCP submitted MIR via Medical Concierge", _source: "Medical Concierge" });
   }, 1200);
 });
 

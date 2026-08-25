@@ -1204,7 +1204,7 @@ async function runDemo() {
   await narrate("A day in the life of a Sanofi MSL — featuring fifteen AI agents, one mission. Let's follow the journey");
   await demoCtrl.runFullDemo();
 
-  await narrate("With thirteen agents on one platform, from morning prep to post-call intelligence — the MSL Copilot");
+  await narrate("With fifteen agents on one platform, from morning prep to post-call intelligence — the MSL Copilot");
   showHub();
   await delay(1500);
 

@@ -223,7 +223,7 @@
     if (!chatPages.some(p => page.includes(p.replace('.html', '')))) return;
 
     const isMedical = page.includes('medical');
-    const isMSL = page.includes('index');
+    const isMSL = page.includes('msl-copilot');
     const isPowerApps = page.includes('system-tools');
     const isHCP = page.includes('concierge');
     const title = isMSL ? 'MSL Copilot Assistant'
