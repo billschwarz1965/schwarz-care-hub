@@ -212,7 +212,7 @@ document.getElementById("pc-submit").addEventListener("click", () => {
             <div class="section-body">${hcp.interests.map(i => `<span class="interest-chip">${escapeHtml(i)}</span>`).join("")}</div>
           </div>
           <div class="briefing-section">
-            <div class="section-title"><i class="ti ti-radar-2"></i> Orion Intelligence (${hcp.orionSignals} signals)</div>
+            <div class="section-title"><i class="ti ti-radar-2"></i> Interaction Signals (${hcp.orionSignals} signals)</div>
             <div class="section-body">
               ${hcp.recentQueries.map(r => `<div class="query-item"><i class="ti ti-message-dots" style="color:var(--accent);font-size:13px;"></i> ${escapeHtml(r)}</div>`).join("")}
             </div>
@@ -236,7 +236,7 @@ document.getElementById("pc-submit").addEventListener("click", () => {
           </div>
         </div>
       </div>`;
-    broadcastSignal({ topic: `Pre-Call Briefing — ${hcp.name}`, intent: "Clinical decision support", diseaseArea: hcp.interests[0] || "General", depth: "Deep engagement", orionAction: `Queue for MSL follow-up — pre-call intelligence generated for ${hcp.name} (${hcp.tier})`, queries: [`Pre-call briefing: ${hcp.name}`], contentAccessed: [`${hcp.name} HCP Profile`, "Orion Signal History"], _source: "MSL Copilot" });
+    broadcastSignal({ topic: `Pre-Call Briefing — ${hcp.name}`, intent: "Clinical decision support", diseaseArea: hcp.interests[0] || "General", depth: "Deep engagement", orionAction: `Queue for MSL follow-up — pre-call intelligence generated for ${hcp.name} (${hcp.tier})`, queries: [`Pre-call briefing: ${hcp.name}`], contentAccessed: [`${hcp.name} HCP Profile`, "Interaction Signal History"], _source: "MSL Copilot" });
   }, 1000);
 });
 document.getElementById("pc-hcp-search").addEventListener("keydown", e => {
@@ -255,7 +255,7 @@ function renderTerritory() {
     <div class="stats-grid">
       <div class="stat-tile"><div class="stat-num">${s.totalHcps}</div><div class="stat-label">HCPs in Territory</div></div>
       <div class="stat-tile"><div class="stat-num">${s.activeEngagements}</div><div class="stat-label">Active Engagements</div></div>
-      <div class="stat-tile"><div class="stat-num">${s.signalsThisMonth}</div><div class="stat-label">Orion Signals (Aug)</div></div>
+      <div class="stat-tile"><div class="stat-num">${s.signalsThisMonth}</div><div class="stat-label">Interaction Signals (Aug)</div></div>
       <div class="stat-tile"><div class="stat-num">${s.meetingsThisWeek}</div><div class="stat-label">Meetings This Week</div></div>
     </div>
     <div class="territory-grid">
@@ -264,7 +264,7 @@ function renderTerritory() {
         <div id="dash-meetings"></div>
       </div>
       <div class="territory-section">
-        <h3><i class="ti ti-bell-ringing"></i> Orion Alerts</h3>
+        <h3><i class="ti ti-bell-ringing"></i> Signal Alerts</h3>
         <div id="dash-alerts"></div>
       </div>
     </div>`;
@@ -324,13 +324,13 @@ sigSubmit.addEventListener("click", () => {
     const el = document.getElementById("sig-results");
     el.innerHTML = `
       <div class="result-card" style="background:var(--orion-bg);border-color:#9fe1cb;">
-        <div class="result-card-header"><div class="result-title" style="color:#085041;">Signal Submitted Successfully</div><span class="result-badge badge-orion">Orion</span></div>
+        <div class="result-card-header"><div class="result-title" style="color:#085041;">Signal Submitted Successfully</div><span class="result-badge badge-orion">Signal</span></div>
         <div class="result-body" style="color:#085041;">
           <p><strong>HCP:</strong> ${escapeHtml(hcpName)}</p>
           <p><strong>Signal:</strong> ${escapeHtml(type)}</p>
           ${meetingType ? `<p><strong>Meeting:</strong> ${escapeHtml(meetingType)}</p>` : ""}
           ${notes ? `<p><strong>Notes:</strong> ${escapeHtml(notes)}</p>` : ""}
-          <p style="margin-top:8px;"><i class="ti ti-arrow-right" style="font-size:13px;"></i> Routed to Orion → MSL field team dashboard</p>
+          <p style="margin-top:8px;"><i class="ti ti-arrow-right" style="font-size:13px;"></i> Incorporated into medical insights and analytics</p>
         </div>
       </div>
       ${submittedSignals.length > 1 ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">Previous signals this session:</div>` : ""}
@@ -341,7 +341,7 @@ sigSubmit.addEventListener("click", () => {
       </div>`).join("")}`;
 
     setTimeout(() => {
-      sigSubmit.innerHTML = '<i class="ti ti-radar-2"></i> Submit Signal to Orion';
+      sigSubmit.innerHTML = '<i class="ti ti-radar-2"></i> Submit Interaction Signal';
       sigSubmit.style.background = "";
       sigSubmit.disabled = true;
       sigHcp.value = ""; sigType.value = "";
@@ -630,7 +630,7 @@ document.getElementById("kol-submit").addEventListener("click", () => {
           <div class="detail-row"><span class="detail-label">Publications</span><span><strong>${hcp.publications}</strong> recent (Sanofi-relevant)</span></div>
           <div class="detail-row"><span class="detail-label">Advisory Boards</span><span><strong>${hcp.advisoryBoards}</strong> lifetime</span></div>
           <div class="detail-row"><span class="detail-label">Speaker Programs</span><span><strong>${hcp.speakerPrograms}</strong> lifetime</span></div>
-          <div class="detail-row"><span class="detail-label">Orion Signals</span><span><strong>${hcp.orionSignals}</strong> total engagements</span></div>
+          <div class="detail-row"><span class="detail-label">Interaction Signals</span><span><strong>${hcp.orionSignals}</strong> total engagements</span></div>
           <div class="detail-row"><span class="detail-label">Congress</span><span>${hcp.congressAttendance.join(", ")}</span></div>
           <div class="detail-row"><span class="detail-label">Active Trials</span><span>${hcp.trials.length ? hcp.trials.join("; ") : "None"}</span></div>
         </div>
@@ -640,7 +640,7 @@ document.getElementById("kol-submit").addEventListener("click", () => {
         <div class="result-body">${hcp.interests.map(i => `<span class="interest-chip">${escapeHtml(i)}</span>`).join("")}</div>
       </div>
       <div class="result-card" style="background:var(--orion-bg);border-color:#9fe1cb;">
-        <div class="result-card-header"><div class="result-title" style="color:#085041;">Recent MedVerse Activity</div><span class="result-badge badge-orion">Orion Intel</span></div>
+        <div class="result-card-header"><div class="result-title" style="color:#085041;">Recent MedVerse Activity</div><span class="result-badge badge-orion">Interaction Signal</span></div>
         <div class="result-body" style="color:#085041;">${hcp.recentQueries.map(q => `<div class="query-item"><i class="ti ti-message-dots" style="color:var(--orion-accent);font-size:13px;"></i> ${escapeHtml(q)}</div>`).join("")}</div>
       </div>`;
   }, 1200);
@@ -706,7 +706,7 @@ document.getElementById("comp-submit").addEventListener("click", () => {
     checks.push({ status: "pass", label: "Sunshine Act", text: "Reminder: All transfers of value >$10 must be reported under the Physician Payments Sunshine Act (Open Payments). Ensure accurate recording." });
 
     // Documentation
-    checks.push({ status: "pass", label: "Documentation", text: "Post-call CRM entry required within 24 hours. Submit Orion signal for intelligence routing." });
+    checks.push({ status: "pass", label: "Documentation", text: "Post-call CRM entry required within 24 hours. Submit interaction signal for intelligence routing." });
 
     const hasWarn = checks.some(c => c.status === "warn");
     const hasFail = checks.some(c => c.status === "fail");
@@ -981,7 +981,7 @@ const MSL_AGENTS = [
   { id: "congress", name: "Congress Planner", icon: "calendar-event" },
   { id: "medinfo", name: "Medical Information", icon: "file-text" },
   { id: "postcall", name: "Post-Call Reporting", icon: "send" },
-  { id: "orion", name: "Orion Intelligence", icon: "broadcast" },
+  { id: "orion", name: "Interaction Signals", icon: "broadcast" },
   { id: "assistant", name: "MSL Copilot Assistant", icon: "message-circle" },
   { id: "trial-match", name: "Trial Matching Agent", icon: "flask" },
 ];
@@ -1015,7 +1015,7 @@ async function runAgentDemo(index, agent) {
       await narrate("Morning starts at the Territory Dashboard — your mission control");
       showPanel("territory");
       await delay(2000);
-      await narrate("Forty-seven HCPs, three meetings this week, and thirty-eight Orion signals to review");
+      await narrate("Forty-seven HCPs, three meetings this week, and thirty-eight interaction signals to review");
       await delay(2000);
       break;
     case "precall":
@@ -1130,7 +1130,7 @@ async function runAgentDemo(index, agent) {
       await delay(1800);
       break;
     case "postcall":
-      await narrate("Meeting complete. Now we submit the signal to Orion");
+      await narrate("Meeting complete. Now we submit the interaction signal");
       showPanel("postcall");
       await delay(600);
       type("sig-hcp", "Dr. Sarah Chen");
@@ -1140,11 +1140,11 @@ async function runAgentDemo(index, agent) {
       await delay(400);
       click("sig-submit");
       await delay(2200);
-      await narrate("Signal submitted — routed to Orion for the entire field team to see");
+      await narrate("Signal submitted — incorporated into medical insights and analytics");
       await delay(1800);
       break;
     case "orion":
-      await narrate("Finally, the Orion dashboard — where every signal becomes field intelligence");
+      await narrate("Finally, the Interaction Signals dashboard — where every signal becomes field intelligence");
       showPanel("orion");
       await delay(2000);
       await narrate("One hundred forty-two signals this month, trending topics, and priority actions — the MSL network, connected");

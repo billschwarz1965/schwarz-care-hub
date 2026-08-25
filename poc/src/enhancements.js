@@ -191,7 +191,7 @@
     precall: 'Pre-call planning agent activated. Based on your territory data, Dr. Chen has upcoming meetings focused on atopic dermatitis. Key talking points: LIBERTY AD CHRONOS 3-year data, new pediatric indication, and competitive landscape vs. JAK inhibitors.',
     territory: 'Your Northeast territory covers 42 HCPs across 3 medical centers. This quarter: 12 visits completed, 8 pending. Top priority targets: Dr. Chen (AD KOL), Dr. Patel (asthma specialist), Dr. Williams (EoE researcher).',
     kol: 'KOL Intelligence: Dr. Sarah Chen — Tier 1 AD specialist, 47 publications, 12 congress presentations. Recent focus: long-term biologic safety in pediatric populations. Sentiment: positive toward Dupixent. Last interaction: June 2025.',
-    orion: 'Orion Signal Intelligence: 3 new signals detected this week. High priority: increased off-label interest in Type 2 inflammation across rheumatology. Medium: competitive launch activity in asthma market. Signal confidence: 87%.',
+    orion: 'Interaction Signals: 3 new signals detected this week. High priority: increased off-label interest in Type 2 inflammation across rheumatology. Medium: competitive launch activity in asthma market. Signal confidence: 87%.',
     landscape: 'Disease Landscape: Type 2 inflammation spans 8 Sanofi therapeutic areas. Key pathways: IL-4/IL-13 (Dupixent), IL-6 (Kevzara), PCSK9 (Praluent). Emerging targets: OX40, TSLP, IL-33.',
     literature: 'Literature Intelligence: 127 new publications this month across your therapeutic areas. Top finding: NEJM meta-analysis confirms Dupixent long-term safety profile across all approved indications. 12 publications flagged for field team review.',
     congress: 'Congress Intelligence: 3 upcoming congresses in your areas. AAD Annual Meeting — 14 Sanofi presentations scheduled. ATS International — 6 respiratory abstracts accepted. EADV — dupilumab real-world evidence symposium confirmed.',
@@ -239,7 +239,7 @@
     const chips = isMSL
       ? ['Pre-call planning', 'KOL insights', 'Dupixent data', 'Territory overview']
       : isPowerApps
-      ? ['Orion signals', 'Disease landscape', 'Literature search', 'Congress updates']
+      ? ['Interaction signals', 'Disease landscape', 'Literature search', 'Congress updates']
       : isMedical
       ? ['Dupixent MOA', 'Kevzara safety', 'Find clinical trials', 'Dosing info']
       : isHCP

@@ -5,9 +5,10 @@ professionals, patients and caregivers, partners, and advocacy groups.
 
 ## What's different from `../poc`
 
-**Excluded modules** — MSL Copilot, Medical Concierge, Orion Signal Intelligence,
-and Power Agents. These are internal Sanofi field-medical and administration
-tools; Orion in particular is engagement-signal surveillance on named HCPs.
+**Excluded modules** — MSL Copilot, Medical Concierge, Interaction Signals, and
+Power Agents. These are internal Sanofi field-medical and administration tools;
+the Interaction Signals dashboard in particular shows engagement signals against
+named HCPs.
 
 **Included modules** — HCP Concierge, Patient Concierge, Disease State Navigator,
 Literature Intelligence, Congress Intelligence, Agent Ecosystem, plus Demo and About.
@@ -38,11 +39,12 @@ Both editions can run at once — `../poc` uses port 5180, this uses 5182.
 
 ## Notes
 
-- Orion signals are still emitted in the background by the concierge modules
-  (`broadcastSignal` in `../poc/src/orion-bridge.js` writes to `localStorage`).
-  There is simply no page here that displays them. The demo page's "Signal
-  Generation" card describes this in audience-appropriate terms — **have legal and
-  privacy review that wording before showing it externally.**
+- Interaction signals are still emitted in the background by the concierge modules
+  (`broadcastSignal` in `../poc/src/orion-bridge.js` — filename unchanged — writes
+  to `localStorage`). There is simply no page here that displays them. The demo
+  page's "Interaction Signals" card describes them as being incorporated into
+  other data used for medical insights and analytics — **have legal and privacy
+  review that wording before showing it externally.**
 - The `medical.html` / `msl-copilot.html` entries in the shared
   `chatPages` allowlist in `../poc/src/enhancements.js` are inert here, since
   neither page exists in this build.

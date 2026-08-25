@@ -188,7 +188,7 @@ export const BUSINESS_AGENTS = [
     id: "msl-connect",
     name: "MSL Connect",
     icon: "map-pin-heart",
-    desc: "Helps HCPs identify their assigned MSL(s) by therapeutic area, territory, and institution. Pulls from Orion field intelligence, OneCRM territory assignments, and MSL profiles.",
+    desc: "Helps HCPs identify their assigned MSL(s) by therapeutic area, territory, and institution. Pulls from interaction signal data, OneCRM territory assignments, and MSL profiles.",
     users: ["HCPs", "MSLs"],
     compliancePartners: ["privacy", "audit", "promo-risk"],
     hubDependency: ["hcp-explorer"],
@@ -653,7 +653,7 @@ These experts are presenting at EADV in Sanofi-relevant tracks but have zero One
           "Publications: 34 total, 12 in AD, h-index 28...",
           "Trial activity: sub-investigator on LIBERTY AD CHRONOS...",
           "OneCRM: 6 Sanofi interactions in last 12 months...",
-          "Orion signals: 3 recent MedVerse queries (last 30 days)...",
+          "interaction signals: 3 recent MedVerse queries (last 30 days)...",
           "Generating personalized briefing..."
         ]
       },
@@ -675,7 +675,7 @@ These experts are presenting at EADV in Sanofi-relevant tracks but have zero One
 - 3 MSL field visits in last 12 months
 - Relationship strength: Strong
 
-**Recent MedVerse Activity (Orion Signals)**
+**Recent MedVerse Activity (Interaction Signals)**
 - Queried dupilumab vs abrocitinib head-to-head data (Jul 28)
 - Explored active clinical trials — expressed referral interest (Jul 28)
 - Reviewed type 2 inflammation cross-TA content (Jul 15)
@@ -693,7 +693,7 @@ These experts are presenting at EADV in Sanofi-relevant tracks but have zero One
         checks: [
           { agent: "Promotional Risk", agentId: "promo-risk", status: "pass", detail: "No promotional language detected. Briefing uses clinical terminology and published data references." },
           { agent: "Off-Label Monitor", agentId: "off-label", status: "pass", detail: "All discussion topics align with approved indications. No off-label content identified." },
-          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Interaction logged — MSL ID: FML-2847, HCP: Dr. Sarah Chen (NPI: 1234567890), briefing generated with HCP Explorer profile + Orion signals. Compliance record #MSL-2026-08-2847." }
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Interaction logged — MSL ID: FML-2847, HCP: Dr. Sarah Chen (NPI: 1234567890), briefing generated with HCP Explorer profile + interaction signals. Compliance record #MSL-2026-08-2847." }
         ]
       },
       {
@@ -953,7 +953,7 @@ These experts are publishing at accelerating rates in Sanofi-relevant disease ar
         items: [
           "Literature Intelligence: scanning 2,400+ AD publications (2024–2026)...",
           "HCP Explorer: analyzing expert sentiment and prescribing trends...",
-          "Orion signals: aggregating field insights from 340 MSL interactions...",
+          "interaction signals: aggregating field insights from 340 MSL interactions...",
           "Competitive pipeline tracker: mapping 18 active AD mechanisms...",
           "Congress intelligence: synthesizing AAD 2026 + EADV 2025 themes...",
           "Cross-referencing payer landscape and HEOR evidence base..."
@@ -979,7 +979,7 @@ Dupilumab maintains 42% publication share of voice — the largest of any single
 | Pediatric real-world evidence | High | Tralokinumab expanding to pediatric | Fast-track pediatric RWE registry |
 | Atopic march disease modification | Medium | No competitor data yet — first-mover opportunity | Fund ADAPT prevention study readout |
 
-**Orion field intelligence themes (top 3 from MSL interactions):**
+**Interaction signal themes (top 3 from MSL interactions):**
 1. **HCP concern #1:** "When should I switch from dupilumab to a JAK?" — 67 inquiries this quarter
 2. **HCP concern #2:** Need for head-to-head data beyond abrocitinib (upadacitinib H2H requested)
 3. **HCP opportunity:** Growing interest in treating AD + asthma concurrently — cross-TA messaging resonating
@@ -994,7 +994,7 @@ Dupilumab maintains 42% publication share of voice — the largest of any single
         type: "compliance",
         label: "Governance layer review",
         checks: [
-          { agent: "AI Explainability", agentId: "explainability", status: "pass", detail: "Strategy synthesis methodology: 42% weight to publication analysis (Literature Intelligence), 25% to field signals (Orion), 20% to competitive pipeline data (public filings + congress), 13% to payer landscape. All sources cited with provenance." },
+          { agent: "AI Explainability", agentId: "explainability", status: "pass", detail: "Strategy synthesis methodology: 42% weight to publication analysis (Literature Intelligence), 25% to interaction signals, 20% to competitive pipeline data (public filings + congress), 13% to payer landscape. All sources cited with provenance." },
           { agent: "Scientific Verification", agentId: "sci-verify", status: "pass", detail: "All competitive claims verified against published data. Share-of-voice calculation based on PubMed-indexed publications only. JAK safety comparison references JADE DARE and HEADS UP published results." },
           { agent: "Inspection Readiness", agentId: "inspection", status: "logged", detail: "Strategic assessment logged with full data provenance. Competitive intelligence derived from public sources only (publications, ClinicalTrials.gov, congress proceedings). No proprietary competitive data accessed." }
         ]
@@ -1109,7 +1109,7 @@ Dupilumab maintains 42% publication share of voice — the largest of any single
         items: [
           "Verifying HCP identity: Dr. Sarah Chen, NPI #1234567890...",
           "HCP Explorer: loading profile — dermatology, Northwestern Memorial, Chicago IL...",
-          "Orion territory lookup: Midwest Region → Illinois → Cook County...",
+          "Territory lookup: Midwest Region → Illinois → Cook County...",
           "OneCRM: retrieving MSL territory assignments for Immunology + Dermatology...",
           "Matching by therapeutic area alignment and geographic territory...",
           "Checking MSL availability and recent engagement history..."
