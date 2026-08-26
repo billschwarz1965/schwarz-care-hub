@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --port 5180 --host",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "docs:agents": "node tools/generate-agent-docs.mjs"
   },
   "devDependencies": {
     "surge": "^0.41.2",

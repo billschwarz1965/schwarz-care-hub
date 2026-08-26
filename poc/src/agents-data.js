@@ -41,7 +41,7 @@ export const SYSTEM_AGENTS = [
       "Citation verification & claim substantiation",
       "Competitive publication landscape analysis"
     ],
-    consumers: ["literature-scout", "strategy-advisor", "msl-copilot"],
+    consumers: ["literature-scout", "strategy-advisor", "msl-copilot", "disease-navigator"],
     compliancePartners: ["sci-verify", "expiration", "audit"]
   }
 ];
@@ -211,6 +211,16 @@ export const BUSINESS_AGENTS = [
     desc: "Assesses product viability after temperature excursions for insulins and vaccines. Wraps the Sanofi Stability Calculator with AI-powered natural language intake, multi-product batch assessment, and cold chain compliance logging.",
     users: ["Pharmacists", "HCPs"],
     compliancePartners: ["sci-verify", "audit", "ae-detect"],
+    hubDependency: ["literature-intel"],
+    status: "active"
+  },
+  {
+    id: "disease-navigator",
+    name: "Disease State Navigator Agent",
+    icon: "dna",
+    desc: "Maps disease biology to treatment landscape across therapeutic areas. Traces shared inflammatory pathways to surface cross-TA connections — where one mechanism explains comorbidity in another organ system — and grounds every claim in pathophysiology, biomarkers, and the competitive landscape.",
+    users: ["MSLs", "HCPs", "Medical Affairs", "Patients"],
+    compliancePartners: ["sci-verify", "fair-balance", "off-label", "audit"],
     hubDependency: ["literature-intel"],
     status: "active"
   }
@@ -1406,6 +1416,83 @@ Review ID: MLR-2026-08-0412 | Submitted: Aug 6, 2026 | Priority: Expedited
         label: "Stability assessment delivered",
         badge: "ASSESSED & DOCUMENTED",
         content: "2 of 3 products cleared: Lantus (8 vials) and Toujeo Max (3 pens) are within labeled stability tolerance — return to refrigeration. Beyfortus requires Sanofi Vaccines confirmation (1-800-VACCINE) due to stricter excursion limits. Pharmacy action plan and excursion documentation generated. No products were administered — no AE reporting required."
+      }
+    ]
+  },
+  "disease-navigator": {
+    title: "Cross-TA pathway mapping from a single presenting condition",
+    steps: [
+      {
+        type: "input",
+        label: "HCP question",
+        content: "I have a 34-year-old atopic dermatitis patient on topicals who has now developed adult-onset asthma and chronic nasal congestion with polyps. Three specialists, three diagnoses. Is this one disease or three? What does the biology say, and what are the treatment implications?"
+      },
+      {
+        type: "processing",
+        label: "Disease State Navigator processing",
+        items: [
+          "Resolving presenting conditions: atopic dermatitis, type 2 asthma, CRSwNP...",
+          "Pathway lookup: all three map to type 2 inflammation (IL-4, IL-13, IL-5)...",
+          "Tracing shared mediators: TSLP, IL-33, IL-25 upstream alarmins...",
+          "Cross-referencing biomarker overlap: IgE, eosinophils, FeNO, periostin, TARC...",
+          "Literature Intelligence: retrieving atopic march and unified airway evidence...",
+          "Mapping treatment landscape across all three indications...",
+          "Checking label scope for each candidate therapy..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "Cross-therapeutic-area disease map",
+        content: `**One mechanism, three organ systems.** All three conditions sit on the **type 2 inflammation** pathway — this is a single immunologic process presenting in skin, lower airway, and upper airway.
+
+| Presenting condition | Area | Shared pathway | Key biomarkers |
+|---|---|---|---|
+| Atopic Dermatitis | Dermatology | Type 2 inflammation | IgE, eosinophils, TARC/CCL17, periostin |
+| Type 2 Asthma | Respiratory | Type 2 inflammation | Eosinophils, FeNO, IgE |
+| CRSwNP | ENT | Type 2 inflammation | Eosinophils, IgE, tissue eosinophilia |
+
+**The shared biology**
+- **IL-4 and IL-13** drive IgE class switching, barrier disruption, and tissue remodeling across all three sites
+- **IL-5** drives eosinophil maturation and survival — the common thread in airway and sinus disease
+- **Upstream alarmins** (TSLP, IL-33, IL-25) initiate the cascade from epithelial injury in each organ
+
+**Why this pattern is expected, not coincidental**
+This is the **atopic march** — patients frequently progress from AD in childhood or early adulthood to asthma and rhinosinusitis. The unified airway model further links lower and upper airway disease. Your patient's timeline is a textbook presentation rather than three unrelated diagnoses.
+
+**Adjacent conditions on the same pathway** — worth monitoring given the shared mechanism:
+- **Eosinophilic Esophagitis** — screen if dysphagia or food impaction appears
+- **Prurigo Nodularis** — type 2 driven, with IL-31 mediating itch
+
+**Treatment implications**
+A mechanism-level therapy can address all three presentations at once, rather than three organ-specific regimens:
+
+| Approach | Mechanism | Label scope across these three |
+|---|---|---|
+| IL-4Rα blockade (dupilumab) | Blocks IL-4 **and** IL-13 signalling | Approved in all three: AD, type 2 asthma, CRSwNP |
+| IL-13 only (tralokinumab, lebrikizumab) | Single cytokine | AD only |
+| IL-5 / IL-5R (mepolizumab, benralizumab) | Eosinophil depletion | Asthma and CRSwNP; not AD |
+| Oral JAK inhibitors | Broad intracellular signalling | AD and asthma programs; boxed warnings for MACE, malignancy, thrombosis |
+
+**Discussion points for the treating team**
+1. Coordinate across dermatology, pulmonology, and ENT — the shared mechanism argues for one treatment strategy, not three
+2. Baseline the shared biomarkers (total IgE, blood eosinophils, FeNO) before starting any systemic therapy
+3. Confirm which indications a given agent is actually approved for in your region before discussing it with the patient`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer review",
+        checks: [
+          { agent: "Scientific Verification", agentId: "sci-verify", status: "pass", detail: "Pathway biology verified against the MedVerse disease knowledge base and indexed literature. Type 2 inflammation mediators (IL-4, IL-13, IL-5) and upstream alarmins (TSLP, IL-33, IL-25) confirmed for all three conditions. Atopic march and unified airway models are established, peer-reviewed disease concepts." },
+          { agent: "Fair Balance", agentId: "fair-balance", status: "pass", detail: "Comparative table presents mechanism and label scope for all therapy classes including competitors. JAK inhibitor boxed warnings (MACE, malignancy, thrombosis) surfaced alongside their efficacy positioning. No efficacy claim presented without safety context." },
+          { agent: "Off-Label Monitor", agentId: "off-label", status: "warn", detail: "CORRECTION APPLIED — draft initially implied a single agent could treat the adjacent conditions (EoE, prurigo nodularis) raised in the response. Rewritten to present those as conditions to monitor, and a step added directing the clinician to confirm approved indications by region. No off-label recommendation delivered." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Disease navigation logged — entry condition: atopic dermatitis. Pathway: type 2 inflammation. 3 primary + 2 adjacent conditions mapped. 4 therapy classes compared. 1 off-label correction applied before delivery. Compliance record #DN-2026-08-0173." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Disease map delivered",
+        badge: "VERIFIED & FAIR-BALANCED",
+        content: "Three diagnoses resolved to one shared mechanism — type 2 inflammation across skin, lower airway, and upper airway. Cross-TA map delivered with shared biomarkers, atopic march context, two adjacent conditions to monitor, and a fair-balanced comparison of four therapy classes with label scope. One off-label implication was caught and corrected by the governance layer before delivery."
       }
     ]
   },
