@@ -12,10 +12,11 @@ const PITCH = 1.0;
 const IS_EDGE = /Edg\//.test(navigator.userAgent);
 const VOICE_WAIT_MS = IS_EDGE ? 4000 : 400;
 
+// Jenny excluded deliberately — doesn't sound natural enough to use.
 const VOICE_PREFS = {
   female: [
-    "Microsoft Jenny Online", "Microsoft Aria Online",
-    "Microsoft Jenny", "Microsoft Aria", "Microsoft Zira",
+    "Microsoft Aria Online",
+    "Microsoft Aria", "Microsoft Zira",
     "Google US English", "Samantha",
   ],
   male: [
@@ -25,15 +26,14 @@ const VOICE_PREFS = {
 };
 // Names that count as "we found one of the good online voices, stop waiting".
 const TOP_PRIORITY_VOICES = [
-  "Microsoft Jenny Online", "Microsoft Aria Online",
+  "Microsoft Aria Online",
   "Microsoft Guy Online", "Microsoft Andrew Online",
 ];
-// Explicit, named order for "mixed" mode — Jenny leads deliberately rather
-// than however the browser happens to list voices, so she's always in the
-// rotation whenever she's installed, with Guy and Aria filling out the mix.
+// Explicit, named order for "mixed" mode, so the rotation is deliberate
+// rather than however the browser happens to list voices.
 const MIXED_VOICE_ORDER = [
-  "Microsoft Jenny Online", "Microsoft Guy Online", "Microsoft Aria Online",
-  "Microsoft Jenny", "Microsoft Guy", "Microsoft Aria",
+  "Microsoft Guy Online", "Microsoft Aria Online",
+  "Microsoft Guy", "Microsoft Aria",
   "Microsoft Zira", "Microsoft David", "Microsoft Mark", "Alex", "Samantha",
 ];
 
