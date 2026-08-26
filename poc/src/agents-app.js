@@ -1296,7 +1296,7 @@ async function runDemo() {
   await delay(500);
 
   // ACT 1: Stats overview
-  await narrate("The Agent Ecosystem — featuring fifteen business agents, two intelligence hubs, and twelve governance agents");
+  await narrate("The Agent Ecosystem — featuring eighteen business agents, two intelligence hubs, and thirteen governance agents");
   const statsRow = document.querySelector(".stats-row");
   highlight(statsRow);
   await delay(2000);
@@ -1338,7 +1338,7 @@ async function runDemo() {
   await narrate("The Expert Hub profiles over 4,200 HCPs with publication data, congress activity, and engagement history");
 
   // ACT 5: Governance layer
-  await narrate("Every agent output passes through the governance layer — featuring twelve compliance agents");
+  await narrate("Every agent output passes through the governance layer — featuring thirteen compliance agents");
   const compStrip = document.getElementById("compliance-strip");
   if (compStrip) {
     scrollTo(compStrip);
@@ -1440,7 +1440,7 @@ async function runDemo() {
   if (mainScroll) mainScroll.scrollTo({ top: 0, behavior: "smooth" });
   await delay(500);
 
-  await narrate("Agent Ecosystem — featuring fifteen business agents, two intelligence hubs, and twelve governance agents. One connected platform.");
+  await narrate("Agent Ecosystem — featuring eighteen business agents, two intelligence hubs, and thirteen governance agents. One connected platform.");
   narrateOff();
 
   fullDemoRunning = false;

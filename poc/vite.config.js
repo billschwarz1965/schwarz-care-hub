@@ -12,6 +12,7 @@ export default defineConfig({
         mslcopilot: resolve(__dirname, 'msl-copilot.html'),
         concierge: resolve(__dirname, 'concierge.html'),
         orion: resolve(__dirname, 'orion.html'),
+        population: resolve(__dirname, 'population.html'),
         disease: resolve(__dirname, 'disease.html'),
         literature: resolve(__dirname, 'literature.html'),
         congress: resolve(__dirname, 'congress.html'),

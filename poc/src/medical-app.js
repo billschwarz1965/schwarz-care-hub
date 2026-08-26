@@ -1,7 +1,11 @@
 // ── Medical Concierge — 11-agent hub for Medical Affairs ──
-import { broadcastSignal } from "./orion-bridge.js";
+import { broadcastSignal, broadcastPopulationSignal } from "./orion-bridge.js";
 import { speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 import { createDemoController } from "./demo-nav.js";
+import {
+  QUADRANTS, getNationalSummary, getAllRegionRollups, getEducationPriorities,
+  getEventGeographyAnalysis,
+} from "./population-data.js";
 
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
@@ -717,6 +721,130 @@ function renderStrategy() {
 renderStrategy();
 
 // ══════════════════════════════════════════════
+// 9b. POPULATION INTELLIGENCE
+// ══════════════════════════════════════════════
+// Aggregate deidentified RWD overlaid on scientific engagement. Education gaps
+// route to Medical Education; evidence gaps route to Publication Planner.
+function renderPopulation() {
+  const container = $('#population-content');
+  if (!container) return;
+  const s = getNationalSummary();
+  const regions = getAllRegionRollups().sort((a, b) => b.needIndex - a.needIndex);
+  const priorities = getEducationPriorities(5);
+  const events = getEventGeographyAnalysis();
+  const maxPer10k = Math.max(...events.map(e => e.eventsPer10k));
+
+  const regionRows = regions.map(r => {
+    const q = QUADRANTS[r.quadrant];
+    return `<tr>
+      <td><strong>${escapeHtmlDemo(r.region)}</strong><div style="font-size:10.5px;color:var(--text-muted);">${r.stateCount} states</div></td>
+      <td>${r.cohort.toLocaleString()}</td>
+      <td><strong>${r.needIndex}</strong></td>
+      <td>${r.engagementIndex}</td>
+      <td>${r.dermPer100k}</td>
+      <td><span class="badge" style="background:${q.color}22;color:${q.color};">${escapeHtmlDemo(q.label)}</span></td>
+    </tr>`;
+  }).join('');
+
+  const priorityRows = priorities.map(p => `<tr>
+      <td><strong>${escapeHtmlDemo(p.region)}</strong></td>
+      <td>${escapeHtmlDemo(p.gap.shortName)}${p.gap.safetyRelevant
+        ? ' <span style="font-size:9.5px;font-weight:700;padding:2px 5px;border-radius:4px;background:var(--danger-bg);color:var(--danger);">SAFETY</span>' : ''}</td>
+      <td>${p.rate}${p.gap.unit === 'mo' ? ' mo' : '%'}</td>
+      <td style="color:var(--danger);font-weight:700;">+${p.delta}${p.gap.unit === 'mo' ? 'mo' : 'pp'}</td>
+      <td style="font-size:11.5px;">${escapeHtmlDemo(p.gap.educationNeed)}</td>
+    </tr>`).join('');
+
+  const eventRows = events.map(e => {
+    const under = e.eventsPer10k < maxPer10k / 3;
+    return `<tr>
+      <td><strong>${escapeHtmlDemo(e.region)}</strong></td>
+      <td>${e.needIndex}</td>
+      <td>${e.advisoryBoards}</td>
+      <td>${e.symposia}</td>
+      <td>${e.congressSessions}</td>
+      <td style="font-weight:700;color:${under ? 'var(--danger)' : 'var(--text)'};">${e.eventsPer10k}</td>
+      <td>${under ? '<span class="badge badge-danger">Under-sited</span>' : ''}</td>
+    </tr>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div style="display:flex;align-items:flex-start;gap:12px;background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:13px 16px;margin-bottom:20px;">
+      <i class="ti ti-shield-lock" style="font-size:19px;color:var(--accent-text);"></i>
+      <div style="font-size:11.5px;color:var(--text-secondary);line-height:1.55;">
+        <strong style="color:var(--text);">Commercial Firewall active — aggregation floor: state.</strong>
+        Source is licensed deidentified real-world evidence. Patient Services holds the patient-to-HCP linkage and those
+        counts do not cross into Medical. Cells below n=11 are suppressed.
+      </div>
+    </div>
+
+    <div class="stats-grid" style="margin-bottom:20px">
+      <div class="stat-tile"><div class="stat-num">${s.totalCohort.toLocaleString()}</div><div class="stat-label">Deidentified Cohort</div></div>
+      <div class="stat-tile"><div class="stat-num">${s.quadrantCounts['education-gap']}</div><div class="stat-label">Education Gaps</div></div>
+      <div class="stat-tile"><div class="stat-num">${s.quadrantCounts['evidence-gap']}</div><div class="stat-label">Evidence Gaps</div></div>
+      <div class="stat-tile"><div class="stat-num">${s.cohortInGapPct}%</div><div class="stat-label">Cohort In Gap</div></div>
+    </div>
+
+    <div class="result-card">
+      <h4><i class="ti ti-map-2"></i> Regional burden vs. engagement</h4>
+      <table class="data-table"><thead><tr>
+        <th>Region</th><th>Cohort</th><th>Need</th><th>Engagement</th><th>Derm/100k</th><th>Classification</th>
+      </tr></thead><tbody>${regionRows}</tbody></table>
+    </div>
+
+    <div class="result-card">
+      <h4><i class="ti ti-school"></i> Education priorities</h4>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">Ranked by gap size weighted by how scientifically underserved the region is. Safety-relevant gaps weighted higher. Routes to Medical Education and Scientific Communications.</p>
+      <table class="data-table"><thead><tr>
+        <th>Region</th><th>Gap</th><th>Rate</th><th>vs Nat'l</th><th>Education need</th>
+      </tr></thead><tbody>${priorityRows}</tbody></table>
+    </div>
+
+    <div class="result-card">
+      <h4><i class="ti ti-map-pin"></i> Event geography — 18-month footprint</h4>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">Events normalised per 10,000 cohort. Exposes where siting follows existing engagement rather than unmet need.</p>
+      <table class="data-table"><thead><tr>
+        <th>Region</th><th>Need</th><th>Adv. boards</th><th>Symposia</th><th>Congress</th><th>Per 10k</th><th></th>
+      </tr></thead><tbody>${eventRows}</tbody></table>
+    </div>
+
+    <div class="result-card" style="border-left:3px solid var(--accent);">
+      <h4><i class="ti ti-arrow-ramp-right"></i> Recommended routing</h4>
+      <div style="font-size:12.5px;line-height:1.75;color:var(--text-secondary);">
+        <strong style="color:var(--text);">Education gaps</strong> (${s.quadrantCounts['education-gap']} geographies) — high need, low engagement.
+        Deploy content and regional symposia; brief field medical at territory level.<br>
+        <strong style="color:var(--text);">Evidence gaps</strong> (${s.quadrantCounts['evidence-gap']} geographies) — high need <em>and</em> high engagement.
+        Clinicians are seeking answers the current evidence base does not provide. Route to Publication Planner and RWE study design.<br>
+        <strong style="color:var(--text);">Event siting</strong> — reallocate advisory board and symposium capacity toward under-sited regions.
+      </div>
+    </div>
+  `;
+
+  const top = priorities[0];
+  if (top) {
+    const r = regions.find(x => x.region === top.region);
+    broadcastPopulationSignal({
+      geoId: `US-REGION-${top.region.toUpperCase().replace(/[^A-Z]/g, '')}`,
+      geoName: top.region,
+      aggregationLevel: 'region',
+      cohortSize: r ? r.cohort : null,
+      gapId: top.gap.id,
+      gapName: top.gap.name,
+      gapRate: top.rate,
+      nationalRate: top.national,
+      nationalDelta: top.delta,
+      needIndex: r ? r.needIndex : null,
+      engagementIndex: r ? r.engagementIndex : null,
+      quadrant: top.quadrant,
+      medicalAction: `EDUCATION GAP: ${top.region} — ${top.gap.shortName} at ${top.rate}${top.gap.unit === 'mo' ? 'mo' : '%'} vs ${top.national}${top.gap.unit === 'mo' ? 'mo' : '%'} national. Priority education need: ${top.gap.educationNeed}.`,
+      educationNeed: top.gap.educationNeed,
+      _source: 'Medical Concierge',
+    });
+  }
+}
+renderPopulation();
+
+// ══════════════════════════════════════════════
 // 10. LITERATURE INTELLIGENCE
 // ══════════════════════════════════════════════
 const litDB = [
@@ -927,6 +1055,7 @@ function narrateOff() {
 const MEDICAL_AGENTS = [
   { id: "voice-search",  name: "Voice Search",              icon: "microphone" },
   { id: "med-strategy",  name: "Medical Strategy",          icon: "chart-pie" },
+  { id: "population",    name: "Population Intelligence",   icon: "map-2" },
   { id: "regulatory",    name: "Regulatory Intelligence",   icon: "gavel" },
   { id: "literature",    name: "Literature Intelligence",   icon: "book-2" },
   { id: "evidence",      name: "Evidence Synthesis",        icon: "chart-dots-3" },
@@ -971,6 +1100,18 @@ async function runAgentDemo(index, agent) {
       await delay(2000);
       await narrate("Six therapeutic areas tracked — Dupixent AD leading at 42 percent share, COPD launch prep is critical priority");
       await delay(2000);
+      break;
+
+    case "population":
+      await narrate("Population Intelligence brings deidentified real-world evidence into the medical plan");
+      showPanel('population');
+      await delay(2000);
+      await narrate("Nine hundred eleven thousand patients in the deidentified cohort. The Southeast carries a need index of seventy-one against an engagement index of forty-one — our largest education gap");
+      await delay(2400);
+      await narrate("Notice the firewall banner. Patient Services holds the patient-to-HCP linkage and those counts do not cross into Medical. What we get instead is the reason the gap exists");
+      await delay(2400);
+      await narrate("The event geography is the actionable finding — the highest-need region in the country has hosted zero advisory boards in eighteen months");
+      await delay(2200);
       break;
 
     case "regulatory":
@@ -1143,7 +1284,7 @@ async function runDemo() {
 
   // Finale
   if (!demoCtrl.aborted) {
-    await narrate("With fourteen agents on one Medical Affairs command center, from strategy to execution — the Medical Concierge");
+    await narrate("With fifteen agents on one Medical Affairs command center, from strategy to execution — the Medical Concierge");
     showHub();
     await delay(1500);
   }

@@ -21,7 +21,7 @@ export const SYSTEM_AGENTS = [
       "Investigator track record & enrollment performance",
       "Emerging KOL identification & growth trajectory"
     ],
-    consumers: ["msl-copilot", "kol-agent", "advisory-board", "congress-planning", "trial-intel", "strategy-advisor", "expert-segment", "gap-expert"],
+    consumers: ["msl-copilot", "kol-agent", "advisory-board", "congress-planning", "trial-intel", "strategy-advisor", "expert-segment", "gap-expert", "population-insights", "care-gap-analyzer", "event-geography"],
     compliancePartners: ["privacy", "audit", "explainability", "mlr"]
   },
   {
@@ -41,7 +41,7 @@ export const SYSTEM_AGENTS = [
       "Citation verification & claim substantiation",
       "Competitive publication landscape analysis"
     ],
-    consumers: ["literature-scout", "strategy-advisor", "msl-copilot"],
+    consumers: ["literature-scout", "strategy-advisor", "msl-copilot", "care-gap-analyzer"],
     compliancePartners: ["sci-verify", "expiration", "audit"]
   }
 ];
@@ -60,6 +60,7 @@ export const COMPLIANCE_AGENTS = [
   { id: "explainability", name: "AI Explainability", icon: "brain", desc: "Provides transparency — why an answer was generated, supporting sources, confidence level" },
   { id: "field-risk", name: "Field Activity Risk", icon: "chart-dots-3", desc: "Analyzes MSL interactions and inquiry trends to detect compliance risks before audits" },
   { id: "inspection", name: "Inspection Readiness", icon: "file-certificate", desc: "Continuously prepares documentation, logs, evidence packages for regulatory inspections" },
+  { id: "commercial-firewall", name: "Commercial Firewall", icon: "shield-lock", desc: "Enforces the Medical/Commercial boundary on real-world data — holds the aggregation floor, strips HCP-linked patient counts, and logs every suppression" },
 ];
 
 // === BUSINESS AGENTS (Orchestration Layer) ===
@@ -212,6 +213,36 @@ export const BUSINESS_AGENTS = [
     users: ["Pharmacists", "HCPs"],
     compliancePartners: ["sci-verify", "audit", "ae-detect"],
     hubDependency: ["literature-intel"],
+    status: "active"
+  },
+  {
+    id: "population-insights",
+    name: "Population Insights",
+    icon: "map-2",
+    desc: "Maps deidentified real-world evidence to geography — cohort sizing, disease burden, and specialist-access context. Enforces a state-level aggregation floor and never links patient counts to named HCPs.",
+    users: ["Medical Affairs", "Home Office"],
+    compliancePartners: ["privacy", "commercial-firewall", "audit", "explainability"],
+    hubDependency: ["hcp-explorer"],
+    status: "active"
+  },
+  {
+    id: "care-gap-analyzer",
+    name: "Care Gap Analyzer",
+    icon: "stethoscope",
+    desc: "Decomposes regional burden into guideline-anchored care gaps — prolonged topical therapy, systemic steroid exposure, referral delay, unrecognised Type 2 comorbidity — and derives the education need behind each.",
+    users: ["Medical Affairs", "Home Office", "MSLs", "Field Medical"],
+    compliancePartners: ["privacy", "sci-verify", "commercial-firewall", "audit"],
+    hubDependency: ["hcp-explorer", "literature-intel"],
+    status: "active"
+  },
+  {
+    id: "event-geography",
+    name: "Event Geography Planner",
+    icon: "map-pin",
+    desc: "Compares medical event footprint against regional disease burden to expose siting mismatch. Recommends advisory board, symposium, and congress placement weighted by unmet need rather than existing engagement.",
+    users: ["Medical Affairs", "Home Office"],
+    compliancePartners: ["commercial-firewall", "explainability", "audit"],
+    hubDependency: ["hcp-explorer"],
     status: "active"
   }
 ];
@@ -1478,6 +1509,187 @@ Review ID: MLR-2026-08-0412 | Submitted: Aug 6, 2026 | Priority: Expedited
         label: "Trial intelligence delivered",
         badge: "LANDSCAPE VERIFIED",
         content: "Competitive landscape mapped: 47 active trials across 8 mechanisms. 40-site recommendation stratified by enrollment capacity, competitor overlap, and diversity metrics. 5 highest-risk sites flagged for enrollment competition. Biomarker stratification timeline impact quantified (+3 weeks screening). Report exportable to clinical operations planning system."
+      }
+    ]
+  },
+  "population-insights": {
+    title: "Aggregate burden mapping with the Commercial Firewall enforced",
+    steps: [
+      {
+        type: "input",
+        label: "Medical Affairs request",
+        content: "Patient Services has built a patient-finder heat map from licensed deidentified RWD. I need the Medical view — where is the unmet clinical need, and can I see which HCPs have the most switch-eligible patients so our MSLs can prioritise them?"
+      },
+      {
+        type: "processing",
+        label: "Population Insights processing",
+        items: [
+          "Ingesting licensed deidentified RWD (claims + EHR) — no patient-level records retained...",
+          "Sizing moderate-to-severe adult AD cohort: 911,800 across 51 geographies...",
+          "Applying aggregation floor: state. Suppressing any cell below n=11...",
+          "Joining specialist-density reference: dermatologists per 100k...",
+          "Computing need index from care-gap prevalence and access constraints...",
+          "Routing HCP-linkage portion of request to Commercial Firewall for adjudication..."
+        ]
+      },
+      {
+        type: "compliance",
+        label: "Governance layer review — request partially denied",
+        checks: [
+          { agent: "Commercial Firewall", agentId: "commercial-firewall", status: "flag", detail: "DENIED: HCP-level switch-eligible patient counts. Attaching a patient-opportunity figure to a named prescriber and routing it to field medical converts scientific exchange into promotional targeting. Aggregation floor held at state. Patient Services retains the patient-to-HCP linkage; it does not cross into Medical. Suppression logged." },
+          { agent: "PHI Protection", agentId: "privacy", status: "pass", detail: "Source is licensed deidentified RWD. No direct identifiers, no patient-level records, no re-identification pathway. Small-cell suppression active at n<11." },
+          { agent: "AI Explainability", agentId: "explainability", status: "pass", detail: "Need index decomposed into contributing care gaps and specialist density. Every figure traceable to its aggregate source cell." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Population query logged — cohort sizing and burden mapping approved; HCP-linked patient counts denied by Commercial Firewall. Requestor notified of the aggregation floor. Compliance record #PI-2026-08-0198." }
+        ]
+      },
+      {
+        type: "draft",
+        label: "Approved output — aggregate burden",
+        content: `**Deidentified cohort: 911,800 adults, moderate-to-severe AD**
+
+| Region | Cohort | Need index | Engagement | Derm / 100k | Classification |
+|--------|--------|-----------|------------|-------------|----------------|
+| **Southeast** | 217,600 | **71** | 41 | 2.3 | Education gap |
+| West | 290,900 | 61 | 61 | 3.0 | Evidence gap |
+| Northeast | 100,000 | 58 | 79 | 4.9 | Well served |
+| Midwest | 192,400 | 54 | 53 | 2.8 | Well served |
+| Mid-Atlantic | 110,900 | 53 | 69 | 3.8 | Well served |
+
+**Highest-burden geography: Mississippi**
+- Need index 84 — highest in the country
+- Prolonged topical therapy: 80% vs 41% national (+39 points)
+- Recurrent systemic corticosteroid exposure: 44% vs 22% national — safety-relevant
+- Median dermatology referral delay: 16.5 months vs 8.4 national
+- 0.9 dermatologists per 100k
+
+**What was withheld:** switch-eligible patient counts per named HCP. Those remain with Patient Services.`
+      },
+      {
+        type: "output",
+        label: "Medical view delivered",
+        badge: "AGGREGATE ONLY — FIREWALL ENFORCED",
+        content: "22 of 51 geographies classified as education gaps — high clinical need, low scientific engagement. 50% of the deidentified cohort sits in a gap quadrant. Burden map approved at state level and published to Population Intelligence. HCP-linked patient counts denied and the denial logged. Downstream routing: Care Gap Analyzer for education need, Event Geography Planner for siting."
+      }
+    ]
+  },
+  "care-gap-analyzer": {
+    title: "Turning a burden map into an education plan",
+    steps: [
+      {
+        type: "input",
+        label: "Medical Affairs request",
+        content: "The Southeast is flagged as our largest education gap. Break down what is actually happening clinically and tell me what our field and content teams should be teaching."
+      },
+      {
+        type: "processing",
+        label: "Care Gap Analyzer processing",
+        items: [
+          "Loading Southeast aggregate: 217,600 cohort, need index 71, engagement index 41...",
+          "Decomposing burden into guideline-anchored care gaps...",
+          "Anchoring each gap to AAD 2023 / EADV 2022 recommendations...",
+          "Flagging safety-relevant gaps for priority weighting...",
+          "Cross-referencing MedVerse engagement: which gaps have no matching content consumption...",
+          "Deriving education need and routing evidence gaps to publication planning..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "Care gap decomposition — Southeast",
+        content: `**Six guideline-anchored gaps, ranked by priority score**
+
+| Gap | Rate | National | Delta | Type | Education need |
+|-----|------|----------|-------|------|----------------|
+| Referral delay | 12.5 mo | 8.4 mo | **+4.1 mo** | Access | Referral criteria for primary care; teledermatology pathways |
+| Prolonged topical therapy | 68% | 41% | **+27 pp** | Undertreatment | Severity assessment and escalation criteria |
+| Recurrent systemic steroids | 35% | 22% | **+13 pp** | **Safety** | Steroid-sparing strategies; cumulative exposure risk |
+| Severity not documented | 72% | 54% | +18 pp | Measurement | Practical severity assessment in routine practice |
+| Unrecognised Type 2 comorbidity | 43% | 31% | +12 pp | Diagnostic | Cross-TA Type 2 comorbidity screening |
+| JAK before biologic | 24% | 17% | +7 pp | **Safety** | Advanced-therapy sequencing and comparative class safety |
+
+**Reading the pattern:** the access gap drives the undertreatment gap. With 2.3 dermatologists per 100k and a 12.5-month referral delay, primary care manages moderate-to-severe disease for a year longer than the national norm — which is where the prolonged topical use and the repeated steroid bursts originate.
+
+**Two gaps are safety-relevant**, not efficacy-framed: cumulative corticosteroid exposure, and a boxed-warning agent being used ahead of an option without those warnings. These are the least contestable as medical activity.
+
+**Note:** no gap in this taxonomy is defined by treatment opportunity. Every one is anchored to a guideline or a safety concern.`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer review",
+        checks: [
+          { agent: "Scientific Verification", agentId: "sci-verify", status: "pass", detail: "All six gap definitions traced to AAD 2023 / EADV 2022 guidance or established safety literature. National comparator rates sourced from the same aggregate dataset. No efficacy claims made." },
+          { agent: "Commercial Firewall", agentId: "commercial-firewall", status: "pass", detail: "Gap taxonomy contains no opportunity-framed definitions and no HCP-linked counts. Output is education need, not target list. Aggregation held at region." },
+          { agent: "PHI Protection", agentId: "privacy", status: "pass", detail: "Region-level aggregate only. No patient-level records accessed." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Care gap analysis logged — Southeast region, 6 gaps decomposed, 2 flagged safety-relevant. Education needs routed to Medical Education and Scientific Communications. Compliance record #CGA-2026-08-0231." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Education plan generated",
+        badge: "GUIDELINE-ANCHORED",
+        content: "Six care gaps decomposed for the Southeast, two safety-relevant. Top education priority: referral criteria and practical severity assessment for specialist-scarce settings. Evidence gap identified in the West (high need with high engagement) and routed to Publication Planner for RWE study scoping. Field-facing summary generated at territory level for MSL scientific exchange — no patient counts included."
+      }
+    ]
+  },
+  "event-geography": {
+    title: "Siting medical events by unmet need rather than habit",
+    steps: [
+      {
+        type: "input",
+        label: "Medical Affairs request",
+        content: "We're planning next year's advisory boards and regional symposia. Where should they actually be, and which experts should we be inviting?"
+      },
+      {
+        type: "processing",
+        label: "Event Geography Planner processing",
+        items: [
+          "Retrieving 18-month medical event footprint by region...",
+          "Normalising event count against deidentified cohort size...",
+          "Comparing siting distribution against regional need index...",
+          "Identifying under-sited geographies...",
+          "Querying Expert Intelligence Hub for scientific-merit candidates in high-need regions...",
+          "Excluding prescribing-volume criteria from expert ranking..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "Siting analysis",
+        content: `**Event footprint vs. clinical need, trailing 18 months**
+
+| Region | Need | Adv. boards | Symposia | Congress | Total | Per 10k cohort |
+|--------|------|-------------|----------|----------|-------|----------------|
+| **Southeast** | **71** | **0** | 1 | 2 | **3** | **0.14** |
+| West | 61 | 5 | 7 | 11 | 23 | 0.79 |
+| Northeast | 58 | 6 | 9 | 14 | 29 | **2.90** |
+| Midwest | 54 | 3 | 5 | 7 | 15 | 0.78 |
+| Mid-Atlantic | 53 | 4 | 6 | 8 | 18 | 1.62 |
+
+**The mismatch:** the Southeast carries the highest need in the country and has hosted zero advisory boards in 18 months. The Northeast, with a need index 13 points lower, has hosted 29 events — a **20-fold difference** in events per 10,000 patients.
+
+Events have been sited where scientific engagement is already high. That is a reasonable operational default and it systematically under-serves the regions with the widest care gaps.
+
+**Recommended reallocation**
+- 2 advisory boards → Southeast (AD access and referral pathways)
+- 1 regional symposium → Mississippi/Alabama corridor, co-sited with a teaching institution
+- Maintain Northeast congress presence; shift 2 satellite symposia south
+
+**Expert candidates — selected on scientific merit and regional care context, not prescribing volume**
+- **Dr. David Okonkwo**, University of Mississippi Medical Center — 6 publications on health-system access barriers, regional AD referral lead. Practises in the highest-need geography in the country.
+- **Dr. Maria Gonzalez**, Emory — severe asthma trial PI, 31 publications, ATS session chair. Steroid-sparing expertise maps to the region's corticosteroid safety signal.`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer review",
+        checks: [
+          { agent: "Commercial Firewall", agentId: "commercial-firewall", status: "pass", detail: "Expert ranking inputs verified: publication record, trial leadership, congress activity, regional care-gap alignment. Prescribing volume and patient counts explicitly excluded from the scoring function. Selection is independently derivable from Medical's own inputs." },
+          { agent: "AI Explainability", agentId: "explainability", status: "pass", detail: "Siting recommendation traceable to two inputs: events-per-cohort ratio and regional need index. Expert rationale states the specific scientific basis for each candidate." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Event geography analysis logged — 5 regions assessed, Southeast flagged under-sited at 0.14 events per 10k vs 2.90 Northeast. 2 expert candidates surfaced on scientific-merit criteria. Compliance record #EGP-2026-08-0087." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Siting plan delivered",
+        badge: "MERIT-BASED SELECTION",
+        content: "Southeast identified as materially under-sited: highest need index nationally, zero advisory boards in 18 months, 0.14 events per 10k cohort against a 2.90 Northeast benchmark. Reallocation of 2 advisory boards and 1 symposium recommended. Expert candidates ranked on publication record, trial leadership and regional care-gap alignment — prescribing volume excluded from scoring. Roster exportable to Advisory Board Builder."
       }
     ]
   }

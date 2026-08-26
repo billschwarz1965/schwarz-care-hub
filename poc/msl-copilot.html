@@ -142,6 +142,8 @@
     .agent-card[data-agent="precall"]     .agent-card-tag  { background: var(--accent-light); color: var(--accent-text); }
     .agent-card[data-agent="territory"]   .agent-card-icon { background: #dbeafe; color: #2563eb; }
     .agent-card[data-agent="territory"]   .agent-card-tag  { background: #dbeafe; color: #1d4ed8; }
+    .agent-card[data-agent="caregaps"]    .agent-card-icon { background: #ffedd5; color: #c2410c; }
+    .agent-card[data-agent="caregaps"]    .agent-card-tag  { background: #ffedd5; color: #9a3412; }
     .agent-card[data-agent="postcall"]    .agent-card-icon { background: var(--orion-bg); color: var(--orion-accent); }
     .agent-card[data-agent="postcall"]    .agent-card-tag  { background: var(--orion-bg); color: var(--orion-accent); }
     .agent-card[data-agent="medinfo"]     .agent-card-icon { background: #fce7f3; color: #be185d; }
@@ -405,6 +407,12 @@
           <p>View your territory at a glance — upcoming meetings, HCP engagement stats, Orion alerts, and prioritized action items for the week.</p>
           <span class="agent-card-tag">Dashboard</span>
         </div>
+        <div class="agent-card" data-agent="caregaps">
+          <div class="agent-card-icon"><i class="ti ti-chart-histogram"></i></div>
+          <h3>Territory Care Gaps</h3>
+          <p>Real-world evidence for your territory — guideline-anchored care gaps, how they compare to national rates, and the education need behind each. Aggregate only; no patient counts.</p>
+          <span class="agent-card-tag">Population Intel</span>
+        </div>
         <div class="agent-card" data-agent="postcall">
           <div class="agent-card-icon"><i class="ti ti-send"></i></div>
           <h3>Post-Call Reporting</h3>
@@ -504,6 +512,35 @@
         <div><div class="panel-title">Territory Dashboard</div><div class="panel-desc">Your territory engagement overview and prioritized actions</div></div>
       </div>
       <div id="territory-content"></div>
+    </div>
+
+    <!-- ===== TERRITORY CARE GAPS PANEL ===== -->
+    <div class="agent-panel" id="panel-caregaps">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#ffedd5;color:#c2410c;"><i class="ti ti-chart-histogram"></i></div>
+        <div><div class="panel-title">Territory Care Gaps</div><div class="panel-desc">Deidentified real-world evidence for your region — aggregate only</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-map-2"></i> Select Territory</h4>
+            <div class="form-group">
+              <label class="form-label">Region</label>
+              <select class="form-select" id="tcg-region">
+                <option>Northeast</option>
+                <option>Mid-Atlantic</option>
+                <option selected>Southeast</option>
+                <option>Midwest</option>
+                <option>West</option>
+              </select>
+            </div>
+            <button class="form-btn form-btn-primary" id="tcg-submit"><i class="ti ti-chart-histogram"></i> Load Territory Gaps</button>
+          </div>
+        </div>
+        <div class="form-results" id="tcg-results">
+          <div class="result-empty"><i class="ti ti-chart-histogram"></i>Select a region to load its care-gap profile from deidentified real-world evidence.</div>
+        </div>
+      </div>
     </div>
 
     <!-- ===== POST-CALL REPORTING PANEL ===== -->
