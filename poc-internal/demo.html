@@ -301,6 +301,7 @@
     <a class="module-tab" href="msl-copilot.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
     <a class="module-tab" href="medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
     <a class="module-tab" href="orion.html"><i class="ti ti-broadcast"></i> Interaction Signals</a>
+    <a class="module-tab" href="population.html"><i class="ti ti-map-2"></i> Population Intelligence</a>
     <a class="module-tab" href="disease.html"><i class="ti ti-dna"></i> Disease Navigator</a>
     <a class="module-tab" href="literature.html"><i class="ti ti-book"></i> Literature</a>
     <a class="module-tab" href="congress.html"><i class="ti ti-calendar-event"></i> Congress</a>
@@ -355,10 +356,10 @@
         <div class="arch-layer-icon"><i class="ti ti-database"></i></div>
         <div class="arch-layer-info">
           <div class="arch-layer-name">Intelligence Hub Layer</div>
-          <div class="arch-layer-desc">Expert Intelligence Hub (4.9M+ HCP profiles), Literature Intelligence (36M+ PubMed articles, NEJM), Interaction Signals, Disease Navigator, and Congress Intelligence — all connected via live APIs.</div>
+          <div class="arch-layer-desc">Expert Intelligence Hub (4.9M+ HCP profiles), Literature Intelligence (36M+ PubMed articles, NEJM), Interaction Signals, Population Intelligence, Disease Navigator, and Congress Intelligence — all connected via live APIs.</div>
         </div>
         <div>
-          <div class="arch-layer-count" style="color:var(--green)">5</div>
+          <div class="arch-layer-count" style="color:var(--green)">6</div>
           <div class="arch-layer-count-label">Hubs</div>
         </div>
       </div>
@@ -426,7 +427,7 @@
   <section class="section" id="toc-section" style="padding-top:20px">
     <div class="section-label"><i class="ti ti-list"></i> Demo Modules</div>
     <h2>Table of Contents</h2>
-    <p class="section-desc">Click any module to launch its demo, or use Play All to run the complete guided tour starting from the Home page across all 8 modules.</p>
+    <p class="section-desc">Click any module to launch its demo, or use Play All to run the complete guided tour starting from the Home page across all 9 modules.</p>
 
     <div class="toc-grid">
       <a class="toc-card" href="index.html">
@@ -482,6 +483,20 @@
           </div>
         </div>
         <div class="toc-card-desc">Real-time signal intelligence — HCP engagement signals, disease area coverage, MSL action queue, and live feed monitoring.</div>
+        <div class="toc-card-meta">
+          <span class="toc-meta-badge toc-meta-demo"><i class="ti ti-player-play"></i> Full demo</span>
+        </div>
+      </a>
+
+      <a class="toc-card" href="population.html">
+        <div class="toc-card-top">
+          <div class="toc-card-icon" style="background:rgba(122,0,230,0.12);color:var(--accent)"><i class="ti ti-map-2"></i></div>
+          <div>
+            <div class="toc-card-title">Population Intelligence</div>
+            <div class="toc-card-subtitle">Real-World Evidence &times; Engagement</div>
+          </div>
+        </div>
+        <div class="toc-card-desc">Deidentified real-world evidence overlaid on MedVerse scientific engagement, by state — care-gap quadrants, education priorities, and compliant engagement candidates behind a Commercial Firewall.</div>
         <div class="toc-card-meta">
           <span class="toc-meta-badge toc-meta-demo"><i class="ti ti-player-play"></i> Full demo</span>
         </div>
@@ -606,9 +621,32 @@
     </div>
   </section>
 
+  <section class="detail-section" id="detail-population">
+    <div class="detail-header">
+      <div class="detail-icon" style="background:rgba(122,0,230,0.12);color:var(--accent-light)"><i class="ti ti-map-2"></i></div>
+      <div>
+        <div class="detail-title">Population Intelligence — Detailed View</div>
+        <div class="detail-subtitle">Deidentified real-world evidence &times; MedVerse scientific engagement, behind a Commercial Firewall</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <p>Population Intelligence overlays licensed, deidentified real-world data (claims + EHR) against MedVerse's own scientific-engagement signals, joined at region level only. The delta between clinical need and engagement — never a patient-opportunity figure — is the Medical Affairs action list. There is no patient-to-HCP linkage anywhere in this module by design; Patient Services holds that linkage and it does not cross the firewall.</p>
+      <h4>Use Cases</h4>
+      <div class="agent-list">
+        <div class="agent-chip"><i class="ti ti-school"></i> Prioritise MSL scientific exchange in education-gap states — high need, low engagement</div>
+        <div class="agent-chip"><i class="ti ti-flask"></i> Route evidence-gap states to publication planning &amp; RWE study design instead of more content</div>
+        <div class="agent-chip"><i class="ti ti-alert-triangle"></i> Surface safety-relevant care gaps first — steroid burden, JAK-before-biologic — in the priority ranking</div>
+        <div class="agent-chip"><i class="ti ti-calendar-event"></i> Detect event-siting mismatches, e.g. Southeast at 0.14 events/10k need vs. Northeast at 2.9</div>
+        <div class="agent-chip"><i class="ti ti-user-search"></i> Select compliant MSL engagement candidates from care-gap context and self-directed information-seeking only — never a patient count</div>
+      </div>
+      <h4>Demo Narrative</h4>
+      <p>The demo opens on Map A — clinical need — and lands on Mississippi: need index 84, 80% of the moderate-to-severe cohort on prolonged topical therapy, under one dermatologist per 100k people. It then shows Map B — Mississippi's scientific engagement scores 13/100 — before overlaying both into the quadrant view: 22 education-gap states and 4 evidence-gap states. Event geography makes the mismatch concrete (Southeast vs. Northeast siting), and the walkthrough closes on Dr. Okonkwo, an engagement candidate selected from care-gap alignment and published expertise alone, with no patient count attached to his name.</p>
+    </div>
+  </section>
+
   <!-- PLAY ALL BAR -->
   <div class="playall-bar">
-    <span class="playall-label">8 modules ready</span>
+    <span class="playall-label">9 modules ready</span>
     <button class="playall-btn" id="playall-btn">
       <i class="ti ti-player-play-filled"></i> Play All Demos
     </button>
@@ -625,6 +663,7 @@
       { name: "MSL Copilot", url: "msl-copilot.html" },
       { name: "Medical Concierge", url: "medical.html" },
       { name: "Interaction Signals", url: "orion.html" },
+      { name: "Population Intelligence", url: "population.html" },
       { name: "Disease Navigator", url: "disease.html" },
       { name: "Literature Intelligence", url: "literature.html" },
       { name: "Congress Intelligence", url: "congress.html" },

@@ -272,6 +272,13 @@
     .hub-launch-cta:hover { opacity: 0.9; }
     .hub-launch-cta i { font-size: 14px; }
 
+    /* DOC LINKS — written spec, opens docs/agents/<id>.md in a new tab */
+    .doc-link { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 7px; color: var(--text-muted); text-decoration: none; flex-shrink: 0; margin-left: auto; transition: all 0.15s; }
+    .doc-link:hover { background: var(--accent-light); color: var(--accent-text); }
+    .doc-link i { font-size: 14px; }
+    .comp-chip .doc-link { width: 18px; height: 18px; margin-left: 2px; }
+    .comp-chip .doc-link i { font-size: 11px; }
+
     /* COMPLIANCE STRIP */
     .compliance-grid { display: flex; gap: 5px; flex-wrap: wrap; }
     .comp-chip { display: flex; align-items: center; gap: 4px; padding: 5px 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 7px; font-size: 11px; color: var(--text-secondary); transition: all 0.3s; cursor: default; }
@@ -551,7 +558,7 @@
   </style>
   <link rel="stylesheet" href="/src/enhancements.css">
 </head>
-<body>
+<body data-docs-base="/docs/agents/">
   <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
     <i class="ti ti-sun"></i>
     <i class="ti ti-moon"></i>

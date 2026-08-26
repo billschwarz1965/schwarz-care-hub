@@ -209,11 +209,9 @@
   <nav class="module-nav">
     <a class="module-tab" href="index.html"><i class="ti ti-home"></i> Home</a>
     <a class="module-tab" href="concierge.html"><i class="ti ti-message-circle"></i> HCP Concierge</a>
-    <a class="module-tab" href="patient.html"><i class="ti ti-heart"></i> Patient Concierge</a>
     <a class="module-tab" href="disease.html"><i class="ti ti-dna"></i> Disease Navigator</a>
     <a class="module-tab" href="literature.html"><i class="ti ti-book"></i> Literature</a>
     <a class="module-tab" href="congress.html"><i class="ti ti-calendar-event"></i> Congress</a>
-    <a class="module-tab" href="agents.html"><i class="ti ti-cpu"></i> Agent Ecosystem</a>
     <a class="module-tab" href="demo.html"><i class="ti ti-player-play"></i> Demo</a>
     <a class="module-tab active" href="about.html"><i class="ti ti-info-circle"></i> About</a>
   </nav>
@@ -225,13 +223,13 @@
       <div class="about-hero">
         <div class="about-hero-icon"><i class="ti ti-brain"></i></div>
         <h1>About MedVerse</h1>
-        <p>Sanofi's Scientific Intelligence Ecosystem for Healthcare Professionals, Patients &amp; Caregivers</p>
+        <p>Sanofi's Scientific Intelligence Ecosystem for Healthcare Professionals</p>
       </div>
 
       <!-- VISION -->
       <div class="about-section">
         <h2><i class="ti ti-eye"></i> Our Vision</h2>
-        <p>MedVerse is Sanofi's AI-powered Scientific Intelligence Ecosystem — a unified platform that transforms how healthcare professionals, patients, and caregivers access and interact with scientific knowledge. Ask a question in plain language and get an evidence-based answer with citations you can open and check for yourself.</p>
+        <p>MedVerse is Sanofi's AI-powered Scientific Intelligence Ecosystem — a unified platform that transforms how healthcare professionals access and interact with scientific knowledge. Ask a question in plain language and get an evidence-based answer with citations you can open and check for yourself.</p>
         <p style="margin-top:10px">This build is the external-audience edition. Sanofi's internal field-medical and medical affairs tooling is part of the same platform, but is not included here.</p>
       </div>
 
@@ -240,9 +238,7 @@
         <h2><i class="ti ti-rocket"></i> What MedVerse Does</h2>
         <ul class="about-list">
           <li><i class="ti ti-stethoscope"></i> Provides HCPs with evidence-based clinical decision support, fully cited</li>
-          <li><i class="ti ti-heart"></i> Delivers patient-friendly health information and treatment guidance</li>
-          <li><i class="ti ti-users"></i> Supports caregivers with accessible educational resources</li>
-          <li><i class="ti ti-flask"></i> Matches patients and HCPs to eligible clinical trials</li>
+          <li><i class="ti ti-flask"></i> Matches HCPs' patients to eligible clinical trials</li>
           <li><i class="ti ti-books"></i> Synthesizes scientific literature and congress data from live sources</li>
           <li><i class="ti ti-map-pin-heart"></i> Connects HCPs to a regional medical science liaison on request</li>
         </ul>
@@ -257,7 +253,7 @@
       <!-- MODULES OVERVIEW -->
       <div class="about-section">
         <h2><i class="ti ti-layout-grid"></i> Modules Overview</h2>
-        <p>This edition comprises 8 modules, each designed for a distinct audience or function.</p>
+        <p>This edition comprises 6 modules, each designed for a distinct audience or function.</p>
         <div class="modules-grid">
           <div class="module-item">
             <div class="module-item-icon" style="background: var(--accent-light); color: var(--accent);"><i class="ti ti-home"></i></div>
@@ -271,13 +267,6 @@
             <div class="module-item-text">
               <h4>HCP Concierge</h4>
               <p>AI-assisted clinical decision support for healthcare professionals</p>
-            </div>
-          </div>
-          <div class="module-item">
-            <div class="module-item-icon" style="background: #fce7f3; color: #be185d;"><i class="ti ti-heart"></i></div>
-            <div class="module-item-text">
-              <h4>Patient Concierge</h4>
-              <p>Patient-friendly health information and treatment guidance</p>
             </div>
           </div>
           <div class="module-item">
@@ -302,13 +291,6 @@
             </div>
           </div>
           <div class="module-item">
-            <div class="module-item-icon" style="background: #dbeafe; color: #2563eb;"><i class="ti ti-cpu"></i></div>
-            <div class="module-item-text">
-              <h4>Agent Ecosystem</h4>
-              <p>The agent architecture, intelligence hubs, and governance layer behind every answer</p>
-            </div>
-          </div>
-          <div class="module-item">
             <div class="module-item-icon" style="background: var(--warning-bg); color: var(--warning);"><i class="ti ti-player-play"></i></div>
             <div class="module-item-text">
               <h4>Demo</h4>
@@ -325,7 +307,6 @@
 
         <div class="uj-tabs" id="uj-tabs">
           <button class="uj-tab active" data-uj="hcp">HCP</button>
-          <button class="uj-tab" data-uj="patient">Patient</button>
           <button class="uj-tab" data-uj="cross">Cross-Module</button>
         </div>
 
@@ -359,69 +340,33 @@
           </div>
         </div>
 
-        <!-- Patient -->
-        <div class="uj-panel" id="uj-patient">
-          <div class="uj-header">
-            <div class="uj-icon" style="background:linear-gradient(135deg,#ec4899,#f472b6)"><i class="ti ti-heart"></i></div>
-            <div>
-              <div class="uj-title">Patient Concierge — 13 Agents</div>
-              <div class="uj-sub">Patient or caregiver navigates health information</div>
-            </div>
-          </div>
-          <div class="uj-flow">
-            <div class="uj-group-label">Entry</div>
-            <div class="uj-step"><span class="uj-dot">1</span><div class="uj-card"><strong>Voice Search</strong> <span class="uj-badge uj-b-core">ENTRY</span><p>Speak your health question naturally</p></div></div>
-            <div class="uj-group-label">Understanding My Condition</div>
-            <div class="uj-step"><span class="uj-dot">2</span><div class="uj-card"><strong>Condition Library</strong> <span class="uj-badge uj-b-core">CORE</span><p>Plain-language disease education: what it is, symptoms, outlook</p></div></div>
-            <div class="uj-step"><span class="uj-dot">3</span><div class="uj-card"><strong>Treatment Explorer</strong> <span class="uj-badge uj-b-core">CORE</span><p>Step-by-step treatment options explained simply</p></div></div>
-            <div class="uj-step"><span class="uj-dot">4</span><div class="uj-card"><strong>My Medications</strong> <span class="uj-badge uj-b-core">CORE</span><p>Dosing, side effects, storage, what to expect</p></div></div>
-            <div class="uj-group-label">Daily Health Management</div>
-            <div class="uj-step"><span class="uj-dot">5</span><div class="uj-card"><strong>Symptom Checker</strong> <span class="uj-badge uj-b-core">CORE</span><p>Assess symptoms, urgency, and suggested next steps</p></div></div>
-            <div class="uj-step"><span class="uj-dot">6</span><div class="uj-card"><strong>Side Effect Tracker</strong> <span class="uj-badge uj-b-core">CORE</span><p>Log and monitor side effects with severity tracking</p></div></div>
-            <div class="uj-step"><span class="uj-dot">7</span><div class="uj-card"><strong>Wellness Journal</strong> <span class="uj-badge uj-b-core">CORE</span><p>Daily tracker: symptoms, mood, adherence, triggers</p></div></div>
-            <div class="uj-group-label">Getting Help</div>
-            <div class="uj-step"><span class="uj-dot">8</span><div class="uj-card"><strong>Appointment Prep</strong> <span class="uj-badge uj-b-core">CORE</span><p>Generate personalized question list for doctor visits</p></div></div>
-            <div class="uj-step"><span class="uj-dot">9</span><div class="uj-card"><strong>Insurance & Access</strong> <span class="uj-badge uj-b-core">CORE</span><p>Financial assistance, copay programs, coverage options</p></div></div>
-            <div class="uj-step"><span class="uj-dot uj-dot-shared">10</span><div class="uj-card uj-card-shared"><strong>Clinical Trial Finder</strong> <span class="uj-badge uj-b-shared">SHARED</span><p>Search patient-eligible trials by condition and location</p></div></div>
-            <div class="uj-group-label">Support Network</div>
-            <div class="uj-step"><span class="uj-dot">11</span><div class="uj-card"><strong>Caregiver Resources</strong> <span class="uj-badge uj-b-core">CORE</span><p>Support guides for family members and caregivers</p></div></div>
-            <div class="uj-group-label">Always Available</div>
-            <div class="uj-step"><span class="uj-dot uj-dot-chat">12</span><div class="uj-card"><strong>Patient Support Assistant</strong> <span class="uj-badge uj-b-chat">AI CHAT</span><p>Conversational AI for any patient question</p></div></div>
-            <div class="uj-step"><span class="uj-dot uj-dot-shared">13</span><div class="uj-card uj-card-shared"><strong>Trial Matching Agent</strong> <span class="uj-badge uj-b-shared">SHARED</span><p>Cross-module personalized trial matching</p></div></div>
-          </div>
-        </div>
-
         <!-- Cross-Module -->
         <div class="uj-panel" id="uj-cross">
           <div class="uj-header">
             <div class="uj-icon" style="background:linear-gradient(135deg,#7a00e6,#2563eb)"><i class="ti ti-topology-star-3"></i></div>
             <div>
               <div class="uj-title">Cross-Module Intelligence</div>
-              <div class="uj-sub">7 shared agents and 4 intelligence modules connecting both audiences</div>
+              <div class="uj-sub">5 shared agents and 3 intelligence modules HCP Concierge draws on across the platform</div>
             </div>
           </div>
           <div class="uj-cross-stats">
-            <div class="uj-stat"><span class="uj-stat-num">25</span><span class="uj-stat-label">Total Agents</span></div>
-            <div class="uj-stat"><span class="uj-stat-num">2</span><span class="uj-stat-label">Audiences</span></div>
-            <div class="uj-stat"><span class="uj-stat-num">7</span><span class="uj-stat-label">Shared</span></div>
-            <div class="uj-stat"><span class="uj-stat-num">4</span><span class="uj-stat-label">Modules</span></div>
+            <div class="uj-stat"><span class="uj-stat-num">12</span><span class="uj-stat-label">Total Agents</span></div>
+            <div class="uj-stat"><span class="uj-stat-num">5</span><span class="uj-stat-label">Shared</span></div>
+            <div class="uj-stat"><span class="uj-stat-num">3</span><span class="uj-stat-label">Modules</span></div>
           </div>
           <div class="uj-group-label" style="margin-top:16px">Shared Agents</div>
           <div class="uj-cross-grid">
-            <div class="uj-cross-card"><strong>Trial Matching</strong><p>Match patients to eligible Sanofi clinical trials</p><span class="uj-cross-personas">HCP + Patient</span></div>
-            <div class="uj-cross-card"><strong>Literature Intelligence</strong><p>Live PubMed search, evidence synthesis</p><span class="uj-cross-personas">HCP + Patient</span></div>
-            <div class="uj-cross-card"><strong>Congress Intelligence</strong><p>Congress coverage, presentations, highlights</p><span class="uj-cross-personas">HCP</span></div>
-            <div class="uj-cross-card"><strong>Disease Navigator</strong><p>Cross-TA disease landscape and pathways</p><span class="uj-cross-personas">HCP + Patient</span></div>
-            <div class="uj-cross-card"><strong>Literature Scout</strong><p>Proactive publication alerts</p><span class="uj-cross-personas">HCP</span></div>
-            <div class="uj-cross-card"><strong>Voice Search</strong><p>Hands-free spoken query with intelligent routing</p><span class="uj-cross-personas">Both Audiences</span></div>
-            <div class="uj-cross-card"><strong>AI Chat Assistant</strong><p>Audience-specific conversational AI</p><span class="uj-cross-personas">Both Audiences</span></div>
+            <div class="uj-cross-card"><strong>Trial Matching</strong><p>Match patients to eligible Sanofi clinical trials</p></div>
+            <div class="uj-cross-card"><strong>Literature Intelligence</strong><p>Live PubMed search, evidence synthesis</p></div>
+            <div class="uj-cross-card"><strong>Congress Intelligence</strong><p>Congress coverage, presentations, highlights</p></div>
+            <div class="uj-cross-card"><strong>Disease Navigator</strong><p>Cross-TA disease landscape and pathways</p></div>
+            <div class="uj-cross-card"><strong>Literature Scout</strong><p>Proactive publication alerts</p></div>
           </div>
           <div class="uj-group-label" style="margin-top:20px">Intelligence Modules</div>
           <div class="uj-cross-grid">
             <div class="uj-cross-card" style="border-left:3px solid #059669"><strong>Disease State Navigator</strong><p>8 diseases, pathways, treatments, pipeline connections</p><span class="uj-cross-personas">10 features</span></div>
             <div class="uj-cross-card" style="border-left:3px solid #2563eb"><strong>Literature Intelligence</strong><p>PubMed/NEJM search, comparison, auto deep-dive</p><span class="uj-cross-personas">10 features</span></div>
             <div class="uj-cross-card" style="border-left:3px solid #7a00e6"><strong>Congress Intelligence</strong><p>6 congresses, posters, highlights, deep linking</p><span class="uj-cross-personas">10 features</span></div>
-            <div class="uj-cross-card" style="border-left:3px solid #ec4899"><strong>Agent Ecosystem</strong><p>Agent architecture, intelligence hubs, governance layer</p><span class="uj-cross-personas">12 features</span></div>
           </div>
         </div>
       </div>

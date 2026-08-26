@@ -315,6 +315,7 @@ function renderHubSection() {
           <div class="hub-name">${esc(hub.name)}</div>
           <div class="hub-subtitle">${esc(hub.subtitle)}</div>
         </div>
+        ${docLink(hub.id)}
       </div>
       <div class="hub-desc">${esc(hub.desc)}</div>
       <div class="hub-data-row">
@@ -349,7 +350,7 @@ function renderComplianceStrip() {
   const strip = document.getElementById("compliance-strip");
   strip.innerHTML = COMPLIANCE_AGENTS.map(c =>
     `<div class="comp-chip" data-id="${c.id}" title="${esc(c.desc)}">
-      <i class="ti ti-${c.icon}"></i><span>${esc(c.name)}</span>
+      <i class="ti ti-${c.icon}"></i><span>${esc(c.name)}</span>${docLink(c.id)}
     </div>`
   ).join("");
 
@@ -385,6 +386,7 @@ function renderGovernancePanel(comp) {
         <div class="governance-panel-desc">${esc(comp.desc)}</div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
+        ${docLink(comp.id)}
         ${hasDemo ? `<button class="governance-demo-btn" id="governance-demo-btn"><i class="ti ti-player-play"></i> Run demo</button>` : ""}
         <button class="governance-panel-close" id="governance-close"><i class="ti ti-x"></i></button>
       </div>
@@ -445,6 +447,7 @@ function renderAgentGrid() {
     return `<div class="agent-card ${hasDemo ? "has-demo" : ""}" data-id="${a.id}">
       <div class="agent-card-top">
         <div class="agent-icon"><i class="ti ti-${a.icon}"></i></div>
+        ${docLink(a.id)}
         <span class="agent-status ${a.status}">${a.status === "active" ? "Active" : "Planned"}</span>
       </div>
       <div class="agent-name">${esc(a.name)}</div>
@@ -838,6 +841,15 @@ function esc(str) {
   const d = document.createElement("div");
   d.textContent = str;
   return d.innerHTML;
+}
+
+// Written agent specs (docs/agents/<id>.md) are only linked from tiles when the
+// host page opts in via <body data-docs-base="...">. Off by default so poc/
+// poc-internal, which share this file, are unaffected.
+function docLink(id) {
+  const base = document.body.dataset.docsBase;
+  if (!base) return "";
+  return `<a class="doc-link" href="${base}${id}.md" target="_blank" rel="noopener" title="View written specification" onclick="event.stopPropagation()"><i class="ti ti-file-text"></i></a>`;
 }
 
 function delay(ms) {

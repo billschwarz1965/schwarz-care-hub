@@ -5,8 +5,6 @@ const APP_SHELL_PATHS = [
   '',
   'index.html',
   'concierge.html',
-  'patient.html',
-  'agents.html',
   'disease.html',
   'literature.html',
   'congress.html',
