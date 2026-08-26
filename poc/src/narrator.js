@@ -28,6 +28,14 @@ const TOP_PRIORITY_VOICES = [
   "Microsoft Jenny Online", "Microsoft Aria Online",
   "Microsoft Guy Online", "Microsoft Andrew Online",
 ];
+// Explicit, named order for "mixed" mode — Jenny leads deliberately rather
+// than however the browser happens to list voices, so she's always in the
+// rotation whenever she's installed, with Guy and Aria filling out the mix.
+const MIXED_VOICE_ORDER = [
+  "Microsoft Jenny Online", "Microsoft Guy Online", "Microsoft Aria Online",
+  "Microsoft Jenny", "Microsoft Guy", "Microsoft Aria",
+  "Microsoft Zira", "Microsoft David", "Microsoft Mark", "Alex", "Samantha",
+];
 
 const MODE_KEY = "medverse-narrator-voice-mode";
 const MODES = ["female", "male", "mixed"];
@@ -72,7 +80,8 @@ function ensureVoiceSet() {
         const female = findByPrefs(voices, VOICE_PREFS.female);
         const male = findByPrefs(voices, VOICE_PREFS.male);
         const anyEnglish = voices.find(v => v.lang.startsWith("en")) || voices[0] || null;
-        const rotation = [female, male, ...voices.filter(v => v.lang.startsWith("en"))]
+        const rotation = MIXED_VOICE_ORDER
+          .map(name => voices.find(v => v.name.includes(name) && v.lang.startsWith("en")))
           .filter(Boolean)
           .filter((v, i, arr) => arr.findIndex(o => o.name === v.name) === i)
           .slice(0, 3);
