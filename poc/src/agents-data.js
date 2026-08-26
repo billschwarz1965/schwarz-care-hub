@@ -1692,5 +1692,567 @@ Events have been sited where scientific engagement is already high. That is a re
         content: "Southeast identified as materially under-sited: highest need index nationally, zero advisory boards in 18 months, 0.14 events per 10k cohort against a 2.90 Northeast benchmark. Reallocation of 2 advisory boards and 1 symposium recommended. Expert candidates ranked on publication record, trial leadership and regional care-gap alignment — prescribing volume excluded from scoring. Roster exportable to Advisory Board Builder."
       }
     ]
+  },
+  "literature-intel": {
+    title: "Real-time evidence monitoring across the global literature",
+    steps: [
+      {
+        type: "input",
+        label: "Standing alert query",
+        content: "Alert me to any new Phase 3 data on IL-13 inhibitors in atopic dermatitis published in the last 30 days, and flag anything that touches our existing label claims."
+      },
+      {
+        type: "processing",
+        label: "Literature Intelligence — scan and cross-reference",
+        items: [
+          "Scanning 36M+ indexed PubMed records: filter=IL-13 inhibitor, AD, Phase 3, pubdate<30d...",
+          "Cross-referencing 84K congress abstracts for unpublished late-breakers...",
+          "Matching new findings against 12K internally approved content assets...",
+          "Checking each new publication against current Sanofi Core Data Sheet claims...",
+          "Scoring relevance by citation velocity and mechanism overlap..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "3 new publications found, 1 touches an existing claim",
+        content: `**Literature Scan — IL-13 Inhibitors in AD, Trailing 30 Days**
+
+| # | Publication | Journal | Relevance | Touches label claim? |
+|---|---|---|---|---|
+| 1 | Simpson EL et al., 5-year lebrikizumab OLE safety | JAMA Derm, Aug 2026 | High | No |
+| 2 | Guttman-Yassky E et al., IL-13 pathway biomarker substudy | J Invest Derm, Jul 2026 | Medium | No |
+| 3 | Blauvelt A et al., dupilumab vs. lebrikizumab indirect comparison | Br J Derm, Aug 2026 | High | **Yes — flagged** |
+
+**Flagged item:** Publication #3 presents an indirect (non-head-to-head) efficacy comparison. No approved Sanofi content may cite this as a superiority claim — routed to Scientific Verification before it can be added to any content asset.`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer review",
+        checks: [
+          { agent: "Scientific Verification", agentId: "sci-verify", status: "warn", detail: "Publication #3 is an indirect comparison (matching-adjusted indirect comparison, not a head-to-head RCT). Blocked from any promotional or superiority claim; permitted only in a scientific-exchange context with methodology caveat." },
+          { agent: "Content Expiration", agentId: "expiration", status: "pass", detail: "No existing approved content references superseded prior to this scan; all 12K assets remain current." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Literature scan logged — IL-13/AD/Phase 3, trailing 30 days. 3 results, 1 flagged for Scientific Verification review. Scan ID: LIT-2026-08-0091." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Scan complete",
+        badge: "3 NEW · 1 FLAGGED",
+        content: "3 new publications indexed and scored. 1 flagged for Scientific Verification before any content team can reference it — an indirect comparison that must not be used as a superiority claim. The other 2 are cleared for Literature Scout to surface to MSLs and Medical Affairs."
+      }
+    ]
+  },
+  "sci-verify": {
+    title: "Claim-by-claim validation against label, CDS, and evidence",
+    steps: [
+      {
+        type: "input",
+        label: "Claim submitted for verification",
+        content: "MSL Copilot drafted this line for a leave-behind: 'Dupixent reduces exacerbations by up to 65% in patients with COPD and evidence of type 2 inflammation.' Please verify before it reaches the field."
+      },
+      {
+        type: "processing",
+        label: "Scientific Verification — source-by-source check",
+        items: [
+          "Retrieving approved US label (BLA 761055) indication and population language for COPD...",
+          "Cross-referencing pivotal trial data (BOREAS/NOTUS) for the cited reduction figure...",
+          "Checking the eosinophil-threshold qualifier required by the approved population definition...",
+          "Confirming the 65% figure matches the correct trial endpoint and patient subgroup..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "Verification result — figure correct, qualifier missing",
+        content: `**Claim:** "Dupixent reduces exacerbations by up to 65% in patients with COPD and evidence of type 2 inflammation."
+
+- ✅ **Numeric accuracy:** 65% matches the annualized moderate/severe exacerbation rate reduction reported in the pooled BOREAS/NOTUS analysis for the labeled subgroup.
+- 🟡 **Missing qualifier:** The label restricts this population to patients with blood eosinophil count ≥300 cells/µL on background therapy. The draft omits that threshold, which could be read as applying to all COPD patients.
+- ✅ **Recommended correction:** "...in COPD patients with an eosinophilic phenotype (blood eosinophils ≥300 cells/µL) on background therapy."`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer cross-check",
+        checks: [
+          { agent: "Fair Balance", agentId: "fair-balance", status: "warn", detail: "Efficacy claim has no adjacent safety context in the draft leave-behind. Recommend adding the standard COPD safety summary line before field release." },
+          { agent: "Promotional Risk", agentId: "promo-risk", status: "pass", detail: "No superlative or comparative language detected once the population qualifier is added." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Claim verification logged — leave-behind draft, MSL Copilot source. 1 correction required (population qualifier), 1 fair-balance addition recommended. Record #SV-2026-08-0271." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Correction required before field release",
+        badge: "1 CORRECTION REQUIRED",
+        content: "The 65% figure is accurate, but the claim is not release-ready without the eosinophil-threshold qualifier and an adjacent safety statement. Corrected text returned to MSL Copilot for the leave-behind; original version blocked from field distribution."
+      }
+    ]
+  },
+  "promo-risk": {
+    title: "Pattern detection for promotional language in field-generated content",
+    steps: [
+      {
+        type: "input",
+        label: "MSL email submitted for review",
+        content: "Follow-up email drafted for an HCP: 'As we discussed, Dupixent is clearly the best option for your AD patients and works faster than anything else on the market.'"
+      },
+      {
+        type: "processing",
+        label: "Promotional Risk — pattern scan",
+        items: [
+          "Scanning for superlative language patterns ('best', 'clearly', 'anything else')...",
+          "Checking for unsubstantiated comparative claims against the approved label and CDS...",
+          "Cross-referencing the approved MSL messaging library for pre-cleared phrasing...",
+          "Classifying severity: comparative superiority claim with no supporting head-to-head data..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "2 flags identified",
+        content: `**Draft email — Promotional Risk findings**
+
+| # | Phrase | Issue | Severity |
+|---|---|---|---|
+| 1 | "clearly the best option" | Superlative claim, no comparative trial support | 🔴 High |
+| 2 | "works faster than anything else on the market" | Unsubstantiated head-to-head comparison — no such trial exists | 🔴 High |
+
+**Suggested rewrite:** "As we discussed, Dupixent has demonstrated sustained efficacy in AD patients across five years of continuous treatment data. Happy to share the supporting publications if useful."`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer cross-check",
+        checks: [
+          { agent: "Scientific Verification", agentId: "sci-verify", status: "flag", detail: "Confirmed: no head-to-head trial exists supporting a comparative speed-of-onset or superiority claim against other AD therapies." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Promotional risk review logged — MSL follow-up email, 2 high-severity flags, rewrite suggested. Email held pending MSL revision. Record #PR-2026-08-0138." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Email held pending revision",
+        badge: "2 FLAGS · SEND BLOCKED",
+        content: "Both flags are high-severity comparative/superlative claims with no supporting data. The email is held from sending until the MSL accepts the suggested rewrite or provides substantiation — neither of which exists in the approved label or CDS."
+      }
+    ]
+  },
+  "ae-detect": {
+    title: "Real-time adverse event signal capture from HCP chat",
+    steps: [
+      {
+        type: "input",
+        label: "HCP message via Medical Concierge",
+        content: "One of my patients on dupilumab developed conjunctivitis and facial redness about 3 weeks after starting. Is this something I should be worried about, and is it reversible?"
+      },
+      {
+        type: "processing",
+        label: "AE Detection — signal scan",
+        items: [
+          "Scanning message for adverse-event terminology and temporal association to treatment start...",
+          "Mapping 'conjunctivitis' and 'facial redness' to MedDRA preferred terms...",
+          "Checking seriousness criteria: not hospitalization, not life-threatening, not disability...",
+          "Cross-referencing labeled adverse reactions (conjunctivitis: common, ≥1%)...",
+          "Auto-drafting ICSR case with pre-filled onset, product, and reporter fields..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "ICSR case auto-drafted",
+        content: `**Adverse Event Signal Detected**
+
+| Field | Value |
+|---|---|
+| Reported terms | Conjunctivitis, facial redness (possible periorbital dermatitis) |
+| MedDRA mapping | Conjunctivitis (PT); Erythema (PT) |
+| Product | Dupixent (dupilumab) |
+| Onset | ~3 weeks post-initiation |
+| Labeled status | Conjunctivitis — labeled, common (≥1%). Facial redness — monitor; consistent with reported periorbital dermatitis signal. |
+| Seriousness | Non-serious per standard criteria |
+
+**Case ICSR-2026-08-3341 auto-created and routed to Pharmacovigilance.** Regulatory clock started: 24-hour internal triage, 15-day expedited reporting window if seriousness criteria change on follow-up.`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer review",
+        checks: [
+          { agent: "PHI Protection", agentId: "privacy", status: "pass", detail: "Case created with reporter (HCP) identity retained per pharmacovigilance requirements; patient referenced only by de-identified case ID, no direct identifiers captured from the chat." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "AE signal detection logged — case ICSR-2026-08-3341 opened, routed to Pharmacovigilance queue, 24-hour triage clock started." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Case opened, Pharmacovigilance notified",
+        badge: "ICSR CASE OPENED · PV NOTIFIED",
+        content: "A pharmacovigilance case was auto-created from the HCP's message and routed for clinical triage within 24 hours. The HCP has been given the standard non-promotional safety-monitoring response and a note that Pharmacovigilance may follow up directly for additional detail."
+      }
+    ]
+  },
+  "privacy": {
+    title: "Real-time PHI redaction on inbound medical information requests",
+    steps: [
+      {
+        type: "input",
+        label: "Medical information request as submitted",
+        content: "My patient John R., DOB 3/14/1962, MRN 88213 at Cleveland Clinic, is on dupilumab and had elevated eosinophils. Can you advise on management, and please call me back at the number on file to discuss further?"
+      },
+      {
+        type: "processing",
+        label: "PHI Protection — scan and redact",
+        items: [
+          "Scanning submission for identifier patterns: name, DOB, MRN, institution, callback reference...",
+          "Matching against PHI pattern library (18 HIPAA identifier categories)...",
+          "Redacting matched elements before the request reaches any downstream agent...",
+          "Logging the redaction event with pattern types matched, not the underlying values..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "Redacted request forwarded downstream",
+        content: `**As submitted (held, not forwarded):**
+"My patient John R., DOB 3/14/1962, MRN 88213 at Cleveland Clinic, is on dupilumab and had elevated eosinophils..."
+
+**As forwarded to Medical Information (redacted):**
+"My patient [REDACTED-NAME], [REDACTED-DOB], [REDACTED-MRN] at [REDACTED-FACILITY], is on dupilumab and had elevated eosinophils. Can you advise on management?"
+
+Scientific question proceeds unmodified — only the four identifier fields were removed. Callback coordination handled separately through the HCP's verified Sanofi contact channel, not the chat transcript.`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer review",
+        checks: [
+          { agent: "AI Explainability", agentId: "explainability", status: "pass", detail: "Redaction rule triggered on 4 pattern matches: patient name, date of birth, medical record number, facility name. Rule set: HIPAA 18-identifier pattern library v3.2." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Redaction event logged — 4 PHI elements matched and removed before downstream routing. Original submission retained only in the access-controlled compliance vault, not in the working request. Record #PHI-2026-08-0592." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Request redacted and routed",
+        badge: "4 PHI ELEMENTS REDACTED",
+        content: "The scientific question — eosinophil management guidance on dupilumab — was preserved and routed to Medical Information. All four identifying details were stripped before any agent other than PHI Protection itself saw them, and the redaction is logged for audit."
+      }
+    ]
+  },
+  "audit": {
+    title: "Reconstructing an immutable compliance record on demand",
+    steps: [
+      {
+        type: "input",
+        label: "Compliance officer request",
+        content: "We have an FDA inspection next week. Pull the full interaction history for the MLR review of the EADV symposium deck from last month, including every agent that touched it."
+      },
+      {
+        type: "processing",
+        label: "Audit Trail — record reconstruction",
+        items: [
+          "Querying immutable log store for review ID MLR-2026-08-0412...",
+          "Reconstructing full timeline: submission, processing, cross-checks, human review, final disposition...",
+          "Cross-referencing agent IDs against the governance registry for full names and versions...",
+          "Verifying hash-chain integrity across every log entry in the sequence..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "Reconstructed timeline — MLR-2026-08-0412",
+        content: `**Interaction history — EADV symposium deck MLR review**
+
+| Timestamp | Agent | Action | Integrity |
+|---|---|---|---|
+| Aug 6, 09:14 | MLR Review | Content ingested, 14 slides parsed | ✅ Hash verified |
+| Aug 6, 09:15 | Scientific Verification | Slide 9 data discrepancy flagged | ✅ Hash verified |
+| Aug 6, 09:15 | Promotional Risk | Slide 3 superlative language flagged | ✅ Hash verified |
+| Aug 6, 09:16 | Fair Balance | Efficacy/safety ratio flagged, correction applied | ✅ Hash verified |
+| Aug 6, 09:16 | Content Expiration | 1 superseded reference flagged | ✅ Hash verified |
+| Aug 6, 11:40 | Human reviewer (M. Thompson) | Final approval with corrections accepted | ✅ Hash verified |
+
+**Chain integrity: intact across all 6 entries — no gaps, no re-ordering, no tampering detected.**`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer review",
+        checks: [
+          { agent: "AI Explainability", agentId: "explainability", status: "pass", detail: "Every log entry includes the input hash, output hash, and the rule or model version that produced it — sufficient for a reviewer to reconstruct why each finding was raised." },
+          { agent: "Inspection Readiness", agentId: "inspection", status: "pass", detail: "Record formatted to the standard inspection-ready export template; no additional preparation needed before handoff." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Record reconstructed and hash-verified",
+        badge: "RECORD RECONSTRUCTED · HASH VERIFIED",
+        content: "The complete interaction history for MLR-2026-08-0412 was reconstructed in seconds, with every entry's hash chain intact. Exported in inspection-ready format for the compliance officer ahead of next week's FDA inspection."
+      }
+    ]
+  },
+  "off-label": {
+    title: "Real-time off-label detection and reactive-response routing",
+    steps: [
+      {
+        type: "input",
+        label: "HCP question via MSL Copilot chat",
+        content: "Have you seen dupilumab used for eosinophilic esophagitis in patients under 12? What does the data look like there?"
+      },
+      {
+        type: "processing",
+        label: "Off-Label Monitor — detection and routing",
+        items: [
+          "Parsing question for indication and population against the current approved label scope...",
+          "Confirming EoE approval is limited to patients 12 years and older...",
+          "Detecting the question falls outside the approved pediatric age range...",
+          "Blocking any proactive MSL discussion and routing to the approved reactive-only pathway..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "Routed to reactive Medical Information pathway",
+        content: `**Detection:** Question concerns EoE in patients under 12 — outside the approved label population (EoE indication: 12 years and older, ≥40 kg).
+
+**MSL Copilot response (permitted):** "That's outside what I can discuss proactively. If you'd like the available data on that specific population, I can route this as a reactive medical information request so you get a fully-sourced, compliant response."
+
+**Routed to:** Medical Information, reactive off-label response pathway. MSL is blocked from independently characterizing any unapproved-population data in this conversation.`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer cross-check",
+        checks: [
+          { agent: "Scientific Verification", agentId: "sci-verify", status: "pass", detail: "Confirmed current label population for the EoE indication; no exceptions or recent label changes affecting the under-12 population." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Off-label detection logged — EoE, under-12 population, routed to reactive Medical Information. MSL proactive discussion blocked per SOP. Record #OL-2026-08-0219." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Routed, not answered proactively",
+        badge: "OFF-LABEL — ROUTED TO REACTIVE MEDINFO",
+        content: "The question was correctly identified as outside the approved pediatric population. The MSL did not characterize any data directly; the HCP was offered a compliant reactive pathway through Medical Information, which is the only permitted route for this kind of question."
+      }
+    ]
+  },
+  "fair-balance": {
+    title: "Efficacy-to-safety ratio check on drafted content",
+    steps: [
+      {
+        type: "input",
+        label: "Draft congress recap submitted for review",
+        content: "Congress Planning Agent's draft recap for internal distribution contains five consecutive efficacy statements about a Phase 3 readout, with no safety information anywhere in the draft."
+      },
+      {
+        type: "processing",
+        label: "Fair Balance — ratio analysis",
+        items: [
+          "Parsing the draft into individual claim units: efficacy vs. safety vs. neutral...",
+          "Counting consecutive efficacy statements with no intervening safety context...",
+          "Comparing the 5:0 ratio against the internal ≤2:1 efficacy-to-safety guideline...",
+          "Identifying the most natural insertion point for a safety summary sentence..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "Ratio corrected: 5:0 → 2:1",
+        content: `**Before:** 5 consecutive efficacy statements, 0 safety mentions (ratio 5:0 — non-compliant)
+
+**Correction applied:** Safety summary sentence inserted after the second efficacy statement: "The most common adverse reactions (incidence ≥1%) included injection site reactions, conjunctivitis, and nasopharyngitis."
+
+**After:** 2 efficacy statements, 1 safety mention, 2 more efficacy statements, 1 more safety mention — ratio 2:1, within guideline.`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer cross-check",
+        checks: [
+          { agent: "Promotional Risk", agentId: "promo-risk", status: "pass", detail: "No promotional or superlative language introduced by the correction; safety sentence uses standard labeled adverse-reaction language only." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Fair balance correction logged — congress recap draft, ratio corrected 5:0 to 2:1 via one safety insertion. Record #FB-2026-08-0177." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Draft corrected before distribution",
+        badge: "RATIO CORRECTED 5:0 → 2:1",
+        content: "The draft recap is now within the internal fair-balance guideline. One safety sentence, sourced directly from the approved label, brought the efficacy-to-safety ratio from 5:0 to 2:1 without altering any efficacy claim."
+      }
+    ]
+  },
+  "expiration": {
+    title: "Monitoring label changes and retiring stale content automatically",
+    steps: [
+      {
+        type: "input",
+        label: "System event — label update",
+        content: "FDA approved a label update for Dupixent expanding the COPD population on Aug 3, 2026. Scan all indexed content referencing the prior COPD label language."
+      },
+      {
+        type: "processing",
+        label: "Content Expiration — library scan",
+        items: [
+          "Diffing new label text against the prior version to isolate the changed population language...",
+          "Scanning 12K approved content assets for references to the superseded population definition...",
+          "Classifying each match: retire, re-index with updated language, or no action needed...",
+          "Queuing re-indexing jobs and retirement notices for affected content owners..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "14 assets affected",
+        content: `**Content Expiration Scan — COPD label update, Aug 3, 2026**
+
+| Asset type | Count | Action |
+|---|---|---|
+| MSL slide decks | 6 | Re-indexed with updated population language |
+| Standard MedInfo responses | 5 | Re-indexed |
+| Field talking points | 3 | Retired — superseded by new leave-behind pending creation |
+
+**14 assets re-indexed or retired.** Content owners notified with a 5-business-day window to review before the retired assets are removed from the active library.`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer cross-check",
+        checks: [
+          { agent: "Scientific Verification", agentId: "sci-verify", status: "pass", detail: "Confirmed the new label text against the FDA approval letter dated Aug 3, 2026; re-indexed content uses the exact updated population language." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Content expiration scan logged — COPD label update, 14 assets affected (11 re-indexed, 3 retired). Record #CE-2026-08-0044." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Library updated",
+        badge: "14 ASSETS RE-INDEXED · 3 RETIRED",
+        content: "The content library now reflects the Aug 3 label update across every affected asset. Field teams using the 3 retired talking points were notified directly; no MSL can distribute superseded population language going forward."
+      }
+    ]
+  },
+  "explainability": {
+    title: "Generating a reviewer-readable transparency trace for an agent answer",
+    steps: [
+      {
+        type: "input",
+        label: "Reviewer request",
+        content: "Show me exactly how the Insights Agent decided that Ohio is an under-engaged, high-opportunity territory before I present this to leadership."
+      },
+      {
+        type: "processing",
+        label: "AI Explainability — trace generation",
+        items: [
+          "Retrieving the decision trace for the specific Insights Agent output in question...",
+          "Extracting every data source touched and the weight assigned to each...",
+          "Recomputing the confidence score from the underlying feature inputs...",
+          "Flagging any known caveats or data-sparsity issues affecting reliability..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "Explainability trace — Ohio territory scoring",
+        content: `**Why Ohio was scored as under-engaged / high-opportunity:**
+
+| Input | Weight | Value | Contribution |
+|---|---|---|---|
+| Clinical need index (RWD) | 35% | 58/100 | Moderate-high |
+| Scientific engagement index | 35% | 22/100 | Low — primary driver |
+| Specialist density (derm/100k) | 20% | 2.8 | Below national median |
+| Prior MSL coverage (12mo) | 10% | 3 visits | Sparse |
+
+**Confidence: 82%.** Caveat: 2 of Ohio's 9 counties have cohort sizes near the aggregation floor, which widens the uncertainty band for those counties specifically — territory-level score is not affected.`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer cross-check",
+        checks: [
+          { agent: "Scientific Verification", agentId: "sci-verify", status: "pass", detail: "Weighting formula matches the documented Insights Agent methodology (v2.1); no undocumented adjustments found in this trace." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Explainability trace generated and logged for reviewer request re: Ohio territory scoring. Record #EXP-2026-08-0303." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Trace delivered",
+        badge: "TRACE GENERATED · 82% CONFIDENCE",
+        content: "The full scoring trace — inputs, weights, confidence, and data-sparsity caveats — is ready for the leadership presentation. Nothing in the Insights Agent's recommendation depends on an undocumented or unreviewable input."
+      }
+    ]
+  },
+  "field-risk": {
+    title: "Surfacing compliance risk patterns before an audit finds them",
+    steps: [
+      {
+        type: "input",
+        label: "Periodic system scan",
+        content: "Monthly scan: analyze the last 90 days of MSL interaction and inquiry logs for compliance risk patterns."
+      },
+      {
+        type: "processing",
+        label: "Field Activity Risk — pattern analysis",
+        items: [
+          "Aggregating 90 days of MSL interaction logs across all territories...",
+          "Applying risk heuristics: repeat promotional-risk flags, off-label question volume, gift/meal timing proximity to prescribing changes...",
+          "Scoring territories and individual MSLs against historical baselines...",
+          "Distinguishing statistical outliers from routine variation..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "3 patterns flagged, 0 confirmed violations",
+        content: `**Field Activity Risk — 90-day pattern scan**
+
+| Pattern | Territory / MSL | Signal | Assessment |
+|---|---|---|---|
+| Repeat promotional-risk flags | MSL #4471, Midwest | 3 promo-risk flags in 90 days vs. team avg 0.4 | Coaching recommended, no violation — all 3 corrected pre-send |
+| Elevated off-label question volume | Southeast territory | 22 off-label questions vs. team avg 6 | Consistent with known EoE care-gap; all correctly routed to reactive MedInfo |
+| Gift/meal timing cluster | MSL #2209, Northeast | 2 meals within 5 days of 2 prescribing changes | Flagged for documentation review — timing plausible, no causal link established |
+
+**No confirmed violations.** All flagged patterns represent either routine variation or activity already handled compliantly by other governance agents.`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer cross-check",
+        checks: [
+          { agent: "PHI Protection", agentId: "privacy", status: "pass", detail: "Analysis performed on aggregate interaction metadata only — no patient data and no HCP clinical detail included in the risk scan." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Field activity risk scan logged — 90-day window, 3 patterns flagged, 0 confirmed violations. Record #FAR-2026-08-0018." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Scan complete, patterns routed for review",
+        badge: "3 PATTERNS FLAGGED · 0 VIOLATIONS CONFIRMED",
+        content: "Three statistical patterns were surfaced for human review — one coaching recommendation, one confirmed-benign care-gap explanation, and one documentation flag. None rises to a confirmed compliance violation, but all three are now visible before an external audit would find them cold."
+      }
+    ]
+  },
+  "inspection": {
+    title: "Assembling an inspection-ready evidence package on demand",
+    steps: [
+      {
+        type: "input",
+        label: "Regulatory affairs request",
+        content: "We need a complete evidence package for the Dupixent AD MLR reviews from the last quarter, ready for an unannounced inspection tomorrow morning."
+      },
+      {
+        type: "processing",
+        label: "Inspection Readiness — package assembly",
+        items: [
+          "Querying the Audit Trail for every MLR review record tagged Dupixent + AD in the last quarter...",
+          "Pulling the linked explainability traces and governance cross-check results for each...",
+          "Compiling content version history for every asset referenced across the reviews...",
+          "Formatting the full set to the standard inspection-ready binder structure..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "Package manifest",
+        content: `**Inspection-Ready Package — Dupixent AD, Q3 2026 MLR Reviews**
+
+| Component | Count |
+|---|---|
+| MLR review records | 11 |
+| Linked audit trail entries | 63 |
+| Explainability traces | 11 |
+| Content version histories | 27 assets |
+| Governance cross-check logs | 41 |
+
+**Format:** indexed PDF binder + machine-readable log export, cross-referenced by review ID. Chain-of-custody hash included for every source record.`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer cross-check",
+        checks: [
+          { agent: "Audit Trail", agentId: "audit", status: "pass", detail: "All 63 linked entries verified against the immutable log store; no gaps or missing records for the quarter." },
+          { agent: "AI Explainability", agentId: "explainability", status: "pass", detail: "All 11 explainability traces are complete and reviewer-readable — no review is missing its methodology documentation." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Package ready",
+        badge: "PACKAGE READY · 47 DOCUMENTS INDEXED",
+        content: "The full evidence package — 47 documents across 11 MLR reviews, fully cross-referenced and hash-verified — was assembled in under a minute and is ready for tomorrow's inspection. No manual document hunting required."
+      }
+    ]
   }
 };
