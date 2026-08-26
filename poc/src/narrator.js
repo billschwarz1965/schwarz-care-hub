@@ -5,19 +5,43 @@ let controlsInjected = false;
 const RATE = 0.92;
 const PITCH = 1.0;
 
-function getVoice() {
-  const voices = speechSynthesis.getVoices();
-  const prefs = [
-    "Microsoft Jenny Online", "Microsoft Aria Online", "Microsoft Guy Online",
-    "Microsoft Jenny", "Microsoft Aria",
-    "Google US English", "Samantha", "Alex",
-    "Microsoft Zira", "Microsoft David",
-  ];
-  for (const name of prefs) {
+// Female voices only — first match found wins. No male fallback: if none of
+// these are installed, the browser's own default is used as a last resort
+// rather than risking a male voice we didn't choose.
+const FEMALE_VOICE_PREFS = [
+  "Microsoft Jenny Online", "Microsoft Aria Online",
+  "Microsoft Jenny", "Microsoft Aria", "Microsoft Zira",
+  "Google US English", "Samantha",
+];
+
+function pickVoice(voices) {
+  for (const name of FEMALE_VOICE_PREFS) {
     const v = voices.find(v => v.name.includes(name) && v.lang.startsWith("en"));
     if (v) return v;
   }
   return voices.find(v => v.lang.startsWith("en")) || voices[0] || null;
+}
+
+// speechSynthesis.getVoices() is frequently empty on the very first call —
+// the list loads asynchronously and only "voiceschanged" tells you it's
+// ready. Without this, the first line of any demo would fall back to
+// whatever voice the browser considers default (often male), while every
+// later line correctly picks the preferred female voice. This resolves once
+// and caches the result so every speak() call — including the first —
+// waits for the real voice list.
+let voiceReadyPromise = null;
+function ensureVoice() {
+  if (voiceReadyPromise) return voiceReadyPromise;
+  voiceReadyPromise = new Promise((resolve) => {
+    const existing = speechSynthesis.getVoices();
+    if (existing.length) { resolve(pickVoice(existing)); return; }
+    speechSynthesis.addEventListener("voiceschanged", () => {
+      resolve(pickVoice(speechSynthesis.getVoices()));
+    }, { once: true });
+    // Safety net in case voiceschanged never fires in this browser.
+    setTimeout(() => resolve(pickVoice(speechSynthesis.getVoices())), 1000);
+  });
+  return voiceReadyPromise;
 }
 
 function injectControls() {
@@ -76,18 +100,19 @@ function injectControls() {
     if (bar && !ccEnabled) bar.classList.remove("visible");
   });
 
-  if (speechSynthesis.getVoices().length === 0) {
-    speechSynthesis.addEventListener("voiceschanged", () => {}, { once: true });
-  }
 }
 
-export function speak(text) {
+// Start resolving the voice list as soon as this module loads, well before
+// the first speak() call, so that first call doesn't have to wait either.
+ensureVoice();
+
+export async function speak(text) {
   if (!voiceEnabled || !text) return;
+  const voice = await ensureVoice();
   speechSynthesis.cancel();
 
   const plain = text.replace(/<[^>]+>/g, "").replace(/&[^;]+;/g, "");
   const utter = new SpeechSynthesisUtterance(plain);
-  const voice = getVoice();
   if (voice) utter.voice = voice;
   utter.rate = RATE;
   utter.pitch = PITCH;
@@ -95,21 +120,22 @@ export function speak(text) {
   speechSynthesis.speak(utter);
 }
 
-export function speakAndWait(text, minMs = 2000) {
+export async function speakAndWait(text, minMs = 2000) {
+  if (!text) return;
+
+  const plain = text.replace(/<[^>]+>/g, "").replace(/&[^;]+;/g, "");
+  const start = Date.now();
+
+  if (!voiceEnabled) {
+    await new Promise(resolve => setTimeout(resolve, minMs));
+    return;
+  }
+
+  const voice = await ensureVoice();
+
   return new Promise(resolve => {
-    if (!text) { resolve(); return; }
-
-    const plain = text.replace(/<[^>]+>/g, "").replace(/&[^;]+;/g, "");
-    const start = Date.now();
-
-    if (!voiceEnabled) {
-      setTimeout(resolve, minMs);
-      return;
-    }
-
     speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(plain);
-    const voice = getVoice();
     if (voice) utter.voice = voice;
     utter.rate = RATE;
     utter.pitch = PITCH;
