@@ -309,7 +309,13 @@ function bindChat() {
   });
 }
 
-const CHAT_DEMO_SEQUENCE = [
+// Editions with no MSL, Medical Affairs, or Patient persona (host page sets
+// <body data-audience="hcp">) get every demo question asked by an HCP
+// instead — asking as a role that doesn't exist in that build would be
+// confusing, not illustrative.
+const IS_HCP_ONLY_AUDIENCE = document.body.dataset.audience === "hcp";
+
+const INTERNAL_CHAT_DEMO_SEQUENCE = [
   { persona: "MSL", css: "msl", icon: "ti-stethoscope", question: "What is type 2 inflammation?" },
   { persona: "HCP", css: "hcp", icon: "ti-heartbeat", question: "Tell me about atopic dermatitis" },
   { persona: "Med Affairs", css: "med-affairs", icon: "ti-briefcase", question: "Dupixent competitive landscape" },
@@ -319,6 +325,19 @@ const CHAT_DEMO_SEQUENCE = [
   { persona: "Patient Advocate", css: "patient", icon: "ti-heart", question: "What is the atopic march?" },
   { persona: "HCP", css: "hcp", icon: "ti-heartbeat", question: "What treats rheumatoid arthritis?" },
 ];
+
+const HCP_CHAT_DEMO_SEQUENCE = [
+  { persona: "HCP", css: "hcp", icon: "ti-heartbeat", question: "What is type 2 inflammation?" },
+  { persona: "HCP", css: "hcp", icon: "ti-heartbeat", question: "Tell me about atopic dermatitis" },
+  { persona: "HCP", css: "hcp", icon: "ti-heartbeat", question: "Dupixent competitive landscape" },
+  { persona: "HCP", css: "hcp", icon: "ti-heartbeat", question: "AD competitors vs Dupixent" },
+  { persona: "HCP", css: "hcp", icon: "ti-heartbeat", question: "How are AD and asthma connected?" },
+  { persona: "HCP", css: "hcp", icon: "ti-heartbeat", question: "What diseases does Dupixent treat?" },
+  { persona: "HCP", css: "hcp", icon: "ti-heartbeat", question: "What is the atopic march?" },
+  { persona: "HCP", css: "hcp", icon: "ti-heartbeat", question: "What treats rheumatoid arthritis?" },
+];
+
+const CHAT_DEMO_SEQUENCE = IS_HCP_ONLY_AUDIENCE ? HCP_CHAT_DEMO_SEQUENCE : INTERNAL_CHAT_DEMO_SEQUENCE;
 
 async function runChatDemo() {
   if (chatDemoRunning) return;
@@ -332,7 +351,9 @@ async function runChatDemo() {
   demoBtn.disabled = true;
   demoBtn.innerHTML = '<i class="ti ti-loader-2 ti-spin"></i> Running...';
 
-  messages.innerHTML = '<div class="chat-msg ai">Starting demo — simulating questions from different MedVerse users...</div>';
+  messages.innerHTML = IS_HCP_ONLY_AUDIENCE
+    ? '<div class="chat-msg ai">Starting demo — simulating HCP questions...</div>'
+    : '<div class="chat-msg ai">Starting demo — simulating questions from different MedVerse users...</div>';
   suggestions.innerHTML = "";
   scrollChat();
   await delay(2000);

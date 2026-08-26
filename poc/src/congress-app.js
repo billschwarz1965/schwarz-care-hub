@@ -544,7 +544,13 @@ function bindChat() {
 
 // ─── CHAT DEMO ───
 
-const CHAT_DEMO_SEQUENCE = [
+// Editions with no MSL or Medical Affairs persona (host page sets
+// <body data-audience="hcp">) get every demo question asked by an HCP
+// instead — asking as a role that doesn't exist in that build would be
+// confusing, not illustrative.
+const IS_HCP_ONLY_AUDIENCE = document.body.dataset.audience === "hcp";
+
+const INTERNAL_CHAT_DEMO_SEQUENCE = [
   { persona: "MSL", css: "msl", question: "What were the key Dupixent presentations at AAD 2026?" },
   { persona: "Med Affairs", css: "med-affairs", question: "Tell me about the head-to-head comparison data" },
   { persona: "MSL", css: "msl", question: "What are the MSL talking points for COPD data?" },
@@ -554,6 +560,19 @@ const CHAT_DEMO_SEQUENCE = [
   { persona: "MSL", css: "msl", question: "What findings were reported for prurigo nodularis?" },
   { persona: "Med Affairs", css: "med-affairs", question: "What Sanofi data was presented at ATS 2026?" },
 ];
+
+const HCP_CHAT_DEMO_SEQUENCE = [
+  { persona: "HCP", css: "hcp", question: "What were the key Dupixent presentations at AAD 2026?" },
+  { persona: "HCP", css: "hcp", question: "Tell me about the head-to-head comparison data" },
+  { persona: "HCP", css: "hcp", question: "What was presented on Dupixent for COPD?" },
+  { persona: "HCP", css: "hcp", question: "Summarize the high-impact findings across all congresses" },
+  { persona: "HCP", css: "hcp", question: "What EoE data was presented at DDW?" },
+  { persona: "HCP", css: "hcp", question: "What's upcoming at EADV 2026?" },
+  { persona: "HCP", css: "hcp", question: "What findings were reported for prurigo nodularis?" },
+  { persona: "HCP", css: "hcp", question: "What Sanofi data was presented at ATS 2026?" },
+];
+
+const CHAT_DEMO_SEQUENCE = IS_HCP_ONLY_AUDIENCE ? HCP_CHAT_DEMO_SEQUENCE : INTERNAL_CHAT_DEMO_SEQUENCE;
 
 async function narrate(text) {
   const el = document.getElementById("demo-narrator");
@@ -588,7 +607,9 @@ async function runChatDemo() {
   chatDemoBtn.innerHTML = '<i class="ti ti-loader-2" style="font-size:13px;animation:spin 1s linear infinite"></i> Running…';
   resetChat();
   await delay(600);
-  await narrate("Congress Intelligence demo — AI answers about medical congress data across personas");
+  await narrate(IS_HCP_ONLY_AUDIENCE
+    ? "Congress Intelligence demo — AI answers HCP questions about medical congress data"
+    : "Congress Intelligence demo — AI answers about medical congress data across personas");
 
   for (const step of CHAT_DEMO_SEQUENCE) {
     await narrate(step.persona + " asks about congress intelligence");
