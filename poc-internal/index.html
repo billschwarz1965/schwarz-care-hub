@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MedVerse">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <meta name="theme-color" content="#7a00e6">
+  <title>MedVerse — Internal Edition (MSL &amp; Medical Affairs)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5fa;
+      --surface: #ffffff;
+      --surface-dim: #f3eff8;
+      --text: #1a1a2e;
+      --text-secondary: #5a5672;
+      --text-muted: #918da3;
+      --border: #e4dff0;
+      --border-strong: #cdc6de;
+      --accent: #7a00e6;
+      --accent-hover: #6600c2;
+      --accent-light: #f0e6ff;
+      --accent-text: #6b21a8;
+      --accent-secondary: #aa46a3;
+      --gold: #f9c851;
+      --gold-dark: #e5a800;
+      --success: #166534;
+      --success-bg: #dcfce7;
+      --warning: #854d0e;
+      --warning-bg: #fef9c3;
+      --danger: #991b1b;
+      --danger-bg: #fee2e2;
+      --orion-accent: #0f6e56;
+      --orion-bg: #e1f5ee;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --font: 'Work Sans', 'Raleway', 'Roboto', sans-serif;
+    }
+
+    html.dark {
+      --bg: #0a0a14;
+      --surface: #13131f;
+      --surface-dim: #1a1a2e;
+      --text: #f0eef5;
+      --text-secondary: #a8a3b8;
+      --text-muted: #6b6580;
+      --border: #2a2840;
+      --border-strong: #3a3555;
+      --accent: #7a00e6;
+      --accent-hover: #8c1aff;
+      --accent-light: #2a1a40;
+      --accent-text: #c084fc;
+      --accent-secondary: #aa46a3;
+      --gold: #f9c851;
+      --gold-dark: #e5a800;
+      --success: #34d399;
+      --success-bg: rgba(52,211,153,0.1);
+      --warning: #f9c851;
+      --warning-bg: rgba(249,200,81,0.1);
+      --danger: #f87171;
+      --danger-bg: rgba(248,113,113,0.1);
+      --orion-accent: #34d399;
+      --orion-bg: rgba(52,211,153,0.1);
+    }
+
+    body { font-family: var(--font); background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* HEADER */
+    .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0; flex-shrink: 0; }
+    .header-brand-bar { height: 3px; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 50%, var(--gold) 100%); }
+    .header-inner { padding: 10px 24px; display: flex; align-items: center; gap: 12px; }
+    .header-home { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; color: inherit; border-radius: 8px; padding: 4px 8px 4px 4px; margin: -4px; transition: background 0.15s; }
+    .header-home:hover { background: var(--surface-dim); }
+    .header-logo { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px; }
+    .header-title { font-size: 16px; font-weight: 600; color: var(--text); }
+    .header-subtitle { font-size: 12px; color: var(--text-muted); }
+    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .header-badge { font-size: 11px; padding: 3px 10px; background: var(--warning-bg); color: var(--warning); border-radius: 20px; font-weight: 500; }
+
+    /* MODULE NAV */
+    .module-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; flex-shrink: 0; overflow-x: auto; }
+    .module-tab { padding: 10px 20px; font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .module-tab:hover { color: var(--text); }
+    .module-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .module-tab i { font-size: 16px; }
+
+    /* MAIN SCROLL AREA */
+    .main-scroll { flex: 1; overflow-y: auto; }
+    .main-scroll::-webkit-scrollbar { width: 6px; }
+    .main-scroll::-webkit-scrollbar-track { background: transparent; }
+    .main-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* HERO SECTION */
+    .hero { text-align: center; padding: 56px 24px 40px; max-width: 800px; margin: 0 auto; }
+    .hero-logo { width: 80px; height: 80px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px; color: white; box-shadow: 0 8px 32px rgba(122,0,230,0.18); }
+    .hero h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+    .hero h1 span { color: var(--accent); }
+    .hero-tagline { font-size: 15px; color: var(--text-secondary); line-height: 1.7; max-width: 620px; margin: 0 auto; }
+
+    /* AUDIENCE STRIP */
+    .audience-strip { max-width: 1100px; margin: 0 auto 36px; padding: 0 24px; }
+    .audience-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    @media (max-width: 700px) { .audience-row { grid-template-columns: 1fr; } }
+    .audience-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; display: flex; gap: 12px; align-items: flex-start; }
+    .audience-card i { font-size: 20px; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+    .audience-card strong { display: block; font-size: 13.5px; font-weight: 600; margin-bottom: 3px; }
+    .audience-card span { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+
+    /* MODULE CARDS GRID */
+    .modules-section { max-width: 1100px; margin: 0 auto; padding: 0 24px 40px; }
+    .section-heading { font-size: 18px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+    .section-heading i { font-size: 22px; color: var(--accent); }
+    .section-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+
+    .module-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 900px) { .module-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .module-grid { grid-template-columns: 1fr; } }
+
+    .module-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 20px; text-decoration: none; color: inherit; transition: all 0.2s; display: flex; flex-direction: column; }
+    .module-card:hover { border-color: var(--accent-secondary); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(122,0,230,0.08); }
+    .module-card-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 14px; flex-shrink: 0; background: var(--accent-light); color: var(--accent); }
+    .module-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .module-card p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; flex: 1; }
+    .module-card-audience { font-size: 11px; font-weight: 600; color: var(--accent-text); background: var(--accent-light); border-radius: 20px; padding: 3px 10px; align-self: flex-start; margin-bottom: 10px; }
+    .module-card-arrow { display: flex; align-items: center; gap: 4px; margin-top: 14px; font-size: 12px; font-weight: 600; color: var(--accent); opacity: 0; transition: opacity 0.2s; }
+    .module-card:hover .module-card-arrow { opacity: 1; }
+
+    /* Card colour themes */
+    .module-card[data-module="msl"] .module-card-icon { background: #dbeafe; color: #2563eb; }
+    .module-card[data-module="medical"] .module-card-icon { background: #e0f2fe; color: #0369a1; }
+    .module-card[data-module="signals"] .module-card-icon { background: var(--orion-bg); color: var(--orion-accent); }
+    .module-card[data-module="disease"] .module-card-icon { background: #ecfdf5; color: #059669; }
+    .module-card[data-module="literature"] .module-card-icon { background: #fae8ff; color: #a21caf; }
+    .module-card[data-module="congress"] .module-card-icon { background: #fef3c7; color: #b45309; }
+    .module-card[data-module="agents"] .module-card-icon { background: #dbeafe; color: #2563eb; }
+
+    /* KEY FEATURES STRIP */
+    .features-strip { max-width: 1100px; margin: 0 auto 40px; padding: 0 24px; }
+    .features-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .feature-chip { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 40px; padding: 10px 20px; font-size: 13px; font-weight: 500; color: var(--text-secondary); transition: all 0.2s; }
+    .feature-chip i { font-size: 18px; color: var(--accent); }
+    .feature-chip:hover { border-color: var(--accent); background: var(--accent-light); color: var(--accent-text); }
+
+    /* FOOTER */
+    .home-footer { text-align: center; padding: 24px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted); background: var(--surface); flex-shrink: 0; }
+    .home-footer span { margin: 0 6px; opacity: 0.5; }
+
+    /* THEME TOGGLE */
+    .theme-toggle { position:fixed;top:20px;right:20px;z-index:200;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text);transition:all .2s;box-shadow:0 2px 10px rgba(0,0,0,.08); }
+    .theme-toggle:hover { border-color:var(--accent);transform:scale(1.08); }
+    .theme-toggle .ti-moon { display:none; }
+    html.dark .theme-toggle .ti-moon { display:block; }
+    html.dark .theme-toggle .ti-sun { display:none; }
+  </style>
+  <link rel="stylesheet" href="/src/enhancements.css">
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode"><i class="ti ti-sun"></i><i class="ti ti-moon"></i></button>
+
+  <div class="header">
+    <div class="header-brand-bar"></div>
+    <div class="header-inner">
+      <a class="header-home" href="index.html" title="MedVerse Home">
+        <div class="header-logo"><i class="ti ti-brain"></i></div>
+        <div>
+          <div class="header-title">MedVerse</div>
+          <div class="header-subtitle">Internal Edition — MSL &amp; Medical Affairs</div>
+        </div>
+      </a>
+      <div class="header-actions">
+        <div class="header-badge">Internal Only</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="module-nav">
+    <a class="module-tab active" href="index.html"><i class="ti ti-home"></i> Home</a>
+    <a class="module-tab" href="msl-copilot.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
+    <a class="module-tab" href="medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
+    <a class="module-tab" href="orion.html"><i class="ti ti-broadcast"></i> Interaction Signals</a>
+    <a class="module-tab" href="disease.html"><i class="ti ti-dna"></i> Disease Navigator</a>
+    <a class="module-tab" href="literature.html"><i class="ti ti-book"></i> Literature</a>
+    <a class="module-tab" href="congress.html"><i class="ti ti-calendar-event"></i> Congress</a>
+    <a class="module-tab" href="agents.html"><i class="ti ti-cpu"></i> Agent Ecosystem</a>
+    <a class="module-tab" href="demo.html"><i class="ti ti-player-play"></i> Demo</a>
+    <a class="module-tab" href="about.html"><i class="ti ti-info-circle"></i> About</a>
+  </nav>
+
+  <div class="main-scroll" id="main-scroll">
+
+    <!-- ===== HERO ===== -->
+    <div class="hero">
+      <div class="hero-logo"><i class="ti ti-brain"></i></div>
+      <h1><span>MedVerse</span> for MSL Field Teams &amp; Medical Affairs</h1>
+      <p class="hero-tagline">The internal edition — full visibility into interaction signals, the agent architecture behind every output, and the two concierge experiences built for Sanofi's own field and medical teams.</p>
+    </div>
+
+    <!-- ===== WHO IT'S FOR ===== -->
+    <div class="audience-strip">
+      <div class="audience-row">
+        <div class="audience-card">
+          <i class="ti ti-briefcase"></i>
+          <div>
+            <strong>Medical Science Liaisons</strong>
+            <span>Pre-call briefings, KOL profiling, compliance checks, and post-call reporting — everything for a day in the field.</span>
+          </div>
+        </div>
+        <div class="audience-card">
+          <i class="ti ti-building-hospital"></i>
+          <div>
+            <strong>Medical Affairs</strong>
+            <span>Scientific communications, regulatory intelligence, evidence generation, and advisory board planning.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MODULE CARDS ===== -->
+    <div class="modules-section">
+      <div class="section-heading"><i class="ti ti-apps"></i> Explore Modules</div>
+      <div class="section-sub">Eight modules, all internal-only. HCP Concierge and Patient Concierge are not part of this build.</div>
+      <div class="module-grid">
+
+        <a href="msl-copilot.html" class="module-card" data-module="msl">
+          <div class="module-card-icon"><i class="ti ti-briefcase"></i></div>
+          <div class="module-card-audience">MSL field teams</div>
+          <h3>MSL Copilot</h3>
+          <p>Field intelligence hub for Medical Science Liaisons. Prepare for HCP engagements, access KOL profiles, and generate medical insights.</p>
+          <div class="module-card-arrow"><i class="ti ti-arrow-right"></i> Open</div>
+        </a>
+
+        <a href="medical.html" class="module-card" data-module="medical">
+          <div class="module-card-icon"><i class="ti ti-building-hospital"></i></div>
+          <div class="module-card-audience">Medical Affairs</div>
+          <h3>Medical Concierge</h3>
+          <p>Command center for Medical Affairs teams. Manage publications, track regulatory changes, coordinate advisory boards, and synthesize evidence.</p>
+          <div class="module-card-arrow"><i class="ti ti-arrow-right"></i> Open</div>
+        </a>
+
+        <a href="orion.html" class="module-card" data-module="signals">
+          <div class="module-card-icon"><i class="ti ti-broadcast"></i></div>
+          <div class="module-card-audience">Full signal visibility</div>
+          <h3>Interaction Signals</h3>
+          <p>The complete signal picture — dashboard, HCP action queue, disease area coverage, and live timeline. Every signal generated across the platform, unfiltered.</p>
+          <div class="module-card-arrow"><i class="ti ti-arrow-right"></i> Open</div>
+        </a>
+
+        <a href="disease.html" class="module-card" data-module="disease">
+          <div class="module-card-icon"><i class="ti ti-dna"></i></div>
+          <div class="module-card-audience">Shared</div>
+          <h3>Disease State Navigator</h3>
+          <p>Cross-therapeutic-area disease landscape explorer. Understand disease pathways, treatment landscapes, and pipeline connections.</p>
+          <div class="module-card-arrow"><i class="ti ti-arrow-right"></i> Open</div>
+        </a>
+
+        <a href="literature.html" class="module-card" data-module="literature">
+          <div class="module-card-icon"><i class="ti ti-book"></i></div>
+          <div class="module-card-audience">Shared</div>
+          <h3>Literature Intelligence</h3>
+          <p>Live PubMed-powered publication search and analysis. Find, organize, and synthesize scientific literature.</p>
+          <div class="module-card-arrow"><i class="ti ti-arrow-right"></i> Open</div>
+        </a>
+
+        <a href="congress.html" class="module-card" data-module="congress">
+          <div class="module-card-icon"><i class="ti ti-calendar-event"></i></div>
+          <div class="module-card-audience">Shared</div>
+          <h3>Congress Intelligence</h3>
+          <p>Medical congress coverage and intelligence. Track presentations, abstracts, and competitive insights from key congresses.</p>
+          <div class="module-card-arrow"><i class="ti ti-arrow-right"></i> Open</div>
+        </a>
+
+        <a href="agents.html" class="module-card" data-module="agents">
+          <div class="module-card-icon"><i class="ti ti-cpu"></i></div>
+          <div class="module-card-audience">How it works</div>
+          <h3>Agent Ecosystem</h3>
+          <p>The full AI agent architecture powering MedVerse — every business agent, intelligence hub, and governance agent, with runnable demos.</p>
+          <div class="module-card-arrow"><i class="ti ti-arrow-right"></i> Open</div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ===== KEY FEATURES ===== -->
+    <div class="features-strip">
+      <div class="features-row">
+        <div class="feature-chip"><i class="ti ti-broadcast"></i> Full Signal Feed</div>
+        <div class="feature-chip"><i class="ti ti-microphone"></i> Voice Search</div>
+        <div class="feature-chip"><i class="ti ti-cpu"></i> 30 AI Agents</div>
+        <div class="feature-chip"><i class="ti ti-bolt"></i> Real-Time Data</div>
+        <div class="feature-chip"><i class="ti ti-moon-stars"></i> Dark Mode</div>
+      </div>
+    </div>
+
+  </div><!-- /main-scroll -->
+
+  <!-- FOOTER -->
+  <div class="home-footer">
+    Sanofi <span>&middot;</span> Campus+Medical Discovery <span>&middot;</span> Digital Product Innovation
+  </div>
+
+  <script type="module" src="/src/enhancements.js"></script>
+  <script type="module">
+    import { speakAndWait, showControls } from '/src/narrator.js';
+
+    function toggleTheme(){document.documentElement.classList.toggle("dark");localStorage.setItem("medverse-theme",document.documentElement.classList.contains("dark")?"dark":"light")}
+    if(localStorage.getItem("medverse-theme")==="dark")document.documentElement.classList.add("dark");
+
+    if (window.location.hash === '#autoplay') {
+      window.location.hash = '';
+      showControls();
+      setTimeout(async () => {
+        await speakAndWait("Welcome to MedVerse — the internal edition for MSL field teams and Medical Affairs. This build includes full interaction signal visibility and the agent ecosystem behind every output.", 4000);
+        await speakAndWait("Let's take a guided tour, starting with the MSL Copilot.", 2500);
+        const next = sessionStorage.getItem('medverse-playall-next');
+        if (next) {
+          const modules = JSON.parse(sessionStorage.getItem('medverse-playall-modules') || '[]');
+          const idx = parseInt(next, 10);
+          if (idx < modules.length) {
+            sessionStorage.setItem('medverse-playall-next', String(idx));
+            window.location.href = modules[idx].url + '#autoplay';
+          }
+        }
+      }, 800);
+    }
+  </script>
+</body>
+</html>
