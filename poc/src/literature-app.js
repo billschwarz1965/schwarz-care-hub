@@ -889,10 +889,14 @@ async function autoDeepDive(articles) {
   }
 }
 
-// === DEMO: SEARCH ===
+// === DEMO ===
+// A single sequential demo covers the whole page — search, intelligence
+// panel, chat — so every entry point below (search-panel button, chat-panel
+// button, header "Play Demo") launches the same runDemo() rather than each
+// running its own shorter, redundant walkthrough.
 const demoSearchBtn = document.getElementById("demo-search-btn");
 if (demoSearchBtn) {
-  demoSearchBtn.addEventListener("click", runSearchDemo);
+  demoSearchBtn.addEventListener("click", runDemo);
 }
 
 async function typeInto(el, text) {
@@ -901,34 +905,6 @@ async function typeInto(el, text) {
     el.value += text[i];
     await delay(20 + Math.random() * 25);
   }
-}
-
-async function runSearchDemo() {
-  demoSearchBtn.disabled = true;
-  demoSearchBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running demo…';
-
-  searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
-  await delay(600);
-  await narrate("Literature search demo — querying PubMed and NEJM in real time");
-
-  await typeInto(searchInput, "dupilumab atopic dermatitis long-term safety");
-  await delay(600);
-  await runSearch();
-  await delay(3000);
-  await narrate("Results include NEJM articles, auto deep-dive summaries, and Sanofi pipeline intelligence");
-
-  searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
-  await delay(1500);
-  searchInput.value = "";
-  await narrate("Running a second search — nirsevimab RSV prevention");
-  await typeInto(searchInput, "nirsevimab RSV prevention infants");
-  await delay(600);
-  await runSearch();
-  await narrate("Each search generates intelligence signals for MSL field teams via Orion");
-
-  narrateOff();
-  demoSearchBtn.disabled = false;
-  demoSearchBtn.innerHTML = '<i class="ti ti-player-play"></i> Watch literature search demo';
 }
 
 // === CHAT RESET ===
@@ -960,10 +936,9 @@ function resetLitChat() {
 const chatClearBtn = document.getElementById("chat-clear-btn");
 if (chatClearBtn) chatClearBtn.addEventListener("click", resetLitChat);
 
-// === DEMO: CHAT ===
 const demoChatBtn = document.getElementById("demo-chat-btn");
 if (demoChatBtn) {
-  demoChatBtn.addEventListener("click", runChatDemo);
+  demoChatBtn.addEventListener("click", runDemo);
 }
 
 async function narrate(text) {
@@ -982,38 +957,6 @@ function narrateOff() {
   hideControls();
 }
 
-async function runChatDemo() {
-  demoChatBtn.disabled = true;
-  demoChatBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running demo…';
-
-  resetLitChat();
-  await delay(600);
-  await narrate("Literature Intelligence demo — live PubMed and NEJM searches with AI synthesis");
-
-  await typeInto(chatInput, "What are the latest publications on dupilumab?");
-  await narrate("Searching PubMed and NEJM for dupilumab publications");
-  chatSend.disabled = false;
-  await sendChatMessage();
-  await delay(4000);
-
-  await narrate("First query complete — now searching for nirsevimab RSV evidence");
-  await typeInto(chatInput, "What evidence exists for nirsevimab RSV prevention?");
-  chatSend.disabled = false;
-  await sendChatMessage();
-  await delay(4000);
-
-  await narrate("Second query complete — searching for tolebrutinib in multiple sclerosis");
-  await typeInto(chatInput, "Tell me about tolebrutinib in multiple sclerosis");
-  chatSend.disabled = false;
-  await sendChatMessage();
-  await delay(3000);
-
-  await narrate("Three live PubMed searches with AI synthesis — all citations link to original papers");
-  narrateOff();
-  demoChatBtn.disabled = false;
-  demoChatBtn.innerHTML = '<i class="ti ti-player-play"></i> Watch conversation demo';
-}
-
 // === FULL UNIFIED DEMO ===
 
 let fullDemoRunning = false;
@@ -1023,6 +966,8 @@ async function runDemo() {
   fullDemoRunning = true;
   const btn = document.getElementById("run-demo");
   if (btn) { btn.disabled = true; btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running...'; }
+  if (demoSearchBtn) { demoSearchBtn.disabled = true; demoSearchBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running…'; }
+  if (demoChatBtn) { demoChatBtn.disabled = true; demoChatBtn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Running…'; }
 
   const mainPanel = document.querySelector(".main-panel");
   if (mainPanel) mainPanel.scrollTo({ top: 0, behavior: "smooth" });
@@ -1049,6 +994,15 @@ async function runDemo() {
   await runSearch();
   await delay(4000);
   await narrate("Results include NEJM articles with auto deep-dive summaries and Sanofi pipeline intelligence");
+
+  // ACT 3b: Auto deep-dive
+  const deepDiveBadge = document.querySelector(".deep-dive-badge");
+  if (deepDiveBadge) {
+    deepDiveBadge.scrollIntoView({ behavior: "smooth", block: "center" });
+    await delay(600);
+    await narrate("The agent already pulled the abstract and wrote this summary — no click required");
+    await delay(1200);
+  }
 
   // ACT 4: Intelligence panel
   const intel = document.getElementById("intel-panel");
@@ -1091,23 +1045,16 @@ async function runDemo() {
   await delay(4000);
   await narrate("Each search generates an intelligence signal for MSL field teams via Orion");
 
-  // ACT 8: Chat demo
-  await narrate("The Literature Intelligence Agent answers questions with live PubMed searches and AI synthesis");
+  // ACT 8: Chat demo — one cross-TA question, distinct from both searches above
+  await narrate("The same agent answers questions directly in chat, with live PubMed searches behind every reply");
   resetLitChat();
   await delay(400);
-  await typeInto(chatInput, "What are the latest publications on dupilumab?");
+  await typeInto(chatInput, "Tell me about tolebrutinib in multiple sclerosis");
   await delay(600);
   chatSend.disabled = false;
   await sendChatMessage();
   await delay(5000);
-  await narrate("First chat query complete — live PubMed results with citations and source links");
-
-  await delay(1500);
-  await typeInto(chatInput, "Tell me about tolebrutinib in multiple sclerosis");
-  chatSend.disabled = false;
-  await sendChatMessage();
-  await delay(4000);
-  await narrate("Cross-TA search — the agent covers all Sanofi therapeutic areas with live evidence");
+  await narrate("Live PubMed results with citations and source links — the agent covers every Sanofi therapeutic area this way");
 
   // Wrap up
   if (mainPanel) mainPanel.scrollTo({ top: 0, behavior: "smooth" });
@@ -1117,6 +1064,8 @@ async function runDemo() {
 
   fullDemoRunning = false;
   if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-player-play"></i> Play Demo'; }
+  if (demoSearchBtn) { demoSearchBtn.disabled = false; demoSearchBtn.innerHTML = '<i class="ti ti-player-play"></i> Watch literature search demo'; }
+  if (demoChatBtn) { demoChatBtn.disabled = false; demoChatBtn.innerHTML = '<i class="ti ti-player-play" style="font-size:13px"></i> Demo'; }
 }
 
 const runDemoBtn = document.getElementById("run-demo");
