@@ -22,24 +22,46 @@ function pickVoice(voices) {
   return voices.find(v => v.lang.startsWith("en")) || voices[0] || null;
 }
 
-// speechSynthesis.getVoices() is frequently empty on the very first call —
-// the list loads asynchronously and only "voiceschanged" tells you it's
-// ready. Without this, the first line of any demo would fall back to
-// whatever voice the browser considers default (often male), while every
-// later line correctly picks the preferred female voice. This resolves once
-// and caches the result so every speak() call — including the first —
-// waits for the real voice list.
+// speechSynthesis.getVoices() is frequently empty (or incomplete) on the
+// first call. Local voices populate almost immediately, but Edge's "Online"
+// neural voices (Jenny, Aria) are enumerated via a network call to
+// Microsoft's speech service and can take a few seconds to show up in a
+// later "voiceschanged" event. Resolving on the first voiceschanged — or on
+// a short timeout — locks in a local voice (Zira/David) before the better
+// online one ever arrives.
+//
+// So: keep listening across multiple voiceschanged events, and only settle
+// early once we actually see one of our top-priority (online) voices.
+// Otherwise wait out a longer timeout for them to arrive before falling
+// back to whatever's best in the local list. Resolves once and caches the
+// result so every speak() call — including the first — waits for it.
+const TOP_PRIORITY_VOICES = ["Microsoft Jenny Online", "Microsoft Aria Online"];
+// Only Edge exposes the online neural voices, and only over a network call —
+// worth a longer wait there. Chrome/Firefox never will, so don't stall
+// every first utterance for voices that can't arrive.
+const IS_EDGE = /Edg\//.test(navigator.userAgent);
+const VOICE_WAIT_MS = IS_EDGE ? 4000 : 400;
+
 let voiceReadyPromise = null;
 function ensureVoice() {
   if (voiceReadyPromise) return voiceReadyPromise;
   voiceReadyPromise = new Promise((resolve) => {
-    const existing = speechSynthesis.getVoices();
-    if (existing.length) { resolve(pickVoice(existing)); return; }
-    speechSynthesis.addEventListener("voiceschanged", () => {
-      resolve(pickVoice(speechSynthesis.getVoices()));
-    }, { once: true });
-    // Safety net in case voiceschanged never fires in this browser.
-    setTimeout(() => resolve(pickVoice(speechSynthesis.getVoices())), 1000);
+    let settled = false;
+    const attempt = (isFinal) => {
+      if (settled) return;
+      const voices = speechSynthesis.getVoices();
+      if (!voices.length && !isFinal) return;
+      const hasTopPriority = voices.some(v => TOP_PRIORITY_VOICES.some(name => v.name.includes(name)));
+      if (hasTopPriority || isFinal) {
+        settled = true;
+        resolve(pickVoice(voices));
+      }
+    };
+    speechSynthesis.addEventListener("voiceschanged", () => attempt(false));
+    attempt(false); // in case the list (or online voices) are already loaded
+    // Give Edge's online voices time to enumerate over the network before
+    // settling for a local fallback; elsewhere just wait for the local list.
+    setTimeout(() => attempt(true), VOICE_WAIT_MS);
   });
   return voiceReadyPromise;
 }
