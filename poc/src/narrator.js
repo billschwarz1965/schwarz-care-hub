@@ -5,47 +5,62 @@ let controlsInjected = false;
 const RATE = 0.92;
 const PITCH = 1.0;
 
-// Female voices only — first match found wins. No male fallback: if none of
-// these are installed, the browser's own default is used as a last resort
-// rather than risking a male voice we didn't choose.
-const FEMALE_VOICE_PREFS = [
-  "Microsoft Jenny Online", "Microsoft Aria Online",
-  "Microsoft Jenny", "Microsoft Aria", "Microsoft Zira",
-  "Google US English", "Samantha",
-];
-
-function pickVoice(voices) {
-  for (const name of FEMALE_VOICE_PREFS) {
-    const v = voices.find(v => v.name.includes(name) && v.lang.startsWith("en"));
-    if (v) return v;
-  }
-  return voices.find(v => v.lang.startsWith("en")) || voices[0] || null;
-}
-
-// speechSynthesis.getVoices() is frequently empty (or incomplete) on the
-// first call. Local voices populate almost immediately, but Edge's "Online"
-// neural voices (Jenny, Aria) are enumerated via a network call to
-// Microsoft's speech service and can take a few seconds to show up in a
-// later "voiceschanged" event. Resolving on the first voiceschanged — or on
-// a short timeout — locks in a local voice (Zira/David) before the better
-// online one ever arrives.
-//
-// So: keep listening across multiple voiceschanged events, and only settle
-// early once we actually see one of our top-priority (online) voices.
-// Otherwise wait out a longer timeout for them to arrive before falling
-// back to whatever's best in the local list. Resolves once and caches the
-// result so every speak() call — including the first — waits for it.
-const TOP_PRIORITY_VOICES = ["Microsoft Jenny Online", "Microsoft Aria Online"];
-// Only Edge exposes the online neural voices, and only over a network call —
-// worth a longer wait there. Chrome/Firefox never will, so don't stall
-// every first utterance for voices that can't arrive.
+// Only Edge exposes the online neural voices (Jenny, Aria, Guy, ...), and
+// only over a network call to Microsoft's speech service — worth waiting
+// longer for there. Chrome/Firefox never will, so don't stall every first
+// utterance for voices that can't arrive.
 const IS_EDGE = /Edg\//.test(navigator.userAgent);
 const VOICE_WAIT_MS = IS_EDGE ? 4000 : 400;
 
-let voiceReadyPromise = null;
-function ensureVoice() {
-  if (voiceReadyPromise) return voiceReadyPromise;
-  voiceReadyPromise = new Promise((resolve) => {
+const VOICE_PREFS = {
+  female: [
+    "Microsoft Jenny Online", "Microsoft Aria Online",
+    "Microsoft Jenny", "Microsoft Aria", "Microsoft Zira",
+    "Google US English", "Samantha",
+  ],
+  male: [
+    "Microsoft Guy Online", "Microsoft Andrew Online",
+    "Microsoft Guy", "Microsoft David", "Microsoft Mark", "Alex",
+  ],
+};
+// Names that count as "we found one of the good online voices, stop waiting".
+const TOP_PRIORITY_VOICES = [
+  "Microsoft Jenny Online", "Microsoft Aria Online",
+  "Microsoft Guy Online", "Microsoft Andrew Online",
+];
+
+const MODE_KEY = "medverse-narrator-voice-mode";
+const MODES = ["female", "male", "mixed"];
+const MODE_META = {
+  female: { icon: "gender-female", label: "Female voice" },
+  male: { icon: "gender-male", label: "Male voice" },
+  mixed: { icon: "arrows-shuffle", label: "Mixed voices" },
+};
+
+function loadMode() {
+  const saved = localStorage.getItem(MODE_KEY);
+  return MODES.includes(saved) ? saved : "female";
+}
+let voiceMode = loadMode();
+
+function findByPrefs(voices, prefs) {
+  for (const name of prefs) {
+    const v = voices.find(v => v.name.includes(name) && v.lang.startsWith("en"));
+    if (v) return v;
+  }
+  return null;
+}
+
+// Resolves once to the full classified voice set (best female match, best
+// male match, and an ordered "mixed" rotation of every distinct natural
+// voice found). speechSynthesis.getVoices() is frequently empty — or
+// missing Edge's online voices, which enumerate over the network — on the
+// first call, so this waits out voiceschanged (bounded by VOICE_WAIT_MS)
+// before caching a result every speak() call then reuses.
+let voiceSetPromise = null;
+function ensureVoiceSet() {
+  if (voiceSetPromise) return voiceSetPromise;
+  voiceSetPromise = new Promise((resolve) => {
     let settled = false;
     const attempt = (isFinal) => {
       if (settled) return;
@@ -54,16 +69,33 @@ function ensureVoice() {
       const hasTopPriority = voices.some(v => TOP_PRIORITY_VOICES.some(name => v.name.includes(name)));
       if (hasTopPriority || isFinal) {
         settled = true;
-        resolve(pickVoice(voices));
+        const female = findByPrefs(voices, VOICE_PREFS.female);
+        const male = findByPrefs(voices, VOICE_PREFS.male);
+        const anyEnglish = voices.find(v => v.lang.startsWith("en")) || voices[0] || null;
+        const rotation = [female, male, ...voices.filter(v => v.lang.startsWith("en"))]
+          .filter(Boolean)
+          .filter((v, i, arr) => arr.findIndex(o => o.name === v.name) === i)
+          .slice(0, 3);
+        resolve({ female: female || anyEnglish, male: male || anyEnglish, rotation: rotation.length ? rotation : [anyEnglish].filter(Boolean) });
       }
     };
     speechSynthesis.addEventListener("voiceschanged", () => attempt(false));
-    attempt(false); // in case the list (or online voices) are already loaded
-    // Give Edge's online voices time to enumerate over the network before
-    // settling for a local fallback; elsewhere just wait for the local list.
+    attempt(false); // in case the list (or online voices) is already loaded
     setTimeout(() => attempt(true), VOICE_WAIT_MS);
   });
-  return voiceReadyPromise;
+  return voiceSetPromise;
+}
+
+let mixedIndex = 0;
+async function pickVoiceForUtterance() {
+  const set = await ensureVoiceSet();
+  if (voiceMode === "male") return set.male;
+  if (voiceMode === "mixed") {
+    const voice = set.rotation[mixedIndex % set.rotation.length] || set.female;
+    mixedIndex++;
+    return voice;
+  }
+  return set.female;
 }
 
 function injectControls() {
@@ -73,6 +105,9 @@ function injectControls() {
   const el = document.createElement("div");
   el.id = "narrator-controls";
   el.innerHTML = `
+    <button id="narrator-voice-mode-btn" title="${MODE_META[voiceMode].label} — click to change">
+      <i class="ti ti-${MODE_META[voiceMode].icon}"></i>
+    </button>
     <button id="narrator-voice-btn" title="Toggle voice narration">
       <i class="ti ti-volume"></i>
     </button>
@@ -106,6 +141,15 @@ function injectControls() {
   `;
   document.head.appendChild(style);
 
+  document.getElementById("narrator-voice-mode-btn").addEventListener("click", () => {
+    const btn = document.getElementById("narrator-voice-mode-btn");
+    voiceMode = MODES[(MODES.indexOf(voiceMode) + 1) % MODES.length];
+    localStorage.setItem(MODE_KEY, voiceMode);
+    mixedIndex = 0;
+    btn.innerHTML = `<i class="ti ti-${MODE_META[voiceMode].icon}"></i>`;
+    btn.title = `${MODE_META[voiceMode].label} — click to change`;
+  });
+
   document.getElementById("narrator-voice-btn").addEventListener("click", () => {
     voiceEnabled = !voiceEnabled;
     const btn = document.getElementById("narrator-voice-btn");
@@ -121,16 +165,15 @@ function injectControls() {
     const bar = document.getElementById("demo-narrator");
     if (bar && !ccEnabled) bar.classList.remove("visible");
   });
-
 }
 
-// Start resolving the voice list as soon as this module loads, well before
+// Start resolving the voice set as soon as this module loads, well before
 // the first speak() call, so that first call doesn't have to wait either.
-ensureVoice();
+ensureVoiceSet();
 
 export async function speak(text) {
   if (!voiceEnabled || !text) return;
-  const voice = await ensureVoice();
+  const voice = await pickVoiceForUtterance();
   speechSynthesis.cancel();
 
   const plain = text.replace(/<[^>]+>/g, "").replace(/&[^;]+;/g, "");
@@ -153,7 +196,7 @@ export async function speakAndWait(text, minMs = 2000) {
     return;
   }
 
-  const voice = await ensureVoice();
+  const voice = await pickVoiceForUtterance();
 
   return new Promise(resolve => {
     speechSynthesis.cancel();
