@@ -1107,6 +1107,47 @@ export const educationContent = [
     url: "https://www.sanofi.com/en/clinical-trials/commitment-to-diversity",
     keywords: ["diversity", "inclusion", "representation", "eligibility criteria", "health equity", "underrepresented", "clinical trial"]
   },
+  // --- Sanofi Medical Information (sanofimedicalinformation.com) ---
+  {
+    id: "EDU-MI-001",
+    title: "Sanofi US Medical Information Database — Search Approved Product Information",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi Medical Information",
+    url: "https://www.sanofimedicalinformation.com/s/?language=en_US&CN=US&HCP=Yes",
+    keywords: ["medical information", "medinfo", "product information", "prescribing information", "evidence-based", "database", "unbiased"]
+  },
+  {
+    id: "EDU-MI-002",
+    title: "Submit a Medical Information Question",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi Medical Information",
+    url: "https://www.sanofimedicalinformation.com/s/submit-a-question?language=en_US&CN=US&HCP=Yes",
+    keywords: ["submit a question", "medical information request", "MIR", "unsolicited request", "inquiry", "medinfo"]
+  },
+  {
+    id: "EDU-MI-003",
+    title: "Report an Adverse Event",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi Medical Information",
+    url: "https://www.sanofimedicalinformation.com/s/report-an-adverse-event?language=en_US&CN=US&HCP=Yes",
+    keywords: ["adverse event", "AE", "pharmacovigilance", "safety reporting", "side effect"]
+  },
+  {
+    id: "EDU-MI-004",
+    title: "Ingredient Checker — Sanofi Product Excipient Lookup",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi Medical Information",
+    url: "https://www.sanofimedicalinformation.com/s/ingredient-checker?language=en_US&CN=US&HCP=Yes",
+    keywords: ["ingredient checker", "excipient", "allergy", "formulation", "inactive ingredient"]
+  },
   // --- Sanofi Medical Campus (medical.campus.sanofi) — program directory ---
   {
     id: "EDU-CAMPUS-001",
