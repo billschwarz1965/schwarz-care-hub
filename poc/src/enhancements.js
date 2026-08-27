@@ -484,9 +484,103 @@
     });
   }
 
+  // ═══ DEMO LAUNCHER ═══
+  // Every module had its own demo trigger with its own label ("Run Demo",
+  // "Play Demo", "Guided Tour") in its own spot — some in the header, some
+  // mid-page. This harmonizes the label everywhere and guarantees a header
+  // launcher on every page, so a demo is always one click away from the top.
+  const DEMO_LABEL = 'Play Demo';
+  const PRIMARY_TRIGGERS = ['#run-demo', '#demo-play-btn'];
+
+  function findPrimaryTrigger() {
+    for (const sel of PRIMARY_TRIGGERS) {
+      const el = document.querySelector(sel);
+      if (el) return el;
+    }
+    return null;
+  }
+
+  function setDemoLabel(btn) {
+    const icon = btn.querySelector('i');
+    const iconClass = icon ? icon.className : 'ti ti-player-play';
+    btn.innerHTML = `<i class="${iconClass}"></i> ${DEMO_LABEL}`;
+  }
+
+  function initDemoLauncher() {
+    const trigger = findPrimaryTrigger();
+
+    // Harmonize the in-page trigger's label wherever it lives.
+    if (trigger) setDemoLabel(trigger);
+
+    // If the page's own trigger is already visible in the header, relabeling it
+    // is the whole job — injecting another would show two "Play Demo" buttons.
+    const headerEl = document.querySelector('.header, header');
+    if (trigger && headerEl && headerEl.contains(trigger)) return;
+
+    // Prefer the dedicated actions container; a few pages only have the outer
+    // header row, so fall back to that rather than skipping the launcher.
+    let actions = document.querySelector('.header-actions');
+    if (!actions) {
+      const inner = document.querySelector('.header-inner');
+      if (inner) {
+        actions = document.createElement('div');
+        actions.className = 'header-actions';
+        actions.style.marginLeft = 'auto';
+        actions.style.display = 'flex';
+        actions.style.alignItems = 'center';
+        actions.style.gap = '10px';
+        // Keep any existing right-aligned badge to the right of the button.
+        const badge = inner.querySelector('.header-badge');
+        if (badge) {
+          inner.insertBefore(actions, badge);
+          actions.appendChild(badge);
+        } else {
+          inner.appendChild(actions);
+        }
+      }
+    }
+    if (!actions) return;
+
+    const btn = document.createElement('button');
+    btn.className = 'mv-header-demo-btn';
+    btn.id = 'mv-header-demo';
+    btn.title = trigger
+      ? 'Play this module\'s demo'
+      : 'Open the MedVerse demo hub';
+    btn.innerHTML = `<i class="ti ti-player-play"></i> ${DEMO_LABEL}`;
+
+    btn.addEventListener('click', () => {
+      const live = findPrimaryTrigger();
+      if (live) {
+        live.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        live.click();
+      } else {
+        // No demo on this page — send them to the demo hub instead.
+        window.location.href = 'demo.html';
+      }
+    });
+
+    const style = document.createElement('style');
+    style.textContent = `
+      .mv-header-demo-btn {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 6px 14px; background: var(--accent, #7a00e6); color: #fff;
+        border: none; border-radius: 8px; cursor: pointer;
+        font-family: var(--font, 'Work Sans', sans-serif);
+        font-size: 12px; font-weight: 600; white-space: nowrap;
+        transition: opacity .15s;
+      }
+      .mv-header-demo-btn:hover { opacity: .9; }
+    `;
+    document.head.appendChild(style);
+
+    actions.insertBefore(btn, actions.firstChild);
+  }
+
   // ═══ INIT ═══
   function init() {
     initDarkMode();
+    initDemoLauncher();
     initKeyboard();
     setTimeout(addBadges, 300);
     setTimeout(autoEnhanceButtons, 500);

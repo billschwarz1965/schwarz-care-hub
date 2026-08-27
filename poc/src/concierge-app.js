@@ -68,6 +68,7 @@ function routeSearch(query) {
     { keywords: ["ingredient", "excipient", "allergy", "latex", "polysorbate", "contraindication", "interaction", "safety profile", "safe for"], agent: "ingredient" },
     { keywords: ["trial", "enroll", "eligib", "study", "phase 3", "phase 2", "clinical study", "recruit"], agent: "trial-match" },
     { keywords: ["msl", "liaison", "field team", "schedule meeting", "find my", "connect with"], agent: "msl-connect" },
+    { keywords: ["medical information", "med info", "submit a question", "written response", "off-label", "off label", "renal dose", "hepatic dose", "dialysis", "not in the label", "prescribing information"], agent: "medinfo" },
     { keywords: ["pathway", "care path", "treatment sequence", "step-by-step", "navigator", "patient profile", "comorbid"], agent: "patient-nav" },
     { keywords: ["literature", "pubmed", "publication", "journal", "meta-analysis", "systematic review", "evidence", "paper"], agent: "literature" },
     { keywords: ["scout", "monitor", "alert", "new paper", "guideline update", "recent pub"], agent: "lit-scout" },
@@ -107,6 +108,11 @@ function prefillAgent(agent, query) {
     const ta = detectTA(query);
     if (ta) document.getElementById("msl-ta").value = ta;
     flashPrefill("msl-submit");
+  } else if (agent === "medinfo") {
+    const product = detectProduct(query);
+    if (product) document.getElementById("mi-product").value = product;
+    document.getElementById("mi-question").value = query;
+    flashPrefill("mi-submit");
   } else if (agent === "patient-nav") {
     const dx = detectDiagnosis(query);
     if (dx) document.getElementById("pn-diagnosis").value = dx;
@@ -506,6 +512,135 @@ document.getElementById("msl-submit").addEventListener("click", () => {
         </div>
       </div>`).join("");
   }, 900);
+});
+
+// ============================================================
+// 4b. MEDICAL INFORMATION REQUEST
+// ============================================================
+// Mirrors the intake on sanofimedicalinformation.com. Answers from approved
+// sources where they cover the question; anything beyond the label is escalated
+// for a written response rather than answered by the model. Adverse events are
+// detected and routed to Pharmacovigilance, never handled here.
+const AE_SIGNALS = [
+  "adverse event", "side effect", "side-effect", "reaction", "hospitalized",
+  "hospitalised", "died", "death", "fatal", "overdose", "anaphylaxis",
+  "rash after", "stopped taking", "discontinued due to", "harmed", "injury",
+  "pregnant", "pregnancy", "miscarriage", "birth defect"
+];
+
+const OFF_LABEL_SIGNALS = [
+  "off-label", "off label", "unapproved", "not approved", "dialysis",
+  "hemodialysis", "haemodialysis", "renal dose", "hepatic dose", "pediatric dose",
+  "combine with", "combination with", "instead of", "compounding", "crush",
+  "dilute", "higher dose", "increase the dose", "beyond", "outside the label"
+];
+
+const medinfoSubmit = document.getElementById("mi-submit");
+if (medinfoSubmit) medinfoSubmit.addEventListener("click", () => {
+  const product = document.getElementById("mi-product").value;
+  const question = document.getElementById("mi-question").value.trim();
+  const hcpType = document.getElementById("mi-hcp-type").value;
+  const contact = document.getElementById("mi-contact").value;
+  const lot = document.getElementById("mi-lot").value.trim();
+  const el = document.getElementById("mi-results");
+
+  if (!product || !question || !hcpType) {
+    el.innerHTML = '<div class="result-empty" style="color:var(--danger);"><i class="ti ti-alert-triangle"></i>Product, question, and HCP type are required.</div>';
+    return;
+  }
+
+  el.innerHTML = '<div class="result-loading"><div class="spinner"></div><div>Classifying inquiry, screening for adverse events, and searching approved Medical Information sources…</div></div>';
+
+  setTimeout(() => {
+    const q = question.toLowerCase();
+    const aeDetected = AE_SIGNALS.some(s => q.includes(s));
+    const offLabel = OFF_LABEL_SIGNALS.some(s => q.includes(s));
+    const ref = `MIR-2026-08-${String(1000 + Math.floor(Math.random() * 8999))}`;
+
+    // Anything the approved knowledge base can legitimately speak to.
+    const kbHits = generateResponse(`${product} ${question}`);
+    const hasApprovedAnswer = (kbHits.citations || []).length > 0;
+
+    const aeBlock = aeDetected ? `
+      <div class="result-card" style="background:var(--danger-bg);border-color:#fca5a5;">
+        <div class="result-card-header">
+          <div class="result-title" style="color:#7f1d1d;"><i class="ti ti-alert-octagon"></i> Adverse event detected — routed to Pharmacovigilance</div>
+          <span class="result-badge" style="background:#991b1b;color:#fff;">PV CASE OPENED</span>
+        </div>
+        <div class="result-body" style="color:#7f1d1d;">
+          This inquiry describes a possible adverse event. It has been forwarded to Sanofi Pharmacovigilance in parallel with your question, and a safety case has been opened automatically — you do not need to submit it again.
+          <br><br><strong>An AE report is a regulatory obligation with reporting deadlines and is handled by Pharmacovigilance, not by this agent.</strong> A safety scientist will contact you if follow-up is needed.
+        </div>
+      </div>` : "";
+
+    const approvedBlock = hasApprovedAnswer ? `
+      <div class="result-card">
+        <div class="result-card-header">
+          <div class="result-title"><i class="ti ti-circle-check"></i> Answered now from approved sources</div>
+          <span class="result-badge badge-success">APPROVED CONTENT</span>
+        </div>
+        <div class="result-body">${renderMd(kbHits.answer)}</div>
+        <div class="result-meta">
+          ${(kbHits.citations || []).map(c => `<span class="result-meta-item"><i class="ti ti-file-text"></i> ${escapeHtml(c.title)}</span>`).join("")}
+        </div>
+      </div>` : `
+      <div class="result-card">
+        <div class="result-card-header">
+          <div class="result-title"><i class="ti ti-info-circle"></i> No approved standard response covers this</div>
+          <span class="result-badge">ESCALATED</span>
+        </div>
+        <div class="result-body">There is no pre-approved Medical Information response for this question, so it has not been answered here. It goes to Medical Information for a written, MLR-approved reply rather than an AI-generated one.</div>
+      </div>`;
+
+    const offLabelBlock = offLabel ? `
+      <div class="result-card" style="background:var(--warn-bg);border-color:#fbbf24;">
+        <div class="result-card-header">
+          <div class="result-title" style="color:#78350f;"><i class="ti ti-alert-triangle"></i> Request extends beyond the prescribing information</div>
+          <span class="result-badge" style="background:#92400e;color:#fff;">OFF-PI · UNSOLICITED</span>
+        </div>
+        <div class="result-body" style="color:#78350f;">
+          Part of this question falls outside the approved prescribing information. Logged as an unsolicited request for off-label information. No clinical recommendation is generated for that portion — Medical Information will respond in writing.
+        </div>
+      </div>` : "";
+
+    el.innerHTML = `
+      ${aeBlock}
+      ${approvedBlock}
+      ${offLabelBlock}
+      <div class="result-card" style="background:var(--orion-bg);border-color:#9fe1cb;">
+        <div class="result-card-header">
+          <div class="result-title" style="color:#085041;"><i class="ti ti-send"></i> Request submitted</div>
+          <span class="result-badge badge-orion">${escapeHtml(ref)}</span>
+        </div>
+        <div class="result-body" style="color:#085041;">
+          <strong>Product:</strong> ${escapeHtml(product)}<br>
+          <strong>Requester:</strong> Verified HCP — ${escapeHtml(hcpType)}<br>
+          <strong>Response via:</strong> ${escapeHtml(contact)}${lot ? `<br><strong>Lot / UPC:</strong> ${escapeHtml(lot)}` : ""}<br>
+          <strong>Expected:</strong> 2–3 business days for a written response
+          <br><br>Name, institution and contact details carried over from your verified session. Submitted via sanofimedicalinformation.com — Submit a Question.
+        </div>
+      </div>
+      <div class="result-card">
+        <div class="result-card-header"><div class="result-title"><i class="ti ti-clipboard-check"></i> Governance</div></div>
+        <div class="result-body" style="font-size:12px;line-height:1.6;">
+          <strong>AE screening:</strong> ${aeDetected ? "⚠️ Adverse event detected — routed to Pharmacovigilance" : "✓ No adverse event described"}<br>
+          <strong>Off-label check:</strong> ${offLabel ? "⚠️ Off-PI content flagged — escalated, not AI-answered" : "✓ Within prescribing information"}<br>
+          <strong>PHI minimization:</strong> ✓ Clinical context retained only as needed; no patient identifiers captured<br>
+          <strong>Audit trail:</strong> ✓ Logged — compliance record #${escapeHtml(ref)}
+        </div>
+      </div>`;
+
+    addSignal({
+      topic: `Medical Information request — ${product}`,
+      intent: aeDetected ? "Adverse event report + product question" : (offLabel ? "Off-PI information request" : "Product information request"),
+      diseaseArea: kbHits.signal?.diseaseArea || "General",
+      stage: "Medical information inquiry",
+      depth: offLabel ? "Deep engagement — off-PI request" : "Moderate engagement",
+      orionAction: aeDetected
+        ? "PRIORITY — AE routed to Pharmacovigilance. Notify field medical of safety inquiry."
+        : `Medical Information request logged for ${product}. Flag for MSL follow-up on ${kbHits.signal?.diseaseArea || "product"} interest.`
+    });
+  }, 1100);
 });
 
 // ============================================================
@@ -1052,6 +1187,7 @@ const HCP_AGENTS = [
   { id: "patient-nav",  name: "Patient Navigator",      icon: "map-pin" },
   { id: "trial-match",  name: "Trial Matching",         icon: "flask" },
   { id: "msl-connect",  name: "MSL Connect",            icon: "users" },
+  { id: "medinfo",      name: "Medical Information",    icon: "file-question" },
   { id: "ingredient",   name: "Ingredient Safety",      icon: "shield-check" },
   { id: "temp-stab",    name: "Temperature Stability",  icon: "temperature" },
   { id: "literature",   name: "Literature Intelligence", icon: "book-2" },
@@ -1133,6 +1269,21 @@ async function runAgentDemo(index, agent) {
       await delay(1500);
       await narrate("Dr. Amanda Rodriguez, PharmD — available this week, specializing in Dupixent clinical data and AD real-world evidence. Meeting request, email, and phone options ready");
       await delay(1500);
+      break;
+    }
+    case "medinfo": {
+      await narrate("Next the HCP has a product question the prescribing information does not cover. The Medical Information agent handles it");
+      showPanel("medinfo");
+      await delay(600);
+      set("mi-product", "Dupixent (dupilumab)");
+      set("mi-question", "My patient on Dupixent for CRSwNP is starting hemodialysis. Is renal dose adjustment needed, and are there data in dialysis patients?");
+      set("mi-hcp-type", "Physician");
+      await narrate("Asking about renal dosing in a patient starting dialysis");
+      await delay(400);
+      click("mi-submit");
+      await delay(1600);
+      await narrate("The agent answers the part approved sources cover, then escalates the dialysis-specific question for a written response instead of generating a clinical answer. No adverse event detected, and the whole request is logged");
+      await delay(1800);
       break;
     }
     case "ingredient": {
