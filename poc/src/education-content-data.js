@@ -1162,6 +1162,47 @@ export const educationContent = [
     url: "https://congress.sanofimedical.com/ebmt-2026",
     keywords: ["EBMT", "transplant", "bone marrow", "stem cell", "graft", "GvHD", "haematology", "congress"]
   },
+  // --- HCP support pathways (sanofi.com/en/our-science/healthcare-professional-support) ---
+  {
+    id: "EDU-HCP-001",
+    title: "Managed Access Programs (MAPs) — Compassionate, Expanded and Early Access",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi HCP Support",
+    url: "https://www.sanofi.com/en/our-science/healthcare-professional-support/sanofi-manage-access-program",
+    keywords: ["managed access", "MAP", "compassionate use", "expanded access", "early access", "named patient supply", "special access", "unmet medical need", "investigational medicine", "unauthorized product", "life-threatening", "eligibility"]
+  },
+  {
+    id: "EDU-HCP-002",
+    title: "Sanofi MAP Portal (iEnvision) — Submit a Managed Access Request",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi HCP Support",
+    url: "https://sanofi.envisionpharma.com/ienv_sanofi_qual/visiontracker/portal/login.xhtml?pgm=PAA",
+    keywords: ["MAP portal", "iEnvision", "managed access request", "submit a request", "compassionate use request", "treating physician", "named patient"]
+  },
+  {
+    id: "EDU-HCP-003",
+    title: "Post Trial Access (PTA) — Continued Access After a Trial Ends",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi HCP Support",
+    url: "https://www.sanofi.com/en/our-science/healthcare-professional-support/post-trial-access",
+    keywords: ["post trial access", "PTA", "post-trial", "continued access", "investigational product", "trial ended", "investigator request", "clinical benefit", "eligibility"]
+  },
+  {
+    id: "EDU-HCP-004",
+    title: "Investigator Sponsored Studies (ISS) and Externally Sponsored Collaborations (ESC)",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi HCP Support",
+    url: "https://www.sanofi.com/en/our-science/clinical-trials-and-results/investigator-sponsored-studies",
+    keywords: ["investigator sponsored", "ISS", "IST", "externally sponsored collaboration", "ESC", "expert initiated research", "unsolicited proposal", "research support", "iEnvision-ESR", "grant", "protocol submission", "interventional", "non-interventional", "pre-clinical", "areas of interest"]
+  },
   // --- Sanofi Medical Information (sanofimedicalinformation.com) ---
   {
     id: "EDU-MI-001",

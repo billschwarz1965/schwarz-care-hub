@@ -9,6 +9,9 @@
 
 import { generateResponse } from "./rag-engine.js";
 import { searchEducationContent } from "./education-content-data.js";
+import { searchTrials, trialLink } from "./trials-data.js";
+
+export { trialLink };
 
 // page = the module that hosts this capability; agent = the panel to open there.
 export const CAPABILITIES = [
@@ -268,6 +271,10 @@ export function askMedVerse(query, availableModules) {
         .slice(0, 1)
     : [];
 
+  // Actual recruiting studies matching the condition, so "what trials are
+  // available for X" gets real protocols rather than only reading material.
+  const matchedTrials = searchTrials(query, 5);
+
   return {
     query,
     terms,
@@ -276,7 +283,8 @@ export function askMedVerse(query, availableModules) {
     answer,
     answerMode,
     answerIsOnTopic,
-    resources
+    resources,
+    trials: matchedTrials
   };
 }
 
