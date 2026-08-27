@@ -1004,6 +1004,109 @@ export const educationContent = [
     url: "https://www.rarediseases.sanofimedical.com/gaucher-disease",
     keywords: ["rare disease", "diagnostic delay", "patient journey", "ASHG", "symposium"]
   },
+  // --- Sanofi Clinical Trials (sanofi.com/en/clinical-trials) ---
+  // Public, patient/volunteer-facing trial education and the trial finder —
+  // distinct in audience from the HCP medical-education programs above.
+  {
+    id: "EDU-CT-001",
+    title: "Find a Clinical Trial — Sanofi Trial Search",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi Clinical Trials",
+    url: "https://www.sanofi.com/en/clinical-trials/search",
+    keywords: ["clinical trial", "trial search", "find a trial", "enrollment", "recruiting", "eligibility", "location"]
+  },
+  {
+    id: "EDU-CT-002",
+    title: "Respiratory Clinical Trials & Studies",
+    contentType: "article",
+    diseaseArea: "Type 2 Asthma",
+    therapeuticArea: "Respiratory",
+    program: "Sanofi Clinical Trials",
+    url: "https://www.sanofi.com/en/clinical-trials/clinical-research-areas/respiratory",
+    keywords: ["respiratory", "asthma", "COPD", "nasal polyps", "RSV", "influenza", "pneumococcal", "inflammatory biomarkers", "clinical trial"]
+  },
+  {
+    id: "EDU-CT-003",
+    title: "Dermatology & Acne Clinical Trials and Studies",
+    contentType: "article",
+    diseaseArea: "Atopic Dermatitis",
+    therapeuticArea: "Dermatology",
+    program: "Sanofi Clinical Trials",
+    url: "https://www.sanofi.com/en/clinical-trials/clinical-research-areas/dermatology-and-acne",
+    keywords: ["dermatology", "acne", "atopic dermatitis", "eczema", "prurigo nodularis", "lichen simplex chronicus", "chronic pruritus", "hidradenitis suppurativa", "acne vaccine", "clinical trial"]
+  },
+  {
+    id: "EDU-CT-004",
+    title: "IBD — Inflammatory Bowel Disease Clinical Trials & Studies",
+    contentType: "article",
+    diseaseArea: "IBD",
+    therapeuticArea: "Immunology / Gastroenterology",
+    program: "Sanofi Clinical Trials",
+    url: "https://www.sanofi.com/en/clinical-trials/clinical-research-areas/chronic-diseases/ibd",
+    keywords: ["IBD", "inflammatory bowel disease", "Crohn", "ulcerative colitis", "gastroenterology", "clinical trial"]
+  },
+  {
+    id: "EDU-CT-005",
+    title: "Pediatric Clinical Trials & Studies",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "Pediatrics",
+    program: "Sanofi Clinical Trials",
+    url: "https://www.sanofi.com/en/clinical-trials/clinical-research-areas/pediatric-clinical-trials",
+    keywords: ["pediatric", "children", "infants", "adolescent", "clinical trial", "consent", "assent"]
+  },
+  {
+    id: "EDU-CT-006",
+    title: "Chronic Disease Clinical Trials and Studies",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "Chronic Disease",
+    program: "Sanofi Clinical Trials",
+    url: "https://www.sanofi.com/en/clinical-trials/clinical-research-areas/chronic-diseases",
+    keywords: ["chronic disease", "long-term condition", "clinical trial"]
+  },
+  {
+    id: "EDU-CT-007",
+    title: "Sanofi's Clinical Research Areas",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi Clinical Trials",
+    url: "https://www.sanofi.com/en/clinical-trials/clinical-research-areas",
+    keywords: ["clinical research areas", "therapeutic areas", "pipeline", "clinical trial"]
+  },
+  {
+    id: "EDU-CT-008",
+    title: "What Is a Clinical Trial?",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi Clinical Trials",
+    url: "https://www.sanofi.com/en/clinical-trials/what-is-a-clinical-trial",
+    keywords: ["what is a clinical trial", "trial phases", "protocol", "randomized", "placebo", "patient education"]
+  },
+  {
+    id: "EDU-CT-009",
+    title: "Why Volunteer for a Clinical Trial?",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi Clinical Trials",
+    url: "https://www.sanofi.com/en/clinical-trials/why-volunteer",
+    keywords: ["volunteer", "participant", "trial participation", "informed consent", "patient education"]
+  },
+  {
+    id: "EDU-CT-010",
+    title: "Sanofi's Commitment to Diversity in Clinical Trials",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi Clinical Trials",
+    url: "https://www.sanofi.com/en/clinical-trials/commitment-to-diversity",
+    keywords: ["diversity", "inclusion", "representation", "eligibility criteria", "health equity", "underrepresented", "clinical trial"]
+  },
   // --- Sanofi Medical Campus (medical.campus.sanofi) — program directory ---
   {
     id: "EDU-CAMPUS-001",
