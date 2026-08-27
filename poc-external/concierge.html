@@ -146,6 +146,8 @@
     .agent-card[data-agent="trial-match"]  .agent-card-tag  { background: var(--orion-bg); color: var(--orion-accent); }
     .agent-card[data-agent="msl-connect"]  .agent-card-icon { background: #fce7f3; color: #be185d; }
     .agent-card[data-agent="msl-connect"]  .agent-card-tag  { background: #fce7f3; color: #be185d; }
+    .agent-card[data-agent="medinfo"]      .agent-card-icon { background: #e0e7ff; color: #4338ca; }
+    .agent-card[data-agent="medinfo"]      .agent-card-tag  { background: #e0e7ff; color: #3730a3; }
     .agent-card[data-agent="ingredient"]   .agent-card-icon { background: #fef3c7; color: #b45309; }
     .agent-card[data-agent="ingredient"]   .agent-card-tag  { background: #fef3c7; color: #92400e; }
     .agent-card[data-agent="temp-stab"]    .agent-card-icon { background: #e0f2fe; color: #0369a1; }
@@ -223,6 +225,15 @@
     .citation-title { font-weight: 600; margin-bottom: 1px; }
     .citation-meta { color: var(--text-muted); }
     .citation-type { display: inline-block; padding: 0 5px; background: var(--surface-dim); border-radius: 3px; font-size: 9px; font-weight: 500; margin-left: 4px; }
+    .edu-resources-panel { margin-top: 10px; }
+    .edu-resources-label { font-size: 10.5px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; display: flex; align-items: center; gap: 5px; margin-bottom: 6px; }
+    .edu-resource-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 11px; display: flex; gap: 8px; align-items: center; text-decoration: none; color: var(--text); margin-bottom: 5px; transition: border-color 0.15s; }
+    .edu-resource-card:hover { border-color: var(--accent); }
+    .edu-resource-icon { width: 26px; height: 26px; border-radius: 6px; background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; }
+    .edu-resource-title { font-weight: 600; margin-bottom: 1px; }
+    .edu-resource-meta { color: var(--text-muted); }
+    .edu-resource-type { text-transform: capitalize; font-weight: 600; color: var(--accent-text); }
+    .edu-resource-link-icon { margin-left: auto; color: var(--text-muted); font-size: 12px; flex-shrink: 0; }
     .follow-ups { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
     .follow-up-chip { background: var(--accent-light); color: var(--accent-text); border: none; border-radius: 16px; padding: 5px 12px; font-size: 11px; font-family: var(--font); cursor: pointer; transition: all .15s; }
     .follow-up-chip:hover { background: var(--accent); color: #fff; }
@@ -398,6 +409,12 @@
           <h3>MSL Connect</h3>
           <p>Find and request a meeting with your regional Medical Science Liaison. Browse MSL profiles, expertise areas, and schedule scientific exchanges.</p>
           <span class="agent-card-tag">Field Team</span>
+        </div>
+        <div class="agent-card" data-agent="medinfo">
+          <div class="agent-card-icon"><i class="ti ti-file-question"></i></div>
+          <h3>Medical Information</h3>
+          <p>Ask a product question in plain language. Answers come from approved Medical Information sources, and anything outside them is escalated for a formal written response.</p>
+          <span class="agent-card-tag">Med Info</span>
         </div>
         <div class="agent-card" data-agent="ingredient">
           <div class="agent-card-icon"><i class="ti ti-shield-check"></i></div>
@@ -609,6 +626,46 @@
         </div>
         <div class="form-results" id="msl-results">
           <div class="result-empty"><i class="ti ti-users"></i>Select your therapeutic area and region to find your dedicated MSL.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MEDICAL INFORMATION PANEL ===== -->
+    <div class="agent-panel" id="panel-medinfo">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#e0e7ff;color:#4338ca;"><i class="ti ti-file-question"></i></div>
+        <div><div class="panel-title">Medical Information</div><div class="panel-desc">Ask a product question — approved answers now, formal written response when needed</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-message-question"></i> Your Question</h4>
+            <div class="form-group">
+              <label class="form-label">Product <span style="color:var(--danger)">*</span></label>
+              <select class="form-select" id="mi-product"><option value="">Select…</option><option>Dupixent (dupilumab)</option><option>Kevzara (sarilumab)</option><option>Beyfortus (nirsevimab)</option><option>Fabrazyme (agalsidase beta)</option><option>Cerezyme (imiglucerase)</option><option>Xenpozyme (olipudase alfa)</option><option>Altuviiio (efanesoctocog alfa)</option><option>Other / not listed</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Question <span style="color:var(--danger)">*</span></label>
+              <textarea class="form-input" id="mi-question" rows="4" placeholder="e.g. Is renal dose adjustment needed for a patient starting hemodialysis? Are there data in dialysis patients?"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">HCP Type <span style="color:var(--danger)">*</span></label>
+              <select class="form-select" id="mi-hcp-type"><option value="">Select…</option><option>Physician</option><option>Pharmacist</option><option>Nurse Practitioner</option><option>HCP — other</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">How should we reach you?</label>
+              <select class="form-select" id="mi-contact"><option>Email</option><option>Phone</option><option>Fax</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Lot / UPC number <span style="color:var(--text-muted);font-weight:400">(optional — product quality questions)</span></label>
+              <input class="form-input" id="mi-lot" placeholder="e.g. ABC1234">
+            </div>
+            <button class="form-btn form-btn-primary" id="mi-submit"><i class="ti ti-send"></i> Submit Question</button>
+            <p style="font-size:11px;color:var(--text-muted);margin-top:10px;line-height:1.5">Your name, institution and contact details are carried over from your verified MedVerse session — no re-typing. Every request is screened for adverse events and logged for compliance.</p>
+          </div>
+        </div>
+        <div class="form-results" id="mi-results">
+          <div class="result-empty"><i class="ti ti-file-question"></i>Ask a product question. We answer from approved Medical Information sources where they cover it, and route anything beyond them to Medical Information for a written response.</div>
         </div>
       </div>
     </div>
