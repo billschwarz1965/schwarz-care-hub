@@ -98,6 +98,19 @@
     .main-scroll::-webkit-scrollbar-track { background: transparent; }
     .main-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
+    /* ASK MEDVERSE (home) */
+    .ask-home { max-width: 660px; margin: 26px auto 0; }
+    .ask-home-wrap { display: flex; gap: 10px; position: relative; }
+    .ask-home-icon { position: absolute; left: 17px; top: 50%; transform: translateY(-50%); font-size: 19px; color: var(--accent); pointer-events: none; z-index: 1; }
+    .ask-home-input { flex: 1; padding: 15px 18px 15px 48px; border: 2px solid var(--border); border-radius: 14px; font-family: var(--font); font-size: 14px; outline: none; background: var(--surface); color: var(--text); transition: border-color .2s, box-shadow .2s; }
+    .ask-home-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(122,0,230,.08); }
+    .ask-home-input::placeholder { color: var(--text-muted); }
+    .ask-home-btn { padding: 15px 26px; background: var(--accent); color: #fff; border: none; border-radius: 14px; font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap; transition: background .15s; }
+    .ask-home-btn:hover { background: var(--accent-hover); }
+    .ask-home-hints { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 11px; }
+    .ask-home-chip { background: var(--surface-dim); border: 1px solid var(--border); border-radius: 16px; padding: 5px 13px; font-size: 11.5px; font-family: var(--font); cursor: pointer; color: var(--text-secondary); transition: all .15s; }
+    .ask-home-chip:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent-text); }
+
     /* HERO SECTION */
     .hero { text-align: center; padding: 56px 24px 40px; max-width: 800px; margin: 0 auto; }
     .hero-logo { width: 80px; height: 80px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px; color: white; box-shadow: 0 8px 32px rgba(122,0,230,0.18); }
@@ -192,6 +205,17 @@
       <div class="hero-logo"><i class="ti ti-brain"></i></div>
       <h1><span>MedVerse</span> Scientific Intelligence Ecosystem</h1>
       <p class="hero-tagline">AI-powered intelligence for Medical Affairs, HCPs, patients, and caregivers — transforming how Sanofi's field teams access scientific knowledge.</p>
+
+      <!-- ===== ASK MEDVERSE ===== -->
+      <form class="ask-home" id="ask-home-form" action="ask.html" method="get" target="_blank">
+        <div class="ask-home-wrap">
+          <i class="ti ti-sparkles ask-home-icon"></i>
+          <input class="ask-home-input" id="ask-home-input" name="q" type="text"
+                 placeholder="Ask MedVerse anything — we'll route it to the right agents" autocomplete="off">
+          <button class="ask-home-btn" type="submit"><i class="ti ti-arrow-right"></i> Ask</button>
+        </div>
+        <div class="ask-home-hints" id="ask-home-hints"></div>
+      </form>
     </div>
 
     <!-- ===== MODULE CARDS ===== -->
@@ -297,6 +321,7 @@
     Sanofi <span>&middot;</span> Campus+Medical Discovery <span>&middot;</span> Digital Product Innovation
   </div>
 
+  <script type="module" src="./src/ask-home.js"></script>
   <script type="module" src="./src/enhancements.js"></script>
   <script type="module">
     import { speakAndWait, showControls } from './src/narrator.js';

@@ -9,6 +9,7 @@ export default defineConfig({
       input: {
         home: resolve(__dirname, 'index.html'),
         about: resolve(__dirname, 'about.html'),
+        ask: resolve(__dirname, 'ask.html'),
         mslcopilot: resolve(__dirname, 'msl-copilot.html'),
         concierge: resolve(__dirname, 'concierge.html'),
         orion: resolve(__dirname, 'orion.html'),
