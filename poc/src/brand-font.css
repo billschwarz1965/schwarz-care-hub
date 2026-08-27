@@ -1,0 +1,93 @@
+/* ─── Sanofi Sans ───
+   The real corporate typeface, served from the same public CDN that
+   medical.campus.sanofi uses. Every page already declared Sanofi Sans's
+   fallback chain (Work Sans → Raleway → Roboto) in --font, so loading the
+   actual face is all that was missing.
+
+   font-display: swap means text renders immediately in the fallback and
+   upgrades when the woff2 arrives — if the CDN is unreachable the app just
+   keeps looking exactly as it did before.
+
+   Source: https://cdn.prod.accelerator.sanofi/fonts/sanofi-sans/woff2/ */
+
+@font-face {
+  font-family: 'Sanofi Sans';
+  src: url('https://cdn.prod.accelerator.sanofi/fonts/sanofi-sans/woff2/Sanofi_Sans-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sanofi Sans';
+  src: url('https://cdn.prod.accelerator.sanofi/fonts/sanofi-sans/woff2/Sanofi_Sans-Light_Italic.woff2') format('woff2');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sanofi Sans';
+  src: url('https://cdn.prod.accelerator.sanofi/fonts/sanofi-sans/woff2/Sanofi_Sans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sanofi Sans';
+  src: url('https://cdn.prod.accelerator.sanofi/fonts/sanofi-sans/woff2/Sanofi_Sans-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* No dedicated 500/600 weight ships in this family — map them to Bold so the
+   many `font-weight: 500/600` rules across the app resolve to a real face
+   instead of a synthesised one. */
+@font-face {
+  font-family: 'Sanofi Sans';
+  src: url('https://cdn.prod.accelerator.sanofi/fonts/sanofi-sans/woff2/Sanofi_Sans-Bold.woff2') format('woff2');
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sanofi Sans';
+  src: url('https://cdn.prod.accelerator.sanofi/fonts/sanofi-sans/woff2/Sanofi_Sans-Bold_Italic.woff2') format('woff2');
+  font-weight: 500 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Put Sanofi Sans at the head of the existing chain.
+
+   Specificity matters here. Every page defines its own `--font` inside an
+   inline <style> using `:root`, and this file gets linked at different points
+   in different pages — sometimes before that <style> block, sometimes after.
+   Equal specificity would mean whichever comes last wins, so the font would
+   apply on some pages and silently not on others.
+
+   `html:root` (0,1,1) outranks the pages' `:root` (0,1,0), and `html body`
+   (0,0,2) outranks their `body` (0,0,1) — so this wins regardless of link
+   order, on every page. */
+html:root {
+  --font: 'Sanofi Sans', 'Work Sans', 'Raleway', 'Roboto', sans-serif;
+}
+
+html body,
+html button,
+html input,
+html textarea,
+html select,
+html optgroup {
+  font-family: 'Sanofi Sans', 'Work Sans', 'Raleway', 'Roboto', sans-serif;
+}
+
+/* Tabler's icon font must keep its own family or every glyph turns into a
+   letter — scope the override away from icon elements. */
+html body i[class*="ti-"],
+html body .ti {
+  font-family: "tabler-icons" !important;
+}
