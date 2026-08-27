@@ -5,6 +5,20 @@ let activeDemo = null;
 let demoRunning = false;
 let activePersona = null;
 
+// Every agent with a demo, in the same grouping the page shows them in —
+// this is the "play list" that Prev/Next and Play All step through.
+const DEMO_PLAYLIST = [...SYSTEM_AGENTS, ...BUSINESS_AGENTS, ...COMPLIANCE_AGENTS]
+  .filter(a => AGENT_DEMOS[a.id])
+  .map(a => ({ id: a.id, name: a.name, icon: a.icon }));
+let playlistIndex = -1;
+let autoplayActive = false;
+// Bumped on every openDemo()/closeDemo() call. A running demo's step loop
+// captures the value at its own start and checks it before every DOM write
+// and before scheduling its own autoplay advance — if something newer has
+// started (Next/Prev/select/close), the stale loop's checks fail and it
+// stops touching the panel instead of racing the new one.
+let demoGeneration = 0;
+
 const PERSONA_MAP = {
   "MSLs": {
     icon: "user-star",
@@ -43,6 +57,7 @@ function init() {
   renderAgentGrid();
   bindStatPills();
   bindClose();
+  bindDemoNav();
 }
 
 function renderStats() {
@@ -487,6 +502,8 @@ async function openDemo(agentId) {
 
   activeDemo = agentId;
   demoRunning = true;
+  playlistIndex = DEMO_PLAYLIST.findIndex(d => d.id === agentId);
+  const myGeneration = ++demoGeneration;
 
   const panel = document.getElementById("demo-panel");
   const content = document.getElementById("demo-content");
@@ -499,9 +516,13 @@ async function openDemo(agentId) {
   panel.style.display = "block";
   document.body.style.overflow = "hidden";
   clearComplianceHighlights();
+  renderDemoNav();
 
   for (const step of demo.steps) {
-    await delay(600);
+    if (myGeneration !== demoGeneration) return;
+    const stepLabel = step.label || (step.type === "chart" ? (CHART_DATA[step.chartId] || {}).title : "") || `${agent.name} — next step`;
+    await narrate(stepLabel);
+    if (myGeneration !== demoGeneration) return;
     const stepEl = document.createElement("div");
     stepEl.className = `demo-step demo-step-${step.type}`;
 
@@ -565,8 +586,17 @@ async function openDemo(agentId) {
     }
     scrollDemo();
   }
+  if (myGeneration !== demoGeneration) return;
+  narrateOff();
   demoRunning = false;
   showDemoPrompt(agentId);
+  renderDemoNav();
+
+  if (autoplayActive) {
+    await delay(2500);
+    if (myGeneration !== demoGeneration) return;
+    if (autoplayActive) goToPlaylistIndex(playlistIndex + 1, true);
+  }
 }
 
 function showDemoPrompt(agentId) {
@@ -785,6 +815,8 @@ function closeDemo() {
   document.body.style.overflow = "";
   activeDemo = null;
   demoRunning = false;
+  autoplayActive = false;
+  narrateOff();
   clearComplianceHighlights();
 }
 
@@ -800,6 +832,63 @@ function bindClose() {
     promptInput.addEventListener("keydown", (e) => { if (e.key === "Enter" && promptInput.value.trim()) handleDemoPrompt(); });
     promptSend.addEventListener("click", handleDemoPrompt);
   }
+}
+
+// ─── DEMO PLAYLIST NAV — Prev/Next, jump-to, Play All ───
+
+function populateDemoNavSelect() {
+  const sel = document.getElementById("demo-nav-select");
+  if (!sel || sel.dataset.populated) return;
+  sel.dataset.populated = "1";
+  const groups = [
+    { label: "Intelligence Hubs", items: SYSTEM_AGENTS },
+    { label: "Business Agents", items: BUSINESS_AGENTS },
+    { label: "Governance Agents", items: COMPLIANCE_AGENTS },
+  ];
+  sel.innerHTML = groups.map(g => {
+    const opts = g.items.filter(a => AGENT_DEMOS[a.id]).map(a => `<option value="${a.id}">${esc(a.name)}</option>`).join("");
+    return opts ? `<optgroup label="${esc(g.label)}">${opts}</optgroup>` : "";
+  }).join("");
+}
+
+function renderDemoNav() {
+  populateDemoNavSelect();
+  const prevBtn = document.getElementById("demo-nav-prev");
+  const nextBtn = document.getElementById("demo-nav-next");
+  const sel = document.getElementById("demo-nav-select");
+  const playAllBtn = document.getElementById("demo-nav-playall");
+  if (!prevBtn || !nextBtn || !sel || !playAllBtn) return;
+  prevBtn.disabled = playlistIndex <= 0;
+  nextBtn.disabled = playlistIndex < 0 || playlistIndex >= DEMO_PLAYLIST.length - 1;
+  if (playlistIndex >= 0) sel.value = DEMO_PLAYLIST[playlistIndex].id;
+  playAllBtn.innerHTML = autoplayActive
+    ? '<i class="ti ti-player-pause"></i> Stop Play All'
+    : '<i class="ti ti-playlist"></i> Play All';
+  playAllBtn.classList.toggle("nav-playall-active", autoplayActive);
+}
+
+function goToPlaylistIndex(index, viaAutoplay) {
+  if (index < 0 || index >= DEMO_PLAYLIST.length) {
+    autoplayActive = false;
+    renderDemoNav();
+    return;
+  }
+  if (!viaAutoplay) autoplayActive = false;
+  demoRunning = false;
+  openDemo(DEMO_PLAYLIST[index].id);
+}
+
+function bindDemoNav() {
+  document.getElementById("demo-nav-prev")?.addEventListener("click", () => goToPlaylistIndex(playlistIndex - 1, false));
+  document.getElementById("demo-nav-next")?.addEventListener("click", () => goToPlaylistIndex(playlistIndex + 1, false));
+  document.getElementById("demo-nav-select")?.addEventListener("change", (e) => {
+    goToPlaylistIndex(DEMO_PLAYLIST.findIndex(d => d.id === e.target.value), false);
+  });
+  document.getElementById("demo-nav-playall")?.addEventListener("click", () => {
+    if (autoplayActive) { autoplayActive = false; renderDemoNav(); return; }
+    autoplayActive = true;
+    goToPlaylistIndex(0, true);
+  });
 }
 
 function highlightCompliance(agentId) {
