@@ -387,6 +387,24 @@ This information is sourced from ${topDoc.source} [1]. For a more detailed clini
     };
   }
 
+  // No knowledge-base match — check the education content library before giving up
+  const eduOnly = searchEducationContent(query);
+  if (eduOnly.length > 0) {
+    return {
+      answer: `I don't have Sanofi clinical evidence indexed for that query yet, but I found related educational content that may help:`,
+      citations: [],
+      educationResources: eduOnly,
+      signal: {
+        topic: eduOnly[0].title,
+        intent: "Educational content discovery",
+        diseaseArea: eduOnly[0].diseaseArea,
+        stage: "General query",
+        depth: "Light engagement",
+        orionAction: `Content engagement signal — HCP queried ${eduOnly[0].diseaseArea} topic (education resource only, no clinical evidence match).`
+      }
+    };
+  }
+
   // No match
   return {
     answer: `I don't have specific MedVerse content matching that query in my current knowledge base. Here's what I can help with:
