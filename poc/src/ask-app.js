@@ -108,28 +108,79 @@ function render() {
         </a>`).join("")}
     </div>` : "";
 
-  const hasAnswer = (r.answer.citations || []).length > 0;
-
-  const answerBlock = `
+  // Only present an evidence answer when the retrieved content is genuinely
+  // about the question. Otherwise hand the user to the agent that can actually
+  // do the thing — a lookup question has no prose answer, and inventing one
+  // reads as authoritative when it isn't.
+  let answerBlock;
+  if (r.answerMode === "evidence") {
+    answerBlock = `
     <div class="ask-answer-card">
       <div class="ask-answer-head">
         <div class="ask-answer-icon"><i class="ti ti-sparkles"></i></div>
         <div>
-          <div class="ask-answer-title">${hasAnswer ? "Evidence-based answer" : "No indexed clinical evidence for this yet"}</div>
-          <div class="ask-answer-sub">${hasAnswer ? "Drawn from governed Sanofi medical content" : "Try one of the agents below, or explore the learning resources"}</div>
+          <div class="ask-answer-title">Evidence-based answer</div>
+          <div class="ask-answer-sub">Drawn from governed Sanofi medical content</div>
         </div>
       </div>
       <div class="ask-answer-body rendered">${renderMd(r.answer.answer)}</div>
       ${citations}
     </div>`;
+  } else if (r.answerMode === "action" && r.agents.length) {
+    const top = r.agents[0];
+    answerBlock = `
+    <div class="ask-answer-card">
+      <div class="ask-answer-head">
+        <div class="ask-answer-icon"><i class="ti ti-${esc(top.icon)}"></i></div>
+        <div>
+          <div class="ask-answer-title">${esc(top.name)} handles this</div>
+          <div class="ask-answer-sub">This is a lookup rather than an evidence question — the agent gives you the live answer</div>
+        </div>
+      </div>
+      <div class="ask-answer-body">
+        <p>${esc(top.blurb)}.</p>
+        <p style="margin-top:10px;"><a class="ask-action-btn" href="${esc(capabilityLink(top, query))}"><i class="ti ti-arrow-right"></i> Open ${esc(top.name)}</a></p>
+      </div>
+    </div>`;
+  } else {
+    answerBlock = `
+    <div class="ask-answer-card">
+      <div class="ask-answer-head">
+        <div class="ask-answer-icon"><i class="ti ti-help-circle"></i></div>
+        <div>
+          <div class="ask-answer-title">No indexed answer for this yet</div>
+          <div class="ask-answer-sub">Nothing in the governed content matches closely enough to answer confidently</div>
+        </div>
+      </div>
+      <div class="ask-answer-body">
+        <p>Rather than guess, MedVerse is telling you it does not know. Try rephrasing, or explore the learning resources below${r.agents.length ? " and the suggested agent" : ""}.</p>
+      </div>
+    </div>`;
+  }
 
-  const signalBlock = r.answer.signal ? `
+  // The signal must describe what the HCP actually asked. When the retrieved
+  // document was off-topic, its signal is off-topic too — derive one from the
+  // query and the routed agent instead of reporting the wrong subject upstream.
+  let signal = null;
+  if (r.answerMode === "evidence" && r.answer.signal) {
+    signal = r.answer.signal;
+  } else if (r.agents.length) {
+    const top = r.agents[0];
+    signal = {
+      topic: query,
+      intent: `${top.name} request`,
+      diseaseArea: r.answer.signal?.diseaseArea || "General",
+      orionAction: `Routed to ${top.name}. Logged as an HCP-initiated ${top.name.toLowerCase()} request.`
+    };
+  }
+
+  const signalBlock = signal ? `
     <div class="ask-signal">
       <div class="ask-signal-head"><span class="ask-signal-dot"></span> Interaction signal generated</div>
-      <div class="ask-signal-row"><span>Topic</span><strong>${esc(r.answer.signal.topic)}</strong></div>
-      <div class="ask-signal-row"><span>Intent</span><strong>${esc(r.answer.signal.intent)}</strong></div>
-      <div class="ask-signal-row"><span>Disease area</span><strong>${esc(r.answer.signal.diseaseArea)}</strong></div>
-      <div class="ask-signal-action"><i class="ti ti-arrow-right"></i> ${esc(r.answer.signal.orionAction)}</div>
+      <div class="ask-signal-row"><span>Topic</span><strong>${esc(signal.topic)}</strong></div>
+      <div class="ask-signal-row"><span>Intent</span><strong>${esc(signal.intent)}</strong></div>
+      <div class="ask-signal-row"><span>Disease area</span><strong>${esc(signal.diseaseArea)}</strong></div>
+      <div class="ask-signal-action"><i class="ti ti-arrow-right"></i> ${esc(signal.orionAction)}</div>
     </div>` : "";
 
   results.innerHTML = `

@@ -98,7 +98,9 @@ export const knowledgeBase = [
     sourceType: "Congress Content",
     date: "March 2026",
     content: "American Academy of Dermatology (AAD) Annual Meeting 2026 — Sanofi Medical Key Presentations: (1) Late-breaking oral: Long-term dupilumab efficacy in adolescent AD — 3-year OLE data showing sustained IGA 0/1 in 42% of adolescents. (2) Poster: Real-world evidence from the PROSE registry — dupilumab persistence rates of 87% at 12 months in a US community dermatology cohort. (3) Symposium: 'Beyond the Surface — Type 2 Inflammation in Dermatology' — faculty included Dr. Emma Guttman-Yassky (Icahn School of Medicine), covering the evolving understanding of AD pathophysiology. (4) Satellite session: AD burden and patient-reported outcomes — DLQI improvements with dupilumab correlating with caregiver quality of life. MSL booth: Hall B, Booth #2417 — dermatology MSL team available for scientific exchange.",
-    keywords: ["AAD", "congress", "2026", "dupilumab", "adolescent", "real-world evidence", "PROSE", "symposium", "MSL", "dermatology"]
+    // Deliberately no "MSL" keyword: this record mentions an MSL booth in
+    // passing, but someone asking "who is my MSL" is not asking about AAD.
+    keywords: ["AAD", "congress", "2026", "dupilumab", "adolescent", "real-world evidence", "PROSE", "symposium", "dermatology"]
   },
   {
     id: "CON-002",
