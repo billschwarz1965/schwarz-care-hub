@@ -1203,13 +1203,13 @@ Dupilumab maintains 42% publication share of voice — the largest of any single
           "Searching Sanofi US Medical Information database for approved responses...",
           "Checking prescribing information (BLA 761055) for renal impairment guidance...",
           "Literature Intelligence: scanning pharmacokinetics in renal impairment...",
-          "No approved standard response covers dialysis-specific dosing â€” flagging for escalation..."
+          "No approved standard response covers dialysis-specific dosing — flagging for escalation..."
         ]
       },
       {
         type: "draft",
         label: "What the approved sources do say",
-        content: `**Found in approved sources â€” provided now**
+        content: `**Found in approved sources — provided now**
 
 Dupixent (dupilumab) is a monoclonal antibody cleared by non-renal, saturable target-mediated pathways and general protein catabolism. As a result:
 
@@ -1217,7 +1217,7 @@ Dupixent (dupilumab) is a monoclonal antibody cleared by non-renal, saturable ta
 - Population pharmacokinetic analyses did not identify renal function as a clinically meaningful covariate on dupilumab exposure.
 - Dupilumab's molecular weight (~147 kDa) makes removal by conventional hemodialysis unlikely.
 
-**Not found in approved sources â€” requires a formal response**
+**Not found in approved sources — requires a formal response**
 
 - Specific safety or PK data in patients **on maintenance hemodialysis**
 - Guidance on timing of administration **relative to dialysis sessions**
@@ -1228,10 +1228,10 @@ These two points are outside the approved response set, so they need a written a
         type: "compliance",
         label: "Governance layer review",
         checks: [
-          { agent: "AE Detection", agentId: "ae-detect", status: "pass", detail: "No adverse event described in this inquiry â€” the patient is starting dialysis for an unrelated indication and no untoward event was reported. Had an AE been present, this inquiry would have been routed to Pharmacovigilance in parallel and an AE case opened automatically." },
+          { agent: "AE Detection", agentId: "ae-detect", status: "pass", detail: "No adverse event described in this inquiry — the patient is starting dialysis for an unrelated indication and no untoward event was reported. Had an AE been present, this inquiry would have been routed to Pharmacovigilance in parallel and an AE case opened automatically." },
           { agent: "Off-Label Monitor", agentId: "off-label", status: "warn", detail: "Inquiry seeks information beyond the prescribing information (dialysis-specific dosing). Handled correctly as an unsolicited request: no AI-generated clinical recommendation offered on the off-PI portion. Escalated to Medical Information for a written, MLR-approved response." },
           { agent: "PHI Protection", agentId: "privacy", status: "pass", detail: "Patient age and clinical context retained only as the minimum needed to answer the question. No name, MRN, or direct identifier captured. HCP contact details collected solely to deliver the response." },
-          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Medical Information Request logged â€” product: Dupixent; topic: renal dosing / hemodialysis; classification: unsolicited off-PI request; partial answer delivered from approved sources; formal response requested. Compliance record #MIR-2026-08-1147." }
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Medical Information Request logged — product: Dupixent; topic: renal dosing / hemodialysis; classification: unsolicited off-PI request; partial answer delivered from approved sources; formal response requested. Compliance record #MIR-2026-08-1147." }
         ]
       },
       {
@@ -1240,11 +1240,11 @@ These two points are outside the approved response set, so they need a written a
         content: `**Request reference:** MIR-2026-08-1147
 **Product:** Dupixent (dupilumab)
 **Question:** Renal dose adjustment and available data in patients on maintenance hemodialysis
-**Requester:** Verified HCP â€” Physician
+**Requester:** Verified HCP — Physician
 **Delivery method:** Email
-**Expected response:** 2â€“3 business days for a written, MLR-approved response
+**Expected response:** 2–3 business days for a written, MLR-approved response
 
-**Pre-filled from the HCP's MedVerse profile** â€” no re-typing required:
+**Pre-filled from the HCP's MedVerse profile** — no re-typing required:
 Name, HCP type, institution, state, and email were carried over from the verified session. The HCP confirmed before submission.
 
 **Submitted via:** sanofimedicalinformation.com — Submit a Question`
@@ -1252,8 +1252,8 @@ Name, HCP type, institution, state, and email were carried over from the verifie
       {
         type: "output",
         label: "Request complete",
-        badge: "PARTIAL ANSWER NOW Â· FORMAL RESPONSE IN 2â€“3 DAYS",
-        content: "Answered immediately from approved sources: no renal dose adjustment is stated in the prescribing information, and dupilumab is not appreciably renally cleared. The dialysis-specific portion was correctly escalated rather than answered by AI â€” a written Medical Information response is on its way in 2â€“3 business days. No adverse event was detected; if one had been, it would have been routed to Pharmacovigilance automatically."
+        badge: "PARTIAL ANSWER NOW · FORMAL RESPONSE IN 2–3 DAYS",
+        content: "Answered immediately from approved sources: no renal dose adjustment is stated in the prescribing information, and dupilumab is not appreciably renally cleared. The dialysis-specific portion was correctly escalated rather than answered by AI — a written Medical Information response is on its way in 2–3 business days. No adverse event was detected; if one had been, it would have been routed to Pharmacovigilance automatically."
       }
     ]
   },
