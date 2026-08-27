@@ -1,4 +1,5 @@
 import { searchKnowledgeBase } from "./knowledge-base.js";
+import { searchEducationContent } from "./education-content-data.js";
 
 const responseTemplates = [
   {
@@ -357,7 +358,9 @@ export function generateResponse(query) {
   }
 
   if (bestTemplate && bestScore > 0) {
-    return bestTemplate.buildResponse(docs);
+    const result = bestTemplate.buildResponse(docs);
+    result.educationResources = searchEducationContent(query, result.signal?.diseaseArea);
+    return result;
   }
 
   // Fallback: generic response from retrieved docs
@@ -372,6 +375,7 @@ ${topDoc.content.substring(0, 500)}...
 
 This information is sourced from ${topDoc.source} [1]. For a more detailed clinical discussion or to explore related topics, you can ask a follow-up question or connect with your regional MSL.`,
       citations: [topDoc],
+      educationResources: searchEducationContent(query, topDoc.diseaseArea),
       signal: {
         topic: topDoc.title,
         intent: "Information retrieval",

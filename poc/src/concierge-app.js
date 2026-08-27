@@ -242,6 +242,8 @@ function addChatMsg(role, text) {
   return div;
 }
 
+const EDU_CONTENT_TYPE_ICON = { podcast: "microphone-2", video: "player-play", infographic: "chart-infographic", article: "file-text" };
+
 function addAIMsg(result) {
   const div = document.createElement("div");
   div.className = "msg msg-ai";
@@ -249,8 +251,17 @@ function addAIMsg(result) {
   const cites = result.citations?.length ? `<div class="citations-panel">${result.citations.map((c, i) =>
     `<div class="citation-card"><div class="citation-num">${i+1}</div><div><div class="citation-title">${escapeHtml(c.title)}</div><div class="citation-meta">${escapeHtml(c.source)} · ${escapeHtml(c.date)}<span class="citation-type">${escapeHtml(c.sourceType)}</span></div></div></div>`
   ).join("")}</div>` : "";
+  const eduResources = result.educationResources?.length ? `<div class="edu-resources-panel">
+    <div class="edu-resources-label"><i class="ti ti-books"></i> Related learning resources</div>
+    ${result.educationResources.map(r => `<a class="edu-resource-card" href="${escapeHtml(r.url)}" target="_blank" rel="noopener">
+      <div class="edu-resource-icon"><i class="ti ti-${EDU_CONTENT_TYPE_ICON[r.contentType] || "file-text"}"></i></div>
+      <div><div class="edu-resource-title">${escapeHtml(r.title)}</div>
+      <div class="edu-resource-meta"><span class="edu-resource-type">${escapeHtml(r.contentType)}</span> · ${escapeHtml(r.program)}${r.duration ? ` · ${escapeHtml(r.duration)}` : ""}</div></div>
+      <i class="ti ti-external-link edu-resource-link-icon"></i>
+    </a>`).join("")}
+  </div>` : "";
   const fups = result.followUps?.length ? `<div class="follow-ups">${result.followUps.map(f => `<button class="follow-up-chip">${escapeHtml(f)}</button>`).join("")}</div>` : "";
-  div.innerHTML = `<div class="msg-ai-avatar"><i class="ti ti-stethoscope"></i></div><div class="msg-ai-content"><div class="msg-ai-text rendered">${rendered}</div>${cites}${fups}</div>`;
+  div.innerHTML = `<div class="msg-ai-avatar"><i class="ti ti-stethoscope"></i></div><div class="msg-ai-content"><div class="msg-ai-text rendered">${rendered}</div>${cites}${eduResources}${fups}</div>`;
   div.querySelectorAll(".follow-up-chip").forEach(btn => btn.addEventListener("click", () => submitChat(btn.textContent)));
   chatMessages.appendChild(div);
   scrollChat();
