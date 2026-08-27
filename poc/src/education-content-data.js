@@ -112,6 +112,37 @@ export const educationContent = [
     url: "https://rdu-online.com",
     keywords: ["Fabry", "genetic testing", "diagnosis", "screening", "cardiology", "lysosomal storage disease", "LSD"]
   },
+  // --- BR1DGE (bridget1d.com) — Sanofi presymptomatic type 1 diabetes education ---
+  {
+    id: "EDU-B1D-001",
+    title: "The T1D Early Detection Toolkit",
+    contentType: "infographic",
+    diseaseArea: "Type 1 Diabetes",
+    therapeuticArea: "Endocrinology",
+    program: "BR1DGE",
+    url: "https://bridget1d.com",
+    keywords: ["T1D", "type 1 diabetes", "early detection", "screening", "toolkit", "presymptomatic"]
+  },
+  {
+    id: "EDU-B1D-002",
+    title: "What Do People with T1D Think About Screening for T1D",
+    contentType: "video",
+    diseaseArea: "Type 1 Diabetes",
+    therapeuticArea: "Endocrinology",
+    program: "BR1DGE",
+    url: "https://bridget1d.com",
+    keywords: ["T1D", "type 1 diabetes", "screening", "patient perspective", "early-stage"]
+  },
+  {
+    id: "EDU-B1D-003",
+    title: "Technology Advances and the Persistent Burden of T1D",
+    contentType: "video",
+    diseaseArea: "Type 1 Diabetes",
+    therapeuticArea: "Endocrinology",
+    program: "BR1DGE",
+    url: "https://bridget1d.com",
+    keywords: ["T1D", "type 1 diabetes", "insulin delivery", "glycemic outcomes", "technology", "disease burden"]
+  },
   // --- Sanofi Medical Campus (medical.campus.sanofi) — program directory ---
   {
     id: "EDU-CAMPUS-001",
