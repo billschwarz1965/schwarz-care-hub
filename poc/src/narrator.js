@@ -12,11 +12,10 @@ const PITCH = 1.0;
 const IS_EDGE = /Edg\//.test(navigator.userAgent);
 const VOICE_WAIT_MS = IS_EDGE ? 4000 : 400;
 
-// Jenny excluded deliberately — doesn't sound natural enough to use.
 const VOICE_PREFS = {
   female: [
-    "Microsoft Aria Online",
-    "Microsoft Aria", "Microsoft Zira",
+    "Microsoft Jenny Online", "Microsoft Aria Online",
+    "Microsoft Jenny", "Microsoft Aria", "Microsoft Zira",
     "Google US English", "Samantha",
   ],
   male: [
@@ -26,14 +25,14 @@ const VOICE_PREFS = {
 };
 // Names that count as "we found one of the good online voices, stop waiting".
 const TOP_PRIORITY_VOICES = [
-  "Microsoft Aria Online",
+  "Microsoft Jenny Online", "Microsoft Aria Online",
   "Microsoft Guy Online", "Microsoft Andrew Online",
 ];
 // Explicit, named order for "mixed" mode, so the rotation is deliberate
 // rather than however the browser happens to list voices.
 const MIXED_VOICE_ORDER = [
-  "Microsoft Guy Online", "Microsoft Aria Online",
-  "Microsoft Guy", "Microsoft Aria",
+  "Microsoft Jenny Online", "Microsoft Guy Online", "Microsoft Aria Online",
+  "Microsoft Jenny", "Microsoft Guy", "Microsoft Aria",
   "Microsoft Zira", "Microsoft David", "Microsoft Mark", "Alex", "Samantha",
 ];
 
@@ -107,6 +106,24 @@ async function pickVoiceForUtterance() {
   return set.female;
 }
 
+// Voice names are the only way to tell which one you actually heard —
+// "Female" alone doesn't say whether that was Aria, Zira, or something
+// else. Once the real voice list is resolved, label the button with the
+// actual name(s) it will use for the current mode.
+async function describeMode(mode) {
+  const set = await ensureVoiceSet();
+  const shortName = (v) => v ? v.name.replace(/^Microsoft /, "").replace(/ - English.*$/, "") : "system default";
+  if (mode === "male") return `Male voice (${shortName(set.male)})`;
+  if (mode === "mixed") return `Mixed voices (${set.rotation.map(shortName).join(", ")})`;
+  return `Female voice (${shortName(set.female)})`;
+}
+
+function updateModeTooltip(btn) {
+  describeMode(voiceMode).then((label) => {
+    btn.title = `${label} — click to change`;
+  });
+}
+
 function injectControls() {
   if (controlsInjected) return;
   controlsInjected = true;
@@ -150,13 +167,15 @@ function injectControls() {
   `;
   document.head.appendChild(style);
 
-  document.getElementById("narrator-voice-mode-btn").addEventListener("click", () => {
-    const btn = document.getElementById("narrator-voice-mode-btn");
+  const modeBtn = document.getElementById("narrator-voice-mode-btn");
+  updateModeTooltip(modeBtn);
+  modeBtn.addEventListener("click", () => {
     voiceMode = MODES[(MODES.indexOf(voiceMode) + 1) % MODES.length];
     localStorage.setItem(MODE_KEY, voiceMode);
     mixedIndex = 0;
-    btn.innerHTML = `<i class="ti ti-${MODE_META[voiceMode].icon}"></i>`;
-    btn.title = `${MODE_META[voiceMode].label} — click to change`;
+    modeBtn.innerHTML = `<i class="ti ti-${MODE_META[voiceMode].icon}"></i>`;
+    modeBtn.title = `${MODE_META[voiceMode].label} — resolving…`;
+    updateModeTooltip(modeBtn);
   });
 
   document.getElementById("narrator-voice-btn").addEventListener("click", () => {
