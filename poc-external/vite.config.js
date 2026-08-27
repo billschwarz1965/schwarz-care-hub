@@ -20,6 +20,7 @@ export default defineConfig({
         home: resolve(__dirname, 'index.html'),
         about: resolve(__dirname, 'about.html'),
         concierge: resolve(__dirname, 'concierge.html'),
+        ask: resolve(__dirname, 'ask.html'),
         disease: resolve(__dirname, 'disease.html'),
         literature: resolve(__dirname, 'literature.html'),
         congress: resolve(__dirname, 'congress.html'),

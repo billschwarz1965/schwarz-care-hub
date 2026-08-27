@@ -61,6 +61,27 @@ if (hubSearchHints) {
 if (hubSearchBtn) hubSearchBtn.addEventListener("click", () => { const q = hubSearchInput.value.trim(); if (q) routeSearch(q); });
 if (hubSearchInput) hubSearchInput.addEventListener("keydown", e => { if (e.key === "Enter") { const q = hubSearchInput.value.trim(); if (q) routeSearch(q); } });
 
+// Deep links from the Ask MedVerse results page: ?agent=<id>&q=<question>
+// opens that agent's panel with the question already applied, so the user lands
+// on a live answer instead of the hub.
+(function applyDeepLink() {
+  const params = new URLSearchParams(location.search);
+  const agent = params.get("agent");
+  const q = (params.get("q") || "").trim();
+  if (!agent && !q) return;
+
+  // Defer so every panel's own listeners are registered first.
+  setTimeout(() => {
+    if (hubSearchInput && q) hubSearchInput.value = q;
+    if (agent && document.getElementById(`panel-${agent}`)) {
+      showPanel(agent);
+      if (q) prefillAgent(agent, q);
+    } else if (q) {
+      routeSearch(q);
+    }
+  }, 0);
+})();
+
 function routeSearch(query) {
   const q = query.toLowerCase();
   const routes = [
