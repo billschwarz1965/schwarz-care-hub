@@ -3,7 +3,7 @@
 // and renders the answer plus deep links. Each edition's ask.html declares the
 // pages it actually has via <body data-modules="...">.
 
-import { askMedVerse, capabilityLink } from "./ask-router.js";
+import { askMedVerse, capabilityLink, trialLink } from "./ask-router.js";
 
 const EDU_ICON = { podcast: "microphone-2", video: "player-play", infographic: "chart-infographic", article: "file-text" };
 
@@ -92,6 +92,28 @@ function render() {
             <div class="ask-citation-meta">${esc(c.source)} · ${esc(c.date)}<span class="ask-citation-type">${esc(c.sourceType)}</span></div>
           </div>
         </div>`).join("")}
+    </div>` : "";
+
+  // Real recruiting studies. Linked to ClinicalTrials.gov rather than a Sanofi
+  // page so the HCP reads the actual protocol and eligibility criteria.
+  const trialsBlock = (r.trials || []).length ? `
+    <div class="ask-section">
+      <div class="ask-section-label"><i class="ti ti-flask"></i> Recruiting studies (${r.trials.length})</div>
+      ${r.trials.map(t => `
+        <a class="ask-trial" href="${esc(trialLink(t))}" target="_blank" rel="noopener">
+          <div class="ask-trial-head">
+            <span class="ask-trial-status">${esc(t.status)}</span>
+            <span class="ask-trial-nct">${esc(t.nct)}</span>
+          </div>
+          <div class="ask-trial-title">${esc(t.title)}</div>
+          <div class="ask-trial-meta">
+            <span><i class="ti ti-target"></i> ${esc(t.phase)}</span>
+            <span><i class="ti ti-users"></i> ${t.enrollment.toLocaleString()} participants</span>
+            <span><i class="ti ti-map-pin"></i> ${t.sites} site${t.sites === 1 ? "" : "s"}</span>
+          </div>
+          <div class="ask-trial-conds">${t.conditions.map(cd => `<span class="ask-trial-cond">${esc(cd)}</span>`).join("")}</div>
+        </a>`).join("")}
+      <p class="ask-trial-note">Eligibility shown is a summary. Full inclusion and exclusion criteria are on ClinicalTrials.gov — open a study to review them before referring a patient.</p>
     </div>` : "";
 
   const resources = (r.resources || []).length ? `
@@ -187,6 +209,7 @@ function render() {
     <div class="ask-layout">
       <div class="ask-main">
         ${answerBlock}
+        ${trialsBlock}
         ${resources}
       </div>
       <div class="ask-side">
