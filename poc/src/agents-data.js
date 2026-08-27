@@ -11,7 +11,8 @@ export const SYSTEM_AGENTS = [
       { label: "Publications", value: "13.3M", icon: "book" },
       { label: "Congress participations", value: "22.5M", icon: "calendar-event" },
       { label: "Clinical trials", value: "563K", icon: "flask" },
-      { label: "Sanofi engagements", value: "OneCRM", icon: "building" }
+      { label: "Sanofi engagements", value: "OneCRM", icon: "building" },
+      { label: "KOL directory (Veeva Link)", value: "180K", icon: "network" }
     ],
     capabilities: [
       "Expert discovery by disease, mechanism, geography, practice setting",
@@ -21,7 +22,7 @@ export const SYSTEM_AGENTS = [
       "Investigator track record & enrollment performance",
       "Emerging KOL identification & growth trajectory"
     ],
-    consumers: ["msl-copilot", "kol-agent", "advisory-board", "congress-planning", "trial-intel", "strategy-advisor", "expert-segment", "gap-expert"],
+    consumers: ["msl-copilot", "kol-agent", "advisory-board", "congress-planning", "trial-intel", "strategy-advisor", "expert-segment", "gap-expert", "peer-connect"],
     compliancePartners: ["privacy", "audit", "explainability", "mlr"]
   },
   {
@@ -190,6 +191,16 @@ export const BUSINESS_AGENTS = [
     icon: "map-pin-heart",
     desc: "Helps HCPs identify their assigned MSL(s) by therapeutic area, territory, and institution. Pulls from interaction signal data, OneCRM territory assignments, and MSL profiles.",
     users: ["HCPs", "MSLs"],
+    compliancePartners: ["privacy", "audit", "promo-risk"],
+    hubDependency: ["hcp-explorer"],
+    status: "active"
+  },
+  {
+    id: "peer-connect",
+    name: "Peer & Expert Connect",
+    icon: "user-search",
+    desc: "Lets an HCP describe the clinical problem they're working on and surfaces a ranked roster of peers and KOLs from Veeva Link who match — with full expert profiles available on demand.",
+    users: ["HCPs"],
     compliancePartners: ["privacy", "audit", "promo-risk"],
     hubDependency: ["hcp-explorer"],
     status: "active"
@@ -1162,6 +1173,100 @@ Dupilumab maintains 42% publication share of voice — the largest of any single
         label: "Connection facilitated",
         badge: "VERIFIED & NON-PROMOTIONAL",
         content: "Your primary MSL is Dr. James Rivera (Immunology & Dermatology, Midwest). A notification has been sent to Dr. Rivera with your request to discuss the AAD 2026 dupilumab long-term data. Expected response within 1 business day. All interactions logged for compliance."
+      }
+    ]
+  },
+  "peer-connect": {
+    title: "Finding peers and KOLs to collaborate with",
+    steps: [
+      {
+        type: "input",
+        label: "HCP request",
+        content: "I'm Dr. Elena Vasquez, a rheumatologist at UCSF. I'm designing a treat-to-target protocol for difficult-to-treat lupus nephritis patients who've failed belimumab. I'd like to connect with 2–3 peers who have real-world experience combining anifrolumab with mycophenolate in this population — ideally academic centers with published outcomes."
+      },
+      {
+        type: "processing",
+        label: "Peer & Expert Connect processing",
+        items: [
+          "HCP Explorer: verifying requester profile — Dr. Elena Vasquez, UCSF Rheumatology...",
+          "Veeva Link: querying KOL directory for lupus nephritis + anifrolumab expertise...",
+          "Filtering: real-world (non-trial) experience, belimumab-refractory population...",
+          "Cross-referencing publication history for combination-therapy outcomes...",
+          "Scoring matches: clinical overlap, academic setting, publication recency...",
+          "Excluding experts with an active promotional speaker bureau engagement..."
+        ]
+      },
+      {
+        type: "roster",
+        label: "Matching peers & KOLs (via Veeva Link)",
+        experts: [
+          {
+            name: "Dr. Michael Osei, MD",
+            credentials: "Rheumatology — Lupus Nephritis Program Director",
+            institution: "Johns Hopkins University",
+            location: "Baltimore, MD",
+            matchScore: 96,
+            matchReason: "Published a 2025 real-world cohort combining anifrolumab with mycophenolate in belimumab-refractory lupus nephritis; runs an active LN subspecialty clinic.",
+            tags: ["Anifrolumab + MMF", "Belimumab-refractory", "Academic center"],
+            detail: {
+              kolTier: "National KOL",
+              publications: "41 total, 14 in lupus nephritis (h-index 22)",
+              trials: "PI, TULIP-LN2 extension cohort",
+              veevaLinkId: "VL-KOL-284471",
+              engagement: "No prior Sanofi interactions on file",
+              contactNote: "Available for peer-to-peer scientific exchange via MedVerse. No promotional contact permitted."
+            }
+          },
+          {
+            name: "Dr. Amara Chukwu, MD, PhD",
+            credentials: "Nephrology — Glomerular Disease Center",
+            institution: "University of Michigan",
+            location: "Ann Arbor, MI",
+            matchScore: 91,
+            matchReason: "Co-authored outcomes data on combination biologic therapy in refractory lupus nephritis; frequent multidisciplinary collaborator with rheumatology on treat-to-target protocols.",
+            tags: ["Combination biologics", "Treat-to-target", "Multidisciplinary"],
+            detail: {
+              kolTier: "Rising KOL",
+              publications: "23 total, 9 in lupus nephritis (h-index 14)",
+              trials: "Sub-investigator, 2 active LN trials",
+              veevaLinkId: "VL-KOL-119082",
+              engagement: "1 prior MSL scientific exchange (2025)",
+              contactNote: "Available for peer-to-peer scientific exchange via MedVerse. No promotional contact permitted."
+            }
+          },
+          {
+            name: "Dr. Priya Raghunathan, MD",
+            credentials: "Rheumatology — Clinical Research Lead",
+            institution: "Northwestern Memorial Hospital",
+            location: "Chicago, IL",
+            matchScore: 87,
+            matchReason: "Presented belimumab-refractory case series with anifrolumab rescue therapy at ACR 2025; academic center with active lupus registry.",
+            tags: ["Belimumab-refractory", "Case series", "ACR 2025 presenter"],
+            detail: {
+              kolTier: "Community Influencer",
+              publications: "16 total, 6 in lupus (h-index 9)",
+              trials: "No active trial roles on file",
+              veevaLinkId: "VL-KOL-330217",
+              engagement: "No prior Sanofi interactions on file",
+              contactNote: "Available for peer-to-peer scientific exchange via MedVerse. No promotional contact permitted."
+            }
+          }
+        ]
+      },
+      {
+        type: "compliance",
+        label: "Governance layer review",
+        checks: [
+          { agent: "PHI Protection", agentId: "privacy", status: "pass", detail: "Only professional Veeva Link profile data surfaced — no patient-level or PHI data exchanged. No patient details from Dr. Vasquez's request were retained beyond the clinical topic." },
+          { agent: "Promotional Risk", agentId: "promo-risk", status: "pass", detail: "This is a peer-to-peer scientific exchange facilitation, not a promotional introduction. No product claims made. Candidates with active speaker bureau engagements were excluded." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Peer Connect request logged — Dr. Elena Vasquez (UCSF), topic: anifrolumab + MMF in belimumab-refractory lupus nephritis. 3 matches surfaced via Veeva Link. Compliance record #PC-2026-08-0193." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Roster delivered",
+        badge: "3 MATCHES · VEEVA LINK VERIFIED",
+        content: "3 peers matched on clinical overlap and academic setting: Dr. Michael Osei (Johns Hopkins), Dr. Amara Chukwu (Michigan), Dr. Priya Raghunathan (Northwestern). Dr. Vasquez can request a scientific exchange with any match directly through MedVerse; all connections are logged for compliance."
       }
     ]
   },

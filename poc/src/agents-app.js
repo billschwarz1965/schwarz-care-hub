@@ -547,6 +547,11 @@ async function openDemo(agentId) {
       stepEl.innerHTML = `<div class="demo-step-label"><i class="ti ti-file-text"></i> ${esc(step.label)}</div>
         <div class="demo-draft">${renderMd(step.content)}</div>`;
       content.appendChild(stepEl);
+    } else if (step.type === "roster") {
+      stepEl.innerHTML = `<div class="demo-step-label"><i class="ti ti-users-group"></i> ${esc(step.label)}</div>
+        <div class="demo-roster"></div>`;
+      content.appendChild(stepEl);
+      renderRoster(stepEl.querySelector(".demo-roster"), step.experts);
     } else if (step.type === "chart") {
       const chartData = CHART_DATA[step.chartId];
       if (chartData) {
@@ -671,6 +676,49 @@ function handleDemoPrompt() {
   input.value = "";
   document.getElementById("demo-prompt-send").disabled = true;
   content.scrollTop = content.scrollHeight;
+}
+
+function renderRoster(container, experts) {
+  if (!container || !experts) return;
+  container.innerHTML = experts.map((expert, i) => `
+    <div class="roster-card" data-idx="${i}">
+      <div class="roster-card-header">
+        <div class="roster-card-id">
+          <div class="roster-card-name">${esc(expert.name)}</div>
+          <div class="roster-card-cred">${esc(expert.credentials)}</div>
+          <div class="roster-card-loc"><i class="ti ti-map-pin"></i> ${esc(expert.institution)} — ${esc(expert.location)}</div>
+        </div>
+        <div class="roster-match">${expert.matchScore}% match</div>
+      </div>
+      <div class="roster-card-reason">${esc(expert.matchReason)}</div>
+      ${expert.tags ? `<div class="roster-tags">${expert.tags.map(t => `<span class="roster-tag">${esc(t)}</span>`).join("")}</div>` : ""}
+      <button class="roster-detail-toggle" type="button"><i class="ti ti-chevron-down"></i> View Veeva Link profile</button>
+      <div class="roster-detail"></div>
+    </div>
+  `).join("");
+
+  container.querySelectorAll(".roster-detail-toggle").forEach((btn, i) => {
+    btn.addEventListener("click", () => {
+      const card = btn.closest(".roster-card");
+      const detailEl = card.querySelector(".roster-detail");
+      const open = card.classList.toggle("roster-card-open");
+      btn.innerHTML = open
+        ? '<i class="ti ti-chevron-up"></i> Hide Veeva Link profile'
+        : '<i class="ti ti-chevron-down"></i> View Veeva Link profile';
+      if (open && !detailEl.dataset.rendered) {
+        const d = experts[i].detail || {};
+        detailEl.dataset.rendered = "1";
+        detailEl.innerHTML = `
+          <div class="roster-detail-row"><span>KOL tier</span><strong>${esc(d.kolTier || "—")}</strong></div>
+          <div class="roster-detail-row"><span>Publications</span><strong>${esc(d.publications || "—")}</strong></div>
+          <div class="roster-detail-row"><span>Trial activity</span><strong>${esc(d.trials || "—")}</strong></div>
+          <div class="roster-detail-row"><span>Veeva Link ID</span><strong>${esc(d.veevaLinkId || "—")}</strong></div>
+          <div class="roster-detail-row"><span>Prior Sanofi engagement</span><strong>${esc(d.engagement || "—")}</strong></div>
+          <div class="roster-detail-note">${esc(d.contactNote || "")}</div>`;
+      }
+      scrollDemo();
+    });
+  });
 }
 
 function renderChart(chartId, data) {
