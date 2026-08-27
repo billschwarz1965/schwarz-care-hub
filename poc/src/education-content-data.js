@@ -1037,25 +1037,47 @@ export const educationContent = [
   }
 ];
 
+// Words that appear across every therapeutic area — they must not, on their own,
+// make an unrelated resource look like a match.
+const EDU_GENERIC_TERMS = new Set([
+  "disease", "diseases", "disorder", "disorders", "condition", "conditions",
+  "type", "types", "test", "tests", "testing", "screening", "treatment",
+  "therapy", "therapies", "diagnosis", "diagnostic", "management", "biomarker",
+  "biomarkers", "genetic", "genetics", "clinical", "medical", "safety",
+  "efficacy", "severe", "moderate", "chronic", "risk", "early", "adult",
+  "adults", "children", "pediatric", "burden", "data", "patient", "patients",
+  "what", "which", "how", "why", "when", "the", "and", "for", "are", "any",
+  "with", "from", "about", "this", "that", "does", "used", "using", "congress"
+]);
+
 export function searchEducationContent(query, diseaseArea, limit = 3) {
-  const terms = query.toLowerCase().split(/\s+/).filter(t => t.length > 2);
+  const terms = query.toLowerCase()
+    .split(/[^a-z0-9-]+/)
+    .filter(t => t.length > 2);
+
   const scored = educationContent.map(item => {
     let score = 0;
+    let distinctiveHits = 0;
     const kwLower = item.keywords.join(" ").toLowerCase();
     const titleLower = item.title.toLowerCase();
 
     for (const term of terms) {
-      if (titleLower.includes(term)) score += 4;
-      if (kwLower.includes(term)) score += 3;
+      const isDistinctive = !EDU_GENERIC_TERMS.has(term);
+      if (titleLower.includes(term)) { score += 4; if (isDistinctive) distinctiveHits++; }
+      if (kwLower.includes(term)) { score += 3; if (isDistinctive) distinctiveHits++; }
     }
-    if (diseaseArea && item.diseaseArea.toLowerCase().includes(diseaseArea.toLowerCase())) score += 5;
-    if (diseaseArea && diseaseArea.toLowerCase().includes("cross-ta")) score += 2;
 
-    return { ...item, score };
+    const areaMatch = diseaseArea && item.diseaseArea.toLowerCase().includes(diseaseArea.toLowerCase());
+    if (areaMatch) score += 5;
+
+    return { ...item, score, distinctiveHits, areaMatch };
   });
 
+  // Require a real topical signal: either a distinctive query-term hit or an
+  // explicit disease-area match. Returns fewer than `limit` rather than padding
+  // the list with unrelated resources.
   return scored
-    .filter(d => d.score > 0)
+    .filter(d => d.distinctiveHits > 0 || d.areaMatch)
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 }
