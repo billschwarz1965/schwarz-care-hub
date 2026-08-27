@@ -1234,7 +1234,7 @@ Dupilumab maintains 42% publication share of voice — the largest of any single
               publications: "41 total, 14 in lupus nephritis (h-index 22)",
               trials: "PI, TULIP-LN2 extension cohort",
               veevaLinkId: "VL-KOL-284471",
-              engagement: "No prior Sanofi interactions on file",
+              collaboration: "Open to peer scientific exchange; co-authored with 4 external institutions in the past 2 years",
               contactNote: "Available for peer-to-peer scientific exchange via MedVerse. No promotional contact permitted."
             }
           },
@@ -1251,7 +1251,7 @@ Dupilumab maintains 42% publication share of voice — the largest of any single
               publications: "23 total, 9 in lupus nephritis (h-index 14)",
               trials: "Sub-investigator, 2 active LN trials",
               veevaLinkId: "VL-KOL-119082",
-              engagement: "1 prior MSL scientific exchange (2025)",
+              collaboration: "Co-investigator on 2 multi-site LN outcomes studies; regularly presents at ACR/ASN",
               contactNote: "Available for peer-to-peer scientific exchange via MedVerse. No promotional contact permitted."
             }
           },
@@ -1268,7 +1268,7 @@ Dupilumab maintains 42% publication share of voice — the largest of any single
               publications: "16 total, 6 in lupus (h-index 9)",
               trials: "No active trial roles on file",
               veevaLinkId: "VL-KOL-330217",
-              engagement: "No prior Sanofi interactions on file",
+              collaboration: "Open to peer scientific exchange; active in regional lupus case-conference network",
               contactNote: "Available for peer-to-peer scientific exchange via MedVerse. No promotional contact permitted."
             }
           }

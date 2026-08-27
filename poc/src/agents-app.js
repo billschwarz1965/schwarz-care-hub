@@ -713,7 +713,7 @@ function renderRoster(container, experts) {
           <div class="roster-detail-row"><span>Publications</span><strong>${esc(d.publications || "—")}</strong></div>
           <div class="roster-detail-row"><span>Trial activity</span><strong>${esc(d.trials || "—")}</strong></div>
           <div class="roster-detail-row"><span>Veeva Link ID</span><strong>${esc(d.veevaLinkId || "—")}</strong></div>
-          <div class="roster-detail-row"><span>Prior Sanofi engagement</span><strong>${esc(d.engagement || "—")}</strong></div>
+          <div class="roster-detail-row"><span>Collaboration activity</span><strong>${esc(d.collaboration || "—")}</strong></div>
           <div class="roster-detail-note">${esc(d.contactNote || "")}</div>`;
       }
       scrollDemo();
