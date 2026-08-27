@@ -140,8 +140,118 @@ export const educationContent = [
     diseaseArea: "Type 1 Diabetes",
     therapeuticArea: "Endocrinology",
     program: "BR1DGE",
-    url: "https://bridget1d.com",
+    url: "https://www.bridget1d.com/resources/ar/Technology-Advances-and-the-Persistent-Burden-of-T1D-ATTD-2026",
     keywords: ["T1D", "type 1 diabetes", "insulin delivery", "glycemic outcomes", "technology", "disease burden"]
+  },
+  {
+    id: "EDU-B1D-004",
+    title: "IDS 2026 Symposium Summary",
+    contentType: "article",
+    diseaseArea: "Type 1 Diabetes",
+    therapeuticArea: "Endocrinology",
+    program: "BR1DGE",
+    url: "https://www.bridget1d.com/resources/ar/IDS-2026-Symposium-Summary",
+    keywords: ["T1D", "type 1 diabetes", "biomarker", "screening", "diagnosis", "monitoring", "autoantibodies", "C-peptide", "symposium"]
+  },
+  {
+    id: "EDU-B1D-005",
+    title: "Immune Dysregulation in T1D: Biomarkers and Therapeutic Targets",
+    contentType: "video",
+    diseaseArea: "Type 1 Diabetes",
+    therapeuticArea: "Endocrinology",
+    program: "BR1DGE",
+    url: "https://www.bridget1d.com/resources/ar/Immune-dysregulation-in-T1D--biomarkers-and-therapeutic-targets-",
+    keywords: ["T1D", "type 1 diabetes", "T-cell dysregulation", "pathophysiology", "biomarkers", "therapeutic targets"]
+  },
+  {
+    id: "EDU-B1D-006",
+    title: "Islet Autoantibodies as Biomarkers of Progression to Clinical T1D",
+    contentType: "video",
+    diseaseArea: "Type 1 Diabetes",
+    therapeuticArea: "Endocrinology",
+    program: "BR1DGE",
+    url: "https://www.bridget1d.com/resources/ar/Islet-autoantibodies-as-biomarkers-of-progression-to-clinical-T1D-",
+    keywords: ["T1D", "type 1 diabetes", "islet autoantibodies", "biomarkers", "progression", "risk"]
+  },
+  {
+    id: "EDU-B1D-007",
+    title: "Composite Risk Scores as Tools for Improved T1D Risk Prediction",
+    contentType: "video",
+    diseaseArea: "Type 1 Diabetes",
+    therapeuticArea: "Endocrinology",
+    program: "BR1DGE",
+    url: "https://www.bridget1d.com/resources/ar/Composite-risk-scores-as-tools-for-improved-T1D-risk-prediction",
+    keywords: ["T1D", "type 1 diabetes", "risk score", "risk prediction", "biomarkers"]
+  },
+  {
+    id: "EDU-B1D-008",
+    title: "ATTD 2026 Symposium Summary",
+    contentType: "article",
+    diseaseArea: "Type 1 Diabetes",
+    therapeuticArea: "Endocrinology",
+    program: "BR1DGE",
+    url: "https://www.bridget1d.com/resources/ar/ATTD-2026-Symposium-Summary",
+    keywords: ["T1D", "type 1 diabetes", "screening", "diagnosis", "monitoring", "management", "care journey", "symposium", "ATTD"]
+  },
+  {
+    id: "EDU-B1D-009",
+    title: "Early Detection of Type 1 Diabetes in Adults",
+    contentType: "article",
+    diseaseArea: "Type 1 Diabetes",
+    therapeuticArea: "Endocrinology",
+    program: "BR1DGE",
+    url: "https://www.bridget1d.com/resources/ar/Early-Detection-of-Type-1-Diabetes-in-Adults-",
+    keywords: ["T1D", "type 1 diabetes", "early detection", "adults", "misclassification", "type 2 diabetes", "islet autoantibody testing"]
+  },
+  {
+    id: "EDU-B1D-010",
+    title: "Early Detection of Type 1 Diabetes in Pediatric Populations",
+    contentType: "article",
+    diseaseArea: "Type 1 Diabetes",
+    therapeuticArea: "Endocrinology",
+    program: "BR1DGE",
+    url: "https://www.bridget1d.com/resources/ar/Early-Detection-of-Type-1-Diabetes-in-Pediatric-Populations-",
+    keywords: ["T1D", "type 1 diabetes", "early detection", "pediatric", "children", "DKA"]
+  },
+  {
+    id: "EDU-B1D-011",
+    title: "Education and Psychosocial Support After T1D Diagnosis – ATTD 2026",
+    contentType: "video",
+    diseaseArea: "Type 1 Diabetes",
+    therapeuticArea: "Endocrinology",
+    program: "BR1DGE",
+    url: "https://www.bridget1d.com/resources/ar/Education-and-Psychosocial-Support-After-T1D-Diagnosis-ATTD-2026",
+    keywords: ["T1D", "type 1 diabetes", "psychosocial support", "patient anxiety", "islet autoantibody", "education"]
+  },
+  {
+    id: "EDU-B1D-012",
+    title: "The Growing Global Burden of T1D",
+    contentType: "video",
+    diseaseArea: "Type 1 Diabetes",
+    therapeuticArea: "Endocrinology",
+    program: "BR1DGE",
+    url: "https://www.bridget1d.com/resources/ar/The-Growing-Global-Burden-of-T1D-ATTD-2026",
+    keywords: ["T1D", "type 1 diabetes", "disease burden", "adult-onset", "misclassification", "familial risk", "autoimmune comorbidities"]
+  },
+  {
+    id: "EDU-B1D-013",
+    title: "Identifying Type 1 Diabetes in Adults",
+    contentType: "video",
+    diseaseArea: "Type 1 Diabetes",
+    therapeuticArea: "Endocrinology",
+    program: "BR1DGE",
+    url: "https://www.bridget1d.com/resources/ar/Identifying-Type-1-Diabetes-in-Adults-",
+    keywords: ["T1D", "type 1 diabetes", "adults", "misclassification", "type 2 diabetes", "islet autoantibodies", "C-peptide"]
+  },
+  {
+    id: "EDU-B1D-014",
+    title: "The Autoimmune Pathophysiology of Early-Stage T1D",
+    contentType: "video",
+    diseaseArea: "Type 1 Diabetes",
+    therapeuticArea: "Endocrinology",
+    program: "BR1DGE",
+    url: "https://www.bridget1d.com/resources/ar/The-Autoimmune-Pathophysiology-of-Early-Stage-T1D-",
+    keywords: ["T1D", "type 1 diabetes", "pathophysiology", "autoimmune cascade", "beta cell destruction"]
   },
   // --- Sanofi Congress Library (congress.sanofimedical.com) ---
   {
@@ -341,6 +451,97 @@ export const educationContent = [
     program: "Sanofi Congress Library",
     url: "https://congress.sanofimedical.com/eha-2026",
     keywords: ["EHA", "congress", "hematology", "rare blood disorders", "oncology"]
+  },
+  // --- Sanofi Payer Medical (specialtymvo.sanofimedical.com) — payer/HCDM education ---
+  {
+    id: "EDU-MVO-001",
+    title: "BP US Approval Data Deck — Dupilumab ADEPT Trial in Bullous Pemphigoid",
+    contentType: "article",
+    diseaseArea: "Bullous Pemphigoid",
+    therapeuticArea: "Immunology",
+    program: "Sanofi Payer Medical",
+    url: "https://specialtymvo.sanofimedical.com/immunology/immunology-and-inflammation-resources-fda-approved-product-therapy-areas",
+    keywords: ["bullous pemphigoid", "BP", "dupilumab", "ADEPT", "phase 2/3", "FDA approval", "payer"]
+  },
+  {
+    id: "EDU-MVO-002",
+    title: "CSU Data US Approval — Disease Burden and Management Review",
+    contentType: "article",
+    diseaseArea: "Chronic Spontaneous Urticaria",
+    therapeuticArea: "Immunology",
+    program: "Sanofi Payer Medical",
+    url: "https://specialtymvo.sanofimedical.com/immunology/immunology-and-inflammation-resources-fda-approved-product-therapy-areas",
+    keywords: ["CSU", "chronic spontaneous urticaria", "bullous pemphigoid", "atopic hand and foot dermatitis", "prurigo nodularis", "payer"]
+  },
+  {
+    id: "EDU-MVO-003",
+    title: "Dupilumab COPD NOTUS vs BOREAS Infographic",
+    contentType: "infographic",
+    diseaseArea: "COPD",
+    therapeuticArea: "Immunology / Pulmonology",
+    program: "Sanofi Payer Medical",
+    url: "https://specialtymvo.sanofimedical.com/immunology/immunology-and-inflammation-resources-fda-approved-product-therapy-areas",
+    keywords: ["COPD", "dupilumab", "NOTUS", "BOREAS", "payer", "value proposition"]
+  },
+  {
+    id: "EDU-MVO-004",
+    title: "MVO COPD Value Proposition Deck",
+    contentType: "article",
+    diseaseArea: "COPD",
+    therapeuticArea: "Immunology / Pulmonology",
+    program: "Sanofi Payer Medical",
+    url: "https://specialtymvo.sanofimedical.com/immunology/immunology-and-inflammation-resources-fda-approved-product-therapy-areas",
+    keywords: ["COPD", "pathophysiology", "disease burden", "economic burden", "dupilumab", "NOTUS", "BOREAS", "payer"]
+  },
+  {
+    id: "EDU-MVO-005",
+    title: "BOREAS NOTUS Efficacy COPD Eosinophil Subgroup Infographic (US)",
+    contentType: "infographic",
+    diseaseArea: "COPD",
+    therapeuticArea: "Immunology / Pulmonology",
+    program: "Sanofi Payer Medical",
+    url: "https://specialtymvo.sanofimedical.com/immunology/immunology-and-inflammation-resources-fda-approved-product-therapy-areas",
+    keywords: ["COPD", "eosinophil", "exacerbation", "NOTUS", "BOREAS", "posthoc", "payer"]
+  },
+  {
+    id: "EDU-MVO-006",
+    title: "Chronic Rhinosinusitis with Nasal Polyposis — EVEREST Trial Review",
+    contentType: "article",
+    diseaseArea: "CRSwNP",
+    therapeuticArea: "Immunology / Rhinology",
+    program: "Sanofi Payer Medical",
+    url: "https://specialtymvo.sanofimedical.com/immunology/immunology-and-inflammation-resources-fda-approved-product-therapy-areas",
+    keywords: ["CRSwNP", "EVEREST", "dupilumab", "omalizumab", "phase 4", "asthma", "payer"]
+  },
+  {
+    id: "EDU-MVO-007",
+    title: "Overview of Dupilumab in Allergic Fungal Rhinosinusitis (AFRS) — LIBERTY-AIMS",
+    contentType: "article",
+    diseaseArea: "CRSwNP",
+    therapeuticArea: "Immunology / Rhinology",
+    program: "Sanofi Payer Medical",
+    url: "https://specialtymvo.sanofimedical.com/immunology/immunology-and-inflammation-resources-fda-approved-product-therapy-areas",
+    keywords: ["AFRS", "allergic fungal rhinosinusitis", "dupilumab", "LIBERTY-AIMS", "payer"]
+  },
+  {
+    id: "EDU-MVO-008",
+    title: "Polymyalgia Rheumatica — Disease Management and IL-6 Inhibition Rationale",
+    contentType: "article",
+    diseaseArea: "Polymyalgia Rheumatica",
+    therapeuticArea: "Immunology / Rheumatology",
+    program: "Sanofi Payer Medical",
+    url: "https://specialtymvo.sanofimedical.com/immunology/immunology-and-inflammation-resources-fda-approved-product-therapy-areas",
+    keywords: ["PMR", "polymyalgia rheumatica", "IL-6", "glucocorticoids", "rheumatoid arthritis", "payer"]
+  },
+  {
+    id: "EDU-MVO-009",
+    title: "Current Understanding and Disease Management of Prurigo Nodularis",
+    contentType: "article",
+    diseaseArea: "Prurigo Nodularis",
+    therapeuticArea: "Immunology / Dermatology",
+    program: "Sanofi Payer Medical",
+    url: "https://specialtymvo.sanofimedical.com/immunology/immunology-and-inflammation-resources-fda-approved-product-therapy-areas",
+    keywords: ["prurigo nodularis", "PN", "epidemiology", "disease burden", "pathophysiology", "payer"]
   },
   // --- Sanofi Medical Campus (medical.campus.sanofi) — program directory ---
   {
