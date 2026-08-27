@@ -543,6 +543,157 @@ export const educationContent = [
     url: "https://specialtymvo.sanofimedical.com/immunology/immunology-and-inflammation-resources-fda-approved-product-therapy-areas",
     keywords: ["prurigo nodularis", "PN", "epidemiology", "disease burden", "pathophysiology", "payer"]
   },
+  // --- Sanofi Rare Diseases Medical (rarediseases.sanofimedical.com) ---
+  {
+    id: "EDU-RD-001",
+    title: "Fabry Disease: Recognizing a Variable Condition",
+    contentType: "article",
+    diseaseArea: "Fabry Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/fabry-disease",
+    keywords: ["Fabry", "clinical features", "pathology", "nephropathy", "cardiovascular", "heterogeneous presentation"]
+  },
+  {
+    id: "EDU-RD-002",
+    title: "HCM-Fabry Cardiac Disease Symposium: Cardiac Involvement in Fabry Disease",
+    contentType: "video",
+    diseaseArea: "Fabry Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/fabry-disease",
+    keywords: ["Fabry", "hypertrophic cardiomyopathy", "HCM", "cardiac", "symposium"]
+  },
+  {
+    id: "EDU-RD-003",
+    title: "Genetic Testing and Genetic Counseling — Advisory Council Insights",
+    contentType: "article",
+    diseaseArea: "Fabry Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/fabry-disease",
+    keywords: ["genetic testing", "genetic counseling", "lysosomal storage disease", "LSD", "advisory council", "monograph"]
+  },
+  {
+    id: "EDU-RD-004",
+    title: "Lysosomal Storage Disease Biomarkers — Advisory Council Insights",
+    contentType: "article",
+    diseaseArea: "Fabry Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/fabry-disease",
+    keywords: ["biomarkers", "lysosomal storage disease", "LSD", "advisory council", "monograph"]
+  },
+  {
+    id: "EDU-RD-005",
+    title: "Risk Stratification Using Plasma LysoGb3 in Fabry Disease",
+    contentType: "video",
+    diseaseArea: "Fabry Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/fabry-disease",
+    keywords: ["Fabry", "lysoGb3", "risk stratification", "biomarker"]
+  },
+  {
+    id: "EDU-RD-006",
+    title: "Science Talk for Fabry Disease – Video Podcast 3: Monitoring Pediatric Patients",
+    contentType: "podcast",
+    diseaseArea: "Fabry Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/fabry-disease",
+    keywords: ["Fabry", "pediatric", "monitoring", "patient advocacy", "video podcast"]
+  },
+  {
+    id: "EDU-RD-007",
+    title: "Diagnosing Fabry Disease — Testing Brochure",
+    contentType: "article",
+    diseaseArea: "Fabry Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/fabry-disease",
+    keywords: ["Fabry", "diagnosis", "alpha-GAL A", "enzyme assay", "GLA sequencing", "testing"]
+  },
+  {
+    id: "EDU-RD-008",
+    title: "Kidney Panel Testing in Fabry Disease",
+    contentType: "article",
+    diseaseArea: "Fabry Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/fabry-disease",
+    keywords: ["Fabry", "chronic kidney disease", "CKD", "kidney panel"]
+  },
+  {
+    id: "EDU-RD-009",
+    title: "Cardiac Gene Panels in Fabry Disease",
+    contentType: "article",
+    diseaseArea: "Fabry Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/fabry-disease",
+    keywords: ["Fabry", "hypertrophic cardiomyopathy", "cardiac gene panel", "genetics"]
+  },
+  {
+    id: "EDU-RD-010",
+    title: "Gaucher Disease Biomarker: Lyso-GL-1",
+    contentType: "article",
+    diseaseArea: "Gaucher Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/gaucher-disease",
+    keywords: ["Gaucher", "Lyso-GL-1", "Lyso-GB-1", "biomarker", "glucocerebrosidase"]
+  },
+  {
+    id: "EDU-RD-011",
+    title: "Gaucher Disease Schedule of Assessments (ICGG)",
+    contentType: "article",
+    diseaseArea: "Gaucher Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/gaucher-disease",
+    keywords: ["Gaucher", "monitoring", "schedule of assessments", "ICGG", "Type 1"]
+  },
+  {
+    id: "EDU-RD-012",
+    title: "GD3 Brochure — Neuronopathic Gaucher Disease",
+    contentType: "article",
+    diseaseArea: "Gaucher Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/gaucher-disease",
+    keywords: ["Gaucher", "GD3", "neuronopathic", "Type 3"]
+  },
+  {
+    id: "EDU-RD-013",
+    title: "ASMD and Gaucher Disease Diagnosis — Testing Brochure",
+    contentType: "article",
+    diseaseArea: "ASMD",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/gaucher-disease",
+    keywords: ["ASMD", "Gaucher", "Niemann-Pick", "enzyme assay", "GBA", "SMPD1", "diagnosis", "testing"]
+  },
+  {
+    id: "EDU-RD-014",
+    title: "NSGC 2025 Symposium: Carrier Testing and the Unexpected Parental Diagnosis",
+    contentType: "video",
+    diseaseArea: "Gaucher Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/gaucher-disease",
+    keywords: ["Gaucher", "Fabry", "carrier screening", "genetic counseling", "NSGC", "symposium"]
+  },
+  {
+    id: "EDU-RD-015",
+    title: "ASHG 2025 Symposium: Addressing Diagnostic Delays for Rare Disease Patients",
+    contentType: "video",
+    diseaseArea: "Gaucher Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Rare Diseases Medical",
+    url: "https://www.rarediseases.sanofimedical.com/gaucher-disease",
+    keywords: ["rare disease", "diagnostic delay", "patient journey", "ASHG", "symposium"]
+  },
   // --- Sanofi Medical Campus (medical.campus.sanofi) — program directory ---
   {
     id: "EDU-CAMPUS-001",
