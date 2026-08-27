@@ -232,6 +232,116 @@ export const educationContent = [
     url: "https://congress.sanofimedical.com/ssiem-2026",
     keywords: ["SSIEM", "congress", "inborn errors of metabolism", "lysosomal storage disease", "LSD", "Fabry", "ASMD", "Gaucher", "rare diseases"]
   },
+  {
+    id: "EDU-CONG-009",
+    title: "AAD 2026 Sanofi | Regeneron — American Academy of Dermatology Annual Meeting",
+    contentType: "article",
+    duration: "Mar 27–31, 2026",
+    diseaseArea: "Atopic Dermatitis",
+    therapeuticArea: "Immunology / Dermatology",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/aad-2026-sanofi-regeneron",
+    keywords: ["AAD", "congress", "dermatology", "atopic dermatitis", "dupilumab", "dupixent"]
+  },
+  {
+    id: "EDU-CONG-010",
+    title: "EULAR 2026 Sanofi | Regeneron — European Alliance of Associations for Rheumatology Congress",
+    contentType: "article",
+    duration: "Jun 3–6, 2026",
+    diseaseArea: "Rheumatoid Arthritis",
+    therapeuticArea: "Immunology / Rheumatology",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/eular-2026-sanofi-regeneron",
+    keywords: ["EULAR", "congress", "rheumatology", "rheumatoid arthritis", "sarilumab", "kevzara", "IL-6"]
+  },
+  {
+    id: "EDU-CONG-011",
+    title: "AAAAI 2026 Sanofi | Regeneron — American Academy of Allergy, Asthma & Immunology Meeting",
+    contentType: "article",
+    duration: "Feb 27–Mar 2, 2026",
+    diseaseArea: "Type 2 Asthma",
+    therapeuticArea: "Immunology / Allergy",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/aaaai-2026-sanofi-regeneron",
+    keywords: ["AAAAI", "congress", "allergy", "asthma", "immunology", "type 2 inflammation"]
+  },
+  {
+    id: "EDU-CONG-012",
+    title: "ATS 2026 Sanofi | Regeneron — American Thoracic Society International Conference",
+    contentType: "article",
+    duration: "May 15–20, 2026",
+    diseaseArea: "Type 2 Asthma",
+    therapeuticArea: "Immunology / Pulmonology",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/ats-2026-sanofi-regeneron",
+    keywords: ["ATS", "congress", "pulmonology", "asthma", "COPD", "respiratory"]
+  },
+  {
+    id: "EDU-CONG-013",
+    title: "DDW 2026 Sanofi | Regeneron — Digestive Disease Week",
+    contentType: "article",
+    duration: "May 2–5, 2026",
+    diseaseArea: "Eosinophilic Esophagitis",
+    therapeuticArea: "Immunology / Gastroenterology",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/ddw-2026-sanofi-regeneron",
+    keywords: ["DDW", "congress", "gastroenterology", "EoE", "eosinophilic esophagitis", "digestive disease"]
+  },
+  {
+    id: "EDU-CONG-014",
+    title: "CEORL-HNS 2026 Sanofi | Regeneron — Confederation of European ORL-Head and Neck Surgery Congress",
+    contentType: "article",
+    duration: "Apr 25–29, 2026",
+    diseaseArea: "CRSwNP",
+    therapeuticArea: "Immunology / Rhinology",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/ceorl-hns-2026-sanofi-regeneron",
+    keywords: ["CEORL-HNS", "congress", "rhinology", "CRSwNP", "chronic rhinosinusitis", "ENT"]
+  },
+  {
+    id: "EDU-CONG-015",
+    title: "Winter Clinical Miami 2026 — Winter Clinical Dermatology Conference",
+    contentType: "article",
+    duration: "Jan 25–29, 2026",
+    diseaseArea: "Atopic Dermatitis",
+    therapeuticArea: "Immunology / Dermatology",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/winter-clinical-miami-2026",
+    keywords: ["Winter Clinical Miami", "congress", "dermatology", "atopic dermatitis"]
+  },
+  {
+    id: "EDU-CONG-016",
+    title: "Maui Derm Hawaii 2026 — Maui Derm for Dermatologists",
+    contentType: "article",
+    duration: "Jan 25–29, 2026",
+    diseaseArea: "Atopic Dermatitis",
+    therapeuticArea: "Immunology / Dermatology",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/maui-derm-hawaii-2026",
+    keywords: ["Maui Derm", "congress", "dermatology", "atopic dermatitis"]
+  },
+  {
+    id: "EDU-CONG-017",
+    title: "WFH 2026 Sanofi | Sobi — World Federation of Hemophilia World Congress",
+    contentType: "article",
+    duration: "Apr 19–22, 2026",
+    diseaseArea: "Hemophilia",
+    therapeuticArea: "Rare Blood Disorders",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/wfh-2026-sanofi-sobi",
+    keywords: ["WFH", "congress", "hemophilia", "rare blood disorders", "bleeding disorders"]
+  },
+  {
+    id: "EDU-CONG-018",
+    title: "EHA 2026 — European Hematology Association Annual Meeting",
+    contentType: "article",
+    duration: "Jun 11–14, 2026",
+    diseaseArea: "Hemophilia",
+    therapeuticArea: "Rare Blood Disorders / Oncology / Rare Diseases",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/eha-2026",
+    keywords: ["EHA", "congress", "hematology", "rare blood disorders", "oncology"]
+  },
   // --- Sanofi Medical Campus (medical.campus.sanofi) — program directory ---
   {
     id: "EDU-CAMPUS-001",
