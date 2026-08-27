@@ -143,6 +143,95 @@ export const educationContent = [
     url: "https://bridget1d.com",
     keywords: ["T1D", "type 1 diabetes", "insulin delivery", "glycemic outcomes", "technology", "disease burden"]
   },
+  // --- Sanofi Congress Library (congress.sanofimedical.com) ---
+  {
+    id: "EDU-CONG-001",
+    title: "EAACI 2026 Sanofi | Regeneron — European Academy of Allergy and Clinical Immunology",
+    contentType: "article",
+    duration: "Jun 12–15, 2026",
+    diseaseArea: "Cross-TA Immunology",
+    therapeuticArea: "Immunology / Asthma / CRSwNP",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/eaaci-2026-sanofi-regeneron",
+    keywords: ["EAACI", "congress", "allergy", "clinical immunology", "asthma", "CRSwNP", "type 2 inflammation"]
+  },
+  {
+    id: "EDU-CONG-002",
+    title: "ESPGHAN 2026 Sanofi | Regeneron — European Society for Paediatric Gastroenterology, Hepatology and Nutrition",
+    contentType: "article",
+    duration: "Jun 24–27, 2026",
+    diseaseArea: "Eosinophilic Esophagitis",
+    therapeuticArea: "Immunology / Gastroenterology",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/espghan-2026-sanofi-regeneron",
+    keywords: ["ESPGHAN", "congress", "pediatric", "gastroenterology", "EoE", "eosinophilic esophagitis"]
+  },
+  {
+    id: "EDU-CONG-003",
+    title: "EAN 2026 — European Academy of Neurology Congress",
+    contentType: "article",
+    duration: "Jun 27–30, 2026",
+    diseaseArea: "Multiple Sclerosis / Neuromuscular",
+    therapeuticArea: "Neurology",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/ean-2026",
+    keywords: ["EAN", "congress", "neurology", "multiple sclerosis", "neuromuscular"]
+  },
+  {
+    id: "EDU-CONG-004",
+    title: "AAIC 2026 — Alzheimer's Association International Conference",
+    contentType: "article",
+    duration: "Jul 12–15, 2026",
+    diseaseArea: "Neurology",
+    therapeuticArea: "Neurology",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/aaic-2026",
+    keywords: ["AAIC", "congress", "Alzheimer's", "neurology", "dementia"]
+  },
+  {
+    id: "EDU-CONG-005",
+    title: "ATC 2026 — American Transplant Congress",
+    contentType: "article",
+    duration: "Jun 20–24, 2026",
+    diseaseArea: "Transplant",
+    therapeuticArea: "Transplant",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/atc-2026",
+    keywords: ["ATC", "congress", "transplant"]
+  },
+  {
+    id: "EDU-CONG-006",
+    title: "ISTH 2026 — International Society on Thrombosis and Haemostasis Congress",
+    contentType: "article",
+    duration: "Jul 11–15, 2026",
+    diseaseArea: "Hemophilia",
+    therapeuticArea: "Rare Blood Disorders",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/isth-2026",
+    keywords: ["ISTH", "congress", "thrombosis", "haemostasis", "hemophilia", "rare blood disorders"]
+  },
+  {
+    id: "EDU-CONG-007",
+    title: "NBDF 2026 — National Bleeding Disorders Foundation Annual Meeting",
+    contentType: "article",
+    duration: "Aug 13–15, 2026",
+    diseaseArea: "Hemophilia",
+    therapeuticArea: "Rare Blood Disorders",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/nbdf-2026",
+    keywords: ["NBDF", "congress", "bleeding disorders", "hemophilia", "rare blood disorders"]
+  },
+  {
+    id: "EDU-CONG-008",
+    title: "SSIEM 2026 — Society for the Study of Inborn Errors of Metabolism Annual Symposium",
+    contentType: "article",
+    duration: "Aug 25–28, 2026",
+    diseaseArea: "Fabry Disease",
+    therapeuticArea: "Rare Diseases",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/ssiem-2026",
+    keywords: ["SSIEM", "congress", "inborn errors of metabolism", "lysosomal storage disease", "LSD", "Fabry", "ASMD", "Gaucher", "rare diseases"]
+  },
   // --- Sanofi Medical Campus (medical.campus.sanofi) — program directory ---
   {
     id: "EDU-CAMPUS-001",
