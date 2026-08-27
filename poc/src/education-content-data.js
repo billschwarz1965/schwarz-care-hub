@@ -1107,6 +1107,61 @@ export const educationContent = [
     url: "https://www.sanofi.com/en/clinical-trials/commitment-to-diversity",
     keywords: ["diversity", "inclusion", "representation", "eligibility criteria", "health equity", "underrepresented", "clinical trial"]
   },
+  {
+    id: "EDU-CONG-019",
+    title: "ASCO 2026 — American Society of Clinical Oncology Annual Meeting",
+    contentType: "article",
+    duration: "May 29–Jun 2, 2026",
+    diseaseArea: "Oncology",
+    therapeuticArea: "Oncology",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/asco-2026",
+    keywords: ["ASCO", "oncology", "cancer", "tumor", "solid tumor", "clinical oncology", "congress"]
+  },
+  {
+    id: "EDU-CONG-020",
+    title: "AACR 2026 — American Association for Cancer Research Annual Meeting",
+    contentType: "article",
+    duration: "Apr 17–22, 2026",
+    diseaseArea: "Oncology",
+    therapeuticArea: "Oncology",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/aacr-2026",
+    keywords: ["AACR", "oncology", "cancer", "cancer research", "tumor", "translational", "congress"]
+  },
+  {
+    id: "EDU-CONG-021",
+    title: "COMy 2026 — World Congress on Controversies in Multiple Myeloma",
+    contentType: "article",
+    duration: "May 14–17, 2026",
+    diseaseArea: "Oncology",
+    therapeuticArea: "Oncology",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/comy-2026",
+    keywords: ["COMy", "multiple myeloma", "myeloma", "oncology", "cancer", "haematology", "congress"]
+  },
+  {
+    id: "EDU-CONG-022",
+    title: "ASH 2025 — American Society of Hematology Annual Meeting",
+    contentType: "article",
+    duration: "Dec 6–9, 2025",
+    diseaseArea: "Oncology",
+    therapeuticArea: "Oncology / Rare Blood Disorders",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/ash-2025",
+    keywords: ["ASH", "hematology", "haematology", "oncology", "cancer", "leukemia", "lymphoma", "myeloma", "rare blood disorders", "congress"]
+  },
+  {
+    id: "EDU-CONG-023",
+    title: "EBMT 2026 — European Society for Blood and Marrow Transplantation Meeting",
+    contentType: "article",
+    duration: "Mar 22–25, 2026",
+    diseaseArea: "Transplant",
+    therapeuticArea: "Transplant / Oncology",
+    program: "Sanofi Congress Library",
+    url: "https://congress.sanofimedical.com/ebmt-2026",
+    keywords: ["EBMT", "transplant", "bone marrow", "stem cell", "graft", "GvHD", "haematology", "congress"]
+  },
   // --- Sanofi Medical Information (sanofimedicalinformation.com) ---
   {
     id: "EDU-MI-001",
@@ -1191,7 +1246,15 @@ const EDU_GENERIC_TERMS = new Set([
   "efficacy", "severe", "moderate", "chronic", "risk", "early", "adult",
   "adults", "children", "pediatric", "burden", "data", "patient", "patients",
   "what", "which", "how", "why", "when", "the", "and", "for", "are", "any",
-  "with", "from", "about", "this", "that", "does", "used", "using", "congress"
+  "with", "from", "about", "this", "that", "does", "used", "using", "congress",
+  // Nearly every record carries these, so on their own they prove nothing.
+  // Without them, "what clinical trials are available for cancer" matched every
+  // trial page on the word "trials" while nothing matched "cancer".
+  "trial", "trials", "study", "studies", "available", "resource", "resources",
+  "program", "programs", "education", "educational", "sanofi", "medverse",
+  // "multiple" alone is ambiguous — it matched multiple sclerosis content for a
+  // multiple myeloma query. The specific disease word still carries the match.
+  "multiple"
 ]);
 
 export function searchEducationContent(query, diseaseArea, limit = 3) {
