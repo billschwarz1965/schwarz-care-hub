@@ -155,6 +155,20 @@ export const CAPABILITIES = [
   }
 ];
 
+// Capabilities that perform a lookup or intake rather than answering a
+// question. For these, the agent *is* the answer — there is no prose response
+// to generate, so the results page offers the action instead.
+const LOOKUP_CAPABILITIES = new Set([
+  "msl-connect", "trial-match", "medinfo", "temp-stab", "ingredient", "patient-nav"
+]);
+
+// Terms too common to prove a retrieved document is actually about the query.
+const GENERIC_QUERY_TERMS = new Set([
+  "sanofi", "medverse", "medical", "clinical", "data", "information", "patient",
+  "patients", "disease", "treatment", "therapy", "safety", "efficacy", "dose",
+  "dosing", "study", "trial", "trials", "content", "program", "agent", "team"
+]);
+
 const STOPWORDS = new Set([
   "the", "and", "for", "are", "what", "which", "who", "how", "why", "when",
   "where", "any", "all", "can", "does", "did", "has", "have", "was", "were",
@@ -208,7 +222,43 @@ export function askMedVerse(query, availableModules) {
     .split(/[^a-z0-9-]+/)
     .filter(t => t.length > 2 && !STOPWORDS.has(t));
 
-  const resources = searchEducationContent(query, answer.signal?.diseaseArea, 6);
+  // A retrieved document is only a real answer if its own title or keywords
+  // share a distinctive term with the question. Without this check, a single
+  // incidental keyword hit ("MSL" appearing on a congress record because of a
+  // booth) renders unrelated content under an "Evidence-based answer" heading —
+  // confidently wrong, which is worse than showing nothing.
+  // Whole-word matching, not substring: "msl" must not be considered a match
+  // for a keyword like "MSL booth" that is about something else entirely.
+  const cites = answer.citations || [];
+  const answerIsOnTopic = cites.length > 0 && cites.some(c => {
+    const words = new Set(
+      `${c.title} ${(c.keywords || []).join(" ")}`
+        .toLowerCase()
+        .split(/[^a-z0-9-]+/)
+        .filter(Boolean)
+    );
+    return terms.some(t => !GENERIC_QUERY_TERMS.has(t) && words.has(t));
+  });
+
+  // Lookup-style questions ("who is my MSL", "is this still usable after the
+  // fridge failed") have no prose answer — the agent performs the lookup and
+  // returns the real result. Lookup takes precedence over a retrieved document
+  // even when that document shares a term with the query: matching on a product
+  // name does not mean the document answers the question that was asked.
+  const topIsLookup = routed.length > 0 && LOOKUP_CAPABILITIES.has(routed[0].id);
+  const answerMode = topIsLookup ? "action"
+    : answerIsOnTopic ? "evidence"
+    : routed.length ? "action"
+    : "none";
+
+  // Only let the retrieved document's disease area boost resource ranking when
+  // that document was actually on topic — otherwise it drags in resources for
+  // the wrong therapeutic area.
+  const resources = searchEducationContent(
+    query,
+    answerIsOnTopic ? answer.signal?.diseaseArea : null,
+    6
+  );
 
   // Always give the user somewhere to go, even on a query we can't classify —
   // whichever general-purpose module this edition actually ships.
@@ -224,6 +274,8 @@ export function askMedVerse(query, availableModules) {
     agents: routed.length ? routed.slice(0, 4) : fallback,
     unmatched: !routed.length,
     answer,
+    answerMode,
+    answerIsOnTopic,
     resources
   };
 }
