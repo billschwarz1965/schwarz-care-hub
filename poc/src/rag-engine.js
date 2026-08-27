@@ -3,7 +3,7 @@ import { searchEducationContent } from "./education-content-data.js";
 
 const responseTemplates = [
   {
-    patterns: ["failed topicals", "atopic dermatitis", "options", "moderate-to-severe", "what are my options", "topical", "AD patient"],
+    patterns: ["failed topicals", "atopic dermatitis", "topical corticosteroid", "topicals", "AD patient", "eczema"],
     buildResponse(docs) {
       const algo = docs.find(d => d.id === "AD-002") || docs.find(d => d.category === "treatment-algorithm");
       const dupixent = docs.find(d => d.id === "AD-001") || docs.find(d => d.keywords?.includes("dupilumab"));
@@ -128,7 +128,7 @@ This has implications for both clinical practice and medical education: understa
     }
   },
   {
-    patterns: ["AAD", "EADV", "congress", "conference", "meeting", "presentation", "poster", "session"],
+    patterns: ["AAD", "EADV", "dermatology congress", "poster session", "late-breaker"],
     buildResponse(docs) {
       const aad = docs.find(d => d.id === "CON-001");
       const eadv = docs.find(d => d.id === "CON-002");
@@ -171,7 +171,7 @@ Would you like me to connect you with a dermatology MSL for deeper discussion on
     }
   },
   {
-    patterns: ["clinical trial", "trial", "recruiting", "enroll", "study", "Phase 3", "pipeline", "development"],
+    patterns: ["clinical trial", "recruiting", "enroll", "dupilumab program", "dupilumab trial", "LIBERTY", "pipeline"],
     buildResponse(docs) {
       const trials = docs.find(d => d.id === "CT-001");
       const citations = [trials].filter(Boolean);
@@ -210,7 +210,7 @@ For patient referral or detailed trial eligibility, contact your regional MSL or
     }
   },
   {
-    patterns: ["compare", "abrocitinib", "head-to-head", "JAK", "dupilumab vs", "versus", "JADE DARE"],
+    patterns: ["abrocitinib", "head-to-head", "JAK", "dupilumab vs", "dupilumab versus", "JADE DARE"],
     buildResponse(docs) {
       const h2h = docs.find(d => d.id === "AD-004") || docs.find(d => d.keywords?.includes("head-to-head"));
       const safety = docs.find(d => d.id === "AD-003");

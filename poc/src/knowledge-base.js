@@ -178,17 +178,59 @@ export const knowledgeBase = [
   }
 ];
 
+// Words too generic to indicate topical relevance. Without this, a query like
+// "what genetic testing is used for MPS I" matches the long Dupixent documents
+// on "for"/"used"/"testing" alone and returns unrelated AD content.
+const STOPWORDS = new Set([
+  "the", "and", "for", "are", "what", "which", "who", "how", "why", "when", "where",
+  "any", "all", "can", "does", "did", "has", "have", "had", "was", "were", "will",
+  "with", "without", "from", "into", "about", "this", "that", "these", "those",
+  "there", "their", "them", "they", "you", "your", "our", "its", "his", "her",
+  "been", "being", "more", "most", "some", "such", "than", "then", "also", "but",
+  "not", "use", "used", "using", "get", "got", "make", "made", "may", "might",
+  "should", "would", "could", "need", "want", "know", "tell", "give", "show",
+  "look", "find", "see", "say", "think", "take", "come", "good", "best", "new",
+  "old", "other", "same", "each", "every", "both", "few", "many", "much", "own",
+  "just", "only", "very", "too", "now", "here", "out", "off", "over", "under",
+  "again", "once", "between", "during", "before", "after", "above", "below",
+  "patient", "patients", "data", "information", "options", "option", "help",
+  "like", "related", "regarding", "available", "current", "currently"
+]);
+
+// Clinical vocabulary that appears across every therapeutic area. These can
+// contribute score, but on their own they must NOT establish a topic match —
+// otherwise "Gaucher disease inheritance" matches an atopic dermatitis doc
+// purely because both mention "disease".
+const GENERIC_MEDICAL = new Set([
+  "disease", "diseases", "disorder", "disorders", "condition", "conditions",
+  "syndrome", "type", "types", "test", "tests", "testing", "screening", "screen",
+  "treatment", "treatments", "therapy", "therapies", "diagnosis", "diagnostic",
+  "management", "managing", "biomarker", "biomarkers", "genetic", "genetics",
+  "clinical", "medical", "safety", "efficacy", "dose", "dosing", "severe",
+  "moderate", "mild", "chronic", "acute", "risk", "early", "late", "adult",
+  "adults", "child", "children", "pediatric", "burden", "symptom", "symptoms",
+  "congress", "conference", "meeting", "presented", "presentation", "coverage"
+]);
+
 export function searchKnowledgeBase(query) {
-  const terms = query.toLowerCase().split(/\s+/).filter(t => t.length > 2);
+  const terms = query.toLowerCase()
+    .split(/[^a-z0-9-]+/)
+    .filter(t => t.length > 2 && !STOPWORDS.has(t));
+
+  // Nothing topical left to match on — don't guess.
+  if (terms.length === 0) return [];
+
   const scored = knowledgeBase.map(doc => {
     let score = 0;
     const contentLower = doc.content.toLowerCase();
     const titleLower = doc.title.toLowerCase();
     const kwLower = doc.keywords.join(" ").toLowerCase();
+    let strongHits = 0;
 
     for (const term of terms) {
-      if (titleLower.includes(term)) score += 5;
-      if (kwLower.includes(term)) score += 3;
+      const isDistinctive = !GENERIC_MEDICAL.has(term);
+      if (titleLower.includes(term)) { score += 5; if (isDistinctive) strongHits++; }
+      if (kwLower.includes(term)) { score += 3; if (isDistinctive) strongHits++; }
       const matches = contentLower.split(term).length - 1;
       score += Math.min(matches, 5);
     }
@@ -198,11 +240,13 @@ export function searchKnowledgeBase(query) {
     if (titleLower.includes(queryLower)) score += 10;
     if (contentLower.includes(queryLower)) score += 5;
 
-    return { ...doc, score };
+    return { ...doc, score, strongHits };
   });
 
+  // A doc only counts as relevant if the query hit its title or keywords —
+  // incidental body-text matches alone are not enough to claim a topic match.
   return scored
-    .filter(d => d.score > 0)
+    .filter(d => d.strongHits > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, 5);
 }
