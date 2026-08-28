@@ -10,8 +10,9 @@
 import { generateResponse } from "./rag-engine.js";
 import { searchEducationContent } from "./education-content-data.js";
 import { searchTrials, trialLink } from "./trials-data.js";
+import { searchPipeline, PIPELINE_SUMMARY } from "./pipeline-data.js";
 
-export { trialLink };
+export { trialLink, PIPELINE_SUMMARY };
 
 // page = the module that hosts this capability; agent = the panel to open there.
 export const CAPABILITIES = [
@@ -275,6 +276,10 @@ export function askMedVerse(query, availableModules) {
   // available for X" gets real protocols rather than only reading material.
   const matchedTrials = searchTrials(query, 5);
 
+  // R&D pipeline assets relevant to the question — what is coming, not just
+  // what is approved.
+  const matchedPipeline = searchPipeline(query, 6);
+
   return {
     query,
     terms,
@@ -284,7 +289,8 @@ export function askMedVerse(query, availableModules) {
     answerMode,
     answerIsOnTopic,
     resources,
-    trials: matchedTrials
+    trials: matchedTrials,
+    pipeline: matchedPipeline
   };
 }
 

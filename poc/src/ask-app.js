@@ -116,6 +116,25 @@ function render() {
       <p class="ask-trial-note">Eligibility shown is a summary. Full inclusion and exclusion criteria are on ClinicalTrials.gov — open a study to review them before referring a patient.</p>
     </div>` : "";
 
+  // Pipeline assets. No per-project phase is shown because the source page did
+  // not yield one reliably — see pipeline-data.js.
+  const pipelineBlock = (r.pipeline || []).length ? `
+    <div class="ask-section">
+      <div class="ask-section-label"><i class="ti ti-git-branch"></i> R&amp;D pipeline (${r.pipeline.length})</div>
+      ${r.pipeline.map(p => `
+        <div class="ask-pipe">
+          <div class="ask-pipe-top">
+            <span class="ask-pipe-name">${esc(p.name)}</span>
+            <span class="ask-pipe-ta">${esc(p.ta)}</span>
+          </div>
+          <div class="ask-pipe-ind">${esc(p.indication)}</div>
+          <div class="ask-pipe-mech">${esc(p.desc)}</div>
+        </div>`).join("")}
+      <p class="ask-trial-note">Investigational unless stated otherwise. Development phase is not shown here — check the
+        <a href="https://www.sanofi.com/en/our-science/our-pipeline" target="_blank" rel="noopener">Sanofi pipeline page</a>
+        for current phase and status before citing any of this.</p>
+    </div>` : "";
+
   const resources = (r.resources || []).length ? `
     <div class="ask-section">
       <div class="ask-section-label"><i class="ti ti-books"></i> Learning resources</div>
@@ -210,6 +229,7 @@ function render() {
       <div class="ask-main">
         ${answerBlock}
         ${trialsBlock}
+        ${pipelineBlock}
         ${resources}
       </div>
       <div class="ask-side">

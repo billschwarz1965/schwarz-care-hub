@@ -1203,6 +1203,36 @@ export const educationContent = [
     url: "https://www.sanofi.com/en/our-science/clinical-trials-and-results/investigator-sponsored-studies",
     keywords: ["investigator sponsored", "ISS", "IST", "externally sponsored collaboration", "ESC", "expert initiated research", "unsolicited proposal", "research support", "iEnvision-ESR", "grant", "protocol submission", "interventional", "non-interventional", "pre-clinical", "areas of interest"]
   },
+  {
+    id: "EDU-HCP-005",
+    title: "Sanofi R&D Pipeline — 61 Clinical-Stage Projects",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi Our Science",
+    url: "https://www.sanofi.com/en/our-science/our-pipeline",
+    keywords: ["pipeline", "R&D", "clinical-stage", "investigational", "phase 1", "phase 2", "phase 3", "registration", "new molecular entity", "development"]
+  },
+  {
+    id: "EDU-HCP-006",
+    title: "Our Science — Research, Pipeline and Clinical Trial Transparency",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi Our Science",
+    url: "https://www.sanofi.com/en/our-science",
+    keywords: ["our science", "research", "R&D", "innovation", "transparency", "clinical trials and results", "bioethics"]
+  },
+  {
+    id: "EDU-HCP-007",
+    title: "Clinical Trials & Results — Study Data Transparency",
+    contentType: "article",
+    diseaseArea: "General",
+    therapeuticArea: "General",
+    program: "Sanofi Our Science",
+    url: "https://www.sanofi.com/en/our-science/clinical-trials-and-results",
+    keywords: ["clinical trials and results", "study results", "data sharing", "transparency", "publication", "registry"]
+  },
   // --- Sanofi Medical Information (sanofimedicalinformation.com) ---
   {
     id: "EDU-MI-001",
