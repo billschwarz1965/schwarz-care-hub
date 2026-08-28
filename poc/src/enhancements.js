@@ -577,10 +577,84 @@
     actions.insertBefore(btn, actions.firstChild);
   }
 
+  // ═══ PERSISTENT ASK BAR ═══
+  // Ask MedVerse used to live only on the home page, so getting back to it from
+  // any module meant navigating away first. This puts it on every page as a slim
+  // bar under the module nav — except where the page already has its own (the
+  // home hero box and the results page's own bar), so nothing doubles up.
+  //
+  // Gated on a <meta name="medverse-ask"> tag naming the results page, because
+  // the single-module editions (poc-agents, poc-patient) ship no ask.html and
+  // must not get a bar that leads nowhere.
+  function initAskBar() {
+    const meta = document.querySelector('meta[name="medverse-ask"]');
+    if (!meta) return;
+    const target = meta.getAttribute('content') || 'ask.html';
+
+    // Already has a search entry point? Leave it alone.
+    if (document.getElementById('ask-home-form') || document.getElementById('ask-form')) return;
+
+    // Normally sits under the module nav, else under the header. The standalone
+    // dashboard pages (build-economics, user-journeys) carry no app chrome at
+    // all, so there the bar goes at the top of the body — the point is that
+    // search is reachable from every page without navigating away.
+    const anchor = document.querySelector('.module-nav')
+      || document.querySelector('.header')
+      || document.querySelector('header');
+
+    const style = document.createElement('style');
+    style.textContent = `
+      .mv-askbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 24px; flex-shrink: 0; }
+      .mv-askbar form { display: flex; gap: 8px; max-width: 1100px; margin: 0 auto; position: relative; }
+      .mv-askbar-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 15px; color: var(--accent); pointer-events: none; z-index: 1; }
+      .mv-askbar input { flex: 1; padding: 8px 12px 8px 36px; border: 1.5px solid var(--border); border-radius: 9px;
+        font-family: var(--font); font-size: 12.5px; outline: none; background: var(--bg); color: var(--text);
+        transition: border-color .15s, box-shadow .15s; }
+      .mv-askbar input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(122,0,230,.07); }
+      .mv-askbar input::placeholder { color: var(--text-muted); }
+      .mv-askbar button { padding: 8px 16px; background: var(--accent); color: #fff; border: none; border-radius: 9px;
+        font-family: var(--font); font-size: 12.5px; font-weight: 600; cursor: pointer; white-space: nowrap;
+        display: inline-flex; align-items: center; gap: 5px; transition: background .15s; }
+      .mv-askbar button:hover { background: var(--accent-hover); }
+      @media (max-width: 640px) { .mv-askbar { padding: 8px 14px; } .mv-askbar button span { display: none; } }
+    `;
+    document.head.appendChild(style);
+
+    const wrap = document.createElement('div');
+    wrap.className = 'mv-askbar';
+    wrap.innerHTML = `
+      <form id="mv-askbar-form" action="${target}" method="get" target="_blank">
+        <i class="ti ti-sparkles mv-askbar-icon"></i>
+        <input id="mv-askbar-input" name="q" type="text" autocomplete="off"
+               placeholder="Ask MedVerse anything — routed to the right agents, opens in a new tab">
+        <button type="submit"><i class="ti ti-arrow-right"></i> <span>Ask</span></button>
+      </form>`;
+
+    wrap.querySelector('form').addEventListener('submit', (e) => {
+      if (!wrap.querySelector('input').value.trim()) {
+        e.preventDefault();
+        wrap.querySelector('input').focus();
+      }
+    });
+
+    if (anchor) anchor.insertAdjacentElement('afterend', wrap);
+    else document.body.insertBefore(wrap, document.body.firstChild);
+
+    // "/" focuses the bar from anywhere, as long as you are not already typing.
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey) return;
+      const t = e.target;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+      e.preventDefault();
+      wrap.querySelector('input').focus();
+    });
+  }
+
   // ═══ INIT ═══
   function init() {
     initDarkMode();
     initDemoLauncher();
+    initAskBar();
     initKeyboard();
     setTimeout(addBadges, 300);
     setTimeout(autoEnhanceButtons, 500);
