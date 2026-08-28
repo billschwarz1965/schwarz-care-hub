@@ -147,6 +147,8 @@
     .agent-card[data-agent="trial-match"]  .agent-card-tag  { background: var(--orion-bg); color: var(--orion-accent); }
     .agent-card[data-agent="msl-connect"]  .agent-card-icon { background: #fce7f3; color: #be185d; }
     .agent-card[data-agent="msl-connect"]  .agent-card-tag  { background: #fce7f3; color: #be185d; }
+    .agent-card[data-agent="peer-connect"] .agent-card-icon { background: #cffafe; color: #0e7490; }
+    .agent-card[data-agent="peer-connect"] .agent-card-tag  { background: #cffafe; color: #0e7490; }
     .agent-card[data-agent="medinfo"]      .agent-card-icon { background: #e0e7ff; color: #4338ca; }
     .agent-card[data-agent="medinfo"]      .agent-card-tag  { background: #e0e7ff; color: #3730a3; }
     .agent-card[data-agent="ingredient"]   .agent-card-icon { background: #fef3c7; color: #b45309; }
@@ -414,6 +416,12 @@
           <p>Find and request a meeting with your regional Medical Science Liaison. Browse MSL profiles, expertise areas, and schedule scientific exchanges.</p>
           <span class="agent-card-tag">Field Team</span>
         </div>
+        <div class="agent-card" data-agent="peer-connect">
+          <div class="agent-card-icon"><i class="ti ti-user-search"></i></div>
+          <h3>Peer Expert Connect</h3>
+          <p>Reach a peer physician or KOL outside your institution for a case consult, second opinion, or treatment sequencing discussion in your therapeutic area.</p>
+          <span class="agent-card-tag">Peer Network</span>
+        </div>
         <div class="agent-card" data-agent="medinfo">
           <div class="agent-card-icon"><i class="ti ti-file-question"></i></div>
           <h3>Medical Information</h3>
@@ -630,6 +638,38 @@
         </div>
         <div class="form-results" id="msl-results">
           <div class="result-empty"><i class="ti ti-users"></i>Select your therapeutic area and region to find your dedicated MSL.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PEER EXPERT CONNECT PANEL ===== -->
+    <div class="agent-panel" id="panel-peer-connect">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#cffafe;color:#0e7490;"><i class="ti ti-user-search"></i></div>
+        <div><div class="panel-title">Peer Expert Connect</div><div class="panel-desc">Reach a peer physician or KOL outside your institution for a case consult</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-search"></i> Find a Peer Expert</h4>
+            <div class="form-group">
+              <label class="form-label">Therapeutic Area</label>
+              <select class="form-select" id="peer-ta"><option value="">Select…</option><option>Dermatology / Atopic Dermatitis</option><option>Immunology / Rheumatology</option><option>Respiratory / Asthma</option><option>Rare Diseases</option><option>Oncology</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Consultation Type</label>
+              <select class="form-select" id="peer-type"><option value="">Select…</option><option>Case Consult</option><option>Second Opinion</option><option>Treatment Sequencing Discussion</option><option>Diagnostic Workup Review</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Case Summary</label>
+              <textarea class="form-input" id="peer-case" rows="4" placeholder="e.g. 52-year-old with treatment-refractory moderate-to-severe AD, biologic-experienced, considering next-line options"></textarea>
+            </div>
+            <button class="form-btn form-btn-primary" id="peer-submit"><i class="ti ti-user-search"></i> Find Peer Expert</button>
+            <p style="font-size:11px;color:var(--text-muted);margin-top:10px;line-height:1.5">Peer experts are independent physicians and KOLs, not Sanofi employees. Consultations are collegial, unbranded, and outside the scope of Medical Information.</p>
+          </div>
+        </div>
+        <div class="form-results" id="peer-results">
+          <div class="result-empty"><i class="ti ti-user-search"></i>Select a therapeutic area and consultation type to find a peer expert for your case.</div>
         </div>
       </div>
     </div>

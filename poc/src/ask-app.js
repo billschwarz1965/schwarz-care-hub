@@ -65,7 +65,9 @@ const EXAMPLES = [
   "What trials are recruiting for atopic dermatitis?",
   "Who is my MSL for dermatology?",
   "Cardiac manifestations and biomarkers in Fabry disease",
-  "How do I request compassionate use for an unapproved medicine?"
+  "How do I request compassionate use for an unapproved medicine?",
+  "What's in Sanofi's R&D pipeline for atopic dermatitis?",
+  "I need a peer expert to consult on a refractory case"
 ];
 
 const wrap = document.querySelector(".ask-wrap");
