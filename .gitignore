@@ -28,6 +28,7 @@ intake/inbox/*
 # Allow portable release packages (tracked via Git LFS)
 !poc/desktop/MedVerse-Portable-v0.4.zip
 !poc/desktop/MedVerse-Mac-Portable-v0.4.zip
+!poc-external/MedVerse-External-Portable-v0.1.zip
 
 # Electron build artifacts
 poc/desktop/installer/
