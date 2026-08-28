@@ -1,16 +1,38 @@
-// MedVerse Service Worker — internal edition
-const CACHE_VERSION = 'medverse-internal-v1';
+// MedVerse Service Worker
+//
+// v4 fixes a bug that made every code change invisible: the previous version was
+// cache-first for all non-HTML requests, which included the app's own
+// /src/*.js modules. Once a module was cached the browser kept serving that
+// copy no matter what the server returned, so shipped fixes never appeared and
+// a stale build could be demoed as if current.
+//
+// Now:
+//   - On localhost the worker does not intercept at all, so development is
+//     always live.
+//   - Code (js/css/json) is network-first, with cache only as an offline
+//     fallback.
+//   - Cache-first is reserved for genuinely immutable assets: icons, images,
+//     fonts.
+const CACHE_VERSION = 'medverse-v4';
+
+// Anything whose content changes when we ship must never be served cache-first.
+const CODE_RE = /\.(?:js|mjs|css|json)(?:$|\?)/i;
+const STATIC_RE = /\.(?:png|jpg|jpeg|gif|svg|webp|ico|woff2?|ttf|otf|mp3|wav)(?:$|\?)/i;
+const IS_DEV = ['localhost', '127.0.0.1', '[::1]'].includes(self.location.hostname);
 const BASE = self.registration.scope;
 const APP_SHELL_PATHS = [
   '',
   'index.html',
+  'concierge.html',
+  'patient.html',
   'msl-copilot.html',
   'medical.html',
-  'orion.html',
   'agents.html',
   'disease.html',
   'literature.html',
   'congress.html',
+  'orion.html',
+  'system-tools.html',
   'demo.html',
   'about.html',
   'manifest.json',
@@ -22,11 +44,13 @@ const APP_SHELL = APP_SHELL_PATHS.map(p => BASE + p);
 
 // Install: cache app shell
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_VERSION).then((cache) => {
-      return cache.addAll(APP_SHELL);
-    })
-  );
+  // Don't pre-cache in development — a cached shell is another way to end up
+  // looking at a build that is no longer what the source says.
+  if (!IS_DEV) {
+    event.waitUntil(
+      caches.open(CACHE_VERSION).then((cache) => cache.addAll(APP_SHELL))
+    );
+  }
   self.skipWaiting();
 });
 
@@ -44,7 +68,6 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch: network-first for HTML, cache-first for assets
 self.addEventListener('fetch', (event) => {
   const { request } = event;
 
@@ -53,23 +76,19 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  const isHTML = request.headers.get('accept')?.includes('text/html') ||
-                 request.url.endsWith('.html') ||
-                 request.url.endsWith('/');
+  // Development: never intercept. Vite already handles reloads, and caching
+  // here is what made edits invisible.
+  if (IS_DEV) return;
 
-  if (isHTML) {
-    // Network-first for HTML pages
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const clone = response.clone();
-          caches.open(CACHE_VERSION).then((cache) => cache.put(request, clone));
-          return response;
-        })
-        .catch(() => caches.match(request))
-    );
-  } else {
-    // Cache-first for assets (JS, CSS, images, fonts)
+  const url = request.url;
+  const isHTML = request.headers.get('accept')?.includes('text/html') ||
+                 url.endsWith('.html') ||
+                 url.endsWith('/');
+
+  // Only truly immutable assets are safe to serve from cache first.
+  const cacheFirst = !isHTML && STATIC_RE.test(url) && !CODE_RE.test(url);
+
+  if (cacheFirst) {
     event.respondWith(
       caches.match(request).then((cached) => {
         if (cached) return cached;
@@ -80,5 +99,20 @@ self.addEventListener('fetch', (event) => {
         });
       })
     );
+    return;
   }
+
+  // Everything else — pages and all code — is network-first, so a shipped fix
+  // takes effect on the next load. Cache is the offline fallback only.
+  event.respondWith(
+    fetch(request)
+      .then((response) => {
+        if (response && response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE_VERSION).then((cache) => cache.put(request, clone));
+        }
+        return response;
+      })
+      .catch(() => caches.match(request))
+  );
 });
