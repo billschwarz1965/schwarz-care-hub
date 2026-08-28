@@ -56,16 +56,49 @@ if (form) {
   });
 }
 
+// Examples chosen because each one demonstrably returns something real from a
+// different part of the index — evidence, a lookup agent, trials, and the
+// external education library.
+const EXAMPLES = [
+  "What are my options for a patient with moderate-to-severe atopic dermatitis who failed topicals?",
+  "Early detection and screening for type 1 diabetes",
+  "What trials are recruiting for atopic dermatitis?",
+  "Who is my MSL for dermatology?",
+  "Cardiac manifestations and biomarkers in Fabry disease",
+  "How do I request compassionate use for an unapproved medicine?"
+];
+
+const wrap = document.querySelector(".ask-wrap");
+const echoRow = document.querySelector(".ask-echo");
+
 function render() {
+  // No query: the page is just the search bar, centred, with examples. This is
+  // the landing state — nothing else competes with the input.
   if (!query) {
-    results.innerHTML = `<div class="ask-empty">
-      <i class="ti ti-sparkles"></i>
-      <h2>Ask MedVerse anything</h2>
-      <p>One question, routed to whichever agents can answer it — clinical evidence, medical information, trials, congress data, literature, or your MSL.</p>
-    </div>`;
+    if (wrap) wrap.classList.add("ask-landing");
+    if (echoRow) echoRow.style.display = "none";
+    document.title = "Ask MedVerse";
+
+    results.innerHTML = `
+      <div class="ask-examples">
+        <div class="ask-examples-label">Try one of these</div>
+        ${EXAMPLES.map(x => `<button type="button" class="ask-example" data-q="${esc(x)}">${esc(x)}</button>`).join("")}
+      </div>`;
+
+    results.querySelectorAll(".ask-example").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const q = btn.getAttribute("data-q");
+        if (input) input.value = q;
+        location.search = "?q=" + encodeURIComponent(q);
+      });
+    });
+
+    if (input) input.focus();
     return;
   }
 
+  if (wrap) wrap.classList.remove("ask-landing");
+  if (echoRow) echoRow.style.display = "";
   if (queryEcho) queryEcho.textContent = query;
   document.title = `${query} — Ask MedVerse`;
 
