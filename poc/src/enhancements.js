@@ -668,9 +668,24 @@
   else init();
 })();
 
-// ═══ SERVICE WORKER REGISTRATION ═══
+// ═══ SERVICE WORKER ═══
+// On localhost, actively tear the worker down and purge its caches. An earlier
+// version cached /src/*.js cache-first, which meant a browser could keep
+// serving code that no longer matched the source — fixes appeared not to work,
+// and a stale build could be demoed as if it were current. Unregistering here
+// self-heals any browser still holding that state.
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js');
+  const isDev = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
+
+  if (isDev) {
+    navigator.serviceWorker.getRegistrations()
+      .then(regs => Promise.all(regs.map(r => r.unregister())))
+      .then(() => (window.caches ? caches.keys() : []))
+      .then(keys => Promise.all(keys.map(k => caches.delete(k))))
+      .catch(() => { /* nothing to clean up */ });
+  } else {
+    navigator.serviceWorker.register('/sw.js');
+  }
 }
 
 // ═══ UI SOUNDS ═══
