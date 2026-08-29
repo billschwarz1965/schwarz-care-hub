@@ -45,7 +45,6 @@ const searchHints = [
   { text: "Find trials for atopic dermatitis", agent: "trial-match" },
   { text: "Treatment options for moderate AD", agent: "clinical-qa" },
   { text: "Find my MSL for dermatology", agent: "msl-connect" },
-  { text: "I need a peer expert for a refractory AD case", agent: "peer-connect" },
   { text: "Care pathway for RA patient", agent: "patient-nav" },
 ];
 
@@ -89,7 +88,6 @@ function routeSearch(query) {
     { keywords: ["storage", "temperature", "cold chain", "freeze", "refrigerat", "excursion", "travel", "stability", "room temp"], agent: "temp-stab" },
     { keywords: ["ingredient", "excipient", "allergy", "latex", "polysorbate", "contraindication", "interaction", "safety profile", "safe for"], agent: "ingredient" },
     { keywords: ["trial", "enroll", "eligib", "study", "phase 3", "phase 2", "clinical study", "recruit"], agent: "trial-match" },
-    { keywords: ["peer expert", "peer consult", "peer connect", "case consult", "second opinion", "colleague", "kol", "peer physician", "peer network"], agent: "peer-connect" },
     { keywords: ["msl", "liaison", "field team", "schedule meeting", "find my", "connect with"], agent: "msl-connect" },
     { keywords: ["medical information", "med info", "submit a question", "written response", "off-label", "off label", "renal dose", "hepatic dose", "dialysis", "not in the label", "prescribing information"], agent: "medinfo" },
     { keywords: ["pathway", "care path", "treatment sequence", "step-by-step", "navigator", "patient profile", "comorbid"], agent: "patient-nav" },
@@ -131,11 +129,6 @@ function prefillAgent(agent, query) {
     const ta = detectTA(query);
     if (ta) document.getElementById("msl-ta").value = ta;
     flashPrefill("msl-submit");
-  } else if (agent === "peer-connect") {
-    const ta = detectTA(query);
-    if (ta) document.getElementById("peer-ta").value = ta;
-    document.getElementById("peer-case").value = query;
-    flashPrefill("peer-submit");
   } else if (agent === "medinfo") {
     const product = detectProduct(query);
     if (product) document.getElementById("mi-product").value = product;
@@ -537,58 +530,6 @@ document.getElementById("msl-submit").addEventListener("click", () => {
           <button class="form-btn form-btn-primary" style="font-size:11px;padding:7px 14px;"><i class="ti ti-calendar-plus"></i> Request Meeting</button>
           <button class="form-btn form-btn-secondary" style="font-size:11px;padding:7px 14px;"><i class="ti ti-mail"></i> Email</button>
           <button class="form-btn form-btn-secondary" style="font-size:11px;padding:7px 14px;"><i class="ti ti-phone"></i> Call</button>
-        </div>
-      </div>`).join("");
-  }, 900);
-});
-
-// ============================================================
-// 4a. PEER EXPERT CONNECT
-// ============================================================
-// Independent physicians and KOLs, not Sanofi personnel — a collegial,
-// unbranded case-consult network distinct from MSL Connect.
-const peerDatabase = [
-  { name: "Dr. Elena Marchetti, MD", ta: "Dermatology / Atopic Dermatitis", institution: "University Dermatology Associates", type: "Case Consult", expertise: ["Biologic-refractory AD", "Comorbid eczema/asthma", "Pediatric-to-adult transition"], availability: "Available this week", email: "e.marchetti@peernetwork.example" },
-  { name: "Dr. Marcus Okafor, MD, PhD", ta: "Dermatology / Atopic Dermatitis", institution: "Coastal Skin Institute", type: "Second Opinion", expertise: ["Treatment sequencing", "Biologic switching", "Real-world case series"], availability: "Available next week", email: "m.okafor@peernetwork.example" },
-  { name: "Dr. Priya Anand, MD", ta: "Immunology / Rheumatology", institution: "Metro Rheumatology Group", type: "Case Consult", expertise: ["Refractory RA", "IL-6 pathway", "Comorbidity management"], availability: "Available Thursday", email: "p.anand@peernetwork.example" },
-  { name: "Dr. William Foster, MD", ta: "Immunology / Rheumatology", institution: "Lakeside Rheumatology", type: "Treatment Sequencing Discussion", expertise: ["DMARD-to-biologic transition", "Difficult-to-treat RA"], availability: "Available this week", email: "w.foster@peernetwork.example" },
-  { name: "Dr. Grace Lindqvist, MD", ta: "Respiratory / Asthma", institution: "Northshore Pulmonary Associates", type: "Diagnostic Workup Review", expertise: ["Eosinophilic asthma", "Biologic candidacy assessment"], availability: "Available Mon–Wed", email: "g.lindqvist@peernetwork.example" },
-  { name: "Dr. Rafael Duarte, MD", ta: "Rare Diseases", institution: "National Rare Disease Center", type: "Case Consult", expertise: ["Lysosomal storage disorders", "Enzyme replacement therapy", "Diagnostic odyssey cases"], availability: "Available this week", email: "r.duarte@peernetwork.example" },
-];
-
-document.getElementById("peer-submit").addEventListener("click", () => {
-  const ta = document.getElementById("peer-ta").value;
-  const type = document.getElementById("peer-type").value;
-  if (!ta) { alert("Please select a therapeutic area."); return; }
-
-  const el = document.getElementById("peer-results");
-  el.innerHTML = '<div style="text-align:center;padding:30px;"><i class="ti ti-loader-2" style="font-size:24px;animation:spin 1s linear infinite;color:#0e7490;"></i><div style="margin-top:8px;font-size:12px;color:var(--text-muted);">Finding a peer expert…</div></div>';
-
-  setTimeout(() => {
-    const matches = peerDatabase.filter(p => p.ta === ta && (!type || p.type === type));
-    const broader = !matches.length ? peerDatabase.filter(p => p.ta === ta) : [];
-    const results = matches.length ? matches : broader;
-
-    if (!results.length) {
-      el.innerHTML = '<div class="result-empty"><i class="ti ti-user-search"></i>No peer expert found for this combination. Please try a broader search.</div>';
-      return;
-    }
-
-    el.innerHTML = (broader.length ? '<div style="font-size:12px;color:var(--warning);margin-bottom:10px;">No exact match on consultation type — showing all peer experts in this therapeutic area:</div>' : '') +
-      results.map(p => `<div class="result-card">
-        <div class="msl-profile">
-          <div class="msl-avatar"><i class="ti ti-user"></i></div>
-          <div>
-            <div class="msl-name">${escapeHtml(p.name)}</div>
-            <div class="msl-meta">${escapeHtml(p.institution)} · ${escapeHtml(p.ta)}</div>
-            <div class="msl-meta" style="color:var(--success);font-weight:500;">${escapeHtml(p.availability)}</div>
-          </div>
-        </div>
-        <div class="result-body"><strong>Expertise:</strong> ${p.expertise.join(", ")}</div>
-        <div class="result-actions">
-          <button class="form-btn form-btn-primary" style="font-size:11px;padding:7px 14px;"><i class="ti ti-calendar-plus"></i> Request Consult</button>
-          <button class="form-btn form-btn-secondary" style="font-size:11px;padding:7px 14px;"><i class="ti ti-mail"></i> Email</button>
-          <button class="form-btn form-btn-secondary" style="font-size:11px;padding:7px 14px;"><i class="ti ti-id"></i> View Profile</button>
         </div>
       </div>`).join("");
   }, 900);
@@ -1267,7 +1208,6 @@ const HCP_AGENTS = [
   { id: "patient-nav",  name: "Patient Navigator",      icon: "map-pin" },
   { id: "trial-match",  name: "Trial Matching",         icon: "flask" },
   { id: "msl-connect",  name: "MSL Connect",            icon: "users" },
-  { id: "peer-connect", name: "Peer Expert Connect",    icon: "user-search" },
   { id: "medinfo",      name: "Medical Information",    icon: "file-question" },
   { id: "ingredient",   name: "Ingredient Safety",      icon: "shield-check" },
   { id: "temp-stab",    name: "Temperature Stability",  icon: "temperature" },
@@ -1349,20 +1289,6 @@ async function runAgentDemo(index, agent) {
       click("msl-submit");
       await delay(1500);
       await narrate("Dr. Amanda Rodriguez, PharmD — available this week, specializing in Dupixent clinical data and AD real-world evidence. Meeting request, email, and phone options ready");
-      await delay(1500);
-      break;
-    }
-    case "peer-connect": {
-      await narrate("Sometimes the right conversation isn't with Sanofi at all — it's with another physician who has managed a similar case. Peer Expert Connect finds one");
-      showPanel("peer-connect");
-      await delay(600);
-      set("peer-ta", "Dermatology / Atopic Dermatitis"); set("peer-type", "Case Consult");
-      set("peer-case", "52-year-old with treatment-refractory moderate-to-severe AD, biologic-experienced, considering next-line options");
-      await narrate("Describing the case and searching the independent peer network — not Sanofi employees, a collegial consult");
-      await delay(400);
-      click("peer-submit");
-      await delay(1500);
-      await narrate("Dr. Elena Marchetti, an independent dermatologist with deep experience in biologic-refractory AD, is available this week for a case consult");
       await delay(1500);
       break;
     }

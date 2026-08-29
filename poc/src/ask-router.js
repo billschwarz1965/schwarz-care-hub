@@ -53,15 +53,6 @@ export const CAPABILITIES = [
     keywords: ["msl", "liaison", "field team", "field medical", "who is my", "schedule meeting", "connect with", "scientific exchange", "sanofi contact"]
   },
   {
-    id: "peer-connect",
-    name: "Peer Expert Connect",
-    icon: "user-search",
-    page: "concierge.html",
-    agent: "peer-connect",
-    blurb: "Reach an independent peer physician or KOL for a case consult or second opinion",
-    keywords: ["peer expert", "peer consult", "peer connect", "case consult", "second opinion", "colleague", "kol", "peer physician", "peer network"]
-  },
-  {
     id: "ingredient",
     name: "Ingredient Safety",
     icon: "shield-check",
