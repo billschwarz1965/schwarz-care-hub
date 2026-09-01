@@ -10,9 +10,9 @@
 import { generateResponse } from "./rag-engine.js";
 import { searchEducationContent } from "./education-content-data.js";
 import { searchTrials, trialLink } from "./trials-data.js";
-import { searchPipeline, PIPELINE_SUMMARY } from "./pipeline-data.js";
+import { searchPipeline, PIPELINE_SUMMARY, pipelineAreaLabel } from "./pipeline-data.js";
 
-export { trialLink, PIPELINE_SUMMARY };
+export { trialLink, PIPELINE_SUMMARY, pipelineAreaLabel };
 
 // page = the module that hosts this capability; agent = the panel to open there.
 export const CAPABILITIES = [

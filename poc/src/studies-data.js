@@ -1,4 +1,18 @@
 // Sanofi US Clinical Studies — sourced from sanofistudies.com (91 studies)
+//
+// This is a portfolio inventory: one compact row per study, one `disease` each,
+// `ta` for the therapeutic area — or `businessUnit` instead, on the vaccine rows
+// where no therapeutic area is recorded. trials-data.js models the same domain
+// differently (`therapeuticArea`, `conditions[]`) and the two are NOT merged —
+// see the "TRIAL SCHEMA RECONCILIATION" note in taxonomy.js for why, and for
+// trialFacets(), which reads either shape and returns canonical area ids so one
+// filter can query both.
+//
+// `disease` here is finer-grained than the `diseaseArea` vocabulary elsewhere in
+// the POC (Crohn's Disease and Ulcerative Colitis rather than IBD). That is
+// correct for an inventory and taxonomy.js handles it: those two carry
+// `parent: "inflammatory-bowel-disease"`, so a filter at either granularity
+// finds both.
 export const SANOFI_STUDIES = [
   { nct: "NCT06241118", drug: "Amlitelimab", ta: "Dermatology", disease: "Atopic Dermatitis", title: "Atopic Dermatitis (biologic-refractory, 12+)", phase: "Phase 3", status: "Recruiting" },
   { nct: "NCT05769777", drug: "Amlitelimab", ta: "Dermatology", disease: "Atopic Dermatitis", title: "Atopic Dermatitis OLE (12+)", phase: "Phase 2", status: "Recruiting" },
@@ -84,13 +98,19 @@ export const SANOFI_STUDIES = [
   { nct: "NCT06914908", drug: "Lunsekimig", ta: "Respiratory", disease: "CRSwNP", title: "CRSwNP long-term OLE", phase: "Phase 2", status: "Recruiting" },
   { nct: "NCT06454240", drug: "Lunsekimig", ta: "Respiratory", disease: "CRSwNP", title: "CRSwNP proof-of-concept", phase: "Phase 2", status: "Active NR" },
   { nct: "NCT06691113", drug: "Itepekimab", ta: "Respiratory", disease: "CRS", title: "CRS without Nasal Polyps", phase: "Phase 2", status: "Active NR" },
-  { nct: "NCT07247188", drug: "PCV21", ta: "Vaccines", disease: "Pneumococcal", title: "PCV21 Sickle Cell Disease Ph3", phase: "Phase 3", status: "Recruiting" },
-  { nct: "NCT06824194", drug: "PCV21", ta: "Vaccines", disease: "Pneumococcal", title: "PCV21 healthy infants safety Ph3", phase: "Phase 3", status: "Recruiting" },
-  { nct: "NCT06824181", drug: "PCV21/PCV20", ta: "Vaccines", disease: "Pneumococcal", title: "Mixed vaccination schedule infants Ph3", phase: "Phase 3", status: "Active NR" },
-  { nct: "NCT07079670", drug: "NVX-CoV2705", ta: "Vaccines", disease: "COVID-19", title: "COVID-19 vaccine Ph3", phase: "Phase 3", status: "Active NR" },
-  { nct: "NCT06907511", drug: "mRNA H5 Flu vaccine", ta: "Vaccines", disease: "Influenza", title: "Pandemic Influenza H5 healthy adults Ph1", phase: "Phase 1", status: "Active NR" },
-  { nct: "NCT06695117", drug: "COVID+Flu combo", ta: "Vaccines", disease: "COVID/Flu", title: "COVID+Flu combo (50+) Study A Ph1", phase: "Phase 1", status: "Active NR" },
-  { nct: "NCT06695130", drug: "COVID+Flu combo", ta: "Vaccines", disease: "COVID/Flu", title: "COVID+Flu combo (50+) Study B Ph1", phase: "Phase 1", status: "Active NR" }
+  // These 7 rows carry `businessUnit` instead of `ta`, for the same reason as
+  // the Vaccines block in pipeline-data.js: "Vaccines" is a Sanofi global
+  // business unit, not a therapeutic area, and storing it in `ta` made the two
+  // axes indistinguishable. Unlike the pipeline rows, these do record a real
+  // `disease`, so only the area is unknown.
+  // TODO(business): supply the therapeutic area for each vaccine study.
+  { nct: "NCT07247188", drug: "PCV21", ta: null, businessUnit: "Vaccines", disease: "Pneumococcal", title: "PCV21 Sickle Cell Disease Ph3", phase: "Phase 3", status: "Recruiting" },
+  { nct: "NCT06824194", drug: "PCV21", ta: null, businessUnit: "Vaccines", disease: "Pneumococcal", title: "PCV21 healthy infants safety Ph3", phase: "Phase 3", status: "Recruiting" },
+  { nct: "NCT06824181", drug: "PCV21/PCV20", ta: null, businessUnit: "Vaccines", disease: "Pneumococcal", title: "Mixed vaccination schedule infants Ph3", phase: "Phase 3", status: "Active NR" },
+  { nct: "NCT07079670", drug: "NVX-CoV2705", ta: null, businessUnit: "Vaccines", disease: "COVID-19", title: "COVID-19 vaccine Ph3", phase: "Phase 3", status: "Active NR" },
+  { nct: "NCT06907511", drug: "mRNA H5 Flu vaccine", ta: null, businessUnit: "Vaccines", disease: "Influenza", title: "Pandemic Influenza H5 healthy adults Ph1", phase: "Phase 1", status: "Active NR" },
+  { nct: "NCT06695117", drug: "COVID+Flu combo", ta: null, businessUnit: "Vaccines", disease: "COVID/Flu", title: "COVID+Flu combo (50+) Study A Ph1", phase: "Phase 1", status: "Active NR" },
+  { nct: "NCT06695130", drug: "COVID+Flu combo", ta: null, businessUnit: "Vaccines", disease: "COVID/Flu", title: "COVID+Flu combo (50+) Study B Ph1", phase: "Phase 1", status: "Active NR" }
 ];
 
 export function findStudiesByDisease(keyword) {
@@ -106,7 +126,16 @@ export function findRecruitingStudies(disease) {
 
 export function getStudyStats() {
   const recruiting = SANOFI_STUDIES.filter(s => s.status === "Recruiting").length;
-  const tas = new Set(SANOFI_STUDIES.map(s => s.ta));
+  // Boolean filter, because the vaccine rows carry no `ta` — counting null as a
+  // therapeutic area would report the same total as before the split and hide
+  // the fact that seven studies have no area recorded.
+  const tas = new Set(SANOFI_STUDIES.map(s => s.ta).filter(Boolean));
   const drugs = new Set(SANOFI_STUDIES.map(s => s.drug));
-  return { total: SANOFI_STUDIES.length, recruiting, tas: tas.size, drugs: drugs.size };
+  return {
+    total: SANOFI_STUDIES.length,
+    recruiting,
+    tas: tas.size,
+    drugs: drugs.size,
+    withoutTa: SANOFI_STUDIES.filter(s => !s.ta).length,
+  };
 }

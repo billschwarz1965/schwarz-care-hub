@@ -3,7 +3,7 @@
 // and renders the answer plus deep links. Each edition's ask.html declares the
 // pages it actually has via <body data-modules="...">.
 
-import { askMedVerse, capabilityLink, trialLink } from "./ask-router.js";
+import { askMedVerse, capabilityLink, trialLink, pipelineAreaLabel } from "./ask-router.js";
 
 const EDU_ICON = { podcast: "microphone-2", video: "player-play", infographic: "chart-infographic", article: "file-text" };
 
@@ -159,7 +159,7 @@ function render() {
         <div class="ask-pipe">
           <div class="ask-pipe-top">
             <span class="ask-pipe-name">${esc(p.name)}</span>
-            <span class="ask-pipe-ta">${esc(p.ta)}</span>
+            ${pipelineAreaLabel(p) ? `<span class="ask-pipe-ta">${esc(pipelineAreaLabel(p))}</span>` : ""}
           </div>
           <div class="ask-pipe-ind">${esc(p.indication)}</div>
           <div class="ask-pipe-mech">${esc(p.desc)}</div>

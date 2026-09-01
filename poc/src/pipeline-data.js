@@ -6,6 +6,17 @@
 // 1-2-3-R progress marker that did not yield a reliable value, and inventing a
 // phase for a pipeline asset would be worse than omitting it — an HCP or an MSL
 // could repeat it. Only the aggregate counts published on the page are recorded.
+//
+// `ta` is the therapeutic area. `businessUnit` is a separate axis and only
+// appears on the Vaccines block below — see the comment there. The two are not
+// interchangeable and the same value never appears in both; a Vaccines row
+// carries a business unit and a null `ta`. Read them with pipelineAreaLabel()
+// rather than touching `ta` directly, so a row with no therapeutic area renders
+// as nothing instead of "null".
+//
+// One block — Ophthalmology — takes its `ta` from studies-data.js rather than
+// from the pipeline page, because the page filed those assets under a grouping
+// that did not match the indication. That is noted at the block itself.
 
 export const PIPELINE_SUMMARY = {
   updated: "July 30, 2026",
@@ -39,12 +50,21 @@ export const pipeline = [
   { ta: "Immunology", name: "Rezurock", desc: "ROCK2 inhibitor", indication: "Chronic lung allograft dysfunction" },
 
   // ── Neurology ──
-  { ta: "Neurology", name: "SAR446597", desc: "BbxC1s AAV gene therapy", indication: "Geographic atrophy in dry age-related macular degeneration" },
   { ta: "Neurology", name: "SAR448851", desc: "TREM2 agonist", indication: "Alzheimer's disease" },
-  { ta: "Neurology", name: "SAR402663", desc: "sFLT01 AAV gene therapy", indication: "Wet age-related macular degeneration" },
   { ta: "Neurology", name: "frexalimab", desc: "CD40L mAb", indication: "Relapsing multiple sclerosis" },
   { ta: "Neurology", name: "frexalimab", desc: "CD40L mAb", indication: "Non-relapsing secondary progressive MS" },
   { ta: "Neurology", name: "riliprubart", desc: "C1s mAb", indication: "IVIg-treated CIDP" },
+
+  // ── Ophthalmology ──
+  // Both are retinal indications that the pipeline page listed under its
+  // Neurology grouping, which does not fit the indication. The therapeutic area
+  // here is NOT taken from the pipeline page — it is carried across from
+  // studies-data.js, which records these same two assets by drug code
+  // (SAR446597 / NCT07215234 and SAR402663 / NCT06660667) under
+  // `ta: "Ophthalmology"`. Different source from the rest of this file, so the
+  // provenance is recorded rather than silently blended.
+  { ta: "Ophthalmology", name: "SAR446597", desc: "BbxC1s AAV gene therapy", indication: "Geographic atrophy in dry age-related macular degeneration" },
+  { ta: "Ophthalmology", name: "SAR402663", desc: "sFLT01 AAV gene therapy", indication: "Wet age-related macular degeneration" },
 
   // ── Oncology ──
   { ta: "Oncology", name: "SAR445953", desc: "CEACAM5-Topo1 ADC", indication: "Colorectal cancer" },
@@ -71,21 +91,43 @@ export const pipeline = [
   { ta: "Rare Diseases", name: "venglustat", desc: "Oral GCS inhibitor", indication: "Gaucher disease type 3 (US, EU, JP)" },
 
   // ── Vaccines ──
-  { ta: "Vaccines", name: "SP0269", desc: "mRNA vaccine", indication: "Chlamydia" },
-  { ta: "Vaccines", name: "SP0287", desc: "Flublok + Nuvaxovid", indication: "Influenza + COVID-19" },
-  { ta: "Vaccines", name: "SP0291", desc: "mRNA vaccine", indication: "RSV + hMPV + PIV3 (older adults)" },
-  { ta: "Vaccines", name: "SP0340", desc: "Subunit vaccine", indication: "RSV + hMPV (older adults)" },
-  { ta: "Vaccines", name: "SP0341", desc: "Subunit vaccine", indication: "RSV + hMPV + PIV3 (older adults)" },
-  { ta: "Vaccines", name: "SP0342", desc: "Subunit adjuvanted vaccine", indication: "Shingles" },
-  { ta: "Vaccines", name: "SP0256", desc: "mRNA vaccine", indication: "RSV + hMPV (older adults)" },
-  { ta: "Vaccines", name: "SP0268", desc: "mRNA vaccine", indication: "Acne" },
-  { ta: "Vaccines", name: "SP0289", desc: "mRNA vaccine", indication: "Influenza H5 pandemic" },
-  { ta: "Vaccines", name: "SP0335", desc: "Inactivated adjuvanted vaccine", indication: "Influenza H5 pandemic" },
-  { ta: "Vaccines", name: "SP0202", desc: "21-valent conjugate vaccine", indication: "Pneumococcal disease (children)" },
-  { ta: "Vaccines", name: "SP0218", desc: "Vero cell vaccine", indication: "Yellow fever" },
-  { ta: "Vaccines", name: "Fluzone HD", desc: "Multivalent inactivated vaccine", indication: "Influenza (50 years+) (US, EU)" },
-  { ta: "Vaccines", name: "SP0087", desc: "Vero cell vaccine", indication: "Rabies (EU)" }
+  // These 14 rows carry `businessUnit` instead of `ta`. "Vaccines" is a Sanofi
+  // global business unit, not a therapeutic area, and it was previously stored
+  // in `ta` — which meant the UI presented a business unit to external HCPs in
+  // the same pill it uses for Immunology and Oncology. Business unit and
+  // therapeutic area are different axes, so the value moved rather than being
+  // relabelled.
+  //
+  // `ta` is null here, not guessed. The source page groups these by business
+  // unit and never states a therapeutic area for them, and the `indication`
+  // values below are indications (Chlamydia, Shingles, Influenza), not areas.
+  // Same reasoning as the missing per-project phase above: omitting a value an
+  // HCP could repeat is better than inventing one.
+  // TODO(business): supply the therapeutic area for each vaccine asset.
+  { businessUnit: "Vaccines", ta: null, name: "SP0269", desc: "mRNA vaccine", indication: "Chlamydia" },
+  { businessUnit: "Vaccines", ta: null, name: "SP0287", desc: "Flublok + Nuvaxovid", indication: "Influenza + COVID-19" },
+  { businessUnit: "Vaccines", ta: null, name: "SP0291", desc: "mRNA vaccine", indication: "RSV + hMPV + PIV3 (older adults)" },
+  { businessUnit: "Vaccines", ta: null, name: "SP0340", desc: "Subunit vaccine", indication: "RSV + hMPV (older adults)" },
+  { businessUnit: "Vaccines", ta: null, name: "SP0341", desc: "Subunit vaccine", indication: "RSV + hMPV + PIV3 (older adults)" },
+  { businessUnit: "Vaccines", ta: null, name: "SP0342", desc: "Subunit adjuvanted vaccine", indication: "Shingles" },
+  { businessUnit: "Vaccines", ta: null, name: "SP0256", desc: "mRNA vaccine", indication: "RSV + hMPV (older adults)" },
+  { businessUnit: "Vaccines", ta: null, name: "SP0268", desc: "mRNA vaccine", indication: "Acne" },
+  { businessUnit: "Vaccines", ta: null, name: "SP0289", desc: "mRNA vaccine", indication: "Influenza H5 pandemic" },
+  { businessUnit: "Vaccines", ta: null, name: "SP0335", desc: "Inactivated adjuvanted vaccine", indication: "Influenza H5 pandemic" },
+  { businessUnit: "Vaccines", ta: null, name: "SP0202", desc: "21-valent conjugate vaccine", indication: "Pneumococcal disease (children)" },
+  { businessUnit: "Vaccines", ta: null, name: "SP0218", desc: "Vero cell vaccine", indication: "Yellow fever" },
+  { businessUnit: "Vaccines", ta: null, name: "Fluzone HD", desc: "Multivalent inactivated vaccine", indication: "Influenza (50 years+) (US, EU)" },
+  { businessUnit: "Vaccines", ta: null, name: "SP0087", desc: "Vero cell vaccine", indication: "Rabies (EU)" }
 ];
+
+/**
+ * The grouping label to show for a pipeline asset: its therapeutic area, or its
+ * business unit when no therapeutic area is recorded. Returns "" rather than a
+ * placeholder — an empty pill is honest, "null" or "Unknown TA" is not.
+ */
+export function pipelineAreaLabel(p) {
+  return p.ta || p.businessUnit || "";
+}
 
 const PIPELINE_GENERIC_TERMS = new Set([
   "pipeline", "project", "projects", "drug", "drugs", "molecule", "compound",
@@ -108,7 +150,10 @@ export function searchPipeline(query, limit = 6) {
   if (!terms.length) return [];
 
   const scored = pipeline.map(p => {
-    const hay = `${p.name} ${p.desc} ${p.indication} ${p.ta}`.toLowerCase();
+    // pipelineAreaLabel rather than p.ta: a vaccine row has no therapeutic
+    // area, and interpolating null would put the word "null" in the haystack
+    // and let a query for "null" match every vaccine.
+    const hay = `${p.name} ${p.desc} ${p.indication} ${pipelineAreaLabel(p)}`.toLowerCase();
     const words = new Set(hay.split(/[^a-z0-9-]+/).filter(Boolean));
     let score = 0;
     for (const t of terms) {
