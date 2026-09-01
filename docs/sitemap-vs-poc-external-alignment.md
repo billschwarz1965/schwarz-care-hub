@@ -52,15 +52,21 @@ Source: `poc/src/disease-data.js`, `poc/src/agents-data.js`.
   one type-2 mechanism) depends on this join existing *somewhere* — the
   question is whether the future website's content is organized the same way,
   since that's what would get pulled.
-- **Zero provenance today.** No disease record has a `source`, `url`, or
-  `citedFrom` field. `poc-external`'s own tagline promises "every claim traces
-  back to a publication you can open and read yourself" (`poc-external/index.html:212`),
-  but that promise is currently kept only by Literature Intelligence (real
-  PubMed links) — Disease Navigator content is hand-authored with no link out.
-  Wiring it to `medical.campus.sanofi` is what would let Disease Navigator make
-  good on that same promise. This is a new integration, not a config change —
-  `agents-data.js`'s `disease-navigator` entry currently depends on the
-  `literature-intel` hub only (line 45), nothing about a CMS.
+- **Provenance gap, partially closed.** `disease-data.js` records still have no
+  `source`, `url`, or `citedFrom` field on the pathophysiology/treatment
+  content itself — that part is unchanged. But the disease detail view
+  (`disease-app.js`'s `openDetail`) now backs a "References" section with a
+  live PubMed search per disease, reusing `searchPubMedLive()` — the same
+  mechanism Literature Intelligence already used, just not previously wired
+  to this view. Each disease now surfaces 3 real, clickable
+  `pubmed.ncbi.nlm.nih.gov/{pmid}/` articles. This is disease-level
+  bibliography, not claim-level citation — a specific sentence in
+  "Pathophysiology" still doesn't link to the specific source for that
+  sentence — so `poc-external`'s "every claim traces back to a publication"
+  promise (`poc-external/index.html:212`) is closer to kept than before, not
+  fully kept. Wiring to `medical.campus.sanofi` once it exists remains the
+  path to claim-level attribution; this fix was the same-day, no-new-integration
+  version of "stop citing nothing."
 - **No country/locale concept anywhere in poc-external.** Every module —
   Disease Navigator, Literature Intelligence, Congress Intelligence — is
   written as if there's one global answer to a clinical question. There's no
