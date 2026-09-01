@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="medverse-ask" content="ask.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MedVerse">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <meta name="theme-color" content="#7a00e6">
+  <title>MedVerse — Medical Concierge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5fa;
+      --surface: #ffffff;
+      --surface-dim: #f3eff8;
+      --text: #1a1a2e;
+      --text-secondary: #5a5672;
+      --text-muted: #918da3;
+      --border: #e4dff0;
+      --border-strong: #cdc6de;
+      --accent: #7a00e6;
+      --accent-hover: #6600c2;
+      --accent-light: #f0e6ff;
+      --accent-text: #6b21a8;
+      --accent-secondary: #aa46a3;
+      --gold: #f9c851;
+      --gold-dark: #e5a800;
+      --success: #166534;
+      --success-bg: #dcfce7;
+      --warning: #854d0e;
+      --warning-bg: #fef9c3;
+      --danger: #991b1b;
+      --danger-bg: #fee2e2;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --font: 'Work Sans', 'Raleway', 'Roboto', sans-serif;
+    }
+
+    html.dark {
+      --bg: #0a0a14;
+      --surface: #13131f;
+      --surface-dim: #1a1a2e;
+      --text: #f0eef5;
+      --text-secondary: #a8a3b8;
+      --text-muted: #6b6580;
+      --border: #2a2840;
+      --border-strong: #3a3555;
+      --accent: #7a00e6;
+      --accent-hover: #8c1aff;
+      --accent-light: #2a1a40;
+      --accent-text: #c084fc;
+      --accent-secondary: #aa46a3;
+      --gold: #f9c851;
+      --gold-dark: #e5a800;
+      --success: #34d399;
+      --success-bg: rgba(52,211,153,0.1);
+      --warning: #f9c851;
+      --warning-bg: rgba(249,200,81,0.1);
+      --danger: #f87171;
+      --danger-bg: rgba(248,113,113,0.1);
+      --orion-accent: #34d399;
+      --orion-bg: rgba(52,211,153,0.1);
+    }
+
+    body { font-family: var(--font); background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* HEADER */
+    .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0; flex-shrink: 0; }
+    .header-brand-bar { height: 3px; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 50%, var(--gold) 100%); }
+    .header-inner { padding: 10px 24px; display: flex; align-items: center; gap: 12px; }
+    .header-home { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; color: inherit; border-radius: 8px; padding: 4px 8px 4px 4px; margin: -4px; transition: background 0.15s; }
+    .header-home:hover { background: var(--surface-dim); }
+    .header-logo { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px; }
+    .header-title { font-size: 16px; font-weight: 600; color: var(--text); }
+    .header-subtitle { font-size: 12px; color: var(--text-muted); }
+    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .header-badge { font-size: 11px; padding: 3px 10px; background: var(--warning-bg); color: var(--warning); border-radius: 20px; font-weight: 500; }
+    .back-btn { display: none; align-items: center; gap: 6px; padding: 6px 14px; background: var(--accent-light); color: var(--accent-text); border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+    .back-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+    .back-btn.visible { display: flex; }
+
+    /* MODULE NAV */
+    .module-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; flex-shrink: 0; overflow-x: auto; }
+    .module-tab { padding: 10px 20px; font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .module-tab:hover { color: var(--text); }
+    .module-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .module-tab i { font-size: 16px; }
+
+    /* MAIN SCROLL AREA */
+    .main-scroll { flex: 1; overflow-y: auto; }
+    .main-scroll::-webkit-scrollbar { width: 6px; }
+    .main-scroll::-webkit-scrollbar-track { background: transparent; }
+    .main-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* === WELCOME HUB === */
+    .hub { max-width: 1100px; margin: 0 auto; padding: 28px 24px 40px; }
+    .hub-header { text-align: center; margin-bottom: 32px; }
+    .hub-icon { width: 64px; height: 64px; background: var(--accent-light); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-size: 28px; color: var(--accent); }
+    .hub h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+    .hub-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.6; max-width: 620px; margin: 0 auto; }
+    .demo-cta-row { text-align: center; margin: 18px 0 0; }
+    .demo-run-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 10px 22px; font-size: 13px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: background .15s; }
+    .demo-run-btn:hover { background: var(--accent-hover); }
+    .demo-run-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* SEARCH */
+    .hub-search { max-width: 620px; margin: 24px auto 28px; position: relative; }
+    .hub-search-wrap { display: flex; gap: 10px; }
+    .hub-search-input { flex: 1; padding: 14px 18px 14px 44px; border: 2px solid var(--border); border-radius: 14px; font-family: var(--font); font-size: 14px; outline: none; background: var(--surface); transition: border-color .2s, box-shadow .2s; }
+    .hub-search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(122,0,230,.08); }
+    .hub-search-input::placeholder { color: var(--text-muted); }
+    .hub-search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 18px; color: var(--text-muted); pointer-events: none; }
+    .hub-search-btn { padding: 14px 22px; background: var(--accent); color: white; border: none; border-radius: 14px; font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background .15s; white-space: nowrap; }
+    .hub-search-btn:hover { background: var(--accent-hover); }
+    .hub-search-hints { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 10px; }
+    .hub-search-hint-chip { background: var(--surface-dim); border: 1px solid var(--border); border-radius: 16px; padding: 4px 12px; font-size: 11px; font-family: var(--font); cursor: pointer; color: var(--text-secondary); transition: all .15s; }
+    .hub-search-hint-chip:hover { background: var(--accent-light); color: var(--accent-text); border-color: var(--accent)44; }
+
+    /* AGENT GRID */
+    .agent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 900px) { .agent-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .agent-grid { grid-template-columns: 1fr; } }
+
+    .agent-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 20px; cursor: pointer; transition: all .2s; position: relative; display: flex; flex-direction: column; }
+    .agent-card:hover { border-color: var(--accent-secondary); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(122,0,230,.08); }
+    .agent-card-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 14px; flex-shrink: 0; }
+    .agent-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .agent-card p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; flex: 1; }
+    .agent-card-tag { display: inline-block; margin-top: 12px; padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; }
+
+    /* card colour themes */
+    .agent-card[data-agent="med-info"]       .agent-card-icon { background: var(--accent-light); color: var(--accent); }
+    .agent-card[data-agent="med-info"]       .agent-card-tag  { background: var(--accent-light); color: var(--accent-text); }
+    .agent-card[data-agent="sci-comms"]      .agent-card-icon { background: #dbeafe; color: #2563eb; }
+    .agent-card[data-agent="sci-comms"]      .agent-card-tag  { background: #dbeafe; color: #1d4ed8; }
+    .agent-card[data-agent="regulatory"]     .agent-card-icon { background: #fee2e2; color: #dc2626; }
+    .agent-card[data-agent="regulatory"]     .agent-card-tag  { background: #fee2e2; color: #991b1b; }
+    .agent-card[data-agent="pharma-vig"]     .agent-card-icon { background: #fef3c7; color: #b45309; }
+    .agent-card[data-agent="pharma-vig"]     .agent-card-tag  { background: #fef3c7; color: #92400e; }
+    .agent-card[data-agent="pub-planner"]    .agent-card-icon { background: #fae8ff; color: #a21caf; }
+    .agent-card[data-agent="pub-planner"]    .agent-card-tag  { background: #fae8ff; color: #86198f; }
+    .agent-card[data-agent="advisory"]       .agent-card-icon { background: #fce7f3; color: #be185d; }
+    .agent-card[data-agent="advisory"]       .agent-card-tag  { background: #fce7f3; color: #be185d; }
+    .agent-card[data-agent="med-ed"]         .agent-card-icon { background: #e0f2fe; color: #0369a1; }
+    .agent-card[data-agent="med-ed"]         .agent-card-tag  { background: #e0f2fe; color: #0c4a6e; }
+    .agent-card[data-agent="evidence"]       .agent-card-icon { background: var(--success-bg); color: var(--success); }
+    .agent-card[data-agent="evidence"]       .agent-card-tag  { background: var(--success-bg); color: var(--success); }
+    .agent-card[data-agent="med-strategy"]   .agent-card-icon { background: #fff7ed; color: #c2410c; }
+    .agent-card[data-agent="med-strategy"]   .agent-card-tag  { background: #fff7ed; color: #c2410c; }
+    .agent-card[data-agent="literature"]     .agent-card-icon { background: #fae8ff; color: #a21caf; }
+    .agent-card[data-agent="literature"]     .agent-card-tag  { background: #fae8ff; color: #86198f; }
+    .agent-card[data-agent="congress"]      .agent-card-icon { background: #fee2e2; color: #dc2626; }
+    .agent-card[data-agent="congress"]      .agent-card-tag  { background: #fee2e2; color: #991b1b; }
+    .agent-card[data-agent="trial-match"]  .agent-card-icon { background: #d1fae5; color: #059669; }
+    .agent-card[data-agent="trial-match"]  .agent-card-tag  { background: #d1fae5; color: #065f46; }
+
+    /* === AGENT PANEL === */
+    .agent-panel { display: none; max-width: 960px; margin: 0 auto; padding: 24px; }
+    .agent-panel.active { display: block; }
+
+    .panel-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .panel-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .panel-title { font-size: 18px; font-weight: 700; }
+    .panel-desc { font-size: 13px; color: var(--text-secondary); }
+
+    /* FORM PANELS */
+    .form-panel { display: flex; gap: 20px; }
+    .form-main { flex: 1; }
+    .form-results { flex: 1; max-width: 480px; }
+    @media (max-width: 800px) { .form-panel { flex-direction: column; } .form-results { max-width: none; } }
+
+    .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; margin-bottom: 16px; }
+    .form-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .form-card h4 i { font-size: 16px; color: var(--accent); }
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 5px; }
+    .form-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; outline: none; background: var(--bg); transition: border-color .15s; }
+    .form-input:focus { border-color: var(--accent); }
+    .form-select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; outline: none; background: var(--bg); }
+    .form-textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; outline: none; background: var(--bg); resize: vertical; min-height: 80px; transition: border-color .15s; }
+    .form-textarea:focus { border-color: var(--accent); }
+    .form-row { display: flex; gap: 12px; }
+    .form-row > * { flex: 1; }
+    .form-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border: none; border-radius: 8px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .form-btn-primary { background: var(--accent); color: white; }
+    .form-btn-primary:hover { background: var(--accent-hover); }
+    .form-btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+    .form-btn-secondary { background: var(--surface-dim); color: var(--text-secondary); border: 1px solid var(--border); }
+    .form-btn-secondary:hover { background: var(--accent-light); color: var(--accent-text); }
+    .form-chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+    .form-chip { padding: 5px 12px; border-radius: 16px; font-size: 11px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--surface); transition: all .15s; }
+    .form-chip:hover { border-color: var(--accent); }
+    .form-chip.selected { background: var(--accent); color: white; border-color: var(--accent); }
+
+    /* RESULT CARDS */
+    .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; animation: slideIn .3s ease; }
+    @keyframes slideIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    .result-card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .result-badge { padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; white-space: nowrap; }
+    .result-title { font-size: 14px; font-weight: 600; flex: 1; }
+    .result-body { font-size: 12.5px; line-height: 1.6; color: var(--text-secondary); }
+    .result-body strong { color: var(--text); }
+    .result-meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 11px; color: var(--text-muted); }
+    .result-meta-item { display: flex; align-items: center; gap: 4px; }
+    .result-meta-item i { font-size: 13px; }
+    .result-actions { display: flex; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .result-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 13px; }
+    .result-empty i { font-size: 32px; display: block; margin-bottom: 8px; opacity: .3; }
+
+    /* BADGES */
+    .badge-success { background: var(--success-bg); color: var(--success); }
+    .badge-warning { background: var(--warning-bg); color: var(--warning); }
+    .badge-info { background: #dbeafe; color: #1d4ed8; }
+    .badge-accent { background: var(--accent-light); color: var(--accent-text); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger); }
+    .badge-pink { background: #fce7f3; color: #be185d; }
+
+    /* MIR RESPONSE LETTER */
+    .mir-letter { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 14px; animation: slideIn .3s ease; }
+    .mir-letter-header { border-bottom: 2px solid var(--accent); padding-bottom: 12px; margin-bottom: 16px; }
+    .mir-letter-title { font-size: 16px; font-weight: 700; color: var(--accent); }
+    .mir-letter-meta { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+    .mir-letter-body { font-size: 13px; line-height: 1.7; }
+    .mir-letter-body h5 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; color: var(--text); margin: 14px 0 6px; }
+    .mir-letter-body p { margin-bottom: 8px; }
+    .mir-disclaimer { margin-top: 16px; padding: 10px 14px; background: var(--warning-bg); border-radius: 8px; font-size: 11px; color: var(--warning); display: flex; align-items: flex-start; gap: 6px; }
+    .mir-disclaimer i { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+    .mir-refs { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-muted); }
+    .mir-refs strong { color: var(--text-secondary); }
+
+    /* TIMELINE */
+    .timeline { position: relative; padding-left: 24px; }
+    .timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: var(--border); }
+    .timeline-item { position: relative; padding-bottom: 16px; }
+    .timeline-dot { position: absolute; left: -21px; top: 4px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--accent); background: var(--surface); }
+    .timeline-dot.completed { background: var(--accent); }
+    .timeline-dot.active { background: var(--accent); box-shadow: 0 0 0 3px rgba(122,0,230,.2); }
+    .timeline-date { font-size: 11px; color: var(--text-muted); margin-bottom: 2px; }
+    .timeline-text { font-size: 13px; }
+    .timeline-detail { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+    /* STATS GRID */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+    @media (max-width: 600px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    .stat-tile { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+    .stat-num { font-size: 24px; font-weight: 700; color: var(--accent); }
+    .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 4px; }
+
+    /* TABLE */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .data-table th, .data-table td { padding: 8px 10px; border: 1px solid var(--border); text-align: left; }
+    .data-table th { background: var(--surface-dim); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .3px; }
+    .data-table tr:hover td { background: var(--surface-dim); }
+
+    /* CHECKLIST */
+    .checklist-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 8px; margin-bottom: 6px; background: var(--surface-dim); }
+    .checklist-icon { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+    .checklist-pass .checklist-icon { background: var(--success-bg); color: var(--success); }
+    .checklist-warn .checklist-icon { background: var(--warning-bg); color: var(--warning); }
+    .checklist-fail .checklist-icon { background: var(--danger-bg); color: var(--danger); }
+    .checklist-info .checklist-icon { background: #dbeafe; color: #2563eb; }
+    .checklist-text { flex: 1; font-size: 12.5px; line-height: 1.5; }
+    .checklist-label { font-weight: 600; }
+
+    /* NARRATOR */
+    .demo-narrator { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 1100; background: var(--text); color: white; font-family: var(--font); font-size: 13px; font-weight: 500; padding: 10px 22px; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,.25); opacity: 0; transition: opacity .3s; pointer-events: none; white-space: nowrap; max-width: 90vw; overflow: hidden; text-overflow: ellipsis; }
+    .demo-narrator.visible { opacity: 1; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .theme-toggle { position:fixed;top:20px;right:20px;z-index:200;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text);transition:all .2s;box-shadow:0 2px 10px rgba(0,0,0,.08); }
+    .theme-toggle:hover { border-color:var(--accent);transform:scale(1.08); }
+    .theme-toggle .ti-moon { display:none; }
+    html.dark .theme-toggle .ti-moon { display:block; }
+    html.dark .theme-toggle .ti-sun { display:none; }
+  </style>
+  <link rel="stylesheet" href="/src/brand-font.css">
+  <link rel="stylesheet" href="/src/enhancements.css">
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode"><i class="ti ti-sun"></i><i class="ti ti-moon"></i></button>
+  <div class="header">
+    <div class="header-brand-bar"></div>
+    <div class="header-inner">
+      <a class="header-home" id="header-home" title="Return to Medical Concierge hub">
+        <div class="header-logo"><i class="ti ti-brain"></i></div>
+        <div>
+          <div class="header-title">MedVerse</div>
+          <div class="header-subtitle">Scientific Intelligence Ecosystem</div>
+        </div>
+      </a>
+      <div class="header-actions">
+        <button class="back-btn" id="back-btn"><i class="ti ti-arrow-left"></i> All Agents</button>
+        <div class="header-badge">POC v0.2</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="module-nav">
+    <a class="module-tab" href="index.html"><i class="ti ti-home"></i> Home</a>
+    <a class="module-tab" href="ask.html"><i class="ti ti-sparkles"></i> Ask MedVerse</a>
+    <a class="module-tab" href="msl-copilot.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
+    <a class="module-tab active" href="medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
+    <a class="module-tab" href="orion.html"><i class="ti ti-broadcast"></i> Interaction Signals</a>
+    <a class="module-tab" href="population.html"><i class="ti ti-map-2"></i> Population Intelligence</a>
+    <a class="module-tab" href="disease.html"><i class="ti ti-dna"></i> Disease Navigator</a>
+    <a class="module-tab" href="literature.html"><i class="ti ti-book"></i> Literature</a>
+    <a class="module-tab" href="congress.html"><i class="ti ti-calendar-event"></i> Congress</a>
+    <a class="module-tab" href="agents.html"><i class="ti ti-cpu"></i> Agent Ecosystem</a>
+    <a class="module-tab" href="demo.html"><i class="ti ti-player-play"></i> Demo</a>
+    <a class="module-tab" href="about.html"><i class="ti ti-info-circle"></i> About</a>
+  </nav>
+
+  <div class="main-scroll" id="main-scroll">
+
+    <!-- ===== HUB ===== -->
+    <div class="hub" id="hub">
+      <div class="hub-header">
+        <div class="hub-icon"><i class="ti ti-building-hospital"></i></div>
+        <h1>Medical Concierge</h1>
+        <p class="hub-sub">Command center for Medical Affairs. Process medical information requests, manage publications, track regulatory changes, coordinate advisory boards, and synthesize evidence — powered by AI agents built for medical teams.</p>
+        <div class="demo-cta-row">
+          <button class="demo-run-btn" id="run-demo"><i class="ti ti-player-play"></i> Run Demo</button>
+        </div>
+      </div>
+
+      <div class="hub-search" id="hub-search">
+        <div class="hub-search-wrap">
+          <i class="ti ti-sparkles hub-search-icon"></i>
+          <input class="hub-search-input" id="hub-search-input" type="text" placeholder="Search — e.g. &quot;Dupixent dosing MIR&quot; or &quot;EADV publication timeline&quot;">
+          <button class="hub-search-btn" id="hub-search-btn"><i class="ti ti-arrow-right"></i> Go</button>
+        </div>
+        <div class="hub-search-hints" id="hub-search-hints"></div>
+      </div>
+
+      <div class="agent-grid">
+        <div class="agent-card" data-agent="med-info">
+          <div class="agent-card-icon"><i class="ti ti-file-description"></i></div>
+          <h3>Medical Information</h3>
+          <p>Process unsolicited medical information requests. Generate compliant standard response letters with references, disclaimers, and approval tracking.</p>
+          <span class="agent-card-tag">Core MIR</span>
+        </div>
+        <div class="agent-card" data-agent="sci-comms">
+          <div class="agent-card-icon"><i class="ti ti-writing"></i></div>
+          <h3>Scientific Communications</h3>
+          <p>Draft and review scientific content — abstracts, slide decks, congress posters, and medical letters. Ensures accuracy and fair balance.</p>
+          <span class="agent-card-tag">Content</span>
+        </div>
+        <div class="agent-card" data-agent="regulatory">
+          <div class="agent-card-icon"><i class="ti ti-gavel"></i></div>
+          <h3>Regulatory Intelligence</h3>
+          <p>Track label updates, new approvals, regulatory submissions, and safety communications across Sanofi therapeutic areas worldwide.</p>
+          <span class="agent-card-tag">Regulatory</span>
+        </div>
+        <div class="agent-card" data-agent="pharma-vig">
+          <div class="agent-card-icon"><i class="ti ti-shield-check"></i></div>
+          <h3>Pharmacovigilance</h3>
+          <p>Safety signal monitoring, adverse event case processing support, and ICSR review. Tracks safety trends across the Sanofi portfolio.</p>
+          <span class="agent-card-tag">Safety</span>
+        </div>
+        <div class="agent-card" data-agent="pub-planner">
+          <div class="agent-card-icon"><i class="ti ti-notebook"></i></div>
+          <h3>Publication Planner</h3>
+          <p>Manage the publication pipeline — track manuscripts, congress abstracts, and posters from planning through submission to publication.</p>
+          <span class="agent-card-tag">Publications</span>
+        </div>
+        <div class="agent-card" data-agent="advisory">
+          <div class="agent-card-icon"><i class="ti ti-users-group"></i></div>
+          <h3>Advisory Board Manager</h3>
+          <p>Plan and manage advisory boards — KOL selection, agenda development, logistics, compliance checks, and insight capture.</p>
+          <span class="agent-card-tag">KOL Engagement</span>
+        </div>
+        <div class="agent-card" data-agent="med-ed">
+          <div class="agent-card-icon"><i class="ti ti-school"></i></div>
+          <h3>Medical Education</h3>
+          <p>Internal scientific and disease state education for MSLs, HCPs, patients, and caregivers. Track programs, completion, and audience engagement.</p>
+          <span class="agent-card-tag">Education</span>
+        </div>
+        <div class="agent-card" data-agent="evidence">
+          <div class="agent-card-icon"><i class="ti ti-chart-dots-3"></i></div>
+          <h3>Evidence Synthesis</h3>
+          <p>Summarize systematic reviews, meta-analyses, and real-world evidence. Generate evidence tables and gap analyses for medical plans.</p>
+          <span class="agent-card-tag">RWE / SLR</span>
+        </div>
+        <div class="agent-card" data-agent="med-strategy">
+          <div class="agent-card-icon"><i class="ti ti-target-arrow"></i></div>
+          <h3>Medical Strategy</h3>
+          <p>Support brand medical plan development — competitive landscape, unmet needs analysis, medical objectives, and KPI tracking.</p>
+          <span class="agent-card-tag">Strategy</span>
+        </div>
+        <div class="agent-card" data-agent="literature">
+          <div class="agent-card-icon"><i class="ti ti-book-2"></i></div>
+          <h3>Literature Intelligence</h3>
+          <p>Search PubMed and medical databases for evidence-based publications. Find clinical trials, meta-analyses, and review articles with citation summaries.</p>
+          <span class="agent-card-tag">Evidence</span>
+        </div>
+        <div class="agent-card" data-agent="congress">
+          <div class="agent-card-icon"><i class="ti ti-calendar-event"></i></div>
+          <h3>Congress Intelligence</h3>
+          <p>Track medical congress presentations, abstracts, and competitive intelligence. Monitor key scientific meetings for medical affairs insights.</p>
+          <span class="agent-card-tag">Congress</span>
+        </div>
+        <a href="/concierge.html#trial-match" class="agent-card" data-agent="trial-match" style="text-decoration:none;color:inherit;">
+          <div class="agent-card-icon"><i class="ti ti-flask"></i></div>
+          <h3>Trial Matching Agent</h3>
+          <p>Match patients to eligible Sanofi clinical trials based on diagnosis, demographics, and treatment history. Includes site locations and enrollment status.</p>
+          <span class="agent-card-tag">Clinical Trials</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ===== MEDICAL INFORMATION PANEL ===== -->
+    <div class="agent-panel" id="panel-med-info">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:var(--accent-light);color:var(--accent);"><i class="ti ti-file-description"></i></div>
+        <div><div class="panel-title">Medical Information</div><div class="panel-desc">Process medical information requests and generate compliant response letters</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-file-plus"></i> New MIR</h4>
+            <div class="form-group">
+              <label class="form-label">Product</label>
+              <select class="form-select" id="mir-product">
+                <option value="">Select product…</option>
+                <option>Dupixent (dupilumab)</option>
+                <option>Kevzara (sarilumab)</option>
+                <option>Praluent (alirocumab)</option>
+                <option>Aubagio (teriflunomide)</option>
+                <option>Altuviiio (efanesoctocog alfa)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Topic</label>
+              <select class="form-select" id="mir-topic">
+                <option value="">Select topic…</option>
+                <option>Dosing &amp; Administration</option>
+                <option>Safety / Adverse Events</option>
+                <option>Efficacy Data</option>
+                <option>Mechanism of Action</option>
+                <option>Drug Interactions</option>
+                <option>Pregnancy / Lactation</option>
+                <option>Pediatric Use</option>
+                <option>Storage &amp; Handling</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Requestor Type</label>
+              <div class="form-chip-group" id="mir-requestor">
+                <span class="form-chip" data-val="HCP">HCP</span>
+                <span class="form-chip" data-val="Pharmacist">Pharmacist</span>
+                <span class="form-chip" data-val="Patient">Patient</span>
+                <span class="form-chip" data-val="Internal">Internal</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Additional Details (optional)</label>
+              <textarea class="form-textarea" id="mir-details" placeholder="Any specific context for the request…" style="min-height:60px"></textarea>
+            </div>
+            <button class="form-btn form-btn-primary" id="mir-submit"><i class="ti ti-file-description"></i> Generate Response</button>
+          </div>
+        </div>
+        <div class="form-results" id="mir-results">
+          <div class="result-empty"><i class="ti ti-file-description"></i>Select a product and topic to generate a compliant MIR response letter.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SCIENTIFIC COMMUNICATIONS PANEL ===== -->
+    <div class="agent-panel" id="panel-sci-comms">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#dbeafe;color:#2563eb;"><i class="ti ti-writing"></i></div>
+        <div><div class="panel-title">Scientific Communications</div><div class="panel-desc">Draft and review scientific content with accuracy and fair balance</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-pencil"></i> Content Request</h4>
+            <div class="form-group">
+              <label class="form-label">Content Type</label>
+              <select class="form-select" id="sc-type">
+                <option value="">Select type…</option>
+                <option>Congress Abstract</option>
+                <option>Slide Deck</option>
+                <option>Poster Summary</option>
+                <option>Medical Letter</option>
+                <option>Plain Language Summary</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Product / Therapeutic Area</label>
+              <input class="form-input" id="sc-product" type="text" placeholder="e.g. Dupixent, Atopic Dermatitis">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Key Message / Topic</label>
+              <textarea class="form-textarea" id="sc-message" placeholder="Describe the main message or data to communicate…"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Target Audience</label>
+              <div class="form-chip-group" id="sc-audience">
+                <span class="form-chip" data-val="Dermatologists">Dermatologists</span>
+                <span class="form-chip" data-val="Allergists">Allergists</span>
+                <span class="form-chip" data-val="Rheumatologists">Rheumatologists</span>
+                <span class="form-chip" data-val="Pulmonologists">Pulmonologists</span>
+                <span class="form-chip" data-val="PCPs">PCPs</span>
+                <span class="form-chip" data-val="Internal">Internal</span>
+              </div>
+            </div>
+            <button class="form-btn form-btn-primary" id="sc-submit"><i class="ti ti-writing"></i> Generate Draft</button>
+          </div>
+        </div>
+        <div class="form-results" id="sc-results">
+          <div class="result-empty"><i class="ti ti-writing"></i>Describe your content needs to generate an initial draft.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REGULATORY INTELLIGENCE PANEL ===== -->
+    <div class="agent-panel" id="panel-regulatory">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fee2e2;color:#dc2626;"><i class="ti ti-gavel"></i></div>
+        <div><div class="panel-title">Regulatory Intelligence</div><div class="panel-desc">Label updates, new approvals, and regulatory actions across Sanofi products</div></div>
+      </div>
+      <div id="reg-content"></div>
+    </div>
+
+    <!-- ===== PHARMACOVIGILANCE PANEL ===== -->
+    <div class="agent-panel" id="panel-pharma-vig">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fef3c7;color:#b45309;"><i class="ti ti-shield-check"></i></div>
+        <div><div class="panel-title">Pharmacovigilance</div><div class="panel-desc">Safety signal monitoring and adverse event case processing</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-search"></i> Safety Signal Search</h4>
+            <div class="form-group">
+              <label class="form-label">Product</label>
+              <select class="form-select" id="pv-product">
+                <option value="">Select product…</option>
+                <option>Dupixent (dupilumab)</option>
+                <option>Kevzara (sarilumab)</option>
+                <option>Praluent (alirocumab)</option>
+                <option>Aubagio (teriflunomide)</option>
+                <option>Altuviiio (efanesoctocog alfa)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Signal Category</label>
+              <select class="form-select" id="pv-category">
+                <option value="">All categories…</option>
+                <option>New Signal Under Review</option>
+                <option>Ongoing Monitoring</option>
+                <option>Label Update Recommended</option>
+                <option>Closed — No Action</option>
+              </select>
+            </div>
+            <button class="form-btn form-btn-primary" id="pv-submit"><i class="ti ti-shield-check"></i> Search Signals</button>
+          </div>
+        </div>
+        <div class="form-results" id="pv-results">
+          <div class="result-empty"><i class="ti ti-shield-check"></i>Select a product to view safety signal status and PV updates.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PUBLICATION PLANNER PANEL ===== -->
+    <div class="agent-panel" id="panel-pub-planner">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fae8ff;color:#a21caf;"><i class="ti ti-notebook"></i></div>
+        <div><div class="panel-title">Publication Planner</div><div class="panel-desc">Track manuscripts, abstracts, and posters through the publication pipeline</div></div>
+      </div>
+      <div id="pub-content"></div>
+    </div>
+
+    <!-- ===== ADVISORY BOARD MANAGER PANEL ===== -->
+    <div class="agent-panel" id="panel-advisory">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fce7f3;color:#be185d;"><i class="ti ti-users-group"></i></div>
+        <div><div class="panel-title">Advisory Board Manager</div><div class="panel-desc">Plan advisory boards — KOL selection, agenda, compliance, and insights</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-calendar-plus"></i> Plan Advisory Board</h4>
+            <div class="form-group">
+              <label class="form-label">Therapeutic Area</label>
+              <select class="form-select" id="ab-ta">
+                <option value="">Select TA…</option>
+                <option>Atopic Dermatitis</option>
+                <option>Asthma</option>
+                <option>Rheumatoid Arthritis</option>
+                <option>Immunology (Cross-TA)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Objective</label>
+              <select class="form-select" id="ab-objective">
+                <option value="">Select objective…</option>
+                <option>Clinical Data Review</option>
+                <option>Treatment Guidelines Input</option>
+                <option>Real-World Evidence Discussion</option>
+                <option>Pipeline Feedback</option>
+                <option>Unmet Needs Assessment</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Format</label>
+              <div class="form-chip-group" id="ab-format">
+                <span class="form-chip" data-val="In-Person">In-Person</span>
+                <span class="form-chip" data-val="Virtual">Virtual</span>
+                <span class="form-chip" data-val="Hybrid">Hybrid</span>
+              </div>
+            </div>
+            <button class="form-btn form-btn-primary" id="ab-submit"><i class="ti ti-users-group"></i> Generate Plan</button>
+          </div>
+        </div>
+        <div class="form-results" id="ab-results">
+          <div class="result-empty"><i class="ti ti-users-group"></i>Select a therapeutic area and objective to generate an advisory board plan.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MEDICAL EDUCATION PANEL ===== -->
+    <div class="agent-panel" id="panel-med-ed">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#e0f2fe;color:#0369a1;"><i class="ti ti-school"></i></div>
+        <div><div class="panel-title">Medical Education</div><div class="panel-desc">Internal scientific and disease state education for field teams, HCPs, patients, and caregivers</div></div>
+      </div>
+      <div id="med-ed-content"></div>
+    </div>
+
+    <!-- ===== EVIDENCE SYNTHESIS PANEL ===== -->
+    <div class="agent-panel" id="panel-evidence">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:var(--success-bg);color:var(--success);"><i class="ti ti-chart-dots-3"></i></div>
+        <div><div class="panel-title">Evidence Synthesis</div><div class="panel-desc">Systematic reviews, meta-analyses, and real-world evidence summaries</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-search"></i> Evidence Query</h4>
+            <div class="form-group">
+              <label class="form-label">Product / Indication</label>
+              <input class="form-input" id="ev-query" type="text" placeholder="e.g. Dupixent atopic dermatitis">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Evidence Type</label>
+              <div class="form-chip-group" id="ev-type">
+                <span class="form-chip" data-val="RCT">RCTs</span>
+                <span class="form-chip" data-val="RWE">Real-World Evidence</span>
+                <span class="form-chip" data-val="Meta">Meta-Analyses</span>
+                <span class="form-chip" data-val="SLR">Systematic Reviews</span>
+              </div>
+            </div>
+            <button class="form-btn form-btn-primary" id="ev-submit"><i class="ti ti-chart-dots-3"></i> Synthesize Evidence</button>
+          </div>
+        </div>
+        <div class="form-results" id="ev-results">
+          <div class="result-empty"><i class="ti ti-chart-dots-3"></i>Enter a product or indication to synthesize available evidence.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MEDICAL STRATEGY PANEL ===== -->
+    <div class="agent-panel" id="panel-med-strategy">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fff7ed;color:#c2410c;"><i class="ti ti-target-arrow"></i></div>
+        <div><div class="panel-title">Medical Strategy</div><div class="panel-desc">Brand medical plan support — landscape, unmet needs, and KPI tracking</div></div>
+      </div>
+      <div id="strategy-content"></div>
+    </div>
+
+    <!-- ===== LITERATURE INTELLIGENCE PANEL ===== -->
+    <div class="agent-panel" id="panel-literature">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fae8ff;color:#a21caf;"><i class="ti ti-book-2"></i></div>
+        <div><div class="panel-title">Literature Intelligence</div><div class="panel-desc">Search PubMed and medical databases for evidence-based publications</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-search"></i> Search Publications</h4>
+            <div class="form-group">
+              <label class="form-label">Search Query</label>
+              <input class="form-input" id="lit-query" type="text" placeholder="e.g. dupilumab atopic dermatitis long-term safety">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Publication Type</label>
+              <div class="form-chip-group" id="lit-type">
+                <span class="form-chip" data-val="Clinical Trial">Clinical Trials</span>
+                <span class="form-chip" data-val="Review">Reviews</span>
+                <span class="form-chip" data-val="Meta-Analysis">Meta-Analyses</span>
+                <span class="form-chip" data-val="Guideline">Guidelines</span>
+              </div>
+            </div>
+            <button class="form-btn form-btn-primary" id="lit-submit"><i class="ti ti-book-2"></i> Search</button>
+          </div>
+        </div>
+        <div class="form-results" id="lit-results">
+          <div class="result-empty"><i class="ti ti-book-2"></i>Enter a search query to find relevant publications.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CONGRESS INTELLIGENCE PANEL ===== -->
+    <div class="agent-panel" id="panel-congress">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#fee2e2;color:#dc2626;"><i class="ti ti-calendar-event"></i></div>
+        <div><div class="panel-title">Congress Intelligence</div><div class="panel-desc">Track medical congress presentations, abstracts, and competitive intelligence</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-search"></i> Congress Search</h4>
+            <div class="form-group">
+              <label class="form-label">Congress</label>
+              <select class="form-select" id="cg-congress">
+                <option value="">Select congress…</option>
+                <option>AAD 2026 — American Academy of Dermatology</option>
+                <option>EADV 2026 — European Academy of Dermatology</option>
+                <option>ATS 2026 — American Thoracic Society</option>
+                <option>ACR 2026 — American College of Rheumatology</option>
+                <option>AAAAI 2026 — Allergy, Asthma & Immunology</option>
+                <option>DDW 2026 — Digestive Disease Week</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Focus</label>
+              <div class="form-chip-group" id="cg-focus">
+                <span class="form-chip" data-val="sanofi">Sanofi Data</span>
+                <span class="form-chip" data-val="competitor">Competitor Intel</span>
+                <span class="form-chip" data-val="guidelines">Guidelines</span>
+              </div>
+            </div>
+            <button class="form-btn form-btn-primary" id="cg-submit"><i class="ti ti-calendar-event"></i> Get Coverage</button>
+          </div>
+        </div>
+        <div class="form-results" id="cg-results">
+          <div class="result-empty"><i class="ti ti-calendar-event"></i>Select a congress to view presentations, highlights, and competitive intelligence.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main-scroll -->
+
+  <div class="demo-narrator" id="demo-narrator"></div>
+
+  <script type="module" src="/src/medical-app.js"></script>
+  <script type="module" src="/src/enhancements.js"></script>
+  <script>
+function toggleTheme(){document.documentElement.classList.toggle("dark");localStorage.setItem("medverse-theme",document.documentElement.classList.contains("dark")?"dark":"light")}
+if(localStorage.getItem("medverse-theme")==="dark")document.documentElement.classList.add("dark");
+</script>
+</body>
+</html>

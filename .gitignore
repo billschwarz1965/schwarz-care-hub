@@ -43,3 +43,6 @@ node_modules/
 # Cursor / IDE
 .cursor/
 .claude/
+
+# Assembled GitHub Pages output (see .github/workflows/deploy-pages.yml)
+site/
