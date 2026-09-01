@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="medverse-ask" content="ask.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MedVerse">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <meta name="theme-color" content="#7a00e6">
+  <title>MedVerse — Master Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="/src/brand-font.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f5f3f8;
+      --surface: #ffffff;
+      --surface-2: #f0edf5;
+      --surface-3: #e8e4f0;
+      --text: #1a1225;
+      --text-secondary: #4a4260;
+      --text-muted: #8078a0;
+      --border: #d8d2e8;
+      --accent: #7a00e6;
+      --accent-light: #6b00cc;
+      --accent-glow: rgba(122,0,230,0.08);
+      --gold: #b58900;
+      --green: #0d9060;
+      --blue: #2563eb;
+      --red: #dc2626;
+      --font: 'Work Sans', sans-serif;
+    }
+    html.dark {
+      --bg: #0a0a14;
+      --surface: #13131f;
+      --surface-2: #1a1a2e;
+      --surface-3: #222238;
+      --text: #f0eef5;
+      --text-secondary: #a8a3b8;
+      --text-muted: #6b6580;
+      --border: #2a2840;
+      --accent: #7a00e6;
+      --accent-light: #c084fc;
+      --accent-glow: rgba(122,0,230,0.15);
+      --gold: #f9c851;
+      --green: #34d399;
+      --blue: #60a5fa;
+      --red: #f87171;
+    }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* MODULE NAV */
+    .module-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; flex-shrink: 0; overflow-x: auto; }
+    .module-tab { padding: 10px 20px; font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .module-tab:hover { color: var(--text); }
+    .module-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .module-tab i { font-size: 16px; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: 80px 40px 60px;
+      text-align: center;
+      background: radial-gradient(ellipse at 50% 0%, rgba(122,0,230,0.06) 0%, transparent 60%);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 600;
+      background: rgba(122,0,230,0.12); color: var(--accent-light);
+      border: 1px solid rgba(122,0,230,0.25); margin-bottom: 20px;
+    }
+    .hero-logo {
+      width: 64px; height: 64px; margin: 0 auto 20px;
+      background: linear-gradient(135deg, var(--accent), #4f46e5);
+      border-radius: 18px; display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 700; color: #fff;
+      box-shadow: 0 8px 30px rgba(122,0,230,0.3);
+    }
+    .hero h1 {
+      font-size: 36px; font-weight: 800; line-height: 1.15;
+      background: linear-gradient(135deg, #1a1225 30%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+    .hero-sub {
+      font-size: 16px; color: var(--text-secondary); max-width: 600px;
+      margin: 0 auto 28px; line-height: 1.6;
+    }
+    .hero-presenter {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 8px 18px; border-radius: 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      font-size: 13px; color: var(--text-secondary);
+    }
+    .hero-presenter strong { color: var(--text); font-weight: 600; }
+
+    /* SECTION */
+    .section { padding: 60px 40px; max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--accent-light); margin-bottom: 12px;
+    }
+    .section h2 {
+      font-size: 26px; font-weight: 700; margin-bottom: 8px;
+    }
+    .section-desc {
+      font-size: 14px; color: var(--text-secondary); max-width: 700px;
+      line-height: 1.6; margin-bottom: 32px;
+    }
+
+    /* 4-LAYER ARCHITECTURE */
+    .arch-layers {
+      display: flex; flex-direction: column; gap: 3px;
+      border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .arch-layer {
+      padding: 22px 28px; display: flex; align-items: center; gap: 20px;
+    }
+    .arch-layer-ux { background: linear-gradient(90deg, rgba(96,165,250,0.1), rgba(96,165,250,0.03)); border-left: 4px solid var(--blue); }
+    .arch-layer-agent { background: linear-gradient(90deg, rgba(122,0,230,0.1), rgba(122,0,230,0.03)); border-left: 4px solid var(--accent); }
+    .arch-layer-hub { background: linear-gradient(90deg, rgba(52,211,153,0.1), rgba(52,211,153,0.03)); border-left: 4px solid var(--green); }
+    .arch-layer-gov { background: linear-gradient(90deg, rgba(249,200,81,0.1), rgba(249,200,81,0.03)); border-left: 4px solid var(--gold); }
+    .arch-layer-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .arch-layer-ux .arch-layer-icon { background: rgba(96,165,250,0.15); color: var(--blue); }
+    .arch-layer-agent .arch-layer-icon { background: rgba(122,0,230,0.15); color: var(--accent-light); }
+    .arch-layer-hub .arch-layer-icon { background: rgba(52,211,153,0.15); color: var(--green); }
+    .arch-layer-gov .arch-layer-icon { background: rgba(249,200,81,0.15); color: var(--gold); }
+    .arch-layer-info { flex: 1; }
+    .arch-layer-name { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+    .arch-layer-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; }
+    .arch-layer-count {
+      font-size: 22px; font-weight: 700; text-align: right; min-width: 50px;
+    }
+    .arch-layer-count-label { font-size: 10px; color: var(--text-muted); text-align: right; }
+
+    /* AGENTIC FRAMEWORK */
+    .framework-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .fw-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px; transition: all 0.2s;
+    }
+    .fw-card:hover { border-color: rgba(122,0,230,0.3); transform: translateY(-2px); }
+    .fw-card-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; margin-bottom: 14px;
+    }
+    .fw-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .fw-card p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; }
+    .fw-card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+    .fw-tag {
+      font-size: 10px; padding: 2px 8px; border-radius: 4px;
+      background: rgba(122,0,230,0.08); color: var(--accent-light);
+      border: 1px solid rgba(122,0,230,0.15);
+    }
+
+    /* MODULE TOC */
+    .toc-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;
+    }
+    .toc-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 22px; cursor: pointer; transition: all 0.2s;
+      text-decoration: none; color: inherit; display: block;
+    }
+    .toc-card:hover {
+      border-color: rgba(122,0,230,0.4); transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(122,0,230,0.1);
+    }
+    .toc-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .toc-card-icon {
+      width: 42px; height: 42px; border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .toc-card-title { font-size: 15px; font-weight: 700; }
+    .toc-card-subtitle { font-size: 11px; color: var(--text-muted); }
+    .toc-card-desc {
+      font-size: 12.5px; color: var(--text-secondary); line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .toc-card-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .toc-meta-badge {
+      font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 5px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .toc-meta-agents { background: rgba(122,0,230,0.1); color: var(--accent-light); }
+    .toc-meta-demo { background: rgba(52,211,153,0.1); color: var(--green); }
+
+    /* DETAIL PANELS */
+    .detail-section {
+      padding: 50px 40px; max-width: 1100px; margin: 0 auto;
+      border-top: 1px solid var(--border);
+    }
+    .detail-header {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+    }
+    .detail-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .detail-title { font-size: 22px; font-weight: 700; }
+    .detail-subtitle { font-size: 13px; color: var(--text-muted); }
+    .detail-body { font-size: 13.5px; color: var(--text-secondary); line-height: 1.7; }
+    .detail-body h4 { color: var(--text); font-size: 14px; margin: 16px 0 6px; }
+    .detail-body ul { padding-left: 20px; margin-bottom: 12px; }
+    .detail-body li { margin-bottom: 4px; }
+
+    .agent-list {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
+      margin-top: 14px;
+    }
+    .agent-chip {
+      display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px;
+      font-size: 12.5px; font-weight: 500;
+    }
+    .agent-chip i { font-size: 16px; color: var(--accent-light); }
+
+    /* PLAY ALL BAR */
+    .playall-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(245,243,248,0.92); backdrop-filter: blur(10px);
+      border-top: 1px solid var(--border);
+      padding: 14px 40px; display: flex; align-items: center; justify-content: center; gap: 14px;
+    }
+    .playall-btn {
+      padding: 12px 32px; border-radius: 12px; border: none;
+      background: linear-gradient(135deg, var(--accent), #4f46e5);
+      color: #fff; font-size: 14px; font-weight: 700;
+      font-family: var(--font); cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      transition: all 0.15s;
+      box-shadow: 0 4px 20px rgba(122,0,230,0.3);
+    }
+    .playall-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .playall-label { font-size: 13px; color: var(--text-muted); }
+
+    /* FOOTER */
+    .demo-footer {
+      text-align: center; padding: 40px; color: var(--text-muted);
+      font-size: 12px; border-top: 1px solid var(--border);
+    }
+    .demo-footer a { color: var(--accent-light); text-decoration: none; }
+
+    /* THEME TOGGLE */
+    .theme-toggle {
+      position: fixed; top: 20px; right: 20px; z-index: 200;
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--surface); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 18px; color: var(--text);
+      transition: all 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.08); }
+    .theme-toggle .ti-moon { display: none; }
+    html.dark .theme-toggle .ti-moon { display: block; }
+    html.dark .theme-toggle .ti-sun { display: none; }
+
+    /* LIGHT MODE OVERRIDES */
+    /* DARK MODE OVERRIDES */
+    html.dark .hero {
+      background: radial-gradient(ellipse at 50% 0%, rgba(122,0,230,0.15) 0%, transparent 60%);
+    }
+    html.dark .hero h1 {
+      background: linear-gradient(135deg, #fff 30%, var(--accent-light) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    html.dark .playall-bar { background: rgba(10,10,20,0.92); }
+    html.dark .playall-btn { box-shadow: 0 4px 20px rgba(122,0,230,0.3); }
+  </style>
+</head>
+<body>
+
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+    <i class="ti ti-moon"></i>
+    <i class="ti ti-sun"></i>
+  </button>
+
+  <nav class="module-nav">
+    <a class="module-tab" href="index.html"><i class="ti ti-home"></i> Home</a>
+    <a class="module-tab" href="ask.html"><i class="ti ti-sparkles"></i> Ask MedVerse</a>
+    <a class="module-tab" href="msl-copilot.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
+    <a class="module-tab" href="medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
+    <a class="module-tab" href="orion.html"><i class="ti ti-broadcast"></i> Interaction Signals</a>
+    <a class="module-tab" href="population.html"><i class="ti ti-map-2"></i> Population Intelligence</a>
+    <a class="module-tab" href="disease.html"><i class="ti ti-dna"></i> Disease Navigator</a>
+    <a class="module-tab" href="literature.html"><i class="ti ti-book"></i> Literature</a>
+    <a class="module-tab" href="congress.html"><i class="ti ti-calendar-event"></i> Congress</a>
+    <a class="module-tab" href="agents.html"><i class="ti ti-cpu"></i> Agent Ecosystem</a>
+    <a class="module-tab active" href="demo.html"><i class="ti ti-player-play"></i> Demo</a>
+    <a class="module-tab" href="about.html"><i class="ti ti-info-circle"></i> About</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge"><i class="ti ti-sparkles"></i> Master Demo Recording</div>
+    <div class="hero-logo">Mv</div>
+    <h1>MedVerse</h1>
+    <p class="hero-sub" style="font-size:1.15em;font-weight:500;margin-bottom:8px;">Scientific Intelligence Ecosystem</p>
+    <p class="hero-sub">Connecting MSL field teams and Medical Affairs through intelligent agents, real-time interaction signals, and automated governance.</p>
+    <div class="hero-presenter">
+      <i class="ti ti-user-circle" style="font-size:20px;color:var(--accent-light)"></i>
+      Presented by <strong>Bill Schwarz</strong> — Digital Product Line &amp; Program Owner, MedVerse
+    </div>
+  </section>
+
+  <!-- 4-LAYER ARCHITECTURE -->
+  <section class="section">
+    <div class="section-label"><i class="ti ti-layers-intersect"></i> Platform Architecture</div>
+    <h2>The Four-Layer Design</h2>
+    <p class="section-desc">MedVerse is built on a four-layer architecture that separates user experience, business logic, intelligence, and governance — enabling scalable, compliant AI across every persona.</p>
+
+    <div class="arch-layers">
+      <div class="arch-layer arch-layer-ux">
+        <div class="arch-layer-icon"><i class="ti ti-users"></i></div>
+        <div class="arch-layer-info">
+          <div class="arch-layer-name">UX Layer — Personas</div>
+          <div class="arch-layer-desc">MSL field teams and home office Medical Affairs. Each persona gets a purpose-built concierge experience powered by the agent layer below.</div>
+        </div>
+        <div>
+          <div class="arch-layer-count" style="color:var(--blue)">2</div>
+          <div class="arch-layer-count-label">Personas</div>
+        </div>
+      </div>
+      <div class="arch-layer arch-layer-agent">
+        <div class="arch-layer-icon"><i class="ti ti-robot"></i></div>
+        <div class="arch-layer-info">
+          <div class="arch-layer-name">Agent Orchestration Layer</div>
+          <div class="arch-layer-desc">16 business agents — MSL Copilot, KOL Profiling, Advisory Board Builder, Clinical Trial Intelligence, Literature Scout, Congress Planner, Disease State Navigator, and more. Each agent composes intelligence from the hubs below.</div>
+        </div>
+        <div>
+          <div class="arch-layer-count" style="color:var(--accent-light)">16</div>
+          <div class="arch-layer-count-label">Agents</div>
+        </div>
+      </div>
+      <div class="arch-layer arch-layer-hub">
+        <div class="arch-layer-icon"><i class="ti ti-database"></i></div>
+        <div class="arch-layer-info">
+          <div class="arch-layer-name">Intelligence Hub Layer</div>
+          <div class="arch-layer-desc">Expert Intelligence Hub (4.9M+ HCP profiles), Literature Intelligence (36M+ PubMed articles, NEJM), Interaction Signals, Population Intelligence, Disease Navigator, and Congress Intelligence — all connected via live APIs.</div>
+        </div>
+        <div>
+          <div class="arch-layer-count" style="color:var(--green)">6</div>
+          <div class="arch-layer-count-label">Hubs</div>
+        </div>
+      </div>
+      <div class="arch-layer arch-layer-gov">
+        <div class="arch-layer-icon"><i class="ti ti-shield-check"></i></div>
+        <div class="arch-layer-info">
+          <div class="arch-layer-name">Governance Layer</div>
+          <div class="arch-layer-desc">12 compliance agents — MLR Review, Scientific Verification, AE Detection, PHI Protection, Off-Label Monitor, Fair Balance, AI Explainability, Audit Trail, and more. Every agent output is validated before delivery.</div>
+        </div>
+        <div>
+          <div class="arch-layer-count" style="color:var(--gold)">12</div>
+          <div class="arch-layer-count-label">Compliance</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENTIC FRAMEWORK -->
+  <section class="section" style="padding-top:20px">
+    <div class="section-label"><i class="ti ti-cpu"></i> Agentic Framework</div>
+    <h2>How the Agents Work</h2>
+    <p class="section-desc">Every MedVerse agent follows the same pattern: receive a task, compose intelligence from connected hubs, pass through governance validation, and deliver a compliant, cited output.</p>
+
+    <div class="framework-grid">
+      <div class="fw-card">
+        <div class="fw-card-icon" style="background:rgba(96,165,250,0.12);color:var(--blue)"><i class="ti ti-message-chatbot"></i></div>
+        <h3>Natural Language Input</h3>
+        <p>Users interact through conversational interfaces — chat, forms, or voice. The agent understands intent and routes to the right intelligence sources.</p>
+        <div class="fw-card-tags"><span class="fw-tag">Chat</span><span class="fw-tag">Forms</span><span class="fw-tag">Voice</span></div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-card-icon" style="background:rgba(52,211,153,0.12);color:var(--green)"><i class="ti ti-topology-star-ring-3"></i></div>
+        <h3>Multi-Source Intelligence</h3>
+        <p>Agents query multiple hubs — PubMed for literature, ClinicalTrials.gov for trials, the Expert Hub for HCP profiles, interaction signals for engagement data.</p>
+        <div class="fw-card-tags"><span class="fw-tag">PubMed</span><span class="fw-tag">NEJM</span><span class="fw-tag">ClinicalTrials.gov</span><span class="fw-tag">Signals</span></div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-card-icon" style="background:rgba(122,0,230,0.12);color:var(--accent-light)"><i class="ti ti-brain"></i></div>
+        <h3>AI Synthesis</h3>
+        <p>The agent synthesizes raw data into actionable intelligence — summaries, comparisons, recommendations, and talking points with full citations.</p>
+        <div class="fw-card-tags"><span class="fw-tag">RAG</span><span class="fw-tag">Summarization</span><span class="fw-tag">Citations</span></div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-card-icon" style="background:rgba(249,200,81,0.12);color:var(--gold)"><i class="ti ti-shield-check"></i></div>
+        <h3>Governance Validation</h3>
+        <p>Every output passes through compliance agents — MLR review, scientific verification, AE detection, and PHI protection before delivery.</p>
+        <div class="fw-card-tags"><span class="fw-tag">MLR</span><span class="fw-tag">AE Detection</span><span class="fw-tag">PHI</span><span class="fw-tag">Audit</span></div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-card-icon" style="background:rgba(248,113,113,0.12);color:var(--red)"><i class="ti ti-broadcast"></i></div>
+        <h3>Interaction Signal Generation</h3>
+        <p>Every interaction generates a signal — content accessed, queries asked, topics discussed. Signals are incorporated into other data used for medical insights and analytics.</p>
+        <div class="fw-card-tags"><span class="fw-tag">Signals</span><span class="fw-tag">Analytics</span><span class="fw-tag">Field Intel</span></div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-card-icon" style="background:rgba(96,165,250,0.12);color:var(--blue)"><i class="ti ti-arrows-exchange"></i></div>
+        <h3>Cross-Module Integration</h3>
+        <p>Agents talk to each other. A congress finding links to literature. A KOL profile links to trial data. Disease connections span therapeutic areas.</p>
+        <div class="fw-card-tags"><span class="fw-tag">Cross-TA</span><span class="fw-tag">Linked Data</span><span class="fw-tag">Connected</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TABLE OF CONTENTS -->
+  <section class="section" id="toc-section" style="padding-top:20px">
+    <div class="section-label"><i class="ti ti-list"></i> Demo Modules</div>
+    <h2>Table of Contents</h2>
+    <p class="section-desc">Click any module to launch its demo, or use Play All to run the complete guided tour starting from the Home page across all 9 modules.</p>
+
+    <div class="toc-grid">
+      <a class="toc-card" href="index.html">
+        <div class="toc-card-top">
+          <div class="toc-card-icon" style="background:rgba(122,0,230,0.12);color:var(--accent)"><i class="ti ti-home"></i></div>
+          <div>
+            <div class="toc-card-title">Home</div>
+            <div class="toc-card-subtitle">MedVerse Welcome &amp; Overview</div>
+          </div>
+        </div>
+        <div class="toc-card-desc">Narrated introduction to MedVerse — the Scientific Intelligence Ecosystem for MSL field teams and Medical Affairs.</div>
+        <div class="toc-card-meta">
+          <span class="toc-meta-badge toc-meta-demo"><i class="ti ti-player-play"></i> Intro narration</span>
+        </div>
+      </a>
+
+      <a class="toc-card" href="msl-copilot.html">
+        <div class="toc-card-top">
+          <div class="toc-card-icon" style="background:rgba(122,0,230,0.12);color:var(--accent)"><i class="ti ti-briefcase"></i></div>
+          <div>
+            <div class="toc-card-title">MSL Copilot</div>
+            <div class="toc-card-subtitle">Field Medical AI Assistant</div>
+          </div>
+        </div>
+        <div class="toc-card-desc">Thirteen AI agents powering field engagement — from morning prep to post-call intelligence, trial matching, and interaction signals for Medical Science Liaisons.</div>
+        <div class="toc-card-meta">
+          <span class="toc-meta-badge toc-meta-agents"><i class="ti ti-robot"></i> 13 agents</span>
+          <span class="toc-meta-badge toc-meta-demo"><i class="ti ti-player-play"></i> Full demo</span>
+        </div>
+      </a>
+
+      <a class="toc-card" href="medical.html">
+        <div class="toc-card-top">
+          <div class="toc-card-icon" style="background:rgba(52,211,153,0.12);color:var(--green)"><i class="ti ti-building-hospital"></i></div>
+          <div>
+            <div class="toc-card-title">Medical Concierge</div>
+            <div class="toc-card-subtitle">Medical Affairs Intelligence</div>
+          </div>
+        </div>
+        <div class="toc-card-desc">Twelve AI agents supporting medical affairs — scientific communications, regulatory intelligence, advisory boards, evidence generation, and trial matching.</div>
+        <div class="toc-card-meta">
+          <span class="toc-meta-badge toc-meta-agents"><i class="ti ti-robot"></i> 12 agents</span>
+          <span class="toc-meta-badge toc-meta-demo"><i class="ti ti-player-play"></i> Full demo</span>
+        </div>
+      </a>
+
+      <a class="toc-card" href="orion.html">
+        <div class="toc-card-top">
+          <div class="toc-card-icon" style="background:rgba(249,200,81,0.12);color:var(--gold)"><i class="ti ti-broadcast"></i></div>
+          <div>
+            <div class="toc-card-title">Interaction Signals</div>
+            <div class="toc-card-subtitle">Field Intelligence Dashboard</div>
+          </div>
+        </div>
+        <div class="toc-card-desc">Real-time signal intelligence — HCP engagement signals, disease area coverage, MSL action queue, and live feed monitoring.</div>
+        <div class="toc-card-meta">
+          <span class="toc-meta-badge toc-meta-demo"><i class="ti ti-player-play"></i> Full demo</span>
+        </div>
+      </a>
+
+      <a class="toc-card" href="population.html">
+        <div class="toc-card-top">
+          <div class="toc-card-icon" style="background:rgba(122,0,230,0.12);color:var(--accent)"><i class="ti ti-map-2"></i></div>
+          <div>
+            <div class="toc-card-title">Population Intelligence</div>
+            <div class="toc-card-subtitle">Real-World Evidence &times; Engagement</div>
+          </div>
+        </div>
+        <div class="toc-card-desc">Deidentified real-world evidence overlaid on MedVerse scientific engagement, by state — care-gap quadrants, education priorities, and compliant engagement candidates behind a Commercial Firewall.</div>
+        <div class="toc-card-meta">
+          <span class="toc-meta-badge toc-meta-demo"><i class="ti ti-player-play"></i> Full demo</span>
+        </div>
+      </a>
+
+      <a class="toc-card" href="disease.html">
+        <div class="toc-card-top">
+          <div class="toc-card-icon" style="background:rgba(52,211,153,0.12);color:var(--green)"><i class="ti ti-dna"></i></div>
+          <div>
+            <div class="toc-card-title">Disease Navigator</div>
+            <div class="toc-card-subtitle">Cross-TA Disease Intelligence</div>
+          </div>
+        </div>
+        <div class="toc-card-desc">Cross-therapeutic area disease mapping — inflammatory pathways, treatment landscapes, biomarkers, and competitive positioning.</div>
+        <div class="toc-card-meta">
+          <span class="toc-meta-badge toc-meta-demo"><i class="ti ti-player-play"></i> Guided tour</span>
+        </div>
+      </a>
+
+      <a class="toc-card" href="literature.html">
+        <div class="toc-card-top">
+          <div class="toc-card-icon" style="background:rgba(122,0,230,0.12);color:var(--accent-light)"><i class="ti ti-book-2"></i></div>
+          <div>
+            <div class="toc-card-title">Literature Intelligence</div>
+            <div class="toc-card-subtitle">Live PubMed & NEJM Search</div>
+          </div>
+        </div>
+        <div class="toc-card-desc">Live search across 36M+ PubMed articles and NEJM — AI-powered synthesis, auto deep-dives, and intelligence signals.</div>
+        <div class="toc-card-meta">
+          <span class="toc-meta-badge toc-meta-demo"><i class="ti ti-player-play"></i> Full demo</span>
+        </div>
+      </a>
+
+      <a class="toc-card" href="congress.html">
+        <div class="toc-card-top">
+          <div class="toc-card-icon" style="background:rgba(170,70,163,0.12);color:#aa46a3"><i class="ti ti-calendar-event"></i></div>
+          <div>
+            <div class="toc-card-title">Congress Intelligence</div>
+            <div class="toc-card-subtitle">Medical Congress Tracker</div>
+          </div>
+        </div>
+        <div class="toc-card-desc">Scientific data from 6 major medical congresses — presentations, key findings, MSL talking points, and Sanofi data highlights.</div>
+        <div class="toc-card-meta">
+          <span class="toc-meta-badge toc-meta-demo"><i class="ti ti-player-play"></i> Full demo</span>
+        </div>
+      </a>
+
+      <a class="toc-card" href="agents.html">
+        <div class="toc-card-top">
+          <div class="toc-card-icon" style="background:rgba(249,200,81,0.12);color:var(--gold)"><i class="ti ti-topology-star-ring-3"></i></div>
+          <div>
+            <div class="toc-card-title">Agent Ecosystem</div>
+            <div class="toc-card-subtitle">Platform Architecture View</div>
+          </div>
+        </div>
+        <div class="toc-card-desc">The complete agent ecosystem — 4-layer architecture, business agents, intelligence hubs, governance layer, and live trial search.</div>
+        <div class="toc-card-meta">
+          <span class="toc-meta-badge toc-meta-agents"><i class="ti ti-robot"></i> 29 agents</span>
+          <span class="toc-meta-badge toc-meta-demo"><i class="ti ti-player-play"></i> Full demo</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- DETAILED MODULE BREAKDOWNS -->
+  <section class="detail-section" id="detail-msl">
+    <div class="detail-header">
+      <div class="detail-icon" style="background:rgba(122,0,230,0.12);color:var(--accent-light)"><i class="ti ti-briefcase"></i></div>
+      <div>
+        <div class="detail-title">MSL Copilot — Detailed View</div>
+        <div class="detail-subtitle">13 agents covering the complete MSL workflow + trial matching</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <p>The MSL Copilot follows a field Medical Science Liaison through a full day — from morning territory review to post-call intelligence reporting. Each agent handles a specific task in the MSL workflow, and all outputs feed the interaction signal data used for medical insights and analytics. Includes the MSL Copilot Assistant for on-demand AI support.</p>
+      <h4>Agent Inventory</h4>
+      <div class="agent-list">
+        <div class="agent-chip"><i class="ti ti-map"></i> Territory Dashboard</div>
+        <div class="agent-chip"><i class="ti ti-report-search"></i> Pre-Call Intelligence</div>
+        <div class="agent-chip"><i class="ti ti-user-star"></i> KOL Profiling</div>
+        <div class="agent-chip"><i class="ti ti-shield-check"></i> Compliance Advisor</div>
+        <div class="agent-chip"><i class="ti ti-book-2"></i> Literature Intelligence</div>
+        <div class="agent-chip"><i class="ti ti-bell"></i> Literature Scout</div>
+        <div class="agent-chip"><i class="ti ti-arrows-exchange"></i> Competitive Intelligence</div>
+        <div class="agent-chip"><i class="ti ti-dna"></i> Disease Navigator</div>
+        <div class="agent-chip"><i class="ti ti-calendar-event"></i> Congress Planner</div>
+        <div class="agent-chip"><i class="ti ti-file-text"></i> Medical Information</div>
+        <div class="agent-chip"><i class="ti ti-send"></i> Post-Call Reporting</div>
+        <div class="agent-chip"><i class="ti ti-broadcast"></i> Interaction Signals</div>
+        <div class="agent-chip"><i class="ti ti-flask"></i> Trial Matching Agent</div>
+      </div>
+      <h4>Demo Narrative</h4>
+      <p>The demo follows Dr. Sarah Chen — a Tier 1 KOL and LIBERTY AD investigator. The MSL prepares for a scientific exchange, researches latest evidence, checks compliance, conducts the meeting, and reports the interaction signal.</p>
+    </div>
+  </section>
+
+  <section class="detail-section" id="detail-medical">
+    <div class="detail-header">
+      <div class="detail-icon" style="background:rgba(52,211,153,0.12);color:var(--green)"><i class="ti ti-building-hospital"></i></div>
+      <div>
+        <div class="detail-title">Medical Concierge — Detailed View</div>
+        <div class="detail-subtitle">12 agents for medical affairs intelligence</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <p>Medical Concierge serves home office and medical affairs teams with strategic intelligence — scientific communications, regulatory intelligence, advisory boards, evidence generation, and trial matching.</p>
+      <h4>Agent Inventory</h4>
+      <div class="agent-list">
+        <div class="agent-chip"><i class="ti ti-file-text"></i> Medical Information</div>
+        <div class="agent-chip"><i class="ti ti-speakerphone"></i> Scientific Communications</div>
+        <div class="agent-chip"><i class="ti ti-gavel"></i> Regulatory Intelligence</div>
+        <div class="agent-chip"><i class="ti ti-shield-check"></i> Pharmacovigilance</div>
+        <div class="agent-chip"><i class="ti ti-notebook"></i> Publication Planner</div>
+        <div class="agent-chip"><i class="ti ti-layout-board-split"></i> Advisory Board</div>
+        <div class="agent-chip"><i class="ti ti-school"></i> Medical Education</div>
+        <div class="agent-chip"><i class="ti ti-file-analytics"></i> Evidence Generation</div>
+        <div class="agent-chip"><i class="ti ti-bulb"></i> Medical Strategy</div>
+        <div class="agent-chip"><i class="ti ti-book-2"></i> Literature Intelligence</div>
+        <div class="agent-chip"><i class="ti ti-calendar-event"></i> Congress Intelligence</div>
+        <div class="agent-chip"><i class="ti ti-flask"></i> Trial Matching Agent</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="detail-section" id="detail-population">
+    <div class="detail-header">
+      <div class="detail-icon" style="background:rgba(122,0,230,0.12);color:var(--accent-light)"><i class="ti ti-map-2"></i></div>
+      <div>
+        <div class="detail-title">Population Intelligence — Detailed View</div>
+        <div class="detail-subtitle">Deidentified real-world evidence &times; MedVerse scientific engagement, behind a Commercial Firewall</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <p>Population Intelligence overlays licensed, deidentified real-world data (claims + EHR) against MedVerse's own scientific-engagement signals, joined at region level only. The delta between clinical need and engagement — never a patient-opportunity figure — is the Medical Affairs action list. There is no patient-to-HCP linkage anywhere in this module by design; Patient Services holds that linkage and it does not cross the firewall.</p>
+      <h4>Use Cases</h4>
+      <div class="agent-list">
+        <div class="agent-chip"><i class="ti ti-school"></i> Prioritise MSL scientific exchange in education-gap states — high need, low engagement</div>
+        <div class="agent-chip"><i class="ti ti-flask"></i> Route evidence-gap states to publication planning &amp; RWE study design instead of more content</div>
+        <div class="agent-chip"><i class="ti ti-alert-triangle"></i> Surface safety-relevant care gaps first — steroid burden, JAK-before-biologic — in the priority ranking</div>
+        <div class="agent-chip"><i class="ti ti-calendar-event"></i> Detect event-siting mismatches, e.g. Southeast at 0.14 events/10k need vs. Northeast at 2.9</div>
+        <div class="agent-chip"><i class="ti ti-user-search"></i> Select compliant MSL engagement candidates from care-gap context and self-directed information-seeking only — never a patient count</div>
+      </div>
+      <h4>Demo Narrative</h4>
+      <p>The demo opens on Map A — clinical need — and lands on Mississippi: need index 84, 80% of the moderate-to-severe cohort on prolonged topical therapy, under one dermatologist per 100k people. It then shows Map B — Mississippi's scientific engagement scores 13/100 — before overlaying both into the quadrant view: 22 education-gap states and 4 evidence-gap states. Event geography makes the mismatch concrete (Southeast vs. Northeast siting), and the walkthrough closes on Dr. Okonkwo, an engagement candidate selected from care-gap alignment and published expertise alone, with no patient count attached to his name.</p>
+    </div>
+  </section>
+
+  <!-- PLAY ALL BAR -->
+  <div class="playall-bar">
+    <span class="playall-label">9 modules ready</span>
+    <button class="playall-btn" id="playall-btn">
+      <i class="ti ti-player-play-filled"></i> Play All Demos
+    </button>
+  </div>
+
+  <footer class="demo-footer" style="padding-bottom:80px">
+    <p>MedVerse &mdash; Sanofi Medical Affairs &amp; Discovery</p>
+    <p style="margin-top:6px">POC v0.4.13 &mdash; <a href="index.html">Return to Home</a></p>
+  </footer>
+
+  <script>
+    const MODULES = [
+      { name: "Home", url: "index.html" },
+      { name: "MSL Copilot", url: "msl-copilot.html" },
+      { name: "Medical Concierge", url: "medical.html" },
+      { name: "Interaction Signals", url: "orion.html" },
+      { name: "Population Intelligence", url: "population.html" },
+      { name: "Disease Navigator", url: "disease.html" },
+      { name: "Literature Intelligence", url: "literature.html" },
+      { name: "Congress Intelligence", url: "congress.html" },
+      { name: "Agent Ecosystem", url: "agents.html" },
+    ];
+
+    document.getElementById("playall-btn").addEventListener("click", () => {
+      const proceed = confirm("Play All will start at the Home page and guide you through each module demo. Continue?");
+      if (!proceed) return;
+      sessionStorage.setItem('medverse-playall-modules', JSON.stringify(MODULES));
+      sessionStorage.setItem('medverse-playall-next', '1');
+      window.location.href = MODULES[0].url + "#autoplay";
+    });
+
+    function toggleTheme() {
+      document.documentElement.classList.toggle("dark");
+      localStorage.setItem("medverse-demo-theme",
+        document.documentElement.classList.contains("dark") ? "dark" : "light");
+    }
+    if (localStorage.getItem("medverse-demo-theme") === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  </script>
+  <script type="module" src="/src/audio.js"></script>
+
+  <script type="module" src="/src/enhancements.js"></script>
+</body>
+</html>
