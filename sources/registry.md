@@ -49,6 +49,10 @@ Paths below are relative to `Campus+Medical - Discovery/` unless noted.
 | VIS-007 | The Medical Intelligence Operating System (video) | `Intelligence/Medverse Explained/The Medical intelligence Operating System.mp4` | 2026-08 | Video — OS concept |
 | VIS-008 | The Knowledge Ecosystem (video) | `Intelligence/Medverse Explained/The_Knowledge_Ecosystem.mp4` | 2026-08 | Video — ecosystem model |
 | VIS-009 | The MedVerse Vision (video) | `Intelligence/Medverse Explained/The_MedVerse_Vision.mp4` | 2026-08 | Video — platform vision |
+| VIS-010 | Executive demo script & shot list | `MedVerse Operating System/MedVerse-Exec-Demo-Script.md` | 2026-08-27 | 8-scene narrated walkthrough of the live POC — "AI gateway, not a website" thesis; record against localhost POC |
+| VIS-011 | Executive demo deck | `MedVerse Operating System/MedVerse-Exec-Demo.pptx` | 2026-08-27 | 8 slides, full narration in speaker notes — slide version of VIS-010 |
+| VIS-012 | MedVerse Vision (3-slide exec deck) | `MedVerse Operating System/MedVerse-Vision.pptx` | 2026-08-27 | Thesis / December MSL Connect commitment / Orion roadmap ask |
+| VIS-013 | Agentic AI cost estimate | `MedVerse Operating System/MedVerse Agentic AI -Cost-Estimate.xlsx` | 2026-08-27 | Per-agent build effort + per-integration cost, connection counts for Agent Ecosystem and HCP Concierge. Planning benchmarks, not vendor quotes |
 
 ---
 

@@ -155,6 +155,8 @@
     .agent-card[data-agent="evidence"]       .agent-card-tag  { background: var(--success-bg); color: var(--success); }
     .agent-card[data-agent="med-strategy"]   .agent-card-icon { background: #fff7ed; color: #c2410c; }
     .agent-card[data-agent="med-strategy"]   .agent-card-tag  { background: #fff7ed; color: #c2410c; }
+    .agent-card[data-agent="population"]     .agent-card-icon { background: #ffedd5; color: #c2410c; }
+    .agent-card[data-agent="population"]     .agent-card-tag  { background: #ffedd5; color: #9a3412; }
     .agent-card[data-agent="literature"]     .agent-card-icon { background: #fae8ff; color: #a21caf; }
     .agent-card[data-agent="literature"]     .agent-card-tag  { background: #fae8ff; color: #86198f; }
     .agent-card[data-agent="congress"]      .agent-card-icon { background: #fee2e2; color: #dc2626; }
@@ -391,6 +393,12 @@
           <h3>Medical Strategy</h3>
           <p>Support brand medical plan development — competitive landscape, unmet needs analysis, medical objectives, and KPI tracking.</p>
           <span class="agent-card-tag">Strategy</span>
+        </div>
+        <div class="agent-card" data-agent="population">
+          <div class="agent-card-icon"><i class="ti ti-map-2"></i></div>
+          <h3>Population Intelligence</h3>
+          <p>Deidentified real-world evidence mapped against scientific engagement. Surface education priorities, evidence gaps, and event siting mismatch by region.</p>
+          <span class="agent-card-tag">RWD / Geography</span>
         </div>
         <div class="agent-card" data-agent="literature">
           <div class="agent-card-icon"><i class="ti ti-book-2"></i></div>
@@ -673,6 +681,15 @@
         <div><div class="panel-title">Medical Strategy</div><div class="panel-desc">Brand medical plan support — landscape, unmet needs, and KPI tracking</div></div>
       </div>
       <div id="strategy-content"></div>
+    </div>
+
+    <!-- ===== POPULATION INTELLIGENCE PANEL ===== -->
+    <div class="agent-panel" id="panel-population">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#ffedd5;color:#c2410c;"><i class="ti ti-map-2"></i></div>
+        <div><div class="panel-title">Population Intelligence</div><div class="panel-desc">Deidentified RWD overlaid on scientific engagement — education and evidence priorities</div></div>
+      </div>
+      <div id="population-content"></div>
     </div>
 
     <!-- ===== LITERATURE INTELLIGENCE PANEL ===== -->

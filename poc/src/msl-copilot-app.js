@@ -1,6 +1,9 @@
 import { speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
-import { broadcastSignal } from "./orion-bridge.js";
+import { broadcastSignal, broadcastPopulationSignal } from "./orion-bridge.js";
 import { createDemoController } from "./demo-nav.js";
+import {
+  CARE_GAPS, getRegionRollup, getCandidatesForRegion, getEventFootprint,
+} from "./population-data.js";
 
 // === NAV STATE ===
 const hub = document.getElementById("hub");
@@ -968,9 +971,128 @@ function narrateOff() {
   stopSpeaking(); hideControls();
 }
 
+// === TERRITORY CARE GAPS ===
+// Region-level only. There is deliberately no patient count and no HCP-linked
+// figure here — Patient Services holds that linkage and the Commercial
+// Firewall withholds it from field medical.
+function renderCareGaps(region) {
+  const el = document.getElementById("tcg-results");
+  if (!el) return;
+  el.innerHTML = loader("#c2410c");
+
+  setTimeout(() => {
+    const r = getRegionRollup(region);
+    if (!r) {
+      el.innerHTML = '<div class="result-empty"><i class="ti ti-chart-histogram"></i>No aggregate data for that region.</div>';
+      return;
+    }
+    const ranked = CARE_GAPS
+      .map(g => ({ g, rate: r.gapRates[g.id], delta: Math.round((r.gapRates[g.id] - g.nationalRate) * 10) / 10 }))
+      .sort((a, b) => {
+        if (a.g.safetyRelevant !== b.g.safetyRelevant) return a.g.safetyRelevant ? -1 : 1;
+        return b.delta - a.delta;
+      });
+
+    const gapRows = ranked.map(({ g, rate, delta }) => {
+      const unit = g.unit === "mo" ? " mo" : "%";
+      const dTxt = (delta > 0 ? "+" : "") + delta + (g.unit === "mo" ? "mo" : "pp");
+      const dColor = delta > 0 ? "var(--danger)" : "var(--success)";
+      return `<tr>
+        <td><strong>${escapeHtml(g.name)}</strong>${g.safetyRelevant
+          ? ' <span style="font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--danger-bg);color:var(--danger);">SAFETY</span>' : ""}</td>
+        <td>${rate}${unit}</td>
+        <td style="color:var(--text-muted);">${g.nationalRate}${unit}</td>
+        <td style="color:${dColor};font-weight:700;">${escapeHtml(dTxt)}</td>
+        <td style="font-size:11.5px;">${escapeHtml(g.educationNeed)}</td>
+      </tr>`;
+    }).join("");
+
+    const cands = getCandidatesForRegion(region);
+    const candCards = cands.length ? cands.map(c => `
+      <div style="background:var(--surface-dim);border:1px solid var(--border);border-radius:10px;padding:13px;">
+        <div style="font-size:13.5px;font-weight:700;">${escapeHtml(c.name)}</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:7px;">${escapeHtml(c.specialty)} · ${escapeHtml(c.institution)}</div>
+        <div style="font-size:11.5px;color:var(--text-secondary);line-height:1.5;"><strong>Why:</strong> ${escapeHtml(c.rationale)}</div>
+        <div style="font-size:11.5px;color:var(--text-secondary);line-height:1.5;margin-top:5px;"><strong>Discuss:</strong> ${escapeHtml(c.suggestedTopic)}</div>
+        <div style="font-size:10px;font-weight:700;color:var(--success);margin-top:8px;display:flex;align-items:center;gap:4px;">
+          <i class="ti ti-shield-check"></i> Patient count withheld by Commercial Firewall
+        </div>
+      </div>`).join("") : '<div style="font-size:12px;color:var(--text-muted);">No candidates surfaced for this region.</div>';
+
+    const f = getEventFootprint(region) || { advisoryBoards: 0, symposia: 0, congressSessions: 0 };
+    const totalEvents = f.advisoryBoards + f.symposia + f.congressSessions;
+
+    el.innerHTML = `
+      <div style="display:flex;align-items:flex-start;gap:12px;background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:13px 16px;margin-bottom:16px;">
+        <i class="ti ti-shield-lock" style="font-size:19px;color:var(--accent-text);"></i>
+        <div style="font-size:11.5px;color:var(--text-secondary);line-height:1.55;">
+          <strong style="color:var(--text);">Aggregate region-level data only.</strong> Source is licensed deidentified real-world evidence.
+          Patient-to-HCP linkage stays with Patient Services and does not reach field medical. Engagement candidates below are
+          selected on scientific merit and regional care context — never on patient volume.
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;">
+        <div style="background:var(--surface-dim);border:1px solid var(--border);border-radius:9px;padding:12px;text-align:center;">
+          <div style="font-size:19px;font-weight:700;color:var(--accent);">${r.needIndex}</div>
+          <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;">Need index</div></div>
+        <div style="background:var(--surface-dim);border:1px solid var(--border);border-radius:9px;padding:12px;text-align:center;">
+          <div style="font-size:19px;font-weight:700;color:var(--orion-accent);">${r.engagementIndex}</div>
+          <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;">Engagement</div></div>
+        <div style="background:var(--surface-dim);border:1px solid var(--border);border-radius:9px;padding:12px;text-align:center;">
+          <div style="font-size:19px;font-weight:700;">${r.dermPer100k}</div>
+          <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;">Derm / 100k</div></div>
+        <div style="background:var(--surface-dim);border:1px solid var(--border);border-radius:9px;padding:12px;text-align:center;">
+          <div style="font-size:19px;font-weight:700;color:${totalEvents < 5 ? "var(--danger)" : "var(--text)"};">${totalEvents}</div>
+          <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;">Events 18mo</div></div>
+      </div>
+
+      <div style="font-size:13px;font-weight:700;margin-bottom:9px;">Care gaps — ${escapeHtml(region)} (${r.stateCount} states, ${r.cohort.toLocaleString()} cohort)</div>
+      <table style="width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:22px;">
+        <thead><tr style="text-align:left;">
+          <th style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:10.5px;text-transform:uppercase;color:var(--text-muted);">Gap</th>
+          <th style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:10.5px;text-transform:uppercase;color:var(--text-muted);">Region</th>
+          <th style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:10.5px;text-transform:uppercase;color:var(--text-muted);">National</th>
+          <th style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:10.5px;text-transform:uppercase;color:var(--text-muted);">Delta</th>
+          <th style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:10.5px;text-transform:uppercase;color:var(--text-muted);">Education need</th>
+        </tr></thead>
+        <tbody>${gapRows}</tbody>
+      </table>
+
+      <div style="font-size:13px;font-weight:700;margin-bottom:9px;">Scientific engagement candidates</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:11px;">${candCards}</div>
+    `;
+
+    const top = ranked[0];
+    broadcastPopulationSignal({
+      geoId: `US-REGION-${region.toUpperCase().replace(/[^A-Z]/g, "")}`,
+      geoName: region,
+      aggregationLevel: "region",
+      cohortSize: r.cohort,
+      gapId: top.g.id,
+      gapName: top.g.name,
+      gapRate: top.rate,
+      nationalRate: top.g.nationalRate,
+      nationalDelta: top.delta,
+      needIndex: r.needIndex,
+      engagementIndex: r.engagementIndex,
+      quadrant: r.quadrant,
+      medicalAction: `FIELD INSIGHT: ${region} territory — ${top.g.shortName} at ${top.rate}${top.g.unit === "mo" ? "mo" : "%"} vs ${top.g.nationalRate}${top.g.unit === "mo" ? "mo" : "%"} national. Education need: ${top.g.educationNeed}.`,
+      educationNeed: top.g.educationNeed,
+      _source: "MSL Copilot",
+    });
+  }, 700);
+}
+
+document.getElementById("tcg-submit").addEventListener("click", () => {
+  const region = document.getElementById("tcg-region").value;
+  renderCareGaps(region);
+});
+
 const MSL_AGENTS = [
   { id: "voice-search", name: "Voice Search", icon: "microphone" },
   { id: "territory", name: "Territory Dashboard", icon: "map" },
+  { id: "caregaps", name: "Territory Care Gaps", icon: "chart-histogram" },
   { id: "precall", name: "Pre-Call Intelligence", icon: "report-search" },
   { id: "kol", name: "KOL Profiling", icon: "user-star" },
   { id: "compliance", name: "Compliance Advisor", icon: "shield-check" },
@@ -1017,6 +1139,17 @@ async function runAgentDemo(index, agent) {
       await delay(2000);
       await narrate("Forty-seven HCPs, three meetings this week, and thirty-eight interaction signals to review");
       await delay(2000);
+      break;
+    case "caregaps":
+      await narrate("Territory Care Gaps brings real-world evidence into field planning");
+      showPanel("caregaps");
+      await delay(700);
+      click("tcg-submit");
+      await delay(2200);
+      await narrate("Two safety-relevant gaps top the Southeast list — recurrent systemic steroid exposure running thirteen points above national, and JAK inhibitors used ahead of a biologic trial");
+      await delay(2400);
+      await narrate("Every figure here is region-level. No patient counts, and nothing tied to a named physician — the Commercial Firewall withholds that. What reaches the field is the scientific reason to engage");
+      await delay(2400);
       break;
     case "precall":
       await narrate("First meeting today: Dr. Sarah Chen. Let's pull her pre-call briefing");
