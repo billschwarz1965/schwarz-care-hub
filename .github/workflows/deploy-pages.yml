@@ -28,10 +28,17 @@ jobs:
           npm install
           npm run build
 
+      - name: Build poc-internal
+        working-directory: poc-internal
+        run: |
+          npm install
+          npm run build
+
       - name: Assemble Pages site
         run: |
           mkdir -p site
           cp -r poc-external/dist site/poc-external
+          cp -r poc-internal/dist site/poc-internal
           cp -r poc/sitemap-options site/sitemap-options
           cat > site/index.html <<'EOF'
           <!DOCTYPE html>
@@ -52,6 +59,7 @@ jobs:
             <div class="card">
               <h1>MedVerse Demos</h1>
               <a class="link" href="poc-external/index.html">POC — External Edition</a>
+              <a class="link" href="poc-internal/index.html">POC — Internal Edition (MSL &amp; Medical Affairs)</a>
               <a class="link" href="sitemap-options/index.html">Sitemap Options</a>
             </div>
           </body>
