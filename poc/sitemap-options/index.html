@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medverse Site Map Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .page { max-width: 900px; margin: 0 auto; padding: 56px 24px 80px; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; font-weight: 700; color: var(--text-muted); margin-bottom: 12px; }
+  h1 { font-size: 40px; line-height: 1.15; margin-bottom: 20px; }
+  .intro { font-size: 16px; color: var(--text-secondary); max-width: 640px; margin-bottom: 24px; }
+  .intro b { color: var(--text); }
+  .constant-box {
+    background: var(--opt2-light);
+    border-left: 3px solid var(--opt2);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+  }
+  .constant-box b { color: var(--text); }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 48px; }
+  .card { border: 1px solid var(--border); border-radius: 10px; padding: 22px; display: flex; flex-direction: column; border-top: 4px solid var(--c); background: var(--surface); }
+  .card.opt1 { --c: var(--opt1); }
+  .card.opt2 { --c: var(--opt2); }
+  .card.opt3 { --c: var(--opt3); }
+  .card .label { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--c); margin-bottom: 8px; }
+  .card h2 { font-size: 18px; margin-bottom: 12px; }
+  .card .url { font-family: var(--mono); font-size: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; color: var(--text-secondary); margin-bottom: 14px; }
+  .card p.desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; flex: 1; }
+  .card .best-fit-label { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 4px; }
+  .card .best-fit { font-size: 13px; color: var(--text-secondary); margin-bottom: 10px; }
+  .card .precedent { font-size: 12px; font-style: italic; color: var(--text-muted); margin-bottom: 16px; }
+  .card .open-btn { text-align: center; background: var(--c); color: #fff; font-weight: 600; font-size: 14px; padding: 12px; border-radius: 8px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 40px; }
+  th { text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--text-muted); padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-secondary); }
+  td:first-child, th:first-child { font-weight: 600; color: var(--text); width: 18%; }
+  th.opt1-h { color: var(--opt1); } th.opt2-h { color: var(--opt2); } th.opt3-h { color: var(--opt3); }
+  code { font-family: var(--mono); background: var(--bg); border: 1px solid var(--border); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+
+  .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 20px; }
+  .footnote .row { margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="eyebrow">MEDICAL.CAMPUS.SANOFI · MEDVERSE</div>
+  <h1>Three ways to structure the US site map</h1>
+  <p class="intro">
+    Three clickable prototypes of the same US instance, each built on a different
+    <b>global-portal</b> architecture from the Portal Structure deck. Every prototype
+    shares the identical local <code>/en-us</code> depth — Therapeutic Areas, the Disease
+    State layer, Programs, Events, Resources — only what sits above it at the global root differs.
+  </p>
+
+  <div class="constant-box">
+    <b>What stays the same across all three:</b> the local instance itself — Immunology →
+    Type 2 Inflammation → specific-disease articles, Rare Blood Disorders as a US-only
+    standalone TA, the Vaccines population hubs, the IMMERSE/ADVENT/Bridge/RD
+    University/Nerve Nexus program brand pages, and the brand-first-vs-topic-first
+    navigation split. Open any prototype and click "Continue to United States site" to reach it.
+  </div>
+
+  <div class="cards">
+    <div class="card opt1">
+      <div class="label">OPTION 1</div>
+      <h2>Global portal, flat sections</h2>
+      <div class="url">medical.campus.sanofi/diabetes<br>— not nested under a TA folder</div>
+      <p class="desc">A gated global portal exists at the root. Global Therapeutic Area content sits directly off root as flat top-level sections. One shared global e-learning branch covers every program and TA together.</p>
+      <div class="best-fit-label">BEST FIT IF</div>
+      <div class="best-fit">globally-approved, unbranded TA content should be highly visible without digging into a specific country.</div>
+      <div class="precedent">No direct precedent among the sites reviewed.</div>
+      <a class="open-btn" href="option-1.html">Open Option 1 prototype →</a>
+    </div>
+    <div class="card opt2">
+      <div class="label">OPTION 2</div>
+      <h2>Global portal, TA-nested</h2>
+      <div class="url">medical.campus.sanofi/diabetes/bridge<br>— nested under TA, same as local</div>
+      <p class="desc">A gated global portal exists at the root. Global programs nest under their Therapeutic Area even at the global level — the same pattern the local instance uses everywhere.</p>
+      <div class="best-fit-label">BEST FIT IF</div>
+      <div class="best-fit">IMMERSE-style tiered programs need identical structure whether global or local, and TA is always the organizing layer.</div>
+      <div class="precedent">Closest to the original "Global vs. Local Architecture" spec and the first version of this workbook.</div>
+      <a class="open-btn" href="option-2.html">Open Option 2 prototype →</a>
+    </div>
+    <div class="card opt3">
+      <div class="label">OPTION 3</div>
+      <h2>No global portal</h2>
+      <div class="url">medical.campus.sanofi<br>— landing page + country selector only</div>
+      <p class="desc">No global program or TA content at all. The root domain is purely a routing page into a local instance, gated on HCP self-attestation plus a country selection.</p>
+      <div class="best-fit-label">BEST FIT IF</div>
+      <div class="best-fit">most content genuinely can't be approved globally anyway, so a global tier adds little payoff.</div>
+      <div class="precedent">Matches adventprogram.com's actual live pattern today.</div>
+      <a class="open-btn" href="option-3.html">Open Option 3 prototype →</a>
+    </div>
+  </div>
+
+  <div style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 12px;">KEY DELTAS, SIDE BY SIDE</div>
+  <table>
+    <thead>
+      <tr><th>DIMENSION</th><th class="opt1-h">OPTION 1</th><th class="opt2-h">OPTION 2</th><th class="opt3-h">OPTION 3</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Global portal exists?</td>
+        <td>Yes — full global site</td>
+        <td>Yes — full global site</td>
+        <td>No — root is a landing page / country selector only</td>
+      </tr>
+      <tr>
+        <td>Global program placement</td>
+        <td>Flat, prominent top-level sections off root (e.g. <code>/diabetes</code>) — not nested under a TA folder</td>
+        <td>Nested under TA even at global level (e.g. <code>/diabetes/bridge</code>)</td>
+        <td>N/A — no global program content; everything lives in local instances only</td>
+      </tr>
+      <tr>
+        <td>Local program placement</td>
+        <td><code>/{locale}/{ta}/{program}</code>, TA-nested locally</td>
+        <td><code>/{locale}/{ta}/{program}</code>, same pattern as global</td>
+        <td><code>/{locale}/{ta}/{program}</code> — same nesting, just no global counterpart to mirror</td>
+      </tr>
+      <tr>
+        <td>Global e-learning</td>
+        <td>One global Talent branch, covering ALL programs/TAs together</td>
+        <td>One global Talent branch, covering global programs</td>
+        <td>None — no global tier</td>
+      </tr>
+      <tr>
+        <td>Local e-learning</td>
+        <td>Separate Talent branch per market</td>
+        <td>Separate Talent branch per market</td>
+        <td>Separate Talent branch per market</td>
+      </tr>
+      <tr>
+        <td>Closest precedent</td>
+        <td>No direct match among the 3 sites reviewed</td>
+        <td>The original architecture text spec; the first version of this workbook</td>
+        <td>adventprogram.com's actual live pattern — one gated site, country/region selector, no per-country sub-sites</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footnote">
+    <div class="row">Medverse sitemap workbook · Scenario Comparison, Scenario 1/2/3, Top-Level Navigation, Disease State Taxonomy, TA Framework — Market Variation</div>
+    <div class="row">Working prototype for internal review.</div>
+  </div>
+</div>
+</body>
+</html>

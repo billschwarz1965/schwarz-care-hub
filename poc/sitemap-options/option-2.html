@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site Map Option 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  :root { --accent: var(--opt2); --accent-light: var(--opt2-light); }
+</style>
+</head>
+<body>
+  <div class="browser-frame">
+    <div class="browser-chrome">
+      <div class="browser-dots"><span></span><span></span><span></span></div>
+      <div class="browser-url"><span class="dot"></span> medical.campus.sanofi</div>
+      <div class="chrome-toggle">
+        <button class="active" onclick="showView('prototype')">Prototype</button>
+        <button onclick="showView('sitemap')">Full sitemap</button>
+      </div>
+      <button class="chrome-a11y" title="Accessibility">◐</button>
+    </div>
+
+    <div id="view-prototype">
+      <div class="landing">
+        <div class="logo"></div>
+        <div class="eyebrow">MEDICAL.CAMPUS.SANOFI · OPTION 2 OF 3</div>
+        <h1>Global HCP registration, then TA-nested global content</h1>
+        <p>
+          A full global portal exists at the root domain. Global programs nest under their
+          Therapeutic Area even at the global level —
+          <code>medical.campus.sanofi/diabetes/bridge</code> — the same nesting pattern local
+          instances use. Closest to the original architecture spec.
+        </p>
+        <button class="btn-primary" onclick="alert('Wire this up to your local /en-us instance.')">Continue as HCP (demo registration)</button>
+      </div>
+    </div>
+
+    <div id="view-sitemap" style="display:none; padding: 40px 32px;">
+      <div style="font-size:13px; color:var(--text-muted); margin-bottom:20px; font-weight:600;">
+        <div>GLOBAL SECTIONS (TA-nested)</div>
+      </div>
+      <ul style="list-style:none; padding:0; font-size:13px; margin-bottom:40px;">
+        <li style="margin-bottom:12px;">
+          <details style="cursor:pointer;">
+            <summary style="color:var(--accent); font-weight:600;">/diabetes</summary>
+            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+              <li style="margin-bottom:4px; color:var(--text-secondary);">/bridge</li>
+              <li style="margin-bottom:4px; color:var(--text-secondary);">/immerse</li>
+            </ul>
+          </details>
+        </li>
+        <li style="margin-bottom:12px;">
+          <details style="cursor:pointer;">
+            <summary style="color:var(--accent); font-weight:600;">/oncology</summary>
+            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+              <li style="margin-bottom:4px; color:var(--text-secondary);">/advent</li>
+            </ul>
+          </details>
+        </li>
+        <li style="margin-bottom:12px;">
+          <details style="cursor:pointer;">
+            <summary style="color:var(--accent); font-weight:600;">/immunology</summary>
+            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+              <li style="margin-bottom:4px; color:var(--text-secondary);">Global programs nested here</li>
+            </ul>
+          </details>
+        </li>
+        <li style="margin-bottom:20px;"><span style="color:var(--accent); font-weight:600;">/talent</span> — One shared global e-learning branch</li>
+      </ul>
+
+      <div style="font-size:13px; color:var(--text-muted); margin-bottom:20px; font-weight:600; margin-top:32px;">
+        <div>LOCAL INSTANCE (/en-us) — Same nested structure</div>
+      </div>
+      <ul style="list-style:none; padding:0; font-size:13px;">
+        <li style="margin-bottom:12px;">
+          <details style="cursor:pointer;">
+            <summary style="color:var(--text); font-weight:600;">Diabetes</summary>
+            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+              <li style="margin-bottom:8px;">
+                <details style="cursor:pointer;">
+                  <summary style="color:var(--text-secondary);">Bridge</summary>
+                  <ul style="list-style:none; padding-left:20px; margin-top:6px;">
+                    <li style="margin-bottom:4px; color:var(--text-muted);">Program content</li>
+                  </ul>
+                </details>
+              </li>
+              <li style="margin-bottom:8px;">
+                <details style="cursor:pointer;">
+                  <summary style="color:var(--text-secondary);">IMMERSE</summary>
+                  <ul style="list-style:none; padding-left:20px; margin-top:6px;">
+                    <li style="margin-bottom:4px; color:var(--text-muted);">Program content</li>
+                  </ul>
+                </details>
+              </li>
+            </ul>
+          </details>
+        </li>
+        <li style="margin-bottom:12px;">
+          <details style="cursor:pointer;">
+            <summary style="color:var(--text); font-weight:600;">Oncology</summary>
+            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+              <li style="margin-bottom:8px;">
+                <details style="cursor:pointer;">
+                  <summary style="color:var(--text-secondary);">ADVENT</summary>
+                  <ul style="list-style:none; padding-left:20px; margin-top:6px;">
+                    <li style="margin-bottom:4px; color:var(--text-muted);">Program content</li>
+                  </ul>
+                </details>
+              </li>
+            </ul>
+          </details>
+        </li>
+        <li style="margin-bottom:12px;">
+          <span style="color:var(--text); font-weight:600;">Rare Blood Disorders</span> <span style="font-size:11px; color:var(--text-muted);">(US-only standalone)</span>
+        </li>
+        <li style="margin-bottom:20px;">
+          <details style="cursor:pointer;">
+            <summary style="color:var(--text); font-weight:600;">Vaccines</summary>
+            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+              <li style="margin-bottom:6px; color:var(--text-secondary);">Population hubs</li>
+            </ul>
+          </details>
+        </li>
+        <li>
+          <details style="cursor:pointer;">
+            <summary style="color:var(--text); font-weight:600;">Talent (e-learning)</summary>
+            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+              <li style="color:var(--text-muted);">Separate branch per market</li>
+            </ul>
+          </details>
+        </li>
+      </ul>
+    </div>
+
+    <div class="frame-footer">
+      <div class="row">Medverse — unified medical education platform · scientific exchange, non-promotional · <strong>Option 2</strong> — global portal, global programs nested under TA (Scenario 2 + Top-Level Navigation, combined)</div>
+      <div class="links">
+        <a href="#">Local E-Learning (Talent LMS)</a>
+        <a href="option-2.html">← Back to global portal</a>
+        <a href="index.html">Compare all 3 site map options →</a>
+      </div>
+    </div>
+  </div>
+  <div class="outer-footnote">Working prototype for internal review · Option 2 of 3 · built from the Medverse sitemap workbook (Scenario 2 + Top-Level Navigation + Disease State Taxonomy + TA Framework — Market Variation)</div>
+
+  <script>
+    function showView(v) {
+      document.getElementById('view-prototype').style.display = v === 'prototype' ? '' : 'none';
+      document.getElementById('view-sitemap').style.display = v === 'sitemap' ? '' : 'none';
+      document.querySelectorAll('.chrome-toggle button').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site Map Option 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  :root { --accent: var(--opt3); --accent-light: var(--opt3-light); }
+</style>
+</head>
+<body>
+  <div class="browser-frame">
+    <div class="browser-chrome">
+      <div class="browser-dots"><span></span><span></span><span></span></div>
+      <div class="browser-url"><span class="dot"></span> medical.campus.sanofi</div>
+      <div class="chrome-toggle">
+        <button class="active" onclick="showView('prototype')">Prototype</button>
+        <button onclick="showView('sitemap')">Full sitemap</button>
+      </div>
+      <button class="chrome-a11y" title="Accessibility">◐</button>
+    </div>
+
+    <div id="view-prototype">
+      <div class="landing">
+        <div class="logo"></div>
+        <div class="eyebrow">MEDICAL.CAMPUS.SANOFI · OPTION 3 OF 3</div>
+        <h1>Choose your country or region</h1>
+        <p>
+          Landing page only — no global program or Therapeutic Area content lives at the
+          root. Every program and TA lives inside a local instance, gated on HCP
+          self-attestation plus a country selection (the pattern adventprogram.com already
+          uses live, at ~60 countries).
+        </p>
+
+        <div class="country-grid">
+          <div class="country-tile active">United States<span class="sub">en-us — MVP</span></div>
+          <div class="country-tile">United Kingdom<span class="sub">not modeled here</span></div>
+          <div class="country-tile">France<span class="sub">not modeled here</span></div>
+          <div class="country-tile">Germany<span class="sub">not modeled here</span></div>
+          <div class="country-tile">Japan<span class="sub">not modeled here</span></div>
+          <div class="country-tile">Brazil<span class="sub">not modeled here</span></div>
+          <div class="country-tile">Canada<span class="sub">not modeled here</span></div>
+          <div class="country-tile">Australia<span class="sub">not modeled here</span></div>
+          <div class="country-tile">India<span class="sub">not modeled here</span></div>
+          <div class="country-tile">Italy<span class="sub">not modeled here</span></div>
+          <div class="country-tile">Spain<span class="sub">not modeled here</span></div>
+        </div>
+
+        <div class="callout">
+          This demo models the <strong>United States</strong> local instance only, per
+          Scenario 3's URL pattern (medical.campus.sanofi/en-us/…). Every other market
+          would replicate the same shape at its own locale path — with two structural
+          differences: the Therapeutic Areas list itself, and language-URL presence. See
+          the Full Sitemap view for the confirmed US-specific difference (Rare Blood
+          Disorders).
+        </div>
+      </div>
+    </div>
+
+    <div id="view-sitemap" style="display:none; padding: 40px 32px;">
+      <div style="font-size:13px; color:var(--text-muted); margin-bottom:20px; font-weight:600;">
+        <div>ROOT (landing page + country selector only)</div>
+      </div>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:40px;">No global tier — all content lives in local instances.</p>
+
+      <div style="font-size:13px; color:var(--text-muted); margin-bottom:20px; font-weight:600; margin-top:32px;">
+        <div>LOCAL INSTANCE (/en-us) — US only, MVP</div>
+      </div>
+      <ul style="list-style:none; padding:0; font-size:13px;">
+        <li style="margin-bottom:12px;">
+          <details style="cursor:pointer;">
+            <summary style="color:var(--text); font-weight:600;">Immunology</summary>
+            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+              <li style="margin-bottom:8px;">
+                <details style="cursor:pointer;">
+                  <summary style="color:var(--text-secondary);">Type 2 Inflammation</summary>
+                  <ul style="list-style:none; padding-left:20px; margin-top:6px;">
+                    <li style="margin-bottom:4px; color:var(--text-muted);">Specific disease articles</li>
+                  </ul>
+                </details>
+              </li>
+            </ul>
+          </details>
+        </li>
+        <li style="margin-bottom:12px;">
+          <details style="cursor:pointer;">
+            <summary style="color:var(--text); font-weight:600;">Rare Blood Disorders</summary>
+            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+              <li style="margin-bottom:6px; color:var(--text-secondary);">US-only standalone TA</li>
+              <li style="margin-bottom:6px; color:var(--text-muted);">Specific disease articles</li>
+            </ul>
+          </details>
+        </li>
+        <li style="margin-bottom:12px;">
+          <details style="cursor:pointer;">
+            <summary style="color:var(--text); font-weight:600;">Vaccines</summary>
+            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+              <li style="margin-bottom:6px; color:var(--text-secondary);">Population hubs</li>
+            </ul>
+          </details>
+        </li>
+        <li style="margin-bottom:20px;">
+          <details style="cursor:pointer;">
+            <summary style="color:var(--text); font-weight:600;">Programs</summary>
+            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+              <li style="margin-bottom:4px; color:var(--text-secondary);">IMMERSE</li>
+              <li style="margin-bottom:4px; color:var(--text-secondary);">ADVENT</li>
+              <li style="margin-bottom:4px; color:var(--text-secondary);">Bridge</li>
+              <li style="margin-bottom:4px; color:var(--text-secondary);">RD University</li>
+              <li style="margin-bottom:4px; color:var(--text-secondary);">Nerve Nexus</li>
+            </ul>
+          </details>
+        </li>
+        <li>
+          <details style="cursor:pointer;">
+            <summary style="color:var(--text); font-weight:600;">Talent (e-learning)</summary>
+            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+              <li style="color:var(--text-muted);">Separate branch per market</li>
+            </ul>
+          </details>
+        </li>
+      </ul>
+
+      <div style="font-size:13px; color:var(--text-muted); margin-top:40px; margin-bottom:20px; font-weight:600;">
+        <div>OTHER LOCALES (not modeled here)</div>
+      </div>
+      <ul style="list-style:none; padding:0; font-size:13px;">
+        <li style="margin-bottom:6px;"><code>/en-gb</code> — United Kingdom</li>
+        <li style="margin-bottom:6px;"><code>/fr</code> — France</li>
+        <li style="margin-bottom:6px;"><code>/de</code> — Germany</li>
+        <li style="margin-bottom:6px;"><code>/ja</code> — Japan</li>
+        <li style="margin-bottom:6px;"><code>/pt-br</code> — Brazil</li>
+        <li style="margin-bottom:6px;"><code>/en-ca</code> — Canada</li>
+        <li style="margin-bottom:6px;"><code>/en-au</code> — Australia</li>
+        <li style="margin-bottom:6px;"><code>/hi</code> — India</li>
+        <li style="margin-bottom:6px;"><code>/it</code> — Italy</li>
+        <li style="margin-bottom:6px;"><code>/es</code> — Spain</li>
+      </ul>
+    </div>
+
+    <div class="frame-footer">
+      <div class="row">Medverse — unified medical education platform · scientific exchange, non-promotional · <strong>Option 3</strong> — no global portal, US local instance only (Scenario 3 + Top-Level Navigation, combined)</div>
+      <div class="links">
+        <a href="#">Local E-Learning (Talent LMS)</a>
+        <a href="option-3.html">← Back to region selector</a>
+        <a href="index.html">Compare all 3 site map options →</a>
+      </div>
+    </div>
+  </div>
+  <div class="outer-footnote">Working prototype for internal review · Option 3 of 3 · built from the Medverse sitemap workbook (Scenario 3 + Top-Level Navigation + Disease State Taxonomy + TA Framework — Market Variation)</div>
+
+  <script>
+    function showView(v) {
+      document.getElementById('view-prototype').style.display = v === 'prototype' ? '' : 'none';
+      document.getElementById('view-sitemap').style.display = v === 'sitemap' ? '' : 'none';
+      document.querySelectorAll('.chrome-toggle button').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>
