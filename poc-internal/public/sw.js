@@ -20,11 +20,14 @@ const CODE_RE = /\.(?:js|mjs|css|json)(?:$|\?)/i;
 const STATIC_RE = /\.(?:png|jpg|jpeg|gif|svg|webp|ico|woff2?|ttf|otf|mp3|wav)(?:$|\?)/i;
 const IS_DEV = ['localhost', '127.0.0.1', '[::1]'].includes(self.location.hostname);
 const BASE = self.registration.scope;
+// This edition's own pages only. It previously carried poc's list verbatim,
+// including concierge.html, patient.html and system-tools.html — three pages
+// poc-internal does not ship. Every entry has to exist, or the install below
+// fails; see the note there.
 const APP_SHELL_PATHS = [
   '',
   'index.html',
-  'concierge.html',
-  'patient.html',
+  'ask.html',
   'msl-copilot.html',
   'medical.html',
   'agents.html',
@@ -32,7 +35,7 @@ const APP_SHELL_PATHS = [
   'literature.html',
   'congress.html',
   'orion.html',
-  'system-tools.html',
+  'population.html',
   'demo.html',
   'about.html',
   'manifest.json',
@@ -47,8 +50,14 @@ self.addEventListener('install', (event) => {
   // Don't pre-cache in development — a cached shell is another way to end up
   // looking at a build that is no longer what the source says.
   if (!IS_DEV) {
+    // Cached one at a time rather than with addAll(): addAll() rejects the
+    // entire install if a single URL 404s, so one stale entry in
+    // APP_SHELL_PATHS silently disabled the whole worker for an edition. A
+    // missing page now simply goes uncached.
     event.waitUntil(
-      caches.open(CACHE_VERSION).then((cache) => cache.addAll(APP_SHELL))
+      caches.open(CACHE_VERSION).then((cache) =>
+        Promise.all(APP_SHELL.map((url) => cache.add(url).catch(() => {})))
+      )
     );
   }
   self.skipWaiting();
