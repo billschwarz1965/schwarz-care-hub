@@ -20,19 +20,17 @@ const CODE_RE = /\.(?:js|mjs|css|json)(?:$|\?)/i;
 const STATIC_RE = /\.(?:png|jpg|jpeg|gif|svg|webp|ico|woff2?|ttf|otf|mp3|wav)(?:$|\?)/i;
 const IS_DEV = ['localhost', '127.0.0.1', '[::1]'].includes(self.location.hostname);
 const BASE = self.registration.scope;
+// Must list only pages this edition actually builds — see the `input` map in
+// vite.config.js. cache.addAll() below rejects atomically, so a single 404 here
+// fails the whole install and silently costs us offline support.
 const APP_SHELL_PATHS = [
   '',
   'index.html',
+  'ask.html',
   'concierge.html',
-  'patient.html',
-  'msl-copilot.html',
-  'medical.html',
-  'agents.html',
   'disease.html',
   'literature.html',
   'congress.html',
-  'orion.html',
-  'system-tools.html',
   'demo.html',
   'about.html',
   'manifest.json',

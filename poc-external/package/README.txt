@@ -53,21 +53,21 @@ REQUIREMENTS (Mac):
 
 MODULES (8 pages)
 ------------------
+- Home - Entry point, module directory and Ask MedVerse bar
+- Ask MedVerse - Unified natural-language search bar
 - HCP Concierge - Clinical decision support for healthcare professionals
-- Patient Concierge - Patient-friendly health information
 - Disease State Navigator - Cross-TA disease landscape
 - Literature Intelligence - Live PubMed search
 - Congress Intelligence - Medical congress coverage
-- Ask MedVerse - Unified natural-language search bar
 - Demo - Narrated walkthrough
 - About - Platform overview and release notes
 
 RELEASE NOTES
 -------------
 v0.1.0 - August 2026
-  Initial external release: HCP Concierge, Patient Concierge,
-  Disease State Navigator, Literature Intelligence, and Congress
-  Intelligence, plus narrated demos and the Ask MedVerse search bar.
+  Initial external release: HCP Concierge, Disease State Navigator,
+  Literature Intelligence, and Congress Intelligence, plus narrated
+  demos and the Ask MedVerse search bar.
 
 NOTES
 -----

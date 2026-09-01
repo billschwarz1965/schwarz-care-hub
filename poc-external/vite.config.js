@@ -1,14 +1,26 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
+import { createRequire } from 'module';
 
 // External-audience build of the MedVerse POC.
 // Shares every JS/CSS module with ../poc/src — the `/src/...` paths used by the
 // pages below are aliased there, so both builds stay on one copy of the code.
 const SHARED_SRC = resolve(__dirname, '../poc/src');
 
+const { version: APP_VERSION } = createRequire(import.meta.url)('./package.json');
+
+// Version strings in the pages had drifted from package.json (a footer still
+// read v0.4.13 against a 0.1.0 package). Pages write %APP_VERSION% instead and
+// this substitutes it at serve and build time, so there is one source of truth.
+const appVersionHtml = {
+  name: 'medverse-app-version',
+  transformIndexHtml: (html) => html.replaceAll('%APP_VERSION%', APP_VERSION)
+};
+
 export default defineConfig({
   base: './',
   root: '.',
+  plugins: [appVersionHtml],
   resolve: {
     alias: [
       { find: /^\/src\//, replacement: SHARED_SRC + '/' },

@@ -6,12 +6,15 @@ professionals, patients and caregivers, partners, and advocacy groups.
 ## What's different from `../poc`
 
 **Excluded modules** — MSL Copilot, Medical Concierge, Interaction Signals, and
-Power Agents. These are internal Sanofi field-medical and administration tools;
-the Interaction Signals dashboard in particular shows engagement signals against
-named HCPs.
+Power Agents / Agent Ecosystem. These are internal Sanofi field-medical and
+administration tools; the Interaction Signals dashboard in particular shows
+engagement signals against named HCPs. Patient Concierge is also absent — it
+lives in its own `../poc-patient` edition.
 
-**Included modules** — HCP Concierge, Patient Concierge, Disease State Navigator,
-Literature Intelligence, Congress Intelligence, Agent Ecosystem, plus Demo and About.
+**Included modules** — HCP Concierge, Disease State Navigator, Literature
+Intelligence, Congress Intelligence, plus Home, Ask MedVerse, Demo and About.
+That is the full set: the eight `input` entries in `vite.config.js` are the only
+pages this edition builds.
 
 **Rewritten framing** — the home page, demo page, and about page are written for an
 audience outside Sanofi: cited answers, plain-language explanations, and "who this
@@ -28,6 +31,12 @@ The tradeoff: the HTML pages **are** copies. A change to a shared page in `../po
 nav block if you change one.
 
 ## Running
+
+**Quick start** — double-click `start.bat` (Windows) or run `./start.sh` (Mac/Linux).
+Installs dependencies on first run, starts the dev server, and opens
+http://localhost:5182 in your browser. Ctrl+C to stop.
+
+**Manual:**
 
 ```
 npm install
