@@ -27,7 +27,18 @@ jobs:
       - name: Build
         run: cd poc && npm run build
 
+      - name: Check for deployment token
+        id: check_token
+        run: |
+          if [ -n "${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}" ]; then
+            echo "has_token=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_token=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::AZURE_STATIC_WEB_APPS_API_TOKEN is not set — skipping deploy. No Azure Static Web App has been provisioned for this repo yet; see poc-external's GitHub Pages deployment for the current published demo."
+          fi
+
       - name: Deploy to Azure Static Web Apps
+        if: steps.check_token.outputs.has_token == 'true'
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
