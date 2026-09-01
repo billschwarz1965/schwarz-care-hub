@@ -1,6 +1,7 @@
 import { SIGNALS, HCP_PROFILES, getAnalytics, getHcpProfile, getMslActionQueue, generateTalkingPoints, generateLiveSignal, addSignal } from "./orion-data.js";
 import { speak, speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 import { loadStoredSignals, onSignalReceived, clearStoredSignals } from "./orion-bridge.js";
+import { matchesDiseaseArea } from "./taxonomy.js";
 
 const filterState = { diseaseArea: null, hcpId: null };
 let liveInterval = null;
@@ -784,22 +785,25 @@ function generateChatResponse(query) {
     return `<strong>${kols.length} KOLs</strong> tracked in MedVerse:<br><br>${items}`;
   }
 
-  // Disease-specific
+  // Disease-specific. Values are canonical taxonomy spellings; the comparison
+  // below goes through matchesDiseaseArea, so an "asthma" query finds signals
+  // tagged either "Severe Asthma" or "Type 2 Asthma" and an "eoe" query finds
+  // "Eosinophilic Esophagitis". Strict equality missed all of those.
   const diseaseMap = [
     [/atopic|dermatitis|\bad\b/, "Atopic Dermatitis"],
-    [/asthma/, "Severe Asthma"],
+    [/asthma/, "Asthma"],
     [/copd/, "COPD"],
     [/rheumatoid|ra\b/, "Rheumatoid Arthritis"],
-    [/eoe|eosinophilic/, "EoE"],
+    [/eoe|eosinophilic/, "Eosinophilic Esophagitis"],
     [/cross.?ta|immunology/, "Cross-TA Immunology"],
-    [/ibd|crohn|colitis/, "GI / Dermatology"],
+    [/ibd|crohn|colitis/, "Inflammatory Bowel Disease"],
   ];
   let diseaseMatch = null;
   for (const [re, area] of diseaseMap) {
     if (re.test(q)) { diseaseMatch = area; break; }
   }
   if (diseaseMatch) {
-    const signals = SIGNALS.filter(s => s.diseaseArea === diseaseMatch);
+    const signals = SIGNALS.filter(s => matchesDiseaseArea(s.diseaseArea, diseaseMatch));
     if (signals.length) {
       const items = signals.slice(0, 4).map(s => {
         const hcp = HCP_PROFILES.find(h => h.id === s.hcpId);

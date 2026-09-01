@@ -1,3 +1,5 @@
+import { matchesDiseaseArea } from "./taxonomy.js";
+
 // External HCP educational content indexed from Sanofi's medical education properties.
 // Distinct from knowledgeBase (clinical evidence docs) — these are multimedia learning
 // resources (podcasts, videos, infographics, articles) whose *location* (source program +
@@ -1345,7 +1347,10 @@ export function searchEducationContent(query, diseaseArea, limit = 3) {
       if (kwLower.includes(term)) { score += 3; if (isDistinctive) distinctiveHits++; }
     }
 
-    const areaMatch = diseaseArea && item.diseaseArea.toLowerCase().includes(diseaseArea.toLowerCase());
+    // Through the canonical taxonomy, not a substring test: the incoming signal
+    // says "EoE" while these records say "Eosinophilic Esophagitis", and
+    // includes() silently found neither in the other.
+    const areaMatch = matchesDiseaseArea(item.diseaseArea, diseaseArea);
     if (areaMatch) score += 5;
 
     return { ...item, score, distinctiveHits, areaMatch };

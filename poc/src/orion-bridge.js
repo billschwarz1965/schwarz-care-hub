@@ -1,3 +1,5 @@
+import { diseaseAreaLineage } from "./taxonomy.js";
+
 const STORAGE_KEY = "medverse_orion_signals";
 const CHANNEL_KEY = "medverse_orion_latest";
 
@@ -22,17 +24,28 @@ const HCP_POOL = [
   { id: "HCP-6377", name: "Dr. David Okonkwo" },
 ];
 
+// Keyed on canonical disease-area ids, not display strings. The previous
+// version keyed on seven hand-typed strings, so a signal carrying any other
+// spelling of the same disease ("Eosinophilic Esophagitis" rather than "EoE",
+// "Type 2 Asthma" rather than "Severe Asthma") fell through to the random pool
+// and got attributed to an unrelated HCP. Do not add a key that is not a
+// taxonomy.js disease-area id.
+const HCP_BY_DISEASE_AREA = {
+  "atopic-dermatitis": ["HCP-4821", "HCP-6377"],
+  "rheumatoid-arthritis": ["HCP-3159"],
+  "asthma": ["HCP-7204"],
+  "copd": ["HCP-7204"],
+  "cross-ta-immunology": ["HCP-5538"],
+  "eosinophilic-esophagitis": ["HCP-9012"],
+  "derm-gi-overlap": ["HCP-9012"],
+  "inflammatory-bowel-disease": ["HCP-9012"],
+};
+
 function pickHcp(diseaseArea) {
-  const map = {
-    "Atopic Dermatitis": ["HCP-4821", "HCP-6377"],
-    "Rheumatoid Arthritis": ["HCP-3159"],
-    "Severe Asthma": ["HCP-7204"],
-    "COPD": ["HCP-7204"],
-    "Cross-TA Immunology": ["HCP-5538"],
-    "EoE": ["HCP-9012"],
-    "GI / Dermatology": ["HCP-9012"],
-  };
-  const candidates = map[diseaseArea] || HCP_POOL.map(h => h.id);
+  // Lineage, so a signal tagged at finer granularity (Crohn's Disease) still
+  // reaches the entry registered for its parent (IBD).
+  const matchedId = diseaseAreaLineage(diseaseArea).find(id => HCP_BY_DISEASE_AREA[id]);
+  const candidates = matchedId ? HCP_BY_DISEASE_AREA[matchedId] : HCP_POOL.map(h => h.id);
   return candidates[Math.floor(Math.random() * candidates.length)];
 }
 
