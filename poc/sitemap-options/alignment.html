@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sitemap options vs. poc-external — alignment review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .page { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+  .backlink { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 24px; }
+  .backlink:hover { color: var(--text); }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; font-weight: 700; color: var(--text-muted); margin-bottom: 12px; }
+  h1 { font-size: 34px; line-height: 1.15; margin-bottom: 16px; }
+  .intro { font-size: 16px; color: var(--text-secondary); max-width: 680px; margin-bottom: 28px; }
+  .intro b { color: var(--text); }
+
+  .rec-banner {
+    background: var(--opt2-light);
+    border-left: 3px solid var(--opt2);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 40px;
+  }
+  .rec-banner .tag { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--opt2); margin-bottom: 6px; }
+  .rec-banner p { font-size: 14px; color: var(--text-secondary); }
+  .rec-banner b { color: var(--text); }
+
+  h2 { font-size: 20px; margin: 40px 0 16px; }
+  h2:first-of-type { margin-top: 0; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; }
+  .card { border: 1px solid var(--border); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; border-top: 4px solid var(--c); background: var(--surface); }
+  .card.opt1 { --c: var(--opt1); }
+  .card.opt2 { --c: var(--opt2); }
+  .card.opt3 { --c: var(--opt3); }
+  .card .label { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--c); margin-bottom: 8px; }
+  .card h3 { font-size: 15px; margin-bottom: 10px; }
+  .card .badge { align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--opt2); background: var(--opt2-light); border-radius: 6px; padding: 3px 8px; margin-bottom: 10px; }
+  .card ul { list-style: none; font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; }
+  .card li { padding-left: 18px; position: relative; margin-bottom: 6px; }
+  .card li.yes::before { content: "✓"; position: absolute; left: 0; color: var(--opt2); font-weight: 700; }
+  .card li.no::before { content: "✕"; position: absolute; left: 0; color: var(--opt3); font-weight: 700; }
+  .card .verdict { font-size: 12px; font-weight: 600; color: var(--c); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 36px; }
+  th { text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--text-muted); padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-secondary); }
+  td:first-child, th:first-child { font-weight: 600; color: var(--text); width: 24%; }
+  th.opt1-h { color: var(--opt1); } th.opt2-h { color: var(--opt2); } th.opt3-h { color: var(--opt3); }
+  code { font-family: var(--mono); background: var(--bg); border: 1px solid var(--border); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+
+  .caveat {
+    background: var(--opt3-light);
+    border-left: 3px solid var(--opt3);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+  }
+  .caveat b { color: var(--text); }
+
+  .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 20px; margin-top: 8px; }
+  .footnote .row { margin-bottom: 4px; }
+  .footnote a { color: var(--opt2); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="backlink" href="index.html">&larr; Back to sitemap options</a>
+  <div class="eyebrow">MEDICAL.CAMPUS.SANOFI · MEDVERSE</div>
+  <h1>Which sitemap fits poc-external's content model?</h1>
+  <p class="intro">
+    Once <code>medical.campus.sanofi</code> is built, its educational content becomes a
+    data source poc-external's Disease Navigator (and possibly HCP Concierge) pulls from.
+    This page compares the three sitemap options against what poc-external's code actually
+    needs — not the marketing copy on each option's landing page.
+  </p>
+
+  <div class="rec-banner">
+    <div class="tag">RECOMMENDATION</div>
+    <p><b>Option 2</b> (TA-nested global) is the best structural fit. It has the same local
+    disease taxonomy as the other two, plus a stable, country-agnostic URL
+    (<code>/immunology</code>) poc-external can point to even before a non-US market exists.
+    <b>Option 3</b> is the weakest fit — its rebuild against the real sitemap workbook proved
+    that at least one Therapeutic Area's shape genuinely changes by market, and poc-external
+    has no locale logic anywhere today to handle that.</p>
+  </div>
+
+  <h2>Side by side</h2>
+  <div class="cards">
+    <div class="card opt1">
+      <div class="label">OPTION 1</div>
+      <h3>Flat global TAs</h3>
+      <ul>
+        <li class="yes">Global, country-agnostic TA URL to hardcode</li>
+        <li class="yes">Same local disease taxonomy depth</li>
+        <li class="no">Join key less explicit than Option 2</li>
+      </ul>
+      <div class="verdict">Reasonable fallback</div>
+    </div>
+    <div class="card opt2">
+      <div class="label">OPTION 2</div>
+      <div class="badge">RECOMMENDED</div>
+      <h3>TA-nested global</h3>
+      <ul>
+        <li class="yes">Global, country-agnostic TA URL to hardcode</li>
+        <li class="yes">Explicit {TA}/{program} join key</li>
+        <li class="yes">Matches disease-data.js's own TA-first grouping</li>
+      </ul>
+      <div class="verdict">Best structural fit today</div>
+    </div>
+    <div class="card opt3">
+      <div class="label">OPTION 3</div>
+      <h3>No global tier</h3>
+      <ul>
+        <li class="no">No country-agnostic URL exists — only a US-specific path</li>
+        <li class="no">Confirmed: at least one TA's shape varies by market</li>
+        <li class="no">poc-external has zero locale concept to handle that today</li>
+      </ul>
+      <div class="verdict">Weakest fit</div>
+    </div>
+  </div>
+
+  <h2>Criteria that actually matter to poc-external</h2>
+  <table>
+    <thead>
+      <tr><th>CRITERION</th><th class="opt1-h">OPTION 1</th><th class="opt2-h">OPTION 2</th><th class="opt3-h">OPTION 3</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Disease taxonomy present at all, anywhere</td>
+        <td>Yes — local instance</td>
+        <td>Yes — local instance</td>
+        <td>Yes — local instance</td>
+      </tr>
+      <tr>
+        <td>Country-agnostic URL to hardcode as "the" source for a TA</td>
+        <td>Yes — <code>medical.campus.sanofi/immunology</code></td>
+        <td>Yes — <code>medical.campus.sanofi/immunology</code></td>
+        <td>No. Only real content lives at <code>/en-us/immunology</code>, a US-specific path pretending to be the global answer</td>
+      </tr>
+      <tr>
+        <td>Predictable per-disease join key for an automated pull</td>
+        <td>Partial — TA node present, disease-article path unspecified</td>
+        <td>Same gap, but the TA node itself is confirmed present</td>
+        <td>Same gap as Option 1</td>
+      </tr>
+      <tr>
+        <td>Matches poc-external's own pathway → disease model shape</td>
+        <td>Close — Immunology → Type 2 Inflammation → disease articles</td>
+        <td>Closer — same nesting, plus programs explicitly joined to their TA (<code>/diabetes/bridge</code>)</td>
+        <td>Identical to Option 1</td>
+      </tr>
+      <tr>
+        <td>Effort to extend sourcing to a second market later</td>
+        <td>Shared global TA shape already exists</td>
+        <td>Same, plus the TA-nested pattern is proven at both global and local level</td>
+        <td>Rebuilt prototype proves at least one TA (Rare Blood Disorders) changes shape per market — needs per-market logic from day one</td>
+      </tr>
+      <tr>
+        <td>Canonical shape to source from, or per-market logic required?</td>
+        <td>One canonical shape; local variance is a fallback case</td>
+        <td>Same as Option 1</td>
+        <td>No canonical shape exists — every market is equally "local"</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="caveat">
+    <b>Fidelity-gap caveat:</b> this comparison isn't perfectly apples-to-apples yet. Option 3
+    was rebuilt against the real sitemap workbook (6 Therapeutic Areas, the full Disease State
+    layer, two locales). Options 1 and 2 still show the older, simplified Immunology-only
+    prototype. If 1 and 2 get the same rebuild, some specific comparisons above should be
+    re-verified — though it isn't expected to flip the recommendation.
+  </div>
+
+  <div class="footnote">
+    <div class="row">Full write-up, method, and reasoning: <a href="https://github.com/BillSchwarz/Medverse/blob/main/docs/sitemap-vs-poc-external-alignment.md">docs/sitemap-vs-poc-external-alignment.md</a> on GitHub.</div>
+    <div class="row">Working analysis for internal review — open the three prototypes from the <a href="index.html">sitemap options</a> page to compare directly.</div>
+  </div>
+</div>
+</body>
+</html>

@@ -684,7 +684,20 @@ if ('serviceWorker' in navigator) {
       .then(keys => Promise.all(keys.map(k => caches.delete(k))))
       .catch(() => { /* nothing to clean up */ });
   } else {
-    navigator.serviceWorker.register('/sw.js');
+    // Page-relative, not '/sw.js'. The demo builds are served from a sub-path
+    // on GitHub Pages (/Medverse/poc-external/ and friends), where a
+    // root-absolute path resolves to an origin-root URL that does not exist —
+    // the registration 404'd on every page of every edition, so the worker
+    // never installed at all. Resolving against document.baseURI also keeps
+    // the worker's scope at the edition directory, which stops the three
+    // editions sharing one origin from competing for a single root scope.
+    navigator.serviceWorker
+      .register(new URL('sw.js', document.baseURI).href)
+      .catch((err) => {
+        // Surfaced rather than swallowed: a failure here means offline support
+        // is silently absent, which is exactly how the bug above went unseen.
+        console.warn('Service worker registration failed:', err);
+      });
   }
 }
 

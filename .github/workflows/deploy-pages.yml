@@ -1,8 +1,11 @@
-﻿# Publishes all four demo builds to GitHub Pages in one run:
-#   poc            — full POC, the superset edition
-#   poc-external   — external-audience edition
-#   poc-internal   — MSL / Medical Affairs edition
+# Publishes to GitHub Pages in one run:
+#   poc             — full POC, the superset edition
+#   poc-external    — external-audience edition
 #   sitemap-options — static sitemap prototypes, no build step
+#   hcp-preferences — HCP preferences research section (sanitised; static, no build)
+#
+# NOT published: poc-internal (MSL / Medical Affairs). This site is PUBLIC, so the
+# internal edition is deliberately excluded and served from an authenticated host.
 #
 # Each edition ships exactly the pages listed in its own vite.config.js. Note
 # that poc/vite.config.js deliberately omits build-economics.html and
@@ -55,13 +58,13 @@ jobs:
         run: |
           set -euo pipefail
           missing=0
-          for dir in poc poc-external poc-internal poc/sitemap-options; do
+          for dir in poc poc-external poc/sitemap-options poc/hcp-preferences-public; do
             if [ ! -d "$dir" ]; then
               echo "::error::Missing build target '$dir' on ref '${{ github.ref_name }}'."
               missing=1
             fi
           done
-          for cfg in poc/vite.config.js poc-external/vite.config.js poc-internal/vite.config.js; do
+          for cfg in poc/vite.config.js poc-external/vite.config.js; do
             if [ ! -f "$cfg" ]; then
               echo "::error::Missing '$cfg'. Without it Vite builds only index.html and every other page is silently dropped."
               missing=1
@@ -69,12 +72,16 @@ jobs:
           done
           [ "$missing" -eq 0 ] || exit 1
 
-      # No lock file is committed for the two edition packages, so `npm install`
+      # poc-internal is deliberately NOT built or published here. This site is PUBLIC;
+      # the Internal Edition (MSL & Medical Affairs) must not be world-readable.
+      # Serve it from an authenticated host instead.
+      #
+      # No lock file is committed for the edition packages, so `npm install`
       # rather than `npm ci`.
-      - name: Build all three POC editions
+      - name: Build the published POC editions
         run: |
           set -euo pipefail
-          for app in poc poc-external poc-internal; do
+          for app in poc poc-external; do
             echo "::group::build $app"
             ( cd "$app" && npm install && npm run build )
             echo "::endgroup::"
@@ -84,10 +91,11 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p site
-          cp -r poc/dist            site/poc
-          cp -r poc-external/dist   site/poc-external
-          cp -r poc-internal/dist   site/poc-internal
-          cp -r poc/sitemap-options site/sitemap-options
+          cp -r poc/dist                  site/poc
+          cp -r poc-external/dist         site/poc-external
+          cp -r poc/sitemap-options       site/sitemap-options
+          cp -r poc/hcp-preferences-public site/hcp-preferences
+
 
           cat > site/index.html <<'EOF'
           <!DOCTYPE html>
@@ -105,6 +113,7 @@ jobs:
               a.link span { display: block; font-weight: 400; font-size: 12px; color: #7a6b8f; margin-top: 2px; }
               a.link:hover { background: #7a00e6; color: #fff; }
               a.link:hover span { color: #e9d5ff; }
+              p.note { font-size: 12px; color: #7a7590; margin: 16px 0 0; }
             </style>
           </head>
           <body>
@@ -113,8 +122,9 @@ jobs:
               <p class="sub">Illustrative prototypes. Synthetic and example data throughout.</p>
               <a class="link" href="poc/index.html">POC — Full<span>Superset edition, includes internal-only tools</span></a>
               <a class="link" href="poc-external/index.html">POC — External Edition<span>External HCP audience</span></a>
-              <a class="link" href="poc-internal/index.html">POC — Internal Edition<span>MSL &amp; Medical Affairs</span></a>
+              <a class="link" href="hcp-preferences/index.html">HCP Preferences<span>Research results and summary</span></a>
               <a class="link" href="sitemap-options/index.html">Sitemap Options<span>Navigation prototypes</span></a>
+              <p class="note">The Internal Edition (MSL &amp; Medical Affairs) is not published here.</p>
             </div>
           </body>
           </html>
@@ -125,7 +135,7 @@ jobs:
       - name: Verify assembled site
         run: |
           set -euo pipefail
-          for target in poc poc-external poc-internal sitemap-options; do
+          for target in poc poc-external sitemap-options hcp-preferences; do
             if [ ! -f "site/$target/index.html" ]; then
               echo "::error::site/$target/index.html is missing — refusing to deploy."
               exit 1

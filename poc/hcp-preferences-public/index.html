@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedVerse — HCP Preferences</title>
+<style>
+:root{
+  --bg:#f5f4f8; --surface:#fff; --text:#1a1a2e; --text-secondary:#5a5672; --text-muted:#918da3;
+  --border:#e4dff0; --ink:#2a1a4a; --vio:#6b21a8; --vio-light:#f4ecfb;
+  --teal:#0d9488; --teal-light:#e6f7f4; --brick:#b91c1c; --brick-light:#fdecec;
+  --font:'Work Sans','Segoe UI',Roboto,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.55}
+a{color:inherit;text-decoration:none}
+
+header{background:var(--ink);color:#fff;padding:28px 32px}
+.wrap{max-width:1080px;margin:0 auto}
+header .kicker{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#5eead4;font-weight:600}
+header h1{font-size:26px;margin:8px 0 6px;font-weight:600}
+header p{color:#cfc4e4;font-size:14px;max-width:760px}
+header .meta{margin-top:14px;font-size:12px;color:#a99bc4}
+header .gated{margin-top:16px;display:flex;align-items:flex-start;gap:10px;background:rgba(255,255,255,.08);
+  border-radius:10px;padding:11px 14px;font-size:12.5px;color:#e8e2f2;max-width:790px}
+header .gated .lock{flex:none;background:#5eead4;color:#0f3d34;font-weight:600;font-size:11px;
+  padding:2px 9px;border-radius:20px;white-space:nowrap}
+header .gated a{color:#5eead4;text-decoration:underline}
+
+nav{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--border);z-index:10}
+nav .wrap{display:flex;gap:4px;overflow-x:auto;padding:0 32px}
+nav button{
+  appearance:none;border:0;background:none;font-family:inherit;font-size:13px;font-weight:600;
+  color:var(--text-secondary);padding:14px 14px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap
+}
+nav button:hover{color:var(--vio)}
+nav button[aria-selected="true"]{color:var(--vio);border-bottom-color:var(--vio)}
+
+main{padding:28px 32px 64px}
+section[hidden]{display:none}
+h2{font-size:20px;font-weight:600;margin:0 0 6px}
+.lede{color:var(--text-secondary);font-size:14px;margin-bottom:22px;max-width:820px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:26px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.stat .n{font-size:26px;font-weight:600;color:var(--vio)}
+.stat .l{font-size:12px;color:var(--text-secondary);margin-top:2px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px}
+.card h3{font-size:15px;font-weight:600;margin-bottom:4px}
+.card .src{font-size:11px;color:var(--text-muted);margin-top:10px}
+.card p{font-size:13.5px;color:var(--text-secondary)}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;margin-bottom:8px}
+.tag.vio{background:var(--vio-light);color:var(--vio)}
+.tag.teal{background:var(--teal-light);color:var(--teal)}
+
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:13.5px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+th{background:#faf9fc;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-secondary)}
+tr:last-child td{border-bottom:0}
+
+ol.pref{list-style:none;counter-reset:p}
+ol.pref li{counter-increment:p;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px 16px 56px;position:relative;margin-bottom:10px}
+ol.pref li::before{
+  content:counter(p);position:absolute;left:16px;top:16px;width:26px;height:26px;border-radius:50%;
+  background:var(--vio);color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center
+}
+ol.pref li b{display:block;font-size:14.5px;margin-bottom:3px}
+ol.pref li span{font-size:13px;color:var(--text-secondary)}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.panel{border-radius:12px;padding:16px 18px}
+.panel.down{background:var(--brick-light)}
+.panel.up{background:var(--teal-light)}
+.panel h4{font-size:13px;font-weight:600;margin-bottom:6px}
+.panel.down h4{color:var(--brick)}
+.panel.up h4{color:var(--teal)}
+.panel p{font-size:13px;color:var(--text-secondary)}
+
+.note{background:var(--surface);border:1px solid var(--border);border-left:0;border-radius:12px;padding:16px 18px;margin-top:22px;font-size:13px;color:var(--text-secondary)}
+.note b{color:var(--text)}
+@media (max-width:720px){ .split{grid-template-columns:1fr} }
+@media print{
+  nav{display:none} section[hidden]{display:block !important} body{background:#fff}
+  section{page-break-before:always} section:first-of-type{page-break-before:avoid}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">MedVerse demos · research</div>
+    <h1>HCP Preferences</h1>
+    <p>What healthcare professionals told us about finding, trusting and using scientific content — and the design
+       decisions that follow. MedVerse is a scientific engagement platform: trusted scientific knowledge surfaced
+       where HCPs already are, supporting in-the-moment clinical utility.</p>
+    <div class="meta">Synthesised from internal HCP research 2025–2026 · advisory board input · industry benchmarking · internal workflow interviews</div>
+    <div class="gated">
+      <span class="lock">Sanofi employees</span>
+      <span>The full-fidelity version — attributed figures, verbatim advisory-board quotes and the peer benchmark —
+      requires Sanofi sign-in. <a id="fullLink" href="#" data-empty="true">Request access</a></span>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap" role="tablist" aria-label="HCP preferences sections">
+    <button role="tab" aria-selected="true"  data-t="overview">Overview</button>
+    <button role="tab" aria-selected="false" data-t="modes">Behaviour modes</button>
+    <button role="tab" aria-selected="false" data-t="segments">By profession</button>
+    <button role="tab" aria-selected="false" data-t="formats">Content &amp; formats</button>
+    <button role="tab" aria-selected="false" data-t="trust">Trust</button>
+    <button role="tab" aria-selected="false" data-t="impact">High-impact preferences</button>
+    <button role="tab" aria-selected="false" data-t="method">Method &amp; limits</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="overview" role="tabpanel">
+  <h2>What the research says, in one view</h2>
+  <p class="lede">Two qualitative HCP studies, formal advisory input, an industry benchmark of peer companies, and
+     interviews with the internal teams who produce the content. The findings converge on one thing: HCPs are
+     time-poor, AI-mediated, and sceptical of pharma as a teacher — but receptive to pharma as a source.</p>
+  <div class="stats">
+    <div class="stat"><div class="n">26</div><div class="l">HCP interviews across 3 countries</div></div>
+    <div class="stat"><div class="n">≈90%</div><div class="l">report significant time pressure</div></div>
+    <div class="stat"><div class="n">&lt;2 min</div><div class="l">to deliver value, or they leave</div></div>
+    <div class="stat"><div class="n">1 of 2</div><div class="l">abandon a tool after a trust break</div></div>
+  </div>
+  <div class="cards">
+    <div class="card"><span class="tag vio">Discovery</span>
+      <h3>Discovery has moved off our channels</h3>
+      <p>Nearly all interviewed HCPs use AI-mediated search, often without calling it AI. The journey starts with a
+         search or AI summary and ends at a trusted reference to verify. Being findable and citable matters more than
+         being visited.</p>
+      <div class="src">Internal HCP research · SEO/GEO analysis</div></div>
+    <div class="card"><span class="tag teal">Trust</span>
+      <h3>Trusted as a source, not as a teacher</h3>
+      <p>Pharma is trusted for product information, administration and device training, and access support. Pharma-led
+         formal education and CME-style modules are consistently rejected as a primary learning source.</p>
+      <div class="src">Internal HCP research, 3 markets</div></div>
+    <div class="card"><span class="tag vio">Format</span>
+      <h3>Visual structure beats narrative</h3>
+      <p>Bullets, flow diagrams, charts and short navigable video outperform prose. Long-form text is described as too
+         slow to scan and “saved for later, often never revisited”.</p>
+      <div class="src">Internal HCP research</div></div>
+    <div class="card"><span class="tag teal">Content</span>
+      <h3>Congress recaps lead the wanted list</h3>
+      <p>Concise congress recaps and trial summaries were the single most attractive proposition tested — ranked first
+         by both physicians and pharmacists.</p>
+      <div class="src">Concept testing</div></div>
+  </div>
+</section>
+
+<section id="modes" role="tabpanel" hidden>
+  <h2>Five behaviour modes</h2>
+  <p class="lede">The newer research designs around what an HCP is trying to achieve rather than their job title.
+     One HCP moves between modes across a single day, so the platform must serve the mode, not the persona.</p>
+  <table>
+    <thead><tr><th style="width:22%">Mode</th><th style="width:14%">Priority</th><th>What they need</th></tr></thead>
+    <tbody>
+      <tr><td><b>Ad-hoc information searchers</b></td><td><span class="tag teal">High</span></td>
+          <td>Quick, reliable answers in the flow of work. Brief engagement; clarity, credibility and immediate relevance.</td></tr>
+      <tr><td><b>Evidence explorers</b></td><td><span class="tag teal">High</span></td>
+          <td>Go beyond the quick answer — follow citations, revisit between moments, work through how evidence applies.</td></tr>
+      <tr><td><b>Scientific interpreters</b></td><td>Implicated</td>
+          <td>Rigour, transparency and access to primary data. Largely served by content built for the two priority modes.</td></tr>
+      <tr><td><b>Patient-facing translators</b></td><td>Lower</td>
+          <td>Reusable, plain-language material to support patient conversations. Around two-thirds of the priority modes also want this.</td></tr>
+      <tr><td><b>Mastery-driven learners</b></td><td><span class="tag vio">De-prioritise</span></td>
+          <td>Structured formal learning over time — but they seek it from independent bodies and are sceptical of pharma providing it.</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><b>Strategic shift:</b> from deep, planned learning to in-the-moment clinical utility and decision support.</div>
+</section>
+
+<section id="segments" role="tabpanel" hidden>
+  <h2>Preferences by profession</h2>
+  <p class="lede">Earlier concept-testing research segmented by role. The three profiles want the same qualities —
+     brevity, evidence, neutrality — but weight them differently, and one wants the opposite of oversimplification.</p>
+  <table>
+    <thead><tr><th style="width:20%">Profession</th><th style="width:24%">Learning mode</th><th>What they want</th></tr></thead>
+    <tbody>
+      <tr><td><b>Physicians</b></td><td>Goal-driven and exploratory</td>
+          <td>Powerful search and filter; short scannable formats with progressive depth; references and evidence visible; fast loading with key insights up front.</td></tr>
+      <tr><td><b>Pharmacists</b></td><td>Goal-driven, not exploratory</td>
+          <td>Clinical decision support first; direct access to prescribing information, dosing and trial data; facts over storytelling. Low tolerance for AI <i>recommendations</i> — summaries are acceptable.</td></tr>
+      <tr><td><b>Nurse practitioners</b></td><td>Duty-driven, “not leisurely”</td>
+          <td>Layered depth, explicitly not oversimplified; save-for-later and visible progress; source and authorship transparency; formats they can reuse when teaching their team.</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><b>Note the tension:</b> the same research that asks for brevity also records HCPs who reject
+     summaries outright — “I don’t want bite-sized blurbs, I want the study.” Progressive depth is how both are served:
+     a scannable surface with the full evidence one click away.</div>
+</section>
+
+<section id="formats" role="tabpanel" hidden>
+  <h2>Content and formats</h2>
+  <p class="lede">What to make, and the constraint that decides how to make it.</p>
+  <div class="cards">
+    <div class="card"><h3>Wanted most</h3>
+      <p>Congress recaps and trial summaries · “key takeaways” framing · concise clinical data and publications ·
+         pipeline information · short navigable video · infographics and one-page assets · plain-language patient-ready
+         summaries.</p></div>
+    <div class="card"><h3>Wanted least</h3>
+      <p>Long-form educational journeys · CME-style modules from pharma · thought leadership framed as learning ·
+         dense prose · anything requiring registration before showing value.</p></div>
+  </div>
+  <div class="note"><b>The constraint that shapes everything:</b> the formats HCPs most want — short video and
+     infographics — are not readable by the AI systems that increasingly mediate discovery. Every visual asset needs a
+     text twin: a transcript, caption or structured summary. Without it, content wins the preference and loses the
+     audience.</div>
+</section>
+
+<section id="trust" role="tabpanel" hidden>
+  <h2>How trust is earned and lost</h2>
+  <p class="lede">Trust is composite, fragile, and asymmetric — slow to build and immediate to lose.</p>
+  <div class="cards">
+    <div class="card"><span class="tag vio">Earned by</span><h3>Three pillars</h3>
+      <p><b>Reputation and longevity</b> — established source, publisher standing, peer regard.<br>
+         <b>Accuracy</b> — peer review, evidence base, references listed, clear methodology.<br>
+         <b>Specificity</b> — dedicated to medical use, and free of advertising.</p></div>
+    <div class="card"><span class="tag teal">Branding rule</span><h3>Disclose, don’t lead</h3>
+      <p>HCPs do not want sponsor branding front and centre, but they do want honesty about the source. A subtle,
+         upfront line — “this platform is supported by …” — strikes the balance. Zero brand push.</p></div>
+    <div class="card"><span class="tag vio">Lost by</span><h3>One or two strikes</h3>
+      <p>Outputs that feel authoritative without evidence, cite unfamiliar sources, or over-reach into clinical
+         reasoning. At least half of interviewed HCPs stopped using a tool after one or two such experiences.</p></div>
+    <div class="card"><span class="tag teal">Implication</span><h3>Medical vs commercial</h3>
+      <p>Most HCPs cannot distinguish medical from commercial communication and do not consider the distinction
+         relevant — they see information and a company name. Effort is better spent on usefulness than on the label.</p></div>
+  </div>
+</section>
+
+<section id="impact" role="tabpanel" hidden>
+  <h2>The preferences that change what we build</h2>
+  <p class="lede">Filtered from the full set to those corroborated by more than one independent source, that change
+     what gets built or measured, and that fit the scientific-engagement positioning.</p>
+  <ol class="pref">
+    <li><b>Structured, citable, machine-readable content as the default</b><span>Discovery is AI-mediated. Being referenced and trusted by those systems matters more than being visited.</span></li>
+    <li><b>Every visual asset ships with a text twin</b><span>The cheapest high-leverage fix available: the most-wanted formats are the ones machines cannot read.</span></li>
+    <li><b>Measure share of answer, not pageviews</b><span>Visibility, citation and decision-support usage. Peer companies are still measuring visits.</span></li>
+    <li><b>Design for ad-hoc searchers and evidence explorers</b><span>The highest-frequency, highest-value modes, and the ones aligned to AI discovery.</span></li>
+    <li><b>Authenticate to unlock depth, not basic information</b><span>HCPs want tailored formats without handing over personal details. One rule, applied per content type.</span></li>
+    <li><b>Visual structure over narrative</b><span>Bullets, diagrams, charts and short video. Prose is scanned and abandoned.</span></li>
+    <li><b>Build for the search-then-verify journey</b><span>HCPs start with a search or AI summary and move to a trusted reference to confirm. Be present in both steps.</span></li>
+    <li><b>Treat trust as one-strike</b><span>Accuracy monitoring is a retention requirement, not a compliance chore.</span></li>
+    <li><b>Congress recaps and trial summaries as the lead content type</b><span>The only proposition tested that ranked first with both physicians and pharmacists.</span></li>
+    <li><b>Value inside two minutes, depth opt-in</b><span>Never required, always available. “Be brief, be bright, be gone” — with a route to the detail.</span></li>
+    <li><b>Non-promotional, with subtle upfront disclosure</b><span>Cheap to get right; expensive to get wrong given one-strike trust.</span></li>
+    <li><b>Lead with interpretation and a bottom line</b><span>Interpretation is remembered even when figures are not.</span></li>
+    <li><b>Self-directed navigation, no forced sequence</b><span>Behavioural evidence: a mandatory learning path was built internally and abandoned because HCPs wanted to self-direct.</span></li>
+  </ol>
+  <div class="split">
+    <div class="panel down"><h4>Demoted by the positioning decision</h4>
+      <p>CME credit and CME-style modules · curriculum engine and completion tracking · long-form educational journeys ·
+         “medical education” as the framing.</p></div>
+    <div class="panel up"><h4>Promoted by it</h4>
+      <p>The patient-ready depth layer — plain-language summaries and printable assets. Around two-thirds of the
+         priority modes want it, and it sits in the area HCPs already trust pharma for.</p></div>
+  </div>
+</section>
+
+<section id="method" role="tabpanel" hidden>
+  <h2>Method, and what is not proven</h2>
+  <p class="lede">The evidence is credible and directional. It is not statistically powered, and the summary above is
+     honest about which parts are strong.</p>
+  <table>
+    <thead><tr><th style="width:32%">Source</th><th>What it contributes</th></tr></thead>
+    <tbody>
+      <tr><td><b>Concept testing (2025)</b></td><td>14 in-depth interviews, single market. Tested four concrete content propositions across physicians, pharmacists and nurse practitioners.</td></tr>
+      <tr><td><b>Content experience research (2026)</b></td><td>12 in-depth interviews across three markets. Behaviour modes, trust dynamics, format preferences, and the role HCPs accept from pharma.</td></tr>
+      <tr><td><b>Advisory board input</b></td><td>External clinicians on entry points, tiering, brevity and the medical/commercial distinction.</td></tr>
+      <tr><td><b>Industry benchmarking</b></td><td>Peer practice on platform consolidation, content operations and measurement maturity.</td></tr>
+      <tr><td><b>Internal workflow interviews</b></td><td>Four therapeutic-area teams on how content is planned, approved, published and measured today.</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>Known limits.</b> The two HCP studies total 26 qualitative interviews and they disagree with each other on
+    pharma-led education — that disagreement is what settled the positioning, but it means the education question is
+    not closed by data. No quantitative validation has been run. Concept testing predates the current POC, so no HCP
+    has yet reacted to the platform as built. Segment-level format detail should be read as directional.
+  </div>
+</section>
+
+</main>
+
+<script>
+/* Paste the OneDrive / SharePoint share link for
+   evidence-internal/HCP-Preferences-FULL-INTERNAL.pdf between the quotes.
+   Set the share scope to "People in Sanofi with the link" so Microsoft 365
+   enforces sign-in on the file itself — the link below is public, the file is not.
+   While this is empty the page shows plain text instead of a dead link. */
+var FULL_VERSION_URL = "https://sanofi.sharepoint.com/:b:/s/MedicalEducationCapabilities/IQCNSmD7rbx2QpSn3Mp0hUZtAWRSjj42kaztYELuaGx57P4?e=ga362i";
+
+(function(){
+  var a = document.getElementById('fullLink');
+  if (a) {
+    if (FULL_VERSION_URL) {
+      a.href = FULL_VERSION_URL; a.textContent = 'Open the full version';
+      a.removeAttribute('data-empty'); a.setAttribute('rel','noopener');
+    } else {
+      var span = document.createElement('span');
+      span.textContent = 'Ask the MedVerse team for access.';
+      a.parentNode.replaceChild(span, a);
+    }
+  }
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('nav button'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('main section'));
+  function show(id){
+    tabs.forEach(function(t){ t.setAttribute('aria-selected', String(t.dataset.t === id)); });
+    panels.forEach(function(p){ if (p.id === id) { p.removeAttribute('hidden'); } else { p.setAttribute('hidden',''); } });
+    if (history.replaceState) { history.replaceState(null, '', '#' + id); }
+  }
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.dataset.t); }); });
+  var initial = (location.hash || '').replace('#','');
+  if (initial && document.getElementById(initial)) { show(initial); }
+})();
+</script>
+</body>
+</html>

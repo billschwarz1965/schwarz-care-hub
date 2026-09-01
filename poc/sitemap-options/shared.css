@@ -179,6 +179,16 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--mono);
 }
 
+.outer-nav {
+  max-width: 900px;
+  margin: 0 auto 12px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font);
+}
+.outer-nav a { color: var(--accent, #6b21a8); }
+
 /* country grid for Option 3 */
 .country-grid {
   display: grid;

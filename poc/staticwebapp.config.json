@@ -15,6 +15,18 @@
     {
       "route": "/.auth/login/twitter",
       "statusCode": 404
+    },
+    {
+      "route": "/logout",
+      "redirect": "/.auth/logout"
+    },
+    {
+      "route": "/hcp-preferences/*",
+      "allowedRoles": ["medverse-demo"]
+    },
+    {
+      "route": "/*",
+      "allowedRoles": ["authenticated"]
     }
   ],
   "responseOverrides": {
