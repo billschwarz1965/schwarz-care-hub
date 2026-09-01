@@ -1,5 +1,6 @@
 import { CONGRESSES, PRESENTATIONS, getCongressById, getPresentationsByCongressId, getCongressStats } from "./congress-data.js";
 import { speak, speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
+import { matchesDiseaseArea } from "./taxonomy.js";
 
 const stats = getCongressStats();
 let activeCongressId = null;
@@ -400,15 +401,17 @@ function generateResponse(query) {
     return q.includes(c.abbrev.toLowerCase()) || q.includes(abbrevBase) || q.includes(c.society.toLowerCase().split(" ")[0]);
   });
 
-  // Disease-specific queries
+  // Disease-specific queries. Values are canonical taxonomy spellings and the
+  // two filters below compare through matchesDiseaseArea, so this map stays
+  // correct even though congress-data.js records "Type 2 Asthma" and "IBD".
   const diseaseMap = [
     [/atopic|eczema|dermatitis|\bad\b/, "Atopic Dermatitis"],
     [/copd|chronic obstructive/, "COPD"],
-    [/asthma/, "Type 2 Asthma"],
+    [/asthma/, "Asthma"],
     [/eoe|eosinophilic esophag/, "Eosinophilic Esophagitis"],
     [/prurigo|pn\b/, "Prurigo Nodularis"],
     [/urticaria|csu\b/, "Chronic Spontaneous Urticaria"],
-    [/crohn|ibd/, "IBD"],
+    [/crohn|ibd/, "Inflammatory Bowel Disease"],
     [/rheumatoid|ra\b/, "Rheumatoid Arthritis"],
     [/psoriasis/, "Psoriasis"],
     [/nasal poly|crswnp/, "CRSwNP"],
@@ -453,7 +456,7 @@ function generateResponse(query) {
   // MSL talking points query
   if (q.includes("msl") || q.includes("talking point")) {
     let pool = PRESENTATIONS;
-    if (diseaseMatch) pool = pool.filter(p => p.diseaseArea === diseaseMatch);
+    if (diseaseMatch) pool = pool.filter(p => matchesDiseaseArea(p.diseaseArea, diseaseMatch));
     if (congressMatch) pool = pool.filter(p => p.congressId === congressMatch.id);
     const items = pool.slice(0, 4).map(p => {
       const c = getCongressById(p.congressId);
@@ -487,7 +490,7 @@ function generateResponse(query) {
 
   // Disease-specific match
   if (diseaseMatch) {
-    const pres = PRESENTATIONS.filter(p => p.diseaseArea === diseaseMatch);
+    const pres = PRESENTATIONS.filter(p => matchesDiseaseArea(p.diseaseArea, diseaseMatch));
     if (pres.length) {
       const items = pres.slice(0, 4).map(p => {
         const c = getCongressById(p.congressId);

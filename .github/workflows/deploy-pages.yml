@@ -1,3 +1,30 @@
+﻿# Publishes all four demo builds to GitHub Pages in one run:
+#   poc            — full POC, the superset edition
+#   poc-external   — external-audience edition
+#   poc-internal   — MSL / Medical Affairs edition
+#   sitemap-options — static sitemap prototypes, no build step
+#
+# Each edition ships exactly the pages listed in its own vite.config.js. Note
+# that poc/vite.config.js deliberately omits build-economics.html and
+# user-journeys.html, so those two are not published by this workflow. Add them
+# to that config if they should be.
+#
+# All three POC editions share one copy of the code in poc/src: the two
+# audience editions alias `/src/` to it, and poc contains it directly. So a
+# change to poc/src reaches all three in a single run — there is nothing to
+# port between them.
+#
+# This workflow must run from a ref that contains all three POC directories.
+# That is `main` as of the commit adding this file; previously poc-external and
+# poc-internal existed only on a feature branch, so dispatching from main
+# failed at the first build step and the published site could only ever come
+# from that one branch.
+#
+# Trigger is manual on purpose — publishing is a deliberate act for a public
+# site. To publish automatically on merge instead, add:
+#   push:
+#     branches: [main]
+
 name: Deploy demo builds to GitHub Pages
 
 on:
@@ -22,24 +49,46 @@ jobs:
         with:
           node-version: 20
 
-      - name: Build poc-external
-        working-directory: poc-external
+      # Fail with a readable message rather than a confusing "no such file or
+      # directory" from npm if this is dispatched on a ref missing a POC.
+      - name: Check every build target is present
         run: |
-          npm install
-          npm run build
+          set -euo pipefail
+          missing=0
+          for dir in poc poc-external poc-internal poc/sitemap-options; do
+            if [ ! -d "$dir" ]; then
+              echo "::error::Missing build target '$dir' on ref '${{ github.ref_name }}'."
+              missing=1
+            fi
+          done
+          for cfg in poc/vite.config.js poc-external/vite.config.js poc-internal/vite.config.js; do
+            if [ ! -f "$cfg" ]; then
+              echo "::error::Missing '$cfg'. Without it Vite builds only index.html and every other page is silently dropped."
+              missing=1
+            fi
+          done
+          [ "$missing" -eq 0 ] || exit 1
 
-      - name: Build poc-internal
-        working-directory: poc-internal
+      # No lock file is committed for the two edition packages, so `npm install`
+      # rather than `npm ci`.
+      - name: Build all three POC editions
         run: |
-          npm install
-          npm run build
+          set -euo pipefail
+          for app in poc poc-external poc-internal; do
+            echo "::group::build $app"
+            ( cd "$app" && npm install && npm run build )
+            echo "::endgroup::"
+          done
 
       - name: Assemble Pages site
         run: |
+          set -euo pipefail
           mkdir -p site
-          cp -r poc-external/dist site/poc-external
-          cp -r poc-internal/dist site/poc-internal
+          cp -r poc/dist            site/poc
+          cp -r poc-external/dist   site/poc-external
+          cp -r poc-internal/dist   site/poc-internal
           cp -r poc/sitemap-options site/sitemap-options
+
           cat > site/index.html <<'EOF'
           <!DOCTYPE html>
           <html lang="en">
@@ -49,22 +98,42 @@ jobs:
             <title>MedVerse Demos</title>
             <style>
               body { font-family: system-ui, sans-serif; background: #f7f5fa; color: #1a1a2e; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-              .card { background: #fff; border: 1px solid #e4dff0; border-radius: 16px; padding: 32px 40px; max-width: 480px; box-shadow: 0 8px 32px rgba(122,0,230,0.08); }
-              h1 { font-size: 20px; margin: 0 0 16px; }
+              .card { background: #fff; border: 1px solid #e4dff0; border-radius: 16px; padding: 32px 40px; max-width: 520px; box-shadow: 0 8px 32px rgba(122,0,230,0.08); }
+              h1 { font-size: 20px; margin: 0 0 4px; }
+              p.sub { font-size: 13px; color: #6b6b80; margin: 0 0 20px; }
               a.link { display: block; padding: 14px 18px; margin-top: 10px; border-radius: 10px; background: #f0e6ff; color: #6b21a8; text-decoration: none; font-weight: 600; }
+              a.link span { display: block; font-weight: 400; font-size: 12px; color: #7a6b8f; margin-top: 2px; }
               a.link:hover { background: #7a00e6; color: #fff; }
+              a.link:hover span { color: #e9d5ff; }
             </style>
           </head>
           <body>
             <div class="card">
               <h1>MedVerse Demos</h1>
-              <a class="link" href="poc-external/index.html">POC — External Edition</a>
-              <a class="link" href="poc-internal/index.html">POC — Internal Edition (MSL &amp; Medical Affairs)</a>
-              <a class="link" href="sitemap-options/index.html">Sitemap Options</a>
+              <p class="sub">Illustrative prototypes. Synthetic and example data throughout.</p>
+              <a class="link" href="poc/index.html">POC — Full<span>Superset edition, includes internal-only tools</span></a>
+              <a class="link" href="poc-external/index.html">POC — External Edition<span>External HCP audience</span></a>
+              <a class="link" href="poc-internal/index.html">POC — Internal Edition<span>MSL &amp; Medical Affairs</span></a>
+              <a class="link" href="sitemap-options/index.html">Sitemap Options<span>Navigation prototypes</span></a>
             </div>
           </body>
           </html>
           EOF
+
+      # A build that quietly produced no pages would otherwise deploy an empty
+      # site over a working one.
+      - name: Verify assembled site
+        run: |
+          set -euo pipefail
+          for target in poc poc-external poc-internal sitemap-options; do
+            if [ ! -f "site/$target/index.html" ]; then
+              echo "::error::site/$target/index.html is missing — refusing to deploy."
+              exit 1
+            fi
+            count=$(find "site/$target" -name '*.html' | wc -l)
+            echo "site/$target: $count html page(s)"
+          done
+          test -f site/index.html
 
       - uses: actions/upload-pages-artifact@v3
         with:

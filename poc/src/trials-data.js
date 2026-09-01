@@ -8,6 +8,13 @@
 // Every entry links to ClinicalTrials.gov by NCT ID, which is the registry of
 // record — deliberately not to a Sanofi marketing page, so the HCP can read
 // the full protocol and eligibility criteria at source.
+//
+// studies-data.js covers overlapping trials with different field names (`ta`
+// rather than `therapeuticArea`, a single `disease` rather than `conditions[]`).
+// The two schemas stay separate on purpose — different provenance, different
+// cardinality, different purpose — and the reasoning is written out under
+// "TRIAL SCHEMA RECONCILIATION" in taxonomy.js. The taxonomy dimension IS
+// reconciled: trialFacets() there accepts either shape.
 
 export const trials = [
   // ── Oncology ──
