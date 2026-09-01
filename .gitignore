@@ -46,3 +46,13 @@ node_modules/
 
 # Assembled GitHub Pages output (see .github/workflows/deploy-pages.yml)
 site/
+
+# Internal research — NEVER commit. This repository is PUBLIC.
+# evidence-internal/ holds the full-fidelity HCP preferences page and deck: licensed
+# analyst figures (TGaS/Trinity, McKinsey, Capgemini, ZS, HealthXL), verbatim
+# advisory-board quotes marked not-for-distribution, unpublished traffic and CTR data,
+# and named employees. It is served to Sanofi staff via OneDrive/SharePoint sign-in,
+# not from this repo. The sanitised, publishable version is poc/hcp-preferences-public/.
+evidence-internal/
+*FULL-INTERNAL*
+EVIDENCE-SYNTHESIS.md
