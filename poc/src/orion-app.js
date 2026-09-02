@@ -403,7 +403,7 @@ function renderSignalOverlay(signalId) {
           ${signal.contentAccessed.map(c => `<div class="overlay-content-item"><i class="ti ti-file-text"></i> ${escapeHtml(c)}</div>`).join("")}
         </div>
         <div class="overlay-section">
-          <div class="overlay-label">Orion Recommended Action</div>
+          <div class="overlay-label">Recommended Action</div>
           <div class="overlay-action">${escapeHtml(signal.orionAction)}</div>
         </div>
         <div class="overlay-section">
@@ -652,7 +652,7 @@ async function runDemo() {
   clearFilterIfActive();
   dashboard.scrollTo({ top: 0, behavior: "smooth" });
   await wait(500);
-  await narrate("Orion Signal Intelligence — turning every MedVerse interaction into MSL-ready insight");
+  await narrate("Interaction Signals — turning every MedVerse interaction into MSL-ready insight");
   narrateOff();
 
   btn.disabled = false;
@@ -680,7 +680,7 @@ function resetChat() {
   chatMessages.innerHTML = `<div class="chat-msg ai">
     <div class="chat-ai-avatar"><i class="ti ti-radar-2"></i></div>
     <div class="chat-bubble chat-ai-bubble">
-      I'm the Orion Signal Intelligence Agent. I analyze <strong>HCP engagement signals</strong> from MedVerse in real time. Ask me about priority alerts, trending topics, HCP profiles, or engagement patterns.
+      I'm the Interaction Signals Agent. I analyze <strong>HCP engagement signals</strong> from MedVerse in real time. Ask me about priority alerts, trending topics, HCP profiles, or engagement patterns.
     </div>
   </div>`;
   chatSuggestions.innerHTML = [
@@ -905,7 +905,7 @@ async function runChatDemo() {
   resetChat();
   await wait(600);
 
-  await narrate("Orion AI chat demo — multi-persona questions about HCP engagement signals");
+  await narrate("Interaction Signals AI chat demo — multi-persona questions about HCP engagement signals");
 
   for (const step of CHAT_DEMO_SEQUENCE) {
     await narrate(`${step.persona} asks: "${step.question.substring(0, 50)}..."`);
@@ -922,7 +922,7 @@ async function runChatDemo() {
     await narrate("AI analyzes real-time engagement signals and HCP profiles to generate insights");
   }
 
-  addChatAIMsg(`<strong>Demo complete!</strong> ${CHAT_DEMO_SEQUENCE.length} questions answered across ${SIGNALS.length} signals and ${HCP_PROFILES.length} HCP profiles. The Orion Intelligence Agent turns behavioral signals into actionable MSL intelligence.`);
+  addChatAIMsg(`<strong>Demo complete!</strong> ${CHAT_DEMO_SEQUENCE.length} questions answered across ${SIGNALS.length} signals and ${HCP_PROFILES.length} HCP profiles. The Interaction Signals Agent turns behavioral signals into actionable MSL intelligence.`);
   narrateOff();
 
   chatDemoRunning = false;

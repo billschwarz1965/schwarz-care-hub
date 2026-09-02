@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedVerse — Local Editions Launcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f7f5fa;
+    --surface: #ffffff;
+    --surface-dim: #f3eff8;
+    --text: #1a1a2e;
+    --text-secondary: #5a5672;
+    --text-muted: #918da3;
+    --border: #e4dff0;
+    --accent: #7a00e6;
+    --accent-hover: #6600c2;
+    --accent-light: #f0e6ff;
+    --accent-text: #6b21a8;
+    --accent-secondary: #aa46a3;
+    --gold: #f9c851;
+    --success: #166534;
+    --success-bg: #dcfce7;
+    --warning: #854d0e;
+    --warning-bg: #fef9c3;
+    --danger: #991b1b;
+    --danger-bg: #fee2e2;
+    --radius: 10px;
+    --radius-lg: 16px;
+    --font: 'Work Sans', 'Raleway', 'Roboto', sans-serif;
+  }
+  html.dark {
+    --bg: #0a0a14;
+    --surface: #13131f;
+    --surface-dim: #1a1a2e;
+    --text: #f0eef5;
+    --text-secondary: #a8a3b8;
+    --text-muted: #6b6580;
+    --border: #2a2840;
+    --accent-light: #2a1a40;
+    --accent-text: #c084fc;
+    --success: #34d399;
+    --success-bg: rgba(52,211,153,0.1);
+    --warning: #f9c851;
+    --warning-bg: rgba(249,200,81,0.1);
+    --danger: #f87171;
+    --danger-bg: rgba(248,113,113,0.1);
+  }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+  .theme-toggle { position: fixed; top: 20px; right: 20px; width: 38px; height: 38px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; color: var(--text); box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+  .theme-toggle .ti-moon { display: none; }
+  html.dark .theme-toggle .ti-moon { display: block; }
+  html.dark .theme-toggle .ti-sun { display: none; }
+
+  .brand-bar { height: 3px; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 50%, var(--gold) 100%); }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 48px 24px 60px; }
+  .hero { text-align: center; margin-bottom: 24px; }
+  .hero-logo { width: 64px; height: 64px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 28px; color: white; }
+  .hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+  .hero p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; max-width: 620px; margin: 0 auto; }
+
+  .control-banner { display: none; align-items: flex-start; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--warning); border-radius: var(--radius); padding: 14px 18px; margin: 20px 0; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .control-banner.visible { display: flex; }
+  .control-banner i { font-size: 18px; color: var(--warning); flex-shrink: 0; margin-top: 1px; }
+  .control-banner code { background: var(--surface-dim); padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+
+  .control-ok { display: none; align-items: center; gap: 8px; justify-content: center; margin: 16px 0; font-size: 12px; color: var(--success); font-weight: 600; }
+  .control-ok.visible { display: flex; }
+
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 24px; }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; display: flex; flex-direction: column; transition: border-color .2s, transform .2s; }
+  .card:hover { border-color: var(--accent-secondary); }
+  .card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .card-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; background: var(--accent-light); color: var(--accent); }
+  .card-title { font-size: 15px; font-weight: 700; }
+  .card-port { font-size: 11px; color: var(--text-muted); font-family: monospace; }
+  .card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.55; flex: 1; margin-bottom: 12px; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .card-tag { font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 12px; background: var(--surface-dim); color: var(--text-secondary); }
+
+  .card-status { display: flex; align-items: center; gap: 7px; margin-bottom: 12px; font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); flex-shrink: 0; }
+  .status-dot.on { background: var(--success); }
+  .status-dot.pending { background: var(--warning); animation: pulse 1s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .card-actions { display: flex; gap: 8px; }
+  .card-start-btn, .card-open { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 14px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; font-family: var(--font); border: none; cursor: pointer; transition: background .15s; }
+  .card-start-btn { background: var(--accent); color: white; }
+  .card-start-btn:hover:not(:disabled) { background: var(--accent-hover); }
+  .card-start-btn:disabled { opacity: .7; cursor: default; }
+  .card-open { background: var(--success-bg); color: var(--success); }
+  .card-open:hover { filter: brightness(0.95); }
+
+  .footer { text-align: center; margin-top: 40px; font-size: 12px; color: var(--text-muted); }
+  .footer code { background: var(--surface-dim); padding: 2px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="brand-bar"></div>
+<button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode"><i class="ti ti-sun"></i><i class="ti ti-moon"></i></button>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-logo"><i class="ti ti-brain"></i></div>
+    <h1>MedVerse — Local Editions Launcher</h1>
+    <p>Five editions of the MedVerse POC, each its own Vite dev server on its own port, all sharing one copy of the application logic in <code>poc/src</code>.</p>
+  </div>
+
+  <div class="control-banner" id="control-warning">
+    <i class="ti ti-alert-triangle"></i>
+    <div>
+      Opened as a static file, so this page can only link to servers you start yourself — it can't start them for you.
+      To start servers with the buttons below, run <code>node launcher-server.mjs</code> from a terminal in this folder,
+      then open <code>http://localhost:5199</code> instead of this file.
+    </div>
+  </div>
+  <div class="control-ok" id="control-ok"><i class="ti ti-circle-check"></i> Connected to launcher-server.mjs — status is live, buttons will start servers</div>
+
+  <div class="grid">
+
+    <div class="card status-full" data-id="poc" data-port="5180">
+      <div class="card-top">
+        <div class="card-icon"><i class="ti ti-apps"></i></div>
+        <div>
+          <div class="card-title">poc — Full Platform</div>
+          <div class="card-port">localhost:5180</div>
+        </div>
+      </div>
+      <div class="card-desc">The complete build: HCP Concierge, Patient Concierge, MSL Copilot, Medical Concierge, Interaction Signals, Population Intelligence, Disease Navigator, Literature, Congress, Agent Ecosystem, and more.</div>
+      <div class="card-tags"><span class="card-tag">All audiences</span><span class="card-tag">14 modules</span></div>
+      <div class="card-status"><span class="status-dot"></span><span class="status-text">Checking…</span></div>
+      <div class="card-actions">
+        <button class="card-start-btn"><i class="ti ti-player-play"></i> Start Server</button>
+        <a class="card-open" href="http://localhost:5180" target="_blank" style="display:none;"><i class="ti ti-external-link"></i> Open</a>
+      </div>
+    </div>
+
+    <div class="card status-full" data-id="poc-external" data-port="5182">
+      <div class="card-top">
+        <div class="card-icon"><i class="ti ti-stethoscope"></i></div>
+        <div>
+          <div class="card-title">poc-external — External Edition</div>
+          <div class="card-port">localhost:5182</div>
+        </div>
+      </div>
+      <div class="card-desc">HCP-facing edition: HCP Concierge, Disease Navigator, Literature, Congress. No Patient Concierge, no Agent Ecosystem — internal architecture stays internal.</div>
+      <div class="card-tags"><span class="card-tag">Healthcare professionals</span><span class="card-tag">4 modules</span></div>
+      <div class="card-status"><span class="status-dot"></span><span class="status-text">Checking…</span></div>
+      <div class="card-actions">
+        <button class="card-start-btn"><i class="ti ti-player-play"></i> Start Server</button>
+        <a class="card-open" href="http://localhost:5182" target="_blank" style="display:none;"><i class="ti ti-external-link"></i> Open</a>
+      </div>
+    </div>
+
+    <div class="card status-full" data-id="poc-internal" data-port="5184">
+      <div class="card-top">
+        <div class="card-icon"><i class="ti ti-briefcase"></i></div>
+        <div>
+          <div class="card-title">poc-internal — Internal Edition</div>
+          <div class="card-port">localhost:5184</div>
+        </div>
+      </div>
+      <div class="card-desc">MSL &amp; Medical Affairs edition with full interaction-signal visibility: MSL Copilot, Medical Concierge, Interaction Signals, Population Intelligence, Disease Navigator, Literature, Congress, Agent Ecosystem.</div>
+      <div class="card-tags"><span class="card-tag">MSL + Medical Affairs</span><span class="card-tag">9 modules</span></div>
+      <div class="card-status"><span class="status-dot"></span><span class="status-text">Checking…</span></div>
+      <div class="card-actions">
+        <button class="card-start-btn"><i class="ti ti-player-play"></i> Start Server</button>
+        <a class="card-open" href="http://localhost:5184" target="_blank" style="display:none;"><i class="ti ti-external-link"></i> Open</a>
+      </div>
+    </div>
+
+    <div class="card status-standalone" data-id="poc-agents" data-port="5183">
+      <div class="card-top">
+        <div class="card-icon"><i class="ti ti-cpu"></i></div>
+        <div>
+          <div class="card-title">poc-agents — Agent Ecosystem</div>
+          <div class="card-port">localhost:5183</div>
+        </div>
+      </div>
+      <div class="card-desc">Standalone architecture explorer: four-layer design, business agents, intelligence hubs, governance layer, runnable demos for every agent, linked specs, and an Ecosystem AI chat.</div>
+      <div class="card-tags"><span class="card-tag">Standalone</span><span class="card-tag">2 pages</span></div>
+      <div class="card-status"><span class="status-dot"></span><span class="status-text">Checking…</span></div>
+      <div class="card-actions">
+        <button class="card-start-btn"><i class="ti ti-player-play"></i> Start Server</button>
+        <a class="card-open" href="http://localhost:5183" target="_blank" style="display:none;"><i class="ti ti-external-link"></i> Open</a>
+      </div>
+    </div>
+
+    <div class="card status-standalone" data-id="poc-patient" data-port="5185">
+      <div class="card-top">
+        <div class="card-icon"><i class="ti ti-heart"></i></div>
+        <div>
+          <div class="card-title">poc-patient — Patient Concierge</div>
+          <div class="card-port">localhost:5185</div>
+        </div>
+      </div>
+      <div class="card-desc">Standalone patient &amp; caregiver companion: medications, symptom checker, treatment explorer, trial finder, insurance &amp; access, appointment prep, side effect tracker, condition library, caregiver resources, wellness journal.</div>
+      <div class="card-tags"><span class="card-tag">Standalone</span><span class="card-tag">2 pages</span></div>
+      <div class="card-status"><span class="status-dot"></span><span class="status-text">Checking…</span></div>
+      <div class="card-actions">
+        <button class="card-start-btn"><i class="ti ti-player-play"></i> Start Server</button>
+        <a class="card-open" href="http://localhost:5185" target="_blank" style="display:none;"><i class="ti ti-external-link"></i> Open</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Each server keeps running once started — Vite's own hot-reload keeps it alive as you edit. Closing this tab does not stop them.
+  </div>
+</div>
+
+<script>
+function toggleTheme(){document.documentElement.classList.toggle("dark");localStorage.setItem("medverse-theme",document.documentElement.classList.contains("dark")?"dark":"light")}
+if(localStorage.getItem("medverse-theme")==="dark")document.documentElement.classList.add("dark");
+
+const CONTROL_AVAILABLE = location.protocol !== "file:";
+
+function setCardState(card, running) {
+  const dot = card.querySelector(".status-dot");
+  const text = card.querySelector(".status-text");
+  const startBtn = card.querySelector(".card-start-btn");
+  const openLink = card.querySelector(".card-open");
+  dot.classList.remove("pending");
+  if (running) {
+    dot.classList.add("on");
+    text.textContent = "Running";
+    startBtn.style.display = "none";
+    openLink.style.display = "flex";
+  } else {
+    dot.classList.remove("on");
+    text.textContent = "Stopped";
+    startBtn.style.display = "flex";
+    startBtn.disabled = false;
+    startBtn.innerHTML = '<i class="ti ti-player-play"></i> Start Server';
+    openLink.style.display = "none";
+  }
+}
+
+async function refreshStatus() {
+  if (!CONTROL_AVAILABLE) return;
+  try {
+    const res = await fetch("/api/status");
+    const data = await res.json();
+    document.querySelectorAll(".card[data-id]").forEach((card) => {
+      setCardState(card, !!data[card.dataset.id]);
+    });
+  } catch (e) {
+    // control server not reachable from this origin — leave last known state
+  }
+}
+
+async function pollUntilRunning(card, timeoutMs) {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    await new Promise((r) => setTimeout(r, 1200));
+    try {
+      const res = await fetch("/api/status");
+      const data = await res.json();
+      if (data[card.dataset.id]) {
+        setCardState(card, true);
+        return true;
+      }
+    } catch (e) { /* keep polling */ }
+  }
+  return false;
+}
+
+document.querySelectorAll(".card-start-btn").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const card = btn.closest(".card");
+    if (!CONTROL_AVAILABLE) return;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ti ti-loader-2" style="display:inline-block;animation:spin 1s linear infinite"></i> Starting…';
+    card.querySelector(".status-dot").classList.add("pending");
+    card.querySelector(".status-text").textContent = "Starting…";
+    try {
+      await fetch("/api/start/" + card.dataset.id, { method: "POST" });
+    } catch (e) {
+      btn.innerHTML = '<i class="ti ti-alert-triangle"></i> launcher-server.mjs unreachable';
+      return;
+    }
+    const ok = await pollUntilRunning(card, 30000);
+    if (!ok) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="ti ti-alert-triangle"></i> Taking longer than expected — check terminal';
+    }
+  });
+});
+
+if (!CONTROL_AVAILABLE) {
+  document.getElementById("control-warning").classList.add("visible");
+  document.querySelectorAll(".card-start-btn").forEach((b) => { b.disabled = true; });
+} else {
+  document.getElementById("control-ok").classList.add("visible");
+  refreshStatus();
+  setInterval(refreshStatus, 5000);
+}
+</script>
+</body>
+</html>

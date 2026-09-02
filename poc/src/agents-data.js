@@ -42,7 +42,7 @@ export const SYSTEM_AGENTS = [
       "Citation verification & claim substantiation",
       "Competitive publication landscape analysis"
     ],
-    consumers: ["literature-scout", "strategy-advisor", "msl-copilot", "care-gap-analyzer", "medinfo-request"],
+    consumers: ["literature-scout", "strategy-advisor", "msl-copilot", "disease-navigator", "care-gap-analyzer", "medinfo-request"],
     compliancePartners: ["sci-verify", "expiration", "audit"]
   }
 ];
@@ -190,7 +190,7 @@ export const BUSINESS_AGENTS = [
     id: "msl-connect",
     name: "MSL Connect",
     icon: "map-pin-heart",
-    desc: "Helps HCPs identify their assigned MSL(s) by therapeutic area, territory, and institution. Pulls from Orion field intelligence, OneCRM territory assignments, and MSL profiles.",
+    desc: "Helps HCPs identify their assigned MSL(s) by therapeutic area, territory, and institution. Pulls from interaction signal data, OneCRM territory assignments, and MSL profiles.",
     users: ["HCPs", "MSLs"],
     compliancePartners: ["privacy", "audit", "promo-risk"],
     hubDependency: ["hcp-explorer"],
@@ -233,6 +233,16 @@ export const BUSINESS_AGENTS = [
     desc: "Assesses product viability after temperature excursions for insulins and vaccines. Wraps the Sanofi Stability Calculator with AI-powered natural language intake, multi-product batch assessment, and cold chain compliance logging.",
     users: ["Pharmacists", "HCPs"],
     compliancePartners: ["sci-verify", "audit", "ae-detect"],
+    hubDependency: ["literature-intel"],
+    status: "active"
+  },
+  {
+    id: "disease-navigator",
+    name: "Disease State Navigator Agent",
+    icon: "dna",
+    desc: "Maps disease biology to treatment landscape across therapeutic areas. Traces shared inflammatory pathways to surface cross-TA connections — where one mechanism explains comorbidity in another organ system — and grounds every claim in pathophysiology, biomarkers, and the competitive landscape.",
+    users: ["MSLs", "HCPs", "Medical Affairs", "Patients"],
+    compliancePartners: ["sci-verify", "fair-balance", "off-label", "audit"],
     hubDependency: ["literature-intel"],
     status: "active"
   },
@@ -705,7 +715,7 @@ These experts are presenting at EADV in Sanofi-relevant tracks but have zero One
           "Publications: 34 total, 12 in AD, h-index 28...",
           "Trial activity: sub-investigator on LIBERTY AD CHRONOS...",
           "OneCRM: 6 Sanofi interactions in last 12 months...",
-          "Orion signals: 3 recent MedVerse queries (last 30 days)...",
+          "interaction signals: 3 recent MedVerse queries (last 30 days)...",
           "Generating personalized briefing..."
         ]
       },
@@ -727,7 +737,7 @@ These experts are presenting at EADV in Sanofi-relevant tracks but have zero One
 - 3 MSL field visits in last 12 months
 - Relationship strength: Strong
 
-**Recent MedVerse Activity (Orion Signals)**
+**Recent MedVerse Activity (Interaction Signals)**
 - Queried dupilumab vs abrocitinib head-to-head data (Jul 28)
 - Explored active clinical trials — expressed referral interest (Jul 28)
 - Reviewed type 2 inflammation cross-TA content (Jul 15)
@@ -745,7 +755,7 @@ These experts are presenting at EADV in Sanofi-relevant tracks but have zero One
         checks: [
           { agent: "Promotional Risk", agentId: "promo-risk", status: "pass", detail: "No promotional language detected. Briefing uses clinical terminology and published data references." },
           { agent: "Off-Label Monitor", agentId: "off-label", status: "pass", detail: "All discussion topics align with approved indications. No off-label content identified." },
-          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Interaction logged — MSL ID: FML-2847, HCP: Dr. Sarah Chen (NPI: 1234567890), briefing generated with HCP Explorer profile + Orion signals. Compliance record #MSL-2026-08-2847." }
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Interaction logged — MSL ID: FML-2847, HCP: Dr. Sarah Chen (NPI: 1234567890), briefing generated with HCP Explorer profile + interaction signals. Compliance record #MSL-2026-08-2847." }
         ]
       },
       {
@@ -1005,7 +1015,7 @@ These experts are publishing at accelerating rates in Sanofi-relevant disease ar
         items: [
           "Literature Intelligence: scanning 2,400+ AD publications (2024–2026)...",
           "HCP Explorer: analyzing expert sentiment and prescribing trends...",
-          "Orion signals: aggregating field insights from 340 MSL interactions...",
+          "interaction signals: aggregating field insights from 340 MSL interactions...",
           "Competitive pipeline tracker: mapping 18 active AD mechanisms...",
           "Congress intelligence: synthesizing AAD 2026 + EADV 2025 themes...",
           "Cross-referencing payer landscape and HEOR evidence base..."
@@ -1031,7 +1041,7 @@ Dupilumab maintains 42% publication share of voice — the largest of any single
 | Pediatric real-world evidence | High | Tralokinumab expanding to pediatric | Fast-track pediatric RWE registry |
 | Atopic march disease modification | Medium | No competitor data yet — first-mover opportunity | Fund ADAPT prevention study readout |
 
-**Orion field intelligence themes (top 3 from MSL interactions):**
+**Interaction signal themes (top 3 from MSL interactions):**
 1. **HCP concern #1:** "When should I switch from dupilumab to a JAK?" — 67 inquiries this quarter
 2. **HCP concern #2:** Need for head-to-head data beyond abrocitinib (upadacitinib H2H requested)
 3. **HCP opportunity:** Growing interest in treating AD + asthma concurrently — cross-TA messaging resonating
@@ -1046,7 +1056,7 @@ Dupilumab maintains 42% publication share of voice — the largest of any single
         type: "compliance",
         label: "Governance layer review",
         checks: [
-          { agent: "AI Explainability", agentId: "explainability", status: "pass", detail: "Strategy synthesis methodology: 42% weight to publication analysis (Literature Intelligence), 25% to field signals (Orion), 20% to competitive pipeline data (public filings + congress), 13% to payer landscape. All sources cited with provenance." },
+          { agent: "AI Explainability", agentId: "explainability", status: "pass", detail: "Strategy synthesis methodology: 42% weight to publication analysis (Literature Intelligence), 25% to interaction signals, 20% to competitive pipeline data (public filings + congress), 13% to payer landscape. All sources cited with provenance." },
           { agent: "Scientific Verification", agentId: "sci-verify", status: "pass", detail: "All competitive claims verified against published data. Share-of-voice calculation based on PubMed-indexed publications only. JAK safety comparison references JADE DARE and HEADS UP published results." },
           { agent: "Inspection Readiness", agentId: "inspection", status: "logged", detail: "Strategic assessment logged with full data provenance. Competitive intelligence derived from public sources only (publications, ClinicalTrials.gov, congress proceedings). No proprietary competitive data accessed." }
         ]
@@ -1161,7 +1171,7 @@ Dupilumab maintains 42% publication share of voice — the largest of any single
         items: [
           "Verifying HCP identity: Dr. Sarah Chen, NPI #1234567890...",
           "HCP Explorer: loading profile — dermatology, Northwestern Memorial, Chicago IL...",
-          "Orion territory lookup: Midwest Region → Illinois → Cook County...",
+          "Territory lookup: Midwest Region → Illinois → Cook County...",
           "OneCRM: retrieving MSL territory assignments for Immunology + Dermatology...",
           "Matching by therapeutic area alignment and geographic territory...",
           "Checking MSL availability and recent engagement history..."
@@ -1623,6 +1633,83 @@ Review ID: MLR-2026-08-0412 | Submitted: Aug 6, 2026 | Priority: Expedited
         label: "Stability assessment delivered",
         badge: "ASSESSED & DOCUMENTED",
         content: "2 of 3 products cleared: Lantus (8 vials) and Toujeo Max (3 pens) are within labeled stability tolerance — return to refrigeration. Beyfortus requires Sanofi Vaccines confirmation (1-800-VACCINE) due to stricter excursion limits. Pharmacy action plan and excursion documentation generated. No products were administered — no AE reporting required."
+      }
+    ]
+  },
+  "disease-navigator": {
+    title: "Cross-TA pathway mapping from a single presenting condition",
+    steps: [
+      {
+        type: "input",
+        label: "HCP question",
+        content: "I have a 34-year-old atopic dermatitis patient on topicals who has now developed adult-onset asthma and chronic nasal congestion with polyps. Three specialists, three diagnoses. Is this one disease or three? What does the biology say, and what are the treatment implications?"
+      },
+      {
+        type: "processing",
+        label: "Disease State Navigator processing",
+        items: [
+          "Resolving presenting conditions: atopic dermatitis, type 2 asthma, CRSwNP...",
+          "Pathway lookup: all three map to type 2 inflammation (IL-4, IL-13, IL-5)...",
+          "Tracing shared mediators: TSLP, IL-33, IL-25 upstream alarmins...",
+          "Cross-referencing biomarker overlap: IgE, eosinophils, FeNO, periostin, TARC...",
+          "Literature Intelligence: retrieving atopic march and unified airway evidence...",
+          "Mapping treatment landscape across all three indications...",
+          "Checking label scope for each candidate therapy..."
+        ]
+      },
+      {
+        type: "draft",
+        label: "Cross-therapeutic-area disease map",
+        content: `**One mechanism, three organ systems.** All three conditions sit on the **type 2 inflammation** pathway — this is a single immunologic process presenting in skin, lower airway, and upper airway.
+
+| Presenting condition | Area | Shared pathway | Key biomarkers |
+|---|---|---|---|
+| Atopic Dermatitis | Dermatology | Type 2 inflammation | IgE, eosinophils, TARC/CCL17, periostin |
+| Type 2 Asthma | Respiratory | Type 2 inflammation | Eosinophils, FeNO, IgE |
+| CRSwNP | ENT | Type 2 inflammation | Eosinophils, IgE, tissue eosinophilia |
+
+**The shared biology**
+- **IL-4 and IL-13** drive IgE class switching, barrier disruption, and tissue remodeling across all three sites
+- **IL-5** drives eosinophil maturation and survival — the common thread in airway and sinus disease
+- **Upstream alarmins** (TSLP, IL-33, IL-25) initiate the cascade from epithelial injury in each organ
+
+**Why this pattern is expected, not coincidental**
+This is the **atopic march** — patients frequently progress from AD in childhood or early adulthood to asthma and rhinosinusitis. The unified airway model further links lower and upper airway disease. Your patient's timeline is a textbook presentation rather than three unrelated diagnoses.
+
+**Adjacent conditions on the same pathway** — worth monitoring given the shared mechanism:
+- **Eosinophilic Esophagitis** — screen if dysphagia or food impaction appears
+- **Prurigo Nodularis** — type 2 driven, with IL-31 mediating itch
+
+**Treatment implications**
+A mechanism-level therapy can address all three presentations at once, rather than three organ-specific regimens:
+
+| Approach | Mechanism | Label scope across these three |
+|---|---|---|
+| IL-4Rα blockade (dupilumab) | Blocks IL-4 **and** IL-13 signalling | Approved in all three: AD, type 2 asthma, CRSwNP |
+| IL-13 only (tralokinumab, lebrikizumab) | Single cytokine | AD only |
+| IL-5 / IL-5R (mepolizumab, benralizumab) | Eosinophil depletion | Asthma and CRSwNP; not AD |
+| Oral JAK inhibitors | Broad intracellular signalling | AD and asthma programs; boxed warnings for MACE, malignancy, thrombosis |
+
+**Discussion points for the treating team**
+1. Coordinate across dermatology, pulmonology, and ENT — the shared mechanism argues for one treatment strategy, not three
+2. Baseline the shared biomarkers (total IgE, blood eosinophils, FeNO) before starting any systemic therapy
+3. Confirm which indications a given agent is actually approved for in your region before discussing it with the patient`
+      },
+      {
+        type: "compliance",
+        label: "Governance layer review",
+        checks: [
+          { agent: "Scientific Verification", agentId: "sci-verify", status: "pass", detail: "Pathway biology verified against the MedVerse disease knowledge base and indexed literature. Type 2 inflammation mediators (IL-4, IL-13, IL-5) and upstream alarmins (TSLP, IL-33, IL-25) confirmed for all three conditions. Atopic march and unified airway models are established, peer-reviewed disease concepts." },
+          { agent: "Fair Balance", agentId: "fair-balance", status: "pass", detail: "Comparative table presents mechanism and label scope for all therapy classes including competitors. JAK inhibitor boxed warnings (MACE, malignancy, thrombosis) surfaced alongside their efficacy positioning. No efficacy claim presented without safety context." },
+          { agent: "Off-Label Monitor", agentId: "off-label", status: "warn", detail: "CORRECTION APPLIED — draft initially implied a single agent could treat the adjacent conditions (EoE, prurigo nodularis) raised in the response. Rewritten to present those as conditions to monitor, and a step added directing the clinician to confirm approved indications by region. No off-label recommendation delivered." },
+          { agent: "Audit Trail", agentId: "audit", status: "logged", detail: "Disease navigation logged — entry condition: atopic dermatitis. Pathway: type 2 inflammation. 3 primary + 2 adjacent conditions mapped. 4 therapy classes compared. 1 off-label correction applied before delivery. Compliance record #DN-2026-08-0173." }
+        ]
+      },
+      {
+        type: "output",
+        label: "Disease map delivered",
+        badge: "VERIFIED & FAIR-BALANCED",
+        content: "Three diagnoses resolved to one shared mechanism — type 2 inflammation across skin, lower airway, and upper airway. Cross-TA map delivered with shared biomarkers, atopic march context, two adjacent conditions to monitor, and a fair-balanced comparison of four therapy classes with label scope. One off-label implication was caught and corrected by the governance layer before delivery."
       }
     ]
   },
