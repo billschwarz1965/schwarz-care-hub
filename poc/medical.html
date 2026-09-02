@@ -157,6 +157,8 @@
     .agent-card[data-agent="med-strategy"]   .agent-card-tag  { background: #fff7ed; color: #c2410c; }
     .agent-card[data-agent="population"]     .agent-card-icon { background: #ffedd5; color: #c2410c; }
     .agent-card[data-agent="population"]     .agent-card-tag  { background: #ffedd5; color: #9a3412; }
+    .agent-card[data-agent="care-gap"]       .agent-card-icon { background: #ccfbf1; color: #0f766e; }
+    .agent-card[data-agent="care-gap"]       .agent-card-tag  { background: #ccfbf1; color: #0f766e; }
     .agent-card[data-agent="literature"]     .agent-card-icon { background: #fae8ff; color: #a21caf; }
     .agent-card[data-agent="literature"]     .agent-card-tag  { background: #fae8ff; color: #86198f; }
     .agent-card[data-agent="congress"]      .agent-card-icon { background: #fee2e2; color: #dc2626; }
@@ -413,6 +415,12 @@
           <h3>Population Intelligence</h3>
           <p>Deidentified real-world evidence mapped against scientific engagement. Surface education priorities, evidence gaps, and event siting mismatch by region.</p>
           <span class="agent-card-tag">RWD / Geography</span>
+        </div>
+        <div class="agent-card" data-agent="care-gap">
+          <div class="agent-card-icon"><i class="ti ti-stethoscope"></i></div>
+          <h3>Care Gap Analyzer</h3>
+          <p>Decomposes regional burden into guideline-anchored care gaps — undertreatment, safety, access, diagnostic — and derives the education need behind each.</p>
+          <span class="agent-card-tag">RWD / Education</span>
         </div>
         <div class="agent-card" data-agent="literature">
           <div class="agent-card-icon"><i class="ti ti-book-2"></i></div>
@@ -704,6 +712,35 @@
         <div><div class="panel-title">Population Intelligence</div><div class="panel-desc">Deidentified RWD overlaid on scientific engagement — education and evidence priorities</div></div>
       </div>
       <div id="population-content"></div>
+    </div>
+
+    <!-- ===== CARE GAP ANALYZER PANEL ===== -->
+    <div class="agent-panel" id="panel-care-gap">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#ccfbf1;color:#0f766e;"><i class="ti ti-stethoscope"></i></div>
+        <div><div class="panel-title">Care Gap Analyzer</div><div class="panel-desc">Decompose regional burden into guideline-anchored care gaps and the education need behind each</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-map-2"></i> Select Region</h4>
+            <div class="form-group">
+              <label class="form-label">Region</label>
+              <select class="form-select" id="cga-region">
+                <option>Northeast</option>
+                <option>Mid-Atlantic</option>
+                <option selected>Southeast</option>
+                <option>Midwest</option>
+                <option>West</option>
+              </select>
+            </div>
+            <button class="form-btn form-btn-primary" id="cga-submit"><i class="ti ti-stethoscope"></i> Decompose Care Gaps</button>
+          </div>
+        </div>
+        <div class="form-results" id="cga-results">
+          <div class="result-empty"><i class="ti ti-stethoscope"></i>Select a region to decompose its aggregate burden into guideline-anchored care gaps.</div>
+        </div>
+      </div>
     </div>
 
     <!-- ===== LITERATURE INTELLIGENCE PANEL ===== -->
