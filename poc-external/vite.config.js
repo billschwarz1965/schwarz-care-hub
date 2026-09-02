@@ -33,6 +33,7 @@ export default defineConfig({
         explore: resolve(__dirname, 'explore.html'),
         about: resolve(__dirname, 'about.html'),
         concierge: resolve(__dirname, 'concierge.html'),
+        patient: resolve(__dirname, 'patient.html'),
         ask: resolve(__dirname, 'ask.html'),
         disease: resolve(__dirname, 'disease.html'),
         literature: resolve(__dirname, 'literature.html'),
