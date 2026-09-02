@@ -27,6 +27,48 @@
   }
   function isDark() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
 
+  // ═══ POC DISCLAIMER BANNER ═══
+  // Every page across every edition loads this file, so one banner here
+  // covers the whole app instead of editing each page's header markup.
+  // Dismiss is per-tab-session only (sessionStorage) — it comes back on a
+  // fresh visit, so a demo audience isn't left thinking this is production.
+  const POC_BANNER_KEY = 'medverse-poc-banner-dismissed';
+  function initPocBanner() {
+    if (sessionStorage.getItem(POC_BANNER_KEY)) return;
+    const header = document.querySelector('.header');
+    if (!header) return;
+
+    const style = document.createElement('style');
+    style.textContent = `
+      .mv-poc-banner { display: flex; align-items: center; gap: 10px; padding: 8px 24px;
+        background: var(--warning-bg, #fef9c3); color: var(--warning, #854d0e);
+        border-bottom: 1px solid var(--border, #e4dff0); font-family: var(--font, inherit);
+        font-size: 12.5px; line-height: 1.5; flex-shrink: 0; }
+      .mv-poc-banner i.ti-flask-2 { font-size: 16px; flex-shrink: 0; }
+      .mv-poc-banner strong { font-weight: 700; }
+      .mv-poc-banner-text { flex: 1; }
+      .mv-poc-banner-close { background: none; border: none; color: inherit; opacity: 0.6;
+        cursor: pointer; font-size: 15px; padding: 2px 4px; flex-shrink: 0; }
+      .mv-poc-banner-close:hover { opacity: 1; }
+      html.dark .mv-poc-banner, [data-theme="dark"] .mv-poc-banner {
+        background: rgba(249,200,81,0.1); color: #f9c851; }
+    `;
+    document.head.appendChild(style);
+
+    const banner = document.createElement('div');
+    banner.className = 'mv-poc-banner';
+    banner.innerHTML = `
+      <i class="ti ti-flask-2"></i>
+      <span class="mv-poc-banner-text"><strong>Proof of concept</strong> — illustrative demo with example/synthetic data and a few live read-only connections (e.g. PubMed, ClinicalTrials.gov). Not built or reviewed for production use.</span>
+      <button class="mv-poc-banner-close" title="Dismiss for this session"><i class="ti ti-x"></i></button>
+    `;
+    header.insertAdjacentElement('afterend', banner);
+    banner.querySelector('.mv-poc-banner-close').addEventListener('click', () => {
+      banner.remove();
+      sessionStorage.setItem(POC_BANNER_KEY, '1');
+    });
+  }
+
   // ═══ TOAST SYSTEM ═══
   let toastContainer;
   function ensureToastContainer() {
@@ -652,6 +694,7 @@
 
   // ═══ INIT ═══
   function init() {
+    initPocBanner();
     initDarkMode();
     initDemoLauncher();
     initAskBar();
