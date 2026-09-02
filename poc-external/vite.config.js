@@ -30,6 +30,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         home: resolve(__dirname, 'index.html'),
+        explore: resolve(__dirname, 'explore.html'),
         about: resolve(__dirname, 'about.html'),
         concierge: resolve(__dirname, 'concierge.html'),
         ask: resolve(__dirname, 'ask.html'),

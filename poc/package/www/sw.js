@@ -23,6 +23,8 @@ const BASE = self.registration.scope;
 const APP_SHELL_PATHS = [
   '',
   'index.html',
+  'ask.html',
+  'explore.html',
   'concierge.html',
   'patient.html',
   'msl-copilot.html',
