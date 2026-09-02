@@ -188,8 +188,17 @@ const STOPWORDS = new Set([
  * apply, best first. Longer keyword phrases score higher than single words so
  * "cold chain" beats an incidental "data".
  */
+// Plain substring matching lets short abbreviations match inside unrelated
+// words — the congress keyword "ash" (ASH hematology conference) matched
+// inside "rashes". Word-boundary matching prevents that while still matching
+// phrases containing hyphens ("off-label") normally.
+function keywordMatches(q, kw) {
+  const escaped = kw.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`\\b${escaped}\\b`).test(q);
+}
+
 export function routeQuery(query, availableModules) {
-  const q = ` ${query.toLowerCase()} `;
+  const q = query.toLowerCase();
   const available = availableModules && availableModules.length
     ? new Set(availableModules)
     : null;
@@ -200,7 +209,7 @@ export function routeQuery(query, availableModules) {
       let score = 0;
       const hits = [];
       for (const kw of c.keywords) {
-        if (q.includes(kw.toLowerCase())) {
+        if (keywordMatches(q, kw)) {
           // Multi-word phrases are much stronger topical evidence.
           score += kw.includes(" ") ? 6 : 3;
           hits.push(kw);
