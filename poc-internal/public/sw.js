@@ -28,6 +28,7 @@ const APP_SHELL_PATHS = [
   '',
   'index.html',
   'ask.html',
+  'explore.html',
   'msl-copilot.html',
   'medical.html',
   'agents.html',

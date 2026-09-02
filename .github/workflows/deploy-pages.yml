@@ -113,6 +113,9 @@ jobs:
               a.link span { display: block; font-weight: 400; font-size: 12px; color: #7a6b8f; margin-top: 2px; }
               a.link:hover { background: #7a00e6; color: #fff; }
               a.link:hover span { color: #e9d5ff; }
+              a.link.highlight { background: #7a00e6; color: #fff; box-shadow: 0 4px 14px rgba(122,0,230,0.35); }
+              a.link.highlight span { color: #e9d5ff; }
+              a.link.highlight:hover { background: #6600c2; }
               p.note { font-size: 12px; color: #7a7590; margin: 16px 0 0; }
             </style>
           </head>
@@ -123,8 +126,8 @@ jobs:
               <p class="sub">Illustrative prototypes. Synthetic and example data throughout.</p>
               <a class="link" href="poc/index.html">POC — Full<span>Superset edition, includes internal-only tools</span></a>
               <a class="link" href="poc-external/index.html">POC — External Edition<span>External HCP audience</span></a>
-              <a class="link" href="poc-internal/index.html">POC — Internal Edition<span>MSL &amp; Medical Affairs</span></a>
-              <a class="link" href="hcp-preferences/index.html">HCP Preferences<span>Research results and summary</span></a>
+              <a class="link highlight" href="poc-internal/index.html">POC — Internal Edition<span>MSL &amp; Medical Affairs</span></a>
+              <a class="link highlight" href="hcp-preferences/index.html">HCP Preferences<span>Research results and summary</span></a>
               <a class="link" href="sitemap-options/index.html">Sitemap Options<span>Navigation prototypes</span></a>
             </div>
           </body>

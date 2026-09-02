@@ -18,6 +18,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         home: resolve(__dirname, 'index.html'),
+        explore: resolve(__dirname, 'explore.html'),
         about: resolve(__dirname, 'about.html'),
         ask: resolve(__dirname, 'ask.html'),
         mslcopilot: resolve(__dirname, 'msl-copilot.html'),

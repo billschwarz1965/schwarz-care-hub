@@ -27,6 +27,7 @@ const APP_SHELL_PATHS = [
   '',
   'index.html',
   'ask.html',
+  'explore.html',
   'concierge.html',
   'disease.html',
   'literature.html',

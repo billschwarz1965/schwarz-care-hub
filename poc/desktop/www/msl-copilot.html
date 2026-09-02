@@ -355,8 +355,8 @@
     .legend-scale { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-muted); }
     .legend-bar { width: 130px; height: 9px; border-radius: 5px; }
   </style>
-  <script type="module" crossorigin src="./assets/mslcopilot-BQ4euw7_.js"></script>
-  <link rel="modulepreload" crossorigin href="./assets/enhancements-wiYHDXSW.js">
+  <script type="module" crossorigin src="./assets/mslcopilot-Cyq4s1A5.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/enhancements-yqlzMlQc.js">
   <link rel="modulepreload" crossorigin href="./assets/narrator-BE1zjzk_.js">
   <link rel="modulepreload" crossorigin href="./assets/taxonomy-B-xcL3O-.js">
   <link rel="modulepreload" crossorigin href="./assets/orion-bridge-4A-0m1g1.js">
@@ -386,8 +386,8 @@
   </div>
 
   <nav class="module-nav">
-    <a class="module-tab" href="index.html"><i class="ti ti-home"></i> Home</a>
     <a class="module-tab" href="ask.html"><i class="ti ti-sparkles"></i> Ask MedVerse</a>
+    <a class="module-tab" href="explore.html"><i class="ti ti-compass"></i> Explore</a>
     <a class="module-tab" href="concierge.html"><i class="ti ti-message-circle"></i> HCP Concierge</a>
     <a class="module-tab" href="patient.html"><i class="ti ti-heart"></i> Patient Concierge</a>
     <a class="module-tab active" href="msl-copilot.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
@@ -423,13 +423,13 @@
         <div class="agent-card" data-agent="precall">
           <div class="agent-card-icon"><i class="ti ti-clipboard-text"></i></div>
           <h3>Pre-Call Intelligence</h3>
-          <p>Look up any HCP for a comprehensive pre-call briefing — engagement history, scientific interests, Orion signals, trial involvement, and recommended talking points.</p>
+          <p>Look up any HCP for a comprehensive pre-call briefing — engagement history, scientific interests, interaction signals, trial involvement, and recommended talking points.</p>
           <span class="agent-card-tag">Core Agent</span>
         </div>
         <div class="agent-card" data-agent="territory">
           <div class="agent-card-icon"><i class="ti ti-map-2"></i></div>
           <h3>Territory Dashboard</h3>
-          <p>View your territory at a glance — upcoming meetings, HCP engagement stats, Orion alerts, and prioritized action items for the week.</p>
+          <p>View your territory at a glance — upcoming meetings, HCP engagement stats, signal alerts, and prioritized action items for the week.</p>
           <span class="agent-card-tag">Dashboard</span>
         </div>
         <div class="agent-card" data-agent="caregaps">
@@ -441,8 +441,8 @@
         <div class="agent-card" data-agent="postcall">
           <div class="agent-card-icon"><i class="ti ti-send"></i></div>
           <h3>Post-Call Reporting</h3>
-          <p>Submit post-call signals directly to Orion. Capture HCP insights, requests, and follow-up actions for team-wide visibility and intelligence routing.</p>
-          <span class="agent-card-tag">Orion Signal</span>
+          <p>Submit post-call interaction signals. Capture HCP insights, requests, and follow-up actions for team-wide visibility and intelligence routing.</p>
+          <span class="agent-card-tag">Interaction Signal</span>
         </div>
         <div class="agent-card" data-agent="medinfo">
           <div class="agent-card-icon"><i class="ti ti-file-description"></i></div>
@@ -494,7 +494,7 @@
         </div>
         <div class="agent-card" data-agent="orion">
           <div class="agent-card-icon"><i class="ti ti-radar-2"></i></div>
-          <h3>Orion Intelligence</h3>
+          <h3>Interaction Signals</h3>
           <p>Real-time engagement intelligence from HCP interactions across MedVerse. View signal trends, territory heatmaps, and priority alerts for your field team.</p>
           <span class="agent-card-tag">Field Intel</span>
         </div>
@@ -586,7 +586,7 @@
     <div class="agent-panel" id="panel-postcall">
       <div class="panel-header">
         <div class="panel-icon" style="background:var(--orion-bg);color:var(--orion-accent);"><i class="ti ti-send"></i></div>
-        <div><div class="panel-title">Post-Call Reporting</div><div class="panel-desc">Submit engagement signals to Orion for field team intelligence</div></div>
+        <div><div class="panel-title">Post-Call Reporting</div><div class="panel-desc">Submit engagement signals for medical insights and analytics</div></div>
       </div>
       <div class="form-panel">
         <div class="form-main">
@@ -626,11 +626,11 @@
               <label class="form-label">Notes</label>
               <textarea class="form-input" id="sig-notes" rows="3" placeholder="Context, follow-up actions, notable quotes…" style="resize:vertical;"></textarea>
             </div>
-            <button class="form-btn form-btn-primary" id="sig-submit" disabled><i class="ti ti-radar-2"></i> Submit Signal to Orion</button>
+            <button class="form-btn form-btn-primary" id="sig-submit" disabled><i class="ti ti-radar-2"></i> Submit Interaction Signal</button>
           </div>
         </div>
         <div class="form-results" id="sig-results">
-          <div class="result-empty"><i class="ti ti-send"></i>Complete the form to submit a post-call signal. Signals are routed to Orion for team-wide intelligence.</div>
+          <div class="result-empty"><i class="ti ti-send"></i>Complete the form to submit a post-call signal. Signals are incorporated into medical insights and analytics.</div>
         </div>
       </div>
     </div>
@@ -941,7 +941,7 @@
     <div class="agent-panel" id="panel-orion">
       <div class="panel-header">
         <div class="panel-icon" style="background:var(--orion-bg);color:var(--orion-accent);"><i class="ti ti-radar-2"></i></div>
-        <div><div class="panel-title">Orion Intelligence</div><div class="panel-desc">Real-time engagement intelligence from HCP interactions across MedVerse</div></div>
+        <div><div class="panel-title">Interaction Signals</div><div class="panel-desc">Real-time engagement intelligence from HCP interactions across MedVerse</div></div>
       </div>
       <div id="orion-content"></div>
     </div>
