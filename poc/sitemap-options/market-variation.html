@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Country-specific L1 navigation · Medverse Site Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .page { max-width: 940px; margin: 0 auto; padding: 44px 24px 80px; }
+  .back { display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:11px;
+          font-weight:700; letter-spacing:.05em; color:var(--text-muted); margin-bottom:22px; }
+  .back:hover { color: var(--opt1); }
+  .back::before { content:"←"; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; font-weight: 700; color: var(--text-muted); margin-bottom: 12px; }
+  h1 { font-size: 36px; line-height: 1.15; margin-bottom: 18px; }
+  .intro { font-size: 16px; color: var(--text-secondary); max-width: 680px; margin-bottom: 22px; }
+  .intro b { color: var(--text); }
+  h2.sec { font-size: 19px; margin: 40px 0 12px; }
+  p.body { font-size: 14px; color: var(--text-secondary); max-width: 700px; margin-bottom: 16px; }
+  code { font-family: var(--mono); background: var(--bg); border: 1px solid var(--border); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+
+  .callout { background: var(--opt2-light); border-left: 3px solid var(--opt2); border-radius: 8px;
+             padding: 16px 20px; font-size: 14px; color: var(--text-secondary); margin-bottom: 28px; }
+  .callout b { color: var(--text); }
+
+  /* country switcher + live L1 preview */
+  .switcher { display:flex; flex-wrap:wrap; gap:8px; margin-bottom: 18px; }
+  .switcher button { font-family: inherit; font-size: 13px; font-weight: 600; padding: 8px 15px;
+    border-radius: 20px; border: 1px solid var(--border); background: var(--surface);
+    color: var(--text-secondary); cursor: pointer; }
+  .switcher button:hover { border-color: var(--opt1); color: var(--opt1); }
+  .switcher button[aria-pressed="true"] { background: var(--opt1); border-color: var(--opt1); color:#fff; }
+
+  .navpreview { border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom: 10px; background: var(--surface); }
+  .navpreview .bar { display:flex; align-items:center; gap:14px; padding:10px 14px; border-bottom:1px solid var(--border); }
+  .navpreview .brand { font-weight:700; font-size:13px; white-space:nowrap; }
+  .navpreview .locale { font-family:var(--mono); font-size:11px; color:var(--text-muted); }
+  .navpreview .l1s { display:flex; flex-wrap:wrap; gap:4px; padding:12px 14px; }
+  .navpreview .l1 { font-size:12.5px; font-weight:600; padding:7px 12px; border-radius:6px;
+    background:var(--bg); color:var(--text-secondary); border:1px solid var(--border); }
+  .navpreview .l1.shared { }
+  .navpreview .l1.local { background: var(--opt1-light); color: var(--opt1); border-color: #ddc9f0; }
+  .legend { display:flex; gap:18px; font-size:11.5px; color:var(--text-muted); margin-bottom: 30px; }
+  .legend span::before { content:"■ "; }
+  .legend .s::before { color:#c9c4d6; } .legend .l::before { color: var(--opt1); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px; }
+  th { text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--text-muted); padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-secondary); }
+  td:first-child, th:first-child { font-weight: 600; color: var(--text); }
+  tr:last-child td { border-bottom: 0; }
+
+  .mvo { border:1px solid var(--border); border-top:4px solid var(--opt1); border-radius:10px;
+         background:var(--surface); padding:22px 24px; margin-bottom: 14px; }
+  .mvo .label { font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.06em; color:var(--opt1); margin-bottom:8px; }
+  .mvo h3 { font-size:19px; margin-bottom:6px; }
+  .mvo .url { font-family:var(--mono); font-size:12px; background:var(--bg); border:1px solid var(--border);
+              border-radius:6px; padding:8px 10px; color:var(--text-secondary); margin:12px 0 16px; display:inline-block; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .grid2 h4 { font-size:12px; font-family:var(--mono); letter-spacing:.04em; color:var(--text-muted); margin-bottom:7px; }
+  .grid2 ul { list-style:none; }
+  .grid2 li { font-size:13px; color:var(--text-secondary); margin-bottom:6px; padding-left:14px; position:relative; }
+  .grid2 li::before { content:"—"; position:absolute; left:0; color:var(--text-muted); }
+
+  pre { background: var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px 18px;
+        font-family:var(--mono); font-size:12px; line-height:1.6; color:var(--text-secondary); overflow-x:auto; margin-bottom: 12px; }
+  pre .k { color: var(--opt1); font-weight:600; }
+  pre .c { color: var(--text-muted); font-style: italic; }
+
+  .proposal { border:1px solid #f0d9b8; border-left:4px solid var(--opt3); background:var(--opt3-light);
+              border-radius:10px; padding:18px 22px; margin-bottom:20px; }
+  .proposal-label { font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.06em;
+                    color:var(--opt3); margin-bottom:10px; }
+
+  .gateflow { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; margin-bottom:6px; }
+  .gstep { flex:1 1 160px; border:1px solid var(--border); border-radius:10px; padding:13px 15px; background:var(--surface); }
+  .gstep.open { border-top:3px solid var(--opt2); }
+  .gstep.gated { border-top:3px solid var(--opt1); }
+  .gstep b { display:block; font-size:13.5px; margin:6px 0 4px; }
+  .gstep span:not(.gtag) { display:block; font-size:12px; color:var(--text-secondary); }
+  .gtag { display:inline-block; font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.04em;
+          padding:2px 7px; border-radius:4px; background:var(--opt2-light); color:var(--opt2); }
+  .gtag.gt { background:var(--opt1-light); color:var(--opt1); }
+  .garrow { align-self:center; color:var(--text-muted); font-size:15px; }
+
+  .decided { border:1px solid #bfe3d8; border-left:4px solid var(--opt2); background:var(--opt2-light);
+             border-radius:10px; padding:16px 20px; margin-bottom:14px; }
+  .decided-label { font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.06em;
+                   color:var(--opt2); margin-bottom:8px; }
+  .decided p { font-size:14px; color:var(--text-secondary); margin:0; }
+  .decided p b { color:var(--text); }
+
+  .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 20px; margin-top: 40px; }
+  @media (max-width:760px){ .gateflow{flex-direction:column} .garrow{transform:rotate(90deg)} }
+  @media (max-width:760px){ .grid2{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="back" href="index.html">Site map options</a>
+  <div class="eyebrow">MEDICAL.CAMPUS.SANOFI · TA FRAMEWORK — MARKET VARIATION</div>
+  <h1>Country-specific L1 navigation</h1>
+  <p class="intro">
+    The three architecture options differ in what sits <b>above</b> the local instance. This page covers a
+    different axis: how the <b>L1 navigation inside a local instance varies by country</b>. Some markets need a
+    top-level section that does not exist anywhere else — the US needs
+    <b>Medical Value &amp; Outcomes</b>, which serves payors rather than treating clinicians.
+  </p>
+
+  <div class="callout">
+    <b>The rule this implies:</b> L1 is not a single global list with translations. It is a shared core set plus a
+    per-market extension set. A market can <b>add</b> an L1 the core does not have; it should not be able to
+    silently rename or reorder the core, or cross-market navigation and analytics stop comparing.
+  </div>
+
+  <h2 class="sec">L1 by market</h2>
+  <p class="body">Select a market to see the L1 set its local instance would ship.</p>
+  <div class="switcher" id="switcher"></div>
+  <div class="navpreview">
+    <div class="bar">
+      <span class="brand">Sanofi Medical</span>
+      <span class="locale" id="localeUrl">medical.campus.sanofi/en-us</span>
+    </div>
+    <div class="l1s" id="l1s"></div>
+  </div>
+  <div class="legend">
+    <span class="s">Shared core L1 — same in every market</span>
+    <span class="l">Market-specific L1 — exists only here</span>
+  </div>
+  <p class="body" id="marketNote" style="margin-top:-14px;"></p>
+
+  <h2 class="sec">The US case: Medical Value &amp; Outcomes</h2>
+  <div class="mvo">
+    <div class="label">US-ONLY L1 · MVO</div>
+    <h3>Medical Value &amp; Outcomes</h3>
+    <p class="body" style="margin-bottom:0;">
+      A top-level section for the audiences that decide access rather than prescribe: payors at insurance
+      companies, hospitals and government. It is not a therapeutic-area page and does not belong under one —
+      its organising principle is the decision being supported, not the disease.
+    </p>
+    <div class="url">medical.campus.sanofi/en-us/medical-value-outcomes</div>
+    <div class="grid2">
+      <div>
+        <h4>WHO IT SERVES</h4>
+        <ul>
+          <li>Payors at insurance companies</li>
+          <li>Hospitals and health systems</li>
+          <li>Government bodies</li>
+        </ul>
+      </div>
+      <div>
+        <h4>SCOPE IN THE US</h4>
+        <ul>
+          <li>Specialty Care</li>
+          <li>General Medicines</li>
+          <li>Spans both GBUs — so it cannot sit inside either</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="body">
+    That last point is the structural consequence. Because MVO covers Specialty Care <i>and</i> General Medicines,
+    it cannot be nested under a GBU or a therapeutic area without duplicating it. It has to be a sibling of the TA
+    set at L1, which is exactly why "different L1 links per country" is the requirement rather than "different
+    content under the same L1".
+  </p>
+
+  <h2 class="sec">How it interacts with the three options</h2>
+  <table>
+    <thead><tr><th style="width:16%">Option</th><th>Effect on a market-specific L1</th></tr></thead>
+    <tbody>
+      <tr><td>Option 1 — global portal, flat sections</td>
+          <td>Works. The global root keeps its flat TA sections; <code>/en-us</code> adds MVO to its own L1 set. Risk: a visitor at the global root sees no MVO entry point, so US payors must land in the locale directly.</td></tr>
+      <tr><td>Option 2 — global portal, TA-nested</td>
+          <td>Works, with the most friction. Option 2's organising promise is "TA is always the layer", and MVO is deliberately not a TA. It becomes the visible exception to the pattern.</td></tr>
+      <tr><td>Option 3 — no global portal</td>
+          <td>Cleanest fit. Every market already defines its own instance, so a per-market L1 set is the native model rather than an exception.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec">What has to be defined to build it</h2>
+  <p class="body">The mechanism is a per-locale L1 manifest: a shared core plus an ordered extension list.</p>
+<pre><span class="c">// one entry per locale; core is inherited, extensions are additive</span>
+<span class="k">core</span>: [ Therapeutic Areas, Programs, Events, Resources, About Medical ]
+<span class="k">approval</span>: [ gtmc, medical-product-line-owner ]   <span class="c">// both required, any L1 change</span>
+
+<span class="k">en-us</span>:
+  extends: core
+  add:
+    - <span class="k">id</span>: medical-value-outcomes
+      label: "Medical Value &amp; Outcomes"
+      audience: [ payor, hospital, government ]
+      gbu: [ specialty-care, general-medicines ]
+      gated: true          <span class="c">// payor audience, not HCP self-attestation</span>
+      position: after:therapeutic-areas
+
+<span class="k">en-gb</span>, <span class="k">fr-fr</span>, <span class="k">de-de</span>:
+  extends: core           <span class="c">// no extensions defined yet</span>
+</pre>
+  <div class="decided">
+    <div class="decided-label">DECIDED · L1 APPROVAL</div>
+    <p>Adding, removing or renaming an L1 section requires approval from <b>GTMC</b> and the
+       <b>Medical Product Line owner</b>. Both, not either — GTMC holds the cross-market consistency of the core set,
+       the Product Line owner holds the platform. This is what stops a market adding L1s unilaterally while still
+       leaving a route for a genuine case like MVO.</p>
+  </div>
+  <p class="body">
+    That resolves governance. Three decisions remain, none of which are design questions:
+  </p>
+  <table>
+    <thead><tr><th style="width:24%">Decision</th><th>Why it matters</th></tr></thead>
+    <tbody>
+      <tr><td>Gating model</td><td>MVO's audience is not HCPs. The existing HCP self-attestation gate is the wrong check for a payor, and may be the wrong legal basis. See the section below.</td></tr>
+      <tr><td>Analytics comparability</td><td>Cross-market reporting breaks silently when L1 sets diverge unless market-specific sections are tagged as extensions.</td></tr>
+      <tr><td>Ownership across GBUs</td><td>MVO spans Specialty Care and General Medicines, so it needs a single content owner who sits above both — separate from the GTMC / Product Line approval of the L1 itself.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec">Gating model — deferred attestation</h2>
+  <div class="proposal">
+    <div class="proposal-label">PROPOSED · NOT YET CLEARED WITH LEGAL &amp; REGULATORY</div>
+    <p class="body" style="margin-bottom:12px;">
+      HCPs land on an <b>ungated home page</b> with no initial attestation, on the condition that everything on it is
+      <b>proactive approved content</b>. Attestation is deferred until the user clicks the first piece of content or
+      link that actually requires it. Main pages stay ungated.
+    </p>
+    <p class="body" style="margin-bottom:0;">
+      <b>Rationale:</b> too many attestations create a bad user experience. Today the gate is charged at the door,
+      before the visitor has any reason to accept it.
+    </p>
+  </div>
+
+  <p class="body">The attestation moves from a front door to a threshold inside the site:</p>
+  <div class="gateflow">
+    <div class="gstep open"><span class="gtag">Ungated</span><b>Home &amp; main pages</b><span>Proactive approved content only. Crawlable, linkable, citable.</span></div>
+    <div class="garrow">→</div>
+    <div class="gstep open"><span class="gtag">Ungated</span><b>Browse &amp; search</b><span>Titles, summaries, structured data.</span></div>
+    <div class="garrow">→</div>
+    <div class="gstep gated"><span class="gtag gt">Attest here</span><b>First gated asset</b><span>Triggered by the click, in context, once the value is already visible.</span></div>
+    <div class="garrow">→</div>
+    <div class="gstep gated"><span class="gtag gt">Carried</span><b>Everything after</b><span>One attestation persists for the session.</span></div>
+  </div>
+
+  <h3 style="font-size:15px; margin:26px 0 10px;">Two independent bodies of evidence already point here</h3>
+  <table>
+    <thead><tr><th style="width:30%">Finding</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>"Use authentication to unlock depth, not basic information" — HCPs "want tailored formats without exchanging their personal details"</td>
+          <td>frog / Capgemini Invent Content Experience research, July 2026 — 12 HCP interviews, US / France / Germany</td></tr>
+      <tr><td>"No mandatory registration to begin; value delivered before commitment." NP and KOL modes abandon an experience that does not deliver value inside two minutes</td>
+          <td>MedVerse User Personas &amp; Journeys, April 2026</td></tr>
+      <tr><td>Gated content is invisible to AI-mediated discovery. Zero-click search rose 56% → 69%; being citable now matters more than being visited</td>
+          <td>Sanofi SEO &amp; GEO 2025, October 2025</td></tr>
+    </tbody>
+  </table>
+  <p class="body">
+    So this is not only a UX preference. An ungated surface is also the only version of the site that AI systems can
+    read, which is the same conclusion the discovery evidence reaches from the opposite direction.
+  </p>
+
+  <h3 style="font-size:15px; margin:26px 0 10px;">What Legal &amp; Regulatory need to rule on</h3>
+  <table>
+    <thead><tr><th style="width:26%">Question</th><th>Why it is not obvious</th></tr></thead>
+    <tbody>
+      <tr><td>Is an ungated page a proactive communication?</td>
+          <td>In most frameworks an openly accessible page is proactive by definition, which constrains it to approved proactive content and excludes anything reactive or off-label. That is the condition this model depends on, so it needs confirming rather than assuming.</td></tr>
+      <tr><td>Can "HCP-only" content sit behind a click rather than a door?</td>
+          <td>Some markets treat HCP-only material as requiring verification before <i>any</i> exposure, including titles and summaries in navigation or search results.</td></tr>
+      <tr><td>Does attestation persist, and for how long?</td>
+          <td>A single per-session attestation is the whole UX benefit. Per-asset attestation returns to the current experience.</td></tr>
+      <tr><td>Does this vary by market?</td>
+          <td>Very likely. If some markets require a front-door gate, the model becomes a per-locale setting alongside the L1 manifest above.</td></tr>
+      <tr><td>What gate applies to a non-HCP audience?</td>
+          <td>MVO serves payors, hospitals and government. HCP self-attestation is the wrong question to ask them, so the gate has to be audience-aware, not a single global check.</td></tr>
+    </tbody>
+  </table>
+  <div class="callout" style="margin-top:22px;">
+    <b>Status:</b> proposal only. Nothing here should be treated as cleared. The dependency is explicit — the model
+    holds if and only if the ungated surface can be constrained to proactive approved content, and that is a Legal
+    and Regulatory determination, not a design one.
+  </div>
+
+  <div class="footnote">
+    Medverse sitemap workbook · TA Framework — Market Variation. Working prototype for internal review.
+    Market-specific L1 sets other than the US are illustrative placeholders, not confirmed requirements.
+    The gating model on this page is a proposal pending Legal &amp; Regulatory review.
+  </div>
+</div>
+
+<script>
+var MARKETS = [
+  { id:'en-us', label:'United States', url:'medical.campus.sanofi/en-us',
+    add:[ 'Medical Value & Outcomes' ],
+    note:'The US is the only market with a confirmed market-specific L1 today. Medical Value & Outcomes serves payors at insurance companies, hospitals and government, across both Specialty Care and General Medicines.' },
+  { id:'global', label:'Global root', url:'medical.campus.sanofi', add:[],
+    note:'The global root carries the shared core only. Any market-specific section is invisible from here, so US payor traffic has to arrive in the locale directly.' },
+  { id:'en-gb', label:'United Kingdom', url:'medical.campus.sanofi/en-gb', add:[],
+    note:'No market-specific L1 defined. Placeholder — UK requirements have not been gathered.' },
+  { id:'fr-fr', label:'France', url:'medical.campus.sanofi/fr-fr', add:[],
+    note:'No market-specific L1 defined. Placeholder — France requirements have not been gathered.' },
+  { id:'de-de', label:'Germany', url:'medical.campus.sanofi/de-de', add:[],
+    note:'No market-specific L1 defined. Placeholder — Germany requirements have not been gathered.' }
+];
+var CORE = ['Therapeutic Areas','Programs','Events','Resources','About Medical'];
+
+(function(){
+  var sw = document.getElementById('switcher');
+  var l1s = document.getElementById('l1s');
+  var localeUrl = document.getElementById('localeUrl');
+  var note = document.getElementById('marketNote');
+
+  function render(m){
+    localeUrl.textContent = m.url;
+    l1s.innerHTML = '';
+    CORE.forEach(function(c){
+      var d = document.createElement('span'); d.className = 'l1 shared'; d.textContent = c; l1s.appendChild(d);
+    });
+    m.add.forEach(function(a){
+      var d = document.createElement('span'); d.className = 'l1 local'; d.textContent = a; l1s.appendChild(d);
+    });
+    note.textContent = m.note;
+    Array.prototype.forEach.call(sw.children, function(b){
+      b.setAttribute('aria-pressed', String(b.dataset.id === m.id));
+    });
+  }
+
+  MARKETS.forEach(function(m){
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = m.label; b.dataset.id = m.id;
+    b.setAttribute('aria-pressed','false');
+    b.addEventListener('click', function(){ render(m); });
+    sw.appendChild(b);
+  });
+  render(MARKETS[0]);
+})();
+</script>
+</body>
+</html>

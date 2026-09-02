@@ -45,6 +45,14 @@
   th.opt1-h { color: var(--opt1); } th.opt2-h { color: var(--opt2); } th.opt3-h { color: var(--opt3); }
   code { font-family: var(--mono); background: var(--bg); border: 1px solid var(--border); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
 
+  .crosscut { display:block; border:1px solid var(--border); border-left:4px solid var(--opt1);
+    border-radius:10px; background:var(--surface); padding:20px 22px; margin-bottom:40px; }
+  .crosscut:hover { border-color:var(--opt1); }
+  .crosscut-label { font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.06em; color:var(--opt1); margin-bottom:6px; }
+  .crosscut-title { font-size:17px; font-weight:600; margin-bottom:8px; }
+  .crosscut p { font-size:13px; color:var(--text-secondary); margin:0; }
+  .crosscut p b { color:var(--text); }
+
   .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 20px; }
   .footnote .row { margin-bottom: 4px; }
 </style>
@@ -100,6 +108,15 @@
       <a class="open-btn" href="option-3.html">Open Option 3 prototype →</a>
     </div>
   </div>
+
+  <a class="crosscut" href="market-variation.html">
+    <div class="crosscut-label">CROSS-CUTTING · APPLIES TO ALL THREE</div>
+    <div class="crosscut-title">Country-specific L1 navigation →</div>
+    <p>The options above differ in what sits <b>above</b> the local instance. A separate axis is how L1 varies
+       <b>inside</b> one: the US needs <b>Medical Value &amp; Outcomes</b> for payors at insurance companies,
+       hospitals and government, spanning both Specialty Care and General Medicines — so it cannot nest under a
+       GBU or a therapeutic area.</p>
+  </a>
 
   <div style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 12px;">KEY DELTAS, SIDE BY SIDE</div>
   <table>
