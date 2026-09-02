@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="medverse-ask" content="ask.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MedVerse">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <meta name="theme-color" content="#7a00e6">
+  <title>MedVerse — Care Gap Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5fa;
+      --surface: #ffffff;
+      --surface-dim: #f3eff8;
+      --text: #1a1a2e;
+      --text-secondary: #5a5672;
+      --text-muted: #918da3;
+      --border: #e4dff0;
+      --border-strong: #cdc6de;
+      --accent: #7a00e6;
+      --accent-hover: #6600c2;
+      --accent-light: #f0e6ff;
+      --accent-text: #6b21a8;
+      --accent-secondary: #aa46a3;
+      --gold: #f9c851;
+      --gold-dark: #e5a800;
+      --success: #166534;
+      --success-bg: #dcfce7;
+      --warning: #854d0e;
+      --warning-bg: #fef9c3;
+      --danger: #991b1b;
+      --danger-bg: #fee2e2;
+      --info: #1d4ed8;
+      --info-bg: #dbeafe;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --font: 'Work Sans', 'Raleway', 'Roboto', sans-serif;
+    }
+    html.dark {
+      --bg: #0a0a14;
+      --surface: #13131f;
+      --surface-dim: #1a1a2e;
+      --text: #f0eef5;
+      --text-secondary: #a8a3b8;
+      --text-muted: #6b6580;
+      --border: #2a2840;
+      --border-strong: #3a3555;
+      --accent-light: #2a1a40;
+      --accent-text: #c084fc;
+      --success: #4ade80;
+      --success-bg: #14321f;
+      --warning: #fbbf24;
+      --warning-bg: #3a2c0a;
+      --danger: #f87171;
+      --danger-bg: #3a1414;
+      --info: #93c5fd;
+      --info-bg: #16233d;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* HEADER */
+    .header { background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .header-brand-bar { height: 3px; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 50%, var(--gold) 100%); }
+    .header-inner { padding: 10px 24px; display: flex; align-items: center; gap: 12px; }
+    .header-home { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; color: inherit; border-radius: 8px; padding: 4px 8px 4px 4px; margin: -4px; transition: background 0.15s; }
+    .header-home:hover { background: var(--surface-dim); }
+    .header-logo { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; }
+    .header-title { font-size: 16px; font-weight: 600; }
+    .header-subtitle { font-size: 12px; color: var(--text-muted); }
+    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .header-badge { font-size: 11px; padding: 3px 10px; background: var(--warning-bg); color: var(--warning); border-radius: 20px; font-weight: 500; }
+    .theme-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 200; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font-size: 17px; }
+    .theme-toggle .ti-moon { display: none; }
+    html.dark .theme-toggle .ti-moon { display: inline; }
+    html.dark .theme-toggle .ti-sun { display: none; }
+
+    /* MODULE NAV */
+    .module-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; flex-shrink: 0; overflow-x: auto; }
+    .module-tab { padding: 10px 20px; font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .module-tab:hover { color: var(--text); }
+    .module-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .module-tab i { font-size: 16px; }
+
+    /* LAYOUT */
+    .dashboard { flex: 1; overflow-y: auto; padding: 24px; }
+    .dashboard::-webkit-scrollbar { width: 6px; }
+    .dashboard::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .dash-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .dash-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; max-width: 900px; }
+
+    /* FIREWALL BANNER (shared framing with Population Intelligence) */
+    .firewall-banner { display: flex; align-items: flex-start; gap: 14px; background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 20px; }
+    .firewall-icon { width: 34px; height: 34px; flex-shrink: 0; border-radius: 9px; background: var(--accent-light); color: var(--accent-text); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .firewall-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; display: flex; align-items: center; gap: 8px; }
+    .firewall-text { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+
+    /* FORM CONTROLS */
+    .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; margin-bottom: 20px; }
+    .form-row { display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; }
+    .form-group { min-width: 220px; }
+    .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 5px; }
+    .form-select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; outline: none; background: var(--bg); color: var(--text); }
+    .form-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border: none; border-radius: 8px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .form-btn-primary { background: var(--accent); color: white; }
+    .form-btn-primary:hover { background: var(--accent-hover); }
+
+    /* RESULTS */
+    .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
+    .result-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 13px; }
+    .result-loading { text-align: center; padding: 30px 20px; color: var(--text-muted); font-size: 13px; }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .data-table th, .data-table td { padding: 8px 10px; border: 1px solid var(--border); text-align: left; }
+    .data-table th { background: var(--surface-dim); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .3px; }
+    .badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; display: inline-block; }
+    .badge-accent { background: var(--accent-light); color: var(--accent-text); }
+
+    .demo-narrator { position: fixed; bottom: 0; left: 0; right: 0; z-index: 300; }
+  </style>
+  <link rel="stylesheet" href="/src/brand-font.css">
+  <link rel="stylesheet" href="/src/enhancements.css">
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+    <i class="ti ti-sun"></i>
+    <i class="ti ti-moon"></i>
+  </button>
+
+  <div class="header">
+    <div class="header-brand-bar"></div>
+    <div class="header-inner">
+      <a class="header-home" href="index.html" title="MedVerse home">
+        <div class="header-logo"><i class="ti ti-brain"></i></div>
+        <div>
+          <div class="header-title">MedVerse</div>
+          <div class="header-subtitle">Scientific Intelligence Ecosystem</div>
+        </div>
+      </a>
+      <div class="header-actions">
+        <div class="header-badge">Internal Only</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="module-nav">
+    <a class="module-tab" href="index.html"><i class="ti ti-home"></i> Home</a>
+    <a class="module-tab" href="ask.html"><i class="ti ti-sparkles"></i> Ask MedVerse</a>
+    <a class="module-tab" href="msl-copilot.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
+    <a class="module-tab" href="medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
+    <a class="module-tab" href="orion.html"><i class="ti ti-broadcast"></i> Interaction Signals</a>
+    <a class="module-tab" href="population.html"><i class="ti ti-map-2"></i> Population Intelligence</a>
+    <a class="module-tab active" href="care-gap.html"><i class="ti ti-stethoscope"></i> Care Gap Analyzer</a>
+    <a class="module-tab" href="disease.html"><i class="ti ti-dna"></i> Disease Navigator</a>
+    <a class="module-tab" href="literature.html"><i class="ti ti-book"></i> Literature</a>
+    <a class="module-tab" href="congress.html"><i class="ti ti-calendar-event"></i> Congress</a>
+    <a class="module-tab" href="agents.html"><i class="ti ti-cpu"></i> Agent Ecosystem</a>
+    <a class="module-tab" href="demo.html"><i class="ti ti-player-play"></i> Demo</a>
+    <a class="module-tab" href="about.html"><i class="ti ti-info-circle"></i> About</a>
+  </nav>
+
+  <div class="dashboard">
+    <div class="dash-title">Care Gap Analyzer</div>
+    <div class="dash-subtitle">
+      Decomposes a region's aggregate burden into guideline-anchored care gaps — undertreatment, safety, access,
+      diagnostic — and derives the education need behind each. Every gap is anchored to a guideline or a safety
+      concern, never to a treatment opportunity.
+    </div>
+
+    <div class="firewall-banner">
+      <div class="firewall-icon"><i class="ti ti-shield-lock"></i></div>
+      <div style="flex:1;">
+        <div class="firewall-title">
+          Commercial Firewall active
+          <span class="badge badge-accent">Aggregation floor: region</span>
+        </div>
+        <div class="firewall-text">
+          Source is the same licensed deidentified real-world data as Population Intelligence. No patient-level
+          records or HCP-linked counts exist in this module.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Region</label>
+          <select class="form-select" id="cga-region">
+            <option>Northeast</option>
+            <option>Mid-Atlantic</option>
+            <option selected>Southeast</option>
+            <option>Midwest</option>
+            <option>West</option>
+          </select>
+        </div>
+        <button class="form-btn form-btn-primary" id="cga-submit"><i class="ti ti-stethoscope"></i> Decompose Care Gaps</button>
+      </div>
+    </div>
+
+    <div id="cga-results">
+      <div class="result-empty"><i class="ti ti-stethoscope"></i>Select a region to decompose its aggregate burden into guideline-anchored care gaps.</div>
+    </div>
+  </div>
+
+  <div class="demo-narrator" id="demo-narrator"></div>
+
+  <script type="module" src="/src/care-gap-page.js"></script>
+  <script type="module" src="/src/enhancements.js"></script>
+  <script>
+  function toggleTheme() {
+    document.documentElement.classList.toggle("dark");
+    localStorage.setItem("medverse-theme",
+      document.documentElement.classList.contains("dark") ? "dark" : "light");
+  }
+  if (localStorage.getItem("medverse-theme") === "dark") {
+    document.documentElement.classList.add("dark");
+  }
+  </script>
+</body>
+</html>

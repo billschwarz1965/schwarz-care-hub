@@ -24,6 +24,7 @@ export default defineConfig({
         medical: resolve(__dirname, 'medical.html'),
         orion: resolve(__dirname, 'orion.html'),
         population: resolve(__dirname, 'population.html'),
+        caregap: resolve(__dirname, 'care-gap.html'),
         disease: resolve(__dirname, 'disease.html'),
         literature: resolve(__dirname, 'literature.html'),
         congress: resolve(__dirname, 'congress.html'),
