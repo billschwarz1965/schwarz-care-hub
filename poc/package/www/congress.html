@@ -2,7 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="medverse-ask" content="ask.html">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MedVerse">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <meta name="theme-color" content="#7a00e6">
   <title>MedVerse — Congress Intelligence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -375,11 +382,13 @@
     .theme-toggle .ti-moon { display: none; }
     html.dark .theme-toggle .ti-moon { display: block; }
     html.dark .theme-toggle .ti-sun { display: none; }
-  </style>
-  <script type="module" crossorigin src="/assets/congress-CPsS92PN.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/enhancements-CkBzVvPR.js">
-  <link rel="modulepreload" crossorigin href="/assets/narrator-Gu1jBQbu.js">
-  <link rel="stylesheet" crossorigin href="/assets/enhancements-BwV9TaLn.css">
+  </style>
+  <script type="module" crossorigin src="./assets/congress-H7Q7u4A_.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/enhancements-DWyQcU8v.js">
+  <link rel="modulepreload" crossorigin href="./assets/narrator-BE1zjzk_.js">
+  <link rel="modulepreload" crossorigin href="./assets/taxonomy-B-xcL3O-.js">
+  <link rel="stylesheet" crossorigin href="./assets/enhancements-BXHYsJpf.css">
+  <link rel="stylesheet" crossorigin href="./assets/enhancements-BwV9TaLn.css">
 </head>
 <body>
   <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
@@ -389,7 +398,7 @@
   <div class="header">
     <div class="header-brand-bar"></div>
     <div class="header-inner">
-      <a class="header-home" href="/index.html" title="MedVerse home">
+      <a class="header-home" href="index.html" title="MedVerse home">
         <div class="header-logo"><i class="ti ti-brain"></i></div>
         <div>
           <div class="header-title">MedVerse</div>
@@ -404,12 +413,15 @@
   </div>
 
   <nav class="module-nav">
-    <a class="module-tab" href="/index.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
-    <a class="module-tab" href="/medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
-    <a class="module-tab" href="/concierge.html"><i class="ti ti-message-circle"></i> HCP Concierge</a>
-    <a class="module-tab" href="/patient.html"><i class="ti ti-heart"></i> Patient Concierge</a>
-    <a class="module-tab active" href="/system-tools.html"><i class="ti ti-settings"></i> Power Agents</a>
-    <a class="module-tab" href="/demo.html"><i class="ti ti-player-play"></i> Demo</a>
+    <a class="module-tab" href="index.html"><i class="ti ti-home"></i> Home</a>
+    <a class="module-tab" href="ask.html"><i class="ti ti-sparkles"></i> Ask MedVerse</a>
+    <a class="module-tab" href="concierge.html"><i class="ti ti-message-circle"></i> HCP Concierge</a>
+    <a class="module-tab" href="patient.html"><i class="ti ti-heart"></i> Patient Concierge</a>
+    <a class="module-tab" href="msl-copilot.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
+    <a class="module-tab" href="medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
+    <a class="module-tab" href="system-tools.html"><i class="ti ti-settings"></i> Power Agents</a>
+    <a class="module-tab" href="demo.html"><i class="ti ti-player-play"></i> Demo</a>
+    <a class="module-tab" href="about.html"><i class="ti ti-info-circle"></i> About</a>
   </nav>
 
   <div class="layout">
@@ -450,7 +462,7 @@
     <div class="chat-header">
       <div class="chat-header-icon"><i class="ti ti-message-chatbot"></i></div>
       <div>
-        <div class="chat-header-title">Congress AI</div>
+        <div class="chat-header-title">Congress Intelligence Agent</div>
         <div class="chat-header-sub">Ask about presentations, findings & data</div>
       </div>
       <div class="chat-header-actions">
@@ -487,8 +499,8 @@
   <script>
 function toggleTheme(){document.documentElement.classList.toggle("dark");localStorage.setItem("medverse-theme",document.documentElement.classList.contains("dark")?"dark":"light")}
 if(localStorage.getItem("medverse-theme")==="dark")document.documentElement.classList.add("dark");
-</script>
-  <div class="demo-narrator" id="demo-narrator"></div>
+</script>
+  <div class="demo-narrator" id="demo-narrator"></div>
   <script>
   function toggleTheme() {
     document.documentElement.classList.toggle("dark");

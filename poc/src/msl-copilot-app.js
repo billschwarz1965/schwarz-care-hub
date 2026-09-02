@@ -4,6 +4,7 @@ import { createDemoController } from "./demo-nav.js";
 import {
   CARE_GAPS, getRegionRollup, getCandidatesForRegion, getEventFootprint,
 } from "./population-data.js";
+import { mountTileMap } from "./population-map.js";
 
 // === NAV STATE ===
 const hub = document.getElementById("hub");
@@ -1087,6 +1088,18 @@ function renderCareGaps(region) {
 document.getElementById("tcg-submit").addEventListener("click", () => {
   const region = document.getElementById("tcg-region").value;
   renderCareGaps(region);
+});
+
+mountTileMap({
+  tileMapId: "tcg-tile-map",
+  legendId: "tcg-map-legend",
+  toggleId: "tcg-map-toggle",
+  subId: "tcg-map-sub",
+  onSelect: (geo) => {
+    if (!geo) return;
+    document.getElementById("tcg-region").value = geo.region;
+    renderCareGaps(geo.region);
+  }
 });
 
 const MSL_AGENTS = [

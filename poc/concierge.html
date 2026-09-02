@@ -161,6 +161,8 @@
     .agent-card[data-agent="disease-nav"]  .agent-card-tag  { background: var(--success-bg); color: var(--success); }
     .agent-card[data-agent="congress"]     .agent-card-icon { background: #fee2e2; color: #dc2626; }
     .agent-card[data-agent="congress"]     .agent-card-tag  { background: #fee2e2; color: #991b1b; }
+    .agent-card[data-agent="peer-connect"] .agent-card-icon { background: #ccfbf1; color: #0f766e; }
+    .agent-card[data-agent="peer-connect"] .agent-card-tag  { background: #ccfbf1; color: #0f766e; }
 
     /* === AGENT PANEL (full-page, replaces hub) === */
     .agent-panel { display: none; max-width: 960px; margin: 0 auto; padding: 24px; }
@@ -414,6 +416,12 @@
           <p>Find and request a meeting with your regional Medical Science Liaison. Browse MSL profiles, expertise areas, and schedule scientific exchanges.</p>
           <span class="agent-card-tag">Field Team</span>
         </div>
+        <div class="agent-card" data-agent="peer-connect">
+          <div class="agent-card-icon"><i class="ti ti-user-search"></i></div>
+          <h3>Peer &amp; Expert Connect</h3>
+          <p>Describe the clinical problem you're working on and get a ranked roster of peers and KOLs from Veeva Link who match — with full expert profiles on demand.</p>
+          <span class="agent-card-tag">Peer Network</span>
+        </div>
         <div class="agent-card" data-agent="medinfo">
           <div class="agent-card-icon"><i class="ti ti-file-question"></i></div>
           <h3>Medical Information</h3>
@@ -630,6 +638,30 @@
         </div>
         <div class="form-results" id="msl-results">
           <div class="result-empty"><i class="ti ti-users"></i>Select your therapeutic area and region to find your dedicated MSL.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PEER & EXPERT CONNECT PANEL ===== -->
+    <div class="agent-panel" id="panel-peer-connect">
+      <div class="panel-header">
+        <div class="panel-icon" style="background:#ccfbf1;color:#0f766e;"><i class="ti ti-user-search"></i></div>
+        <div><div class="panel-title">Peer &amp; Expert Connect</div><div class="panel-desc">Describe your clinical problem to find matching peers and KOLs via Veeva Link</div></div>
+      </div>
+      <div class="form-panel">
+        <div class="form-main">
+          <div class="form-card">
+            <h4><i class="ti ti-message-question"></i> Describe What You're Working On</h4>
+            <div class="form-group">
+              <label class="form-label">Clinical problem or collaboration need <span style="color:var(--danger)">*</span></label>
+              <textarea class="form-input" id="peer-question" rows="5" placeholder="e.g. I'm designing a treat-to-target protocol for difficult-to-treat lupus nephritis patients who've failed belimumab. I'd like to connect with peers who have real-world experience combining anifrolumab with mycophenolate in this population — ideally academic centers with published outcomes."></textarea>
+            </div>
+            <button class="form-btn form-btn-primary" id="peer-submit"><i class="ti ti-user-search"></i> Find Matching Peers</button>
+            <p style="font-size:11px;color:var(--text-muted);margin-top:10px;line-height:1.5">This is peer-to-peer scientific exchange facilitation, not a promotional introduction. Candidates with active speaker bureau engagements are excluded, and every request is logged for compliance.</p>
+          </div>
+        </div>
+        <div class="form-results" id="peer-results">
+          <div class="result-empty"><i class="ti ti-user-search"></i>Describe the clinical problem you're working on to see matching peers and KOLs from Veeva Link.</div>
         </div>
       </div>
     </div>
