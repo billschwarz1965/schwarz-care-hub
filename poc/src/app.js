@@ -37,7 +37,7 @@ function resetChat() {
   document.getElementById("stat-depth").textContent = "—";
   document.getElementById("stat-priority").textContent = "—";
 
-  signalsContainer.innerHTML = `<div class="sidebar-empty"><i class="ti ti-radar-2"></i>No signals yet. Ask a question to generate behavioral intelligence for Orion.</div>`;
+  signalsContainer.innerHTML = `<div class="sidebar-empty"><i class="ti ti-radar-2"></i>No signals yet. Ask a question to generate behavioral intelligence for medical insights and analytics.</div>`;
 
   activeSignalFilter = null;
   document.querySelectorAll(".signal-stat").forEach(s => s.classList.remove("active"));
@@ -141,7 +141,7 @@ async function submitQuery(query) {
   // Add AI response
   addAIMessage(result);
 
-  // Add Orion signal
+  // Add interaction signal
   if (result.signal) {
     addOrionSignal(result.signal);
     broadcastSignal({ ...result.signal, _source: "MSL Copilot" });
@@ -382,7 +382,7 @@ async function runClinicalDemo() {
   await typeIntoInput(question1);
   await delay(400);
   await submitQuery(question1);
-  await narrate("The AI retrieves cited answers from Sanofi medical content and generates an Orion signal");
+  await narrate("The AI retrieves cited answers from Sanofi medical content and generates an interaction signal");
 
   const question2 = "How does dupilumab compare to abrocitinib in head-to-head data?";
   await narrate("Follow-up: comparing dupilumab versus abrocitinib in head-to-head trials");
@@ -440,7 +440,7 @@ async function runTopicDemo() {
     card.click();
     await delay(3000);
 
-    await narrate("AI response with citations and Orion signal generated simultaneously");
+    await narrate("AI response with citations and interaction signal generated simultaneously");
 
     const followUps = messagesEl.querySelectorAll(".follow-up-chip");
     if (followUps.length > 0 && idx < topicsToDemo.length - 1) {
@@ -450,7 +450,7 @@ async function runTopicDemo() {
     }
   }
 
-  await narrate("Every interaction generates behavioral intelligence for MSL field teams via Orion");
+  await narrate("Every interaction generates behavioral intelligence for medical insights and analytics");
   const sidebar = document.querySelector(".sidebar-content");
   if (sidebar) sidebar.scrollTo({ top: 0, behavior: "smooth" });
   await delay(1500);

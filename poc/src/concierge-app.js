@@ -388,7 +388,7 @@ function renderPatientNav(el, p) {
       ${s.meta ? `<div class="result-meta">${s.meta.map(m => `<span class="result-meta-item"><i class="ti ti-${m.icon}"></i> ${escapeHtml(m.text)}</span>`).join("")}</div>` : ""}
     </div>`).join("")}
     <div class="result-card" style="background:var(--orion-bg);border-color:#9fe1cb;">
-      <div class="result-card-header"><div class="result-title" style="color:#085041;">Orion Signal Generated</div><span class="result-badge badge-orion">Intelligence</span></div>
+      <div class="result-card-header"><div class="result-title" style="color:#085041;">Interaction Signal Generated</div><span class="result-badge badge-orion">Intelligence</span></div>
       <div class="result-body" style="color:#085041;">${pathways.signal}</div>
     </div>`;
 }
@@ -1310,7 +1310,7 @@ async function runAgentDemo(index, agent) {
       chatInput.value = q; chatSend.disabled = false;
       await delay(400);
       await submitChat(q);
-      await narrate("Cited evidence returned with treatment guidelines, clinical trial data, and an Orion signal generated for the field team");
+      await narrate("Cited evidence returned with treatment guidelines, clinical trial data, and an interaction signal generated for the field team");
       await delay(1500);
       break;
     }

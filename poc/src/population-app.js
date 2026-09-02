@@ -289,7 +289,7 @@ function emitGeoSignal(geo) {
     _source: "Population Intelligence",
   });
   if (window.mvToast) {
-    window.mvToast(`Population signal sent to Orion — ${geo.name}`, "info");
+    window.mvToast(`Population signal incorporated into medical insights and analytics — ${geo.name}`, "info");
   }
 }
 

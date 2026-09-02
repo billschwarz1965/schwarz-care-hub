@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="/src/brand-font.css">
   <meta charset="UTF-8">
   <meta name="medverse-ask" content="ask.html">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -79,7 +80,7 @@
   <div class="legend">
     <div class="legend-item"><div class="legend-dot" style="background:#7a00e6"></div>Core Agent</div>
     <div class="legend-item"><div class="legend-dot" style="background:#059669"></div>Shared Module</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#d97706"></div>Orion Signal</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#d97706"></div>Interaction Signal</div>
     <div class="legend-item"><div class="legend-dot" style="background:#2563eb"></div>AI Chat</div>
   </div>
 
@@ -99,7 +100,7 @@
       <div class="section-label">Entry</div>
       <div class="step"><div class="dot">1</div><div class="step-card"><div class="step-name">Voice Search <span class="badge badge-core">ENTRY</span></div><div class="step-desc">Speak clinical question hands-free, auto-routed to the right agent</div></div></div>
       <div class="section-label">Clinical Decision Support</div>
-      <div class="step"><div class="dot">2</div><div class="step-card"><div class="step-name">Clinical Q&A <span class="badge badge-core">CORE</span></div><div class="step-desc">Evidence-based answers with citations from Sanofi medical content + Orion signal generation</div></div></div>
+      <div class="step"><div class="dot">2</div><div class="step-card"><div class="step-name">Clinical Q&A <span class="badge badge-core">CORE</span></div><div class="step-desc">Evidence-based answers with citations from Sanofi medical content + interaction signal generation</div></div></div>
       <div class="step"><div class="dot">3</div><div class="step-card"><div class="step-name">Patient Navigator <span class="badge badge-core">CORE</span></div><div class="step-desc">Build personalized care pathway: age, diagnosis, comorbidities, prior treatments</div></div></div>
       <div class="step"><div class="dot shared">4</div><div class="step-card shared-card"><div class="step-name">Trial Matching Agent <span class="badge badge-shared">SHARED</span></div><div class="step-desc">Match patient to eligible Sanofi trials by indication, age, region, biologic status</div></div></div>
       <div class="section-label">Field & Safety</div>
@@ -168,7 +169,7 @@
       <div class="step"><div class="dot">1</div><div class="step-card"><div class="step-name">Voice Search <span class="badge badge-core">ENTRY</span></div><div class="step-desc">Hands-free query while in the field — route to any agent</div></div></div>
       <div class="section-label">Pre-Call Preparation</div>
       <div class="step"><div class="dot">2</div><div class="step-card"><div class="step-name">Territory Dashboard <span class="badge badge-core">CORE</span></div><div class="step-desc">Territory map, KOL list, engagement stats, action items for the week</div></div></div>
-      <div class="step"><div class="dot">3</div><div class="step-card"><div class="step-name">Pre-Call Intelligence <span class="badge badge-core">CORE</span></div><div class="step-desc">HCP profile, engagement history, interests, Orion signals, talking points</div></div></div>
+      <div class="step"><div class="dot">3</div><div class="step-card"><div class="step-name">Pre-Call Intelligence <span class="badge badge-core">CORE</span></div><div class="step-desc">HCP profile, engagement history, interests, interaction signals, talking points</div></div></div>
       <div class="step"><div class="dot">4</div><div class="step-card"><div class="step-name">KOL Profiling <span class="badge badge-core">CORE</span></div><div class="step-desc">Publication metrics, speaking engagements, influence network, trial roles</div></div></div>
       <div class="step"><div class="dot">5</div><div class="step-card"><div class="step-name">Compliance Advisor <span class="badge badge-core">CORE</span></div><div class="step-desc">Real-time interaction compliance: gift limits, meal rules, documentation</div></div></div>
       <div class="section-label">Scientific Intelligence</div>
@@ -179,8 +180,8 @@
       <div class="step"><div class="dot shared">10</div><div class="step-card shared-card"><div class="step-name">Congress Planner <span class="badge badge-shared">SHARED</span></div><div class="step-desc">Upcoming sessions, HCP attendance, satellite symposium scheduling</div></div></div>
       <div class="step"><div class="dot">11</div><div class="step-card"><div class="step-name">Medical Information <span class="badge badge-core">CORE</span></div><div class="step-desc">Generate compliant MIR response letters with standard disclaimers</div></div></div>
       <div class="section-label">Post-Call & Signals</div>
-      <div class="step"><div class="dot">12</div><div class="step-card"><div class="step-name">Post-Call Reporting <span class="badge badge-core">CORE</span></div><div class="step-desc">Capture interaction notes, generate Orion signals for the team</div></div></div>
-      <div class="step"><div class="dot signal">13</div><div class="step-card signal-card"><div class="step-name">Orion Intelligence <span class="badge badge-signal">SIGNAL</span></div><div class="step-desc">View aggregated signals, HCP patterns, priority queue, act on insights</div></div></div>
+      <div class="step"><div class="dot">12</div><div class="step-card"><div class="step-name">Post-Call Reporting <span class="badge badge-core">CORE</span></div><div class="step-desc">Capture interaction notes, generate interaction signals for the team</div></div></div>
+      <div class="step"><div class="dot signal">13</div><div class="step-card signal-card"><div class="step-name">Interaction Signals <span class="badge badge-signal">SIGNAL</span></div><div class="step-desc">View aggregated signals, HCP patterns, priority queue, act on insights</div></div></div>
       <div class="section-label">Always Available</div>
       <div class="step"><div class="dot chat">14</div><div class="step-card"><div class="step-name">MSL Copilot Assistant <span class="badge badge-chat">AI CHAT</span></div><div class="step-desc">Conversational AI spanning all 14 MSL agents</div></div></div>
       <div class="step"><div class="dot shared">15</div><div class="step-card shared-card"><div class="step-name">Trial Matching Agent <span class="badge badge-shared">SHARED</span></div><div class="step-desc">Match HCP patients to eligible Sanofi trials during discussions</div></div></div>
@@ -250,7 +251,7 @@
     <div class="crossmod" style="margin-top:20px">
       <div class="crossmod-title">Intelligence Modules</div>
       <div class="crossmod-grid">
-        <div class="crossmod-card" style="border-left:3px solid #d97706"><h4>Orion Signal Intelligence</h4><p>Real-time HCP engagement signals aggregated from Clinical Q&A, Literature, MSL Post-Call</p><div class="cm-pages">10 features — Dashboard + Action Queue + Timeline</div></div>
+        <div class="crossmod-card" style="border-left:3px solid #d97706"><h4>Interaction Signals</h4><p>Real-time HCP engagement signals aggregated from Clinical Q&A, Literature, MSL Post-Call</p><div class="cm-pages">10 features — Dashboard + Action Queue + Timeline</div></div>
         <div class="crossmod-card" style="border-left:3px solid #059669"><h4>Disease State Navigator</h4><p>Cross-therapeutic-area reference: 8 diseases, pathways, treatments, pipeline</p><div class="cm-pages">10 features — Grid + Detail + Cross-TA</div></div>
         <div class="crossmod-card" style="border-left:3px solid #2563eb"><h4>Literature Intelligence</h4><p>Live PubMed/NEJM search, evidence comparison, auto deep-dive</p><div class="cm-pages">10 features — Search + Compare + Alerts</div></div>
         <div class="crossmod-card" style="border-left:3px solid #7a00e6"><h4>Congress Intelligence</h4><p>6 congresses, presentations, highlights, poster overlays</p><div class="cm-pages">10 features — Timeline + Grid + Deep Link</div></div>

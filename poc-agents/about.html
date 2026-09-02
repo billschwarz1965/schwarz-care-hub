@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MedVerse">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <meta name="theme-color" content="#7a00e6">
+  <title>MedVerse Agent Ecosystem — About</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5fa;
+      --surface: #ffffff;
+      --surface-dim: #f3eff8;
+      --text: #1a1a2e;
+      --text-secondary: #5a5672;
+      --text-muted: #918da3;
+      --border: #e4dff0;
+      --border-strong: #cdc6de;
+      --accent: #7a00e6;
+      --accent-hover: #6600c2;
+      --accent-light: #f0e6ff;
+      --accent-text: #6b21a8;
+      --accent-secondary: #aa46a3;
+      --gold: #f9c851;
+      --gold-dark: #e5a800;
+      --success: #166534;
+      --success-bg: #dcfce7;
+      --warning: #854d0e;
+      --warning-bg: #fef9c3;
+      --danger: #991b1b;
+      --danger-bg: #fee2e2;
+      --orion-accent: #0f6e56;
+      --orion-bg: #e1f5ee;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --font: 'Work Sans', 'Raleway', 'Roboto', sans-serif;
+    }
+
+    html.dark {
+      --bg: #0a0a14;
+      --surface: #13131f;
+      --surface-dim: #1a1a2e;
+      --text: #f0eef5;
+      --text-secondary: #a8a3b8;
+      --text-muted: #6b6580;
+      --border: #2a2840;
+      --border-strong: #3a3555;
+      --accent: #7a00e6;
+      --accent-hover: #8c1aff;
+      --accent-light: #2a1a40;
+      --accent-text: #c084fc;
+      --accent-secondary: #aa46a3;
+      --gold: #f9c851;
+      --gold-dark: #e5a800;
+      --success: #34d399;
+      --success-bg: rgba(52,211,153,0.1);
+      --warning: #f9c851;
+      --warning-bg: rgba(249,200,81,0.1);
+      --danger: #f87171;
+      --danger-bg: rgba(248,113,113,0.1);
+      --orion-accent: #34d399;
+      --orion-bg: rgba(52,211,153,0.1);
+    }
+
+    body { font-family: var(--font); background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* HEADER */
+    .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0; flex-shrink: 0; }
+    .header-brand-bar { height: 3px; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 50%, var(--gold) 100%); }
+    .header-inner { padding: 10px 24px; display: flex; align-items: center; gap: 12px; }
+    .header-home { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; color: inherit; border-radius: 8px; padding: 4px 8px 4px 4px; margin: -4px; transition: background 0.15s; }
+    .header-home:hover { background: var(--surface-dim); }
+    .header-logo { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px; }
+    .header-title { font-size: 16px; font-weight: 600; color: var(--text); }
+    .header-subtitle { font-size: 12px; color: var(--text-muted); }
+    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .header-badge { font-size: 11px; padding: 3px 10px; background: var(--warning-bg); color: var(--warning); border-radius: 20px; font-weight: 500; }
+
+    /* MODULE NAV */
+    .module-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; flex-shrink: 0; overflow-x: auto; }
+    .module-tab { padding: 10px 20px; font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .module-tab:hover { color: var(--text); }
+    .module-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .module-tab i { font-size: 16px; }
+
+    /* MAIN SCROLL AREA */
+    .main-scroll { flex: 1; overflow-y: auto; }
+    .main-scroll::-webkit-scrollbar { width: 6px; }
+    .main-scroll::-webkit-scrollbar-track { background: transparent; }
+    .main-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* DARK MODE TOGGLE */
+    .theme-toggle { position:fixed;top:20px;right:20px;z-index:200;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text);transition:all .2s;box-shadow:0 2px 10px rgba(0,0,0,.08); }
+    .theme-toggle:hover { border-color:var(--accent);transform:scale(1.08); }
+    .theme-toggle .ti-moon { display:none; }
+    html.dark .theme-toggle .ti-moon { display:block; }
+    html.dark .theme-toggle .ti-sun { display:none; }
+
+    /* === ABOUT PAGE === */
+    .about { max-width: 960px; margin: 0 auto; padding: 32px 24px 60px; }
+
+    .about-hero { text-align: center; margin-bottom: 40px; }
+    .about-hero-icon { width: 72px; height: 72px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 22px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 32px; color: white; }
+    .about-hero h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .about-hero p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; max-width: 600px; margin: 0 auto; }
+
+    .about-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 20px; }
+    .about-section h2 { font-size: 18px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .about-section h2 i { font-size: 22px; color: var(--accent); }
+    .about-section p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+    .about-list { list-style: none; margin-top: 14px; }
+    .about-list li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
+    .about-list li:last-child { border-bottom: none; }
+    .about-list li i { font-size: 18px; color: var(--accent); margin-top: 2px; flex-shrink: 0; }
+
+    .modules-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+    @media (max-width: 700px) { .modules-grid { grid-template-columns: 1fr; } }
+    .module-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--surface-dim); border: 1px solid var(--border); border-radius: var(--radius); transition: all 0.15s; }
+    .module-item:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .module-item-icon { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .module-item-text h4 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .module-item-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+    .tech-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .tech-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: var(--surface-dim); border: 1px solid var(--border); border-radius: 20px; font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+    .tech-chip i { font-size: 15px; color: var(--accent); }
+
+    .contact-card { display: flex; align-items: center; gap: 20px; padding: 20px; background: var(--surface-dim); border-radius: var(--radius); margin-top: 14px; }
+    .contact-avatar { width: 56px; height: 56px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; font-weight: 700; flex-shrink: 0; }
+    .contact-info h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .contact-info p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+    .contact-info a { color: var(--accent-text); text-decoration: none; font-weight: 500; }
+    .contact-info a:hover { text-decoration: underline; }
+
+    /* USER JOURNEYS */
+    .uj-tabs { display: flex; gap: 6px; margin: 16px 0; flex-wrap: wrap; }
+    .uj-tab { padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: var(--surface-dim); color: var(--text-secondary); font-family: var(--font); transition: all .2s; }
+    .uj-tab:hover { border-color: var(--accent); color: var(--accent); }
+    .uj-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .uj-panel { display: none; }
+    .uj-panel.active { display: block; }
+    .uj-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .uj-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; flex-shrink: 0; }
+    .uj-title { font-size: 15px; font-weight: 700; color: var(--text); }
+    .uj-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+    .uj-flow { position: relative; padding-left: 28px; }
+    .uj-flow::before { content: ''; position: absolute; left: 13px; top: 24px; bottom: 8px; width: 2px; background: linear-gradient(to bottom, var(--accent), #c084fc, #e9d5ff); border-radius: 1px; }
+    html.dark .uj-flow::before { background: linear-gradient(to bottom, var(--accent), #6b21a8, #3b0764); }
+    .uj-group-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin: 12px 0 6px 0; }
+    .uj-step { position: relative; margin-bottom: 8px; }
+    .uj-dot { position: absolute; left: -21px; top: 8px; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 9px; color: #fff; font-weight: 700; z-index: 1; }
+    .uj-dot-shared { background: #059669; }
+    .uj-dot-signal { background: #d97706; }
+    .uj-dot-chat { background: #2563eb; }
+    .uj-card { background: var(--surface-dim); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; transition: all .15s; }
+    .uj-card:hover { border-color: var(--accent); }
+    .uj-card strong { font-size: 13px; font-weight: 600; color: var(--text); }
+    .uj-card p { font-size: 11px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
+    .uj-card-shared { border-left: 3px solid #059669; }
+    .uj-card-signal { border-left: 3px solid #d97706; }
+    .uj-badge { display: inline-block; font-size: 9px; font-weight: 600; padding: 1px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+    .uj-b-core { background: var(--accent-light); color: var(--accent-text); }
+    .uj-b-shared { background: var(--success-bg); color: var(--success); }
+    .uj-b-signal { background: var(--warning-bg); color: var(--warning); }
+    .uj-b-chat { background: #dbeafe; color: #1d4ed8; }
+    html.dark .uj-b-chat { background: rgba(37,99,235,.15); color: #60a5fa; }
+    .uj-cross-stats { display: flex; gap: 10px; flex-wrap: wrap; }
+    .uj-stat { flex: 1; min-width: 70px; background: var(--surface-dim); border: 1px solid var(--border); border-radius: 8px; padding: 10px; text-align: center; }
+    .uj-stat-num { display: block; font-size: 22px; font-weight: 800; color: var(--accent); }
+    .uj-stat-label { display: block; font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
+    .uj-cross-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    @media (max-width: 600px) { .uj-cross-grid { grid-template-columns: 1fr; } }
+    .uj-cross-card { background: var(--surface-dim); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; transition: all .15s; }
+    .uj-cross-card:hover { border-color: var(--accent); }
+    .uj-cross-card strong { font-size: 12px; font-weight: 600; color: var(--text); }
+    .uj-cross-card p { font-size: 11px; color: var(--text-muted); margin-top: 2px; line-height: 1.3; }
+    .uj-cross-personas { display: block; font-size: 10px; color: var(--accent-text); font-weight: 600; margin-top: 4px; }
+  </style>
+  <link rel="stylesheet" href="/src/brand-font.css">
+  <link rel="stylesheet" href="/src/enhancements.css">
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode"><i class="ti ti-sun"></i><i class="ti ti-moon"></i></button>
+  <div class="header">
+    <div class="header-brand-bar"></div>
+    <div class="header-inner">
+      <a class="header-home" href="index.html" title="MedVerse Home">
+        <div class="header-logo"><i class="ti ti-brain"></i></div>
+        <div>
+          <div class="header-title">MedVerse Agent Ecosystem</div>
+          <div class="header-subtitle">Agent architecture, intelligence hubs &amp; governance</div>
+        </div>
+      </a>
+      <div class="header-actions">
+        <div class="header-badge">POC v0.1</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="module-nav">
+    <a class="module-tab" href="index.html"><i class="ti ti-cpu"></i> Agent Ecosystem</a>
+    <a class="module-tab active" href="about.html"><i class="ti ti-info-circle"></i> About</a>
+  </nav>
+
+  <div class="main-scroll">
+    <div class="about">
+
+      <!-- HERO -->
+      <div class="about-hero">
+        <div class="about-hero-icon"><i class="ti ti-cpu"></i></div>
+        <h1>About the MedVerse Agent Ecosystem</h1>
+        <p>A standalone explorer for the agent architecture behind MedVerse — the agents, the intelligence hubs they draw on, and the governance layer every output passes through.</p>
+      </div>
+
+      <!-- WHAT THIS IS -->
+      <div class="about-section">
+        <h2><i class="ti ti-eye"></i> What This Build Is</h2>
+        <p>This edition ships one module: the Agent Ecosystem. It is an architecture explorer, not a concierge — there is no chat assistant answering clinical questions here, and no patient- or HCP-facing workflow. What it does provide is a walkable map of how MedVerse is built and governed, with a runnable demo for most agents so you can see the full path from a user's question to a compliance-checked answer.</p>
+        <p style="margin-top:10px">Use it to answer architecture questions: which agents exist, what each one does, which data it depends on, which governance agents supervise it, and what a real interaction looks like end to end.</p>
+      </div>
+
+      <!-- WHAT YOU CAN DO -->
+      <div class="about-section">
+        <h2><i class="ti ti-rocket"></i> What You Can Do Here</h2>
+        <ul class="about-list">
+          <li><i class="ti ti-layers-intersect"></i> Walk the four-layer architecture — click any layer to expand its agents</li>
+          <li><i class="ti ti-list-details"></i> Browse the full agent inventory with users, hub dependencies, and governance pairings</li>
+          <li><i class="ti ti-player-play"></i> Run an agent demo — input, processing, draft output, governance review, verified result</li>
+          <li><i class="ti ti-database"></i> Inspect each intelligence hub: its data sources, capabilities, and dependent agents</li>
+          <li><i class="ti ti-shield-check"></i> Open any governance agent to see which business agents it supervises</li>
+          <li><i class="ti ti-message-chatbot"></i> Ask the Ecosystem AI about architecture, agent counts, personas, or governance</li>
+          <li><i class="ti ti-flask"></i> Search live ClinicalTrials.gov data from the trial intelligence panel</li>
+        </ul>
+      </div>
+
+      <!-- THE FOUR LAYERS -->
+      <div class="about-section">
+        <h2><i class="ti ti-topology-star-3"></i> The Four Layers</h2>
+        <p>Every MedVerse agent sits in one of four layers. A user request enters at the top, is served by an orchestration agent, which composes intelligence from the hubs below, and is validated by the governance layer before anything is returned.</p>
+        <div class="uj-cross-stats" style="margin-top:16px">
+          <div class="uj-stat"><span class="uj-stat-num" id="cnt-personas">—</span><span class="uj-stat-label">Audience Tags</span></div>
+          <div class="uj-stat"><span class="uj-stat-num" id="cnt-business">—</span><span class="uj-stat-label">Business Agents</span></div>
+          <div class="uj-stat"><span class="uj-stat-num" id="cnt-hubs">—</span><span class="uj-stat-label">Intelligence Hubs</span></div>
+          <div class="uj-stat"><span class="uj-stat-num" id="cnt-governance">—</span><span class="uj-stat-label">Governance Agents</span></div>
+          <div class="uj-stat"><span class="uj-stat-num" id="cnt-sources">—</span><span class="uj-stat-label">Data Sources</span></div>
+          <div class="uj-stat"><span class="uj-stat-num" id="cnt-pairings">—</span><span class="uj-stat-label">Governance Pairings</span></div>
+        <p style="margin-top:12px;"><strong>Recently added agents:</strong> <em>Peer &amp; Expert Connect</em> lets an HCP describe a clinical problem and get a ranked roster of matching peers and KOLs from Veeva Link, with full expert profiles on demand. <em>Medical Information Request</em> answers product questions from approved sources, escalates anything beyond the label for a formal written response rather than generating one, and routes adverse events straight to Pharmacovigilance.</p>
+        </div>
+        <div class="modules-grid" style="margin-top:18px">
+          <div class="module-item">
+            <div class="module-item-icon" style="background: #dbeafe; color: #2563eb;"><i class="ti ti-users"></i></div>
+            <div class="module-item-text">
+              <h4>1 — User Experience Layer</h4>
+              <p>The audiences MedVerse serves. Each gets a purpose-built experience powered by the agents below.</p>
+            </div>
+          </div>
+          <div class="module-item">
+            <div class="module-item-icon" style="background: var(--accent-light); color: var(--accent);"><i class="ti ti-robot"></i></div>
+            <div class="module-item-text">
+              <h4>2 — Agent Orchestration Layer</h4>
+              <p>Business agents that own a workflow: pre-call briefings, trial matching, disease navigation, literature scouting.</p>
+            </div>
+          </div>
+          <div class="module-item">
+            <div class="module-item-icon" style="background: #ecfdf5; color: #059669;"><i class="ti ti-database"></i></div>
+            <div class="module-item-text">
+              <h4>3 — Intelligence Hub Layer</h4>
+              <p>Foundational knowledge graphs. Agents query a hub rather than holding their own copy of the truth.</p>
+            </div>
+          </div>
+          <div class="module-item">
+            <div class="module-item-icon" style="background: var(--warning-bg); color: var(--warning);"><i class="ti ti-shield-check"></i></div>
+            <div class="module-item-text">
+              <h4>4 — Governance Layer</h4>
+              <p>Compliance agents that review every output before delivery. Non-optional and non-bypassable.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GOVERNANCE -->
+      <div class="about-section">
+        <h2><i class="ti ti-shield-check"></i> Compliance by Design</h2>
+        <p>Governance is not a review step bolted on at the end — each business agent is paired with named governance agents at design time, and those pairings are part of the agent's specification. The demos show this working: a draft is produced, the governance layer inspects it, and corrections are applied before the output is delivered. Some demos deliberately show a correction being made rather than a clean pass.</p>
+        <p style="margin-top:10px">Every interaction produces an audit record — who asked, what was generated, which checks ran, and what changed. That record is what makes the platform inspectable after the fact.</p>
+      </div>
+
+      <!-- ENTERPRISE DATA -->
+      <div class="about-section">
+        <h2><i class="ti ti-plug-connected"></i> Enterprise Data &amp; Scaling</h2>
+        <p>Agents are defined declaratively — an agent is a specification (identity, users, hub dependencies, governance partners, status) rather than bespoke code. Adding an agent means adding a specification and pointing it at the hubs it needs; the ecosystem view, persona filters, architecture counts, and governance mappings all derive from that definition automatically.</p>
+        <p style="margin-top:10px">Each agent in this build has a written specification in <code>docs/agents/</code> covering its purpose, inputs, data dependencies, processing steps, outputs, governance pairings, and the enterprise data it would bind to in production — so an agent can be recreated or extended without reverse-engineering the demo.</p>
+      </div>
+
+      <!-- WIDER PLATFORM -->
+      <div class="about-section">
+        <h2><i class="ti ti-apps"></i> Part of a Wider Platform</h2>
+        <p>The Agent Ecosystem is one module of MedVerse. The full platform also includes concierge experiences for healthcare professionals, patients and caregivers, medical science liaisons, and medical affairs teams, plus dedicated intelligence modules for disease state navigation, literature, and medical congresses. Those modules are not part of this build — the agents you can browse here are the ones that power them.</p>
+      </div>
+
+      <!-- TECHNOLOGY -->
+      <div class="about-section">
+        <h2><i class="ti ti-stack-2"></i> Technology Stack</h2>
+        <p>Built with a modern, lightweight architecture designed for speed and accessibility.</p>
+        <div class="tech-chips">
+          <span class="tech-chip"><i class="ti ti-brand-javascript"></i> Vanilla JS (ES Modules)</span>
+          <span class="tech-chip"><i class="ti ti-bolt"></i> Vite</span>
+          <span class="tech-chip"><i class="ti ti-brand-css3"></i> CSS Custom Properties</span>
+          <span class="tech-chip"><i class="ti ti-icons"></i> Tabler Icons</span>
+          <span class="tech-chip"><i class="ti ti-flask"></i> ClinicalTrials.gov API</span>
+          <span class="tech-chip"><i class="ti ti-microphone"></i> Web Speech API</span>
+          <span class="tech-chip"><i class="ti ti-moon-stars"></i> Light / Dark Mode</span>
+        </div>
+      </div>
+
+      <!-- CREATED BY -->
+      <div class="about-section">
+        <h2><i class="ti ti-users"></i> Created By</h2>
+        <div class="contact-card">
+          <div class="contact-avatar">BS</div>
+          <div>
+            <h4>Bill Schwarz</h4>
+            <p>Digital Product Line &amp; Program Owner, MedVerse</p>
+            <p>Sanofi &middot; Campus+Medical Discovery &middot; Digital Product Innovation</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+  <script type="module">
+    import { BUSINESS_AGENTS, COMPLIANCE_AGENTS, SYSTEM_AGENTS } from '/src/agents-data.js';
+    const personas = new Set(BUSINESS_AGENTS.flatMap(a => a.users));
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    set('cnt-personas', personas.size);
+    set('cnt-business', BUSINESS_AGENTS.length);
+    set('cnt-hubs', SYSTEM_AGENTS.length);
+    set('cnt-governance', COMPLIANCE_AGENTS.length);
+    set('cnt-sources', SYSTEM_AGENTS.reduce((s, h) => s + h.dataSources.length, 0));
+    set('cnt-pairings', BUSINESS_AGENTS.reduce((s, a) => s + a.compliancePartners.length, 0));
+  </script>
+  <script type="module" src="/src/enhancements.js"></script>
+  <script>
+function toggleTheme(){document.documentElement.classList.toggle("dark");localStorage.setItem("medverse-theme",document.documentElement.classList.contains("dark")?"dark":"light")}
+if(localStorage.getItem("medverse-theme")==="dark")document.documentElement.classList.add("dark");
+document.getElementById('uj-tabs').addEventListener('click',function(e){var t=e.target.closest('.uj-tab');if(!t)return;document.querySelectorAll('.uj-tab').forEach(function(b){b.classList.remove('active')});document.querySelectorAll('.uj-panel').forEach(function(p){p.classList.remove('active')});t.classList.add('active');document.getElementById('uj-'+t.dataset.uj).classList.add('active');});
+</script>
+</body>
+</html>

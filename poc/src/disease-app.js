@@ -72,6 +72,7 @@ function openDetail(id) {
   if (!d) return;
   activeDiseaseId = id;
   renderGrid();
+  loadReferences(d);
 
   const pathway = getPathway(d.pathways[0]);
   const connected = getConnectedDiseases(id);
@@ -149,6 +150,11 @@ function openDetail(id) {
         `).join("")}
       </div>
     </div>
+
+    <div class="detail-section" id="detail-references">
+      <h3><i class="ti ti-file-text"></i> References</h3>
+      <div class="references-loading"><i class="ti ti-loader-2 ti-spin"></i> Searching PubMed…</div>
+    </div>
   `;
 
   detailContent.querySelectorAll(".connected-card").forEach(card => {
@@ -166,6 +172,32 @@ function closeDetail() {
   detailEl.classList.remove("open");
   activeDiseaseId = null;
   renderGrid();
+}
+
+// Backs the "References" section with real, live PubMed results instead of
+// hand-authored claims with no source — same mechanism Literature
+// Intelligence uses, so a citation here is exactly as checkable as one there.
+async function loadReferences(disease) {
+  try {
+    const articles = await searchPubMedLive(disease.name, 3);
+    if (activeDiseaseId !== disease.id) return; // detail panel moved on while we waited
+    const container = document.getElementById("detail-references");
+    if (!container) return;
+    if (!articles.length) {
+      container.innerHTML = `<h3><i class="ti ti-file-text"></i> References</h3><p class="references-empty">No PubMed results found for "${escapeHtml(disease.name)}" right now.</p>`;
+      return;
+    }
+    const items = articles.map(a =>
+      `<div class="reference-item"><i class="ti ti-file-text"></i> <strong>${escapeHtml(a.title)}</strong><br>` +
+      `<span class="reference-meta">${escapeHtml(a.authors)} — ${escapeHtml(a.journal)} (${escapeHtml(a.year)})</span> ` +
+      `<a href="https://pubmed.ncbi.nlm.nih.gov/${a.pmid}/" target="_blank" rel="noopener" class="reference-link">PMID ${a.pmid}</a></div>`
+    ).join("");
+    container.innerHTML = `<h3><i class="ti ti-file-text"></i> References</h3>${items}`;
+  } catch {
+    if (activeDiseaseId !== disease.id) return;
+    const container = document.getElementById("detail-references");
+    if (container) container.innerHTML = `<h3><i class="ti ti-file-text"></i> References</h3><p class="references-empty">Couldn't reach PubMed right now — try again shortly.</p>`;
+  }
 }
 
 function bindFilters() {
@@ -652,11 +684,11 @@ function generateChatResponse(query) {
 
 async function searchPubMedLive(query, max = 5) {
   const terms = query.replace(/\b(what|how|is|are|the|can|tell|me|about|give|show|for|on|in|of|with|and|or|please|any)\b/gi, "").replace(/[?!.,]/g, "").replace(/\s+/g, " ").trim();
-  const searchRes = await fetch(`/api/pubmed/esearch.fcgi?db=pubmed&term=${encodeURIComponent(terms)}&retmax=${max}&sort=relevance&retmode=json`);
+  const searchRes = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${encodeURIComponent(terms)}&retmax=${max}&sort=relevance&retmode=json`);
   const searchData = await searchRes.json();
   const ids = searchData.esearchresult?.idlist || [];
   if (!ids.length) return [];
-  const sumRes = await fetch(`/api/pubmed/esummary.fcgi?db=pubmed&id=${ids.join(",")}&retmode=json`);
+  const sumRes = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(",")}&retmode=json`);
   const sumData = await sumRes.json();
   return ids.map(id => {
     const item = sumData.result?.[id];

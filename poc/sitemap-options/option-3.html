@@ -9,6 +9,12 @@
 <link rel="stylesheet" href="shared.css">
 <style>
   :root { --accent: var(--opt3); --accent-light: var(--opt3-light); }
+  .country-tile.modeled { cursor: pointer; }
+  .country-tile.modeled:hover { border-color: var(--accent); }
+  .locale-block { margin-bottom: 36px; }
+  .locale-heading { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .locale-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+  .disease-more { color: var(--text-muted); font-style: italic; }
 </style>
 </head>
 <body>
@@ -36,9 +42,9 @@
         </p>
 
         <div class="country-grid">
-          <div class="country-tile active">United States<span class="sub">en-us — MVP</span></div>
+          <div class="country-tile modeled active" onclick="selectCountry('us')">United States<span class="sub">en-us — MVP</span></div>
+          <div class="country-tile modeled" onclick="selectCountry('fr')">France<span class="sub">fr-fr — modeled</span></div>
           <div class="country-tile">United Kingdom<span class="sub">not modeled here</span></div>
-          <div class="country-tile">France<span class="sub">not modeled here</span></div>
           <div class="country-tile">Germany<span class="sub">not modeled here</span></div>
           <div class="country-tile">Japan<span class="sub">not modeled here</span></div>
           <div class="country-tile">Brazil<span class="sub">not modeled here</span></div>
@@ -50,12 +56,12 @@
         </div>
 
         <div class="callout">
-          This demo models the <strong>United States</strong> local instance only, per
-          Scenario 3's URL pattern (medical.campus.sanofi/en-us/…). Every other market
-          would replicate the same shape at its own locale path — with two structural
-          differences: the Therapeutic Areas list itself, and language-URL presence. See
-          the Full Sitemap view for the confirmed US-specific difference (Rare Blood
-          Disorders).
+          Two local instances are modeled — <strong>United States</strong> and
+          <strong>France</strong> — to show a confirmed structural difference, not just a
+          content difference: Rare Blood Disorders is a standalone top-level Therapeutic
+          Area in the US, but everywhere else (France included) it's a Disease State
+          nested under Rare Diseases. Every other country tile above is unmodeled. Click
+          United States or France to jump to that instance's sitemap.
         </div>
       </div>
     </div>
@@ -66,83 +72,226 @@
       </div>
       <p style="font-size:13px; color:var(--text-muted); margin-bottom:40px;">No global tier — all content lives in local instances.</p>
 
-      <div style="font-size:13px; color:var(--text-muted); margin-bottom:20px; font-weight:600; margin-top:32px;">
-        <div>LOCAL INSTANCE (/en-us) — US only, MVP</div>
+      <div class="locale-block" id="locale-us">
+        <div class="locale-heading">LOCAL INSTANCE — UNITED STATES (/en-us)</div>
+        <div class="locale-sub">Rare Blood Disorders appears as its own top-level Therapeutic Area here — a US-specific structural exception, not just a content difference.</div>
+        <ul style="list-style:none; padding:0; font-size:13px;">
+          <li style="margin-bottom:12px;">
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Immunology</summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="margin-bottom:8px;">
+                  <details style="cursor:pointer;">
+                    <summary style="color:var(--text-secondary);">Type 2 Inflammation</summary>
+                    <ul style="list-style:none; padding-left:20px; margin-top:6px;">
+                      <li style="margin-bottom:4px; color:var(--text-muted);">Atopic Dermatitis</li>
+                      <li style="margin-bottom:4px; color:var(--text-muted);">Asthma</li>
+                      <li style="margin-bottom:4px; color:var(--text-muted);">CRSwNP</li>
+                      <li style="margin-bottom:4px; color:var(--text-muted);">Eosinophilic Esophagitis (EoE)</li>
+                      <li style="margin-bottom:4px;" class="disease-more">+9 more (CSU, Prurigo Nodularis, Bullous Pemphigoid, COPD, Hidradenitis Suppurativa, Allergic Fungal Rhinosinusitis, Alopecia Areata, EoG, CPUO)</li>
+                    </ul>
+                  </details>
+                </li>
+                <li style="margin-bottom:4px; color:var(--text-secondary);">IMMERSE <span style="color:var(--text-muted); font-weight:400;">— program brand page</span></li>
+                <li style="margin-bottom:4px; color:var(--text-secondary);">ADVENT <span style="color:var(--text-muted); font-weight:400;">— program brand page</span></li>
+              </ul>
+            </details>
+          </li>
+          <li style="margin-bottom:12px;">
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Rare Blood Disorders <span style="font-size:11px; color:var(--text-muted); font-weight:400;">(standalone TA — US only)</span></summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="margin-bottom:4px; color:var(--text-muted);">Hemophilia A &amp; B</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Acquired Thrombotic Thrombocytopenic Purpura (aTTP)</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Immune Thrombocytopenia Purpura (ITP)</li>
+              </ul>
+            </details>
+          </li>
+          <li style="margin-bottom:12px;">
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Rare Diseases</summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="margin-bottom:4px; color:var(--text-muted);">Fabry Disease</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Gaucher Disease</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">MPS I</li>
+                <li style="margin-bottom:4px;" class="disease-more">+7 more (Pompe, AATD, DM1, FSGS, CVID, GM2 Gangliosidosis)</li>
+                <li style="margin-bottom:4px; color:var(--text-secondary);">RD University (RDU) <span style="color:var(--text-muted); font-weight:400;">— program brand page</span></li>
+              </ul>
+            </details>
+          </li>
+          <li style="margin-bottom:12px;">
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Neurology</summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="margin-bottom:4px; color:var(--text-muted);">Multiple Sclerosis</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">CIDP</li>
+                <li style="margin-bottom:4px; color:var(--text-secondary);">Nerve Nexus <span style="color:var(--text-muted); font-weight:400;">— program brand page</span></li>
+              </ul>
+            </details>
+          </li>
+          <li style="margin-bottom:12px;">
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Oncology</summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="margin-bottom:4px; color:var(--text-muted);">Multiple Myeloma</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Prostate Cancer</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Leukemia / Lymphoma</li>
+              </ul>
+            </details>
+          </li>
+          <li style="margin-bottom:12px;">
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Diabetes</summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="margin-bottom:4px; color:var(--text-muted);">Type 1 Diabetes</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Type 2 Diabetes</li>
+                <li style="margin-bottom:4px; color:var(--text-secondary);">Bridge <span style="color:var(--text-muted); font-weight:400;">— program brand page</span></li>
+              </ul>
+            </details>
+          </li>
+          <li style="margin-bottom:12px;">
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Vaccines</summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="margin-bottom:4px; color:var(--text-muted);">Infant &amp; Early Childhood</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">School Age &amp; Adolescents</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Adults</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Older Adults</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Travel Medicine</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Special Populations</li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Talent (e-learning)</summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="color:var(--text-muted);">Separate branch, US-only content</li>
+              </ul>
+            </details>
+          </li>
+        </ul>
       </div>
-      <ul style="list-style:none; padding:0; font-size:13px;">
-        <li style="margin-bottom:12px;">
-          <details style="cursor:pointer;">
-            <summary style="color:var(--text); font-weight:600;">Immunology</summary>
-            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
-              <li style="margin-bottom:8px;">
-                <details style="cursor:pointer;">
-                  <summary style="color:var(--text-secondary);">Type 2 Inflammation</summary>
-                  <ul style="list-style:none; padding-left:20px; margin-top:6px;">
-                    <li style="margin-bottom:4px; color:var(--text-muted);">Specific disease articles</li>
-                  </ul>
-                </details>
-              </li>
-            </ul>
-          </details>
-        </li>
-        <li style="margin-bottom:12px;">
-          <details style="cursor:pointer;">
-            <summary style="color:var(--text); font-weight:600;">Rare Blood Disorders</summary>
-            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
-              <li style="margin-bottom:6px; color:var(--text-secondary);">US-only standalone TA</li>
-              <li style="margin-bottom:6px; color:var(--text-muted);">Specific disease articles</li>
-            </ul>
-          </details>
-        </li>
-        <li style="margin-bottom:12px;">
-          <details style="cursor:pointer;">
-            <summary style="color:var(--text); font-weight:600;">Vaccines</summary>
-            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
-              <li style="margin-bottom:6px; color:var(--text-secondary);">Population hubs</li>
-            </ul>
-          </details>
-        </li>
-        <li style="margin-bottom:20px;">
-          <details style="cursor:pointer;">
-            <summary style="color:var(--text); font-weight:600;">Programs</summary>
-            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
-              <li style="margin-bottom:4px; color:var(--text-secondary);">IMMERSE</li>
-              <li style="margin-bottom:4px; color:var(--text-secondary);">ADVENT</li>
-              <li style="margin-bottom:4px; color:var(--text-secondary);">Bridge</li>
-              <li style="margin-bottom:4px; color:var(--text-secondary);">RD University</li>
-              <li style="margin-bottom:4px; color:var(--text-secondary);">Nerve Nexus</li>
-            </ul>
-          </details>
-        </li>
-        <li>
-          <details style="cursor:pointer;">
-            <summary style="color:var(--text); font-weight:600;">Talent (e-learning)</summary>
-            <ul style="list-style:none; padding-left:20px; margin-top:8px;">
-              <li style="color:var(--text-muted);">Separate branch per market</li>
-            </ul>
-          </details>
-        </li>
-      </ul>
 
-      <div style="font-size:13px; color:var(--text-muted); margin-top:40px; margin-bottom:20px; font-weight:600;">
+      <div class="locale-block" id="locale-fr">
+        <div class="locale-heading">LOCAL INSTANCE — FRANCE (/fr-fr)</div>
+        <div class="locale-sub">Same 6 Therapeutic Areas and the same TA → Disease State → disease template as the US — but Rare Blood Disorders nests under Rare Diseases instead of standing alone.</div>
+        <ul style="list-style:none; padding:0; font-size:13px;">
+          <li style="margin-bottom:12px;">
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Immunology</summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="margin-bottom:8px;">
+                  <details style="cursor:pointer;">
+                    <summary style="color:var(--text-secondary);">Type 2 Inflammation</summary>
+                    <ul style="list-style:none; padding-left:20px; margin-top:6px;">
+                      <li style="margin-bottom:4px; color:var(--text-muted);">Atopic Dermatitis</li>
+                      <li style="margin-bottom:4px; color:var(--text-muted);">Asthma</li>
+                      <li style="margin-bottom:4px; color:var(--text-muted);">CRSwNP</li>
+                      <li style="margin-bottom:4px; color:var(--text-muted);">Eosinophilic Esophagitis (EoE)</li>
+                      <li style="margin-bottom:4px;" class="disease-more">+9 more, identical to the US list</li>
+                    </ul>
+                  </details>
+                </li>
+                <li style="margin-bottom:4px; color:var(--text-secondary);">IMMERSE <span style="color:var(--text-muted); font-weight:400;">— program brand page</span></li>
+                <li style="margin-bottom:4px; color:var(--text-secondary);">ADVENT <span style="color:var(--text-muted); font-weight:400;">— program brand page</span></li>
+              </ul>
+            </details>
+          </li>
+          <li style="margin-bottom:12px;">
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Rare Diseases</summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="margin-bottom:8px;">
+                  <details style="cursor:pointer;">
+                    <summary style="color:var(--text-secondary);">Rare Blood Disorders <span style="color:var(--text-muted); font-weight:400;">(Disease State here, not a TA)</span></summary>
+                    <ul style="list-style:none; padding-left:20px; margin-top:6px;">
+                      <li style="margin-bottom:4px; color:var(--text-muted);">Hemophilia A &amp; B</li>
+                      <li style="margin-bottom:4px; color:var(--text-muted);">Acquired Thrombotic Thrombocytopenic Purpura (aTTP)</li>
+                      <li style="margin-bottom:4px; color:var(--text-muted);">Immune Thrombocytopenia Purpura (ITP)</li>
+                    </ul>
+                  </details>
+                </li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Fabry Disease</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Gaucher Disease</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">MPS I</li>
+                <li style="margin-bottom:4px;" class="disease-more">+7 more, identical to the US list</li>
+                <li style="margin-bottom:4px; color:var(--text-secondary);">RD University (RDU) <span style="color:var(--text-muted); font-weight:400;">— program brand page</span></li>
+              </ul>
+            </details>
+          </li>
+          <li style="margin-bottom:12px;">
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Neurology</summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="margin-bottom:4px; color:var(--text-muted);">Multiple Sclerosis</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">CIDP</li>
+                <li style="margin-bottom:4px; color:var(--text-secondary);">Nerve Nexus <span style="color:var(--text-muted); font-weight:400;">— program brand page, footprint TBD outside the US</span></li>
+              </ul>
+            </details>
+          </li>
+          <li style="margin-bottom:12px;">
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Oncology</summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="margin-bottom:4px; color:var(--text-muted);">Multiple Myeloma</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Prostate Cancer</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Leukemia / Lymphoma</li>
+              </ul>
+            </details>
+          </li>
+          <li style="margin-bottom:12px;">
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Diabetes</summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="margin-bottom:4px; color:var(--text-muted);">Type 1 Diabetes</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Type 2 Diabetes</li>
+                <li style="margin-bottom:4px; color:var(--text-secondary);">Bridge <span style="color:var(--text-muted); font-weight:400;">— program brand page (France is a top-10 Bridge traffic market)</span></li>
+              </ul>
+            </details>
+          </li>
+          <li style="margin-bottom:12px;">
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Vaccines</summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="margin-bottom:4px; color:var(--text-muted);">Infant &amp; Early Childhood</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">School Age &amp; Adolescents</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Adults</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Older Adults</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Travel Medicine</li>
+                <li style="margin-bottom:4px; color:var(--text-muted);">Special Populations</li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details style="cursor:pointer;">
+              <summary style="color:var(--text); font-weight:600;">Talent (e-learning)</summary>
+              <ul style="list-style:none; padding-left:20px; margin-top:8px;">
+                <li style="color:var(--text-muted);">Separate branch, France-only content</li>
+              </ul>
+            </details>
+          </li>
+        </ul>
+      </div>
+
+      <div style="font-size:13px; color:var(--text-muted); margin-top:24px; margin-bottom:20px; font-weight:600;">
         <div>OTHER LOCALES (not modeled here)</div>
       </div>
       <ul style="list-style:none; padding:0; font-size:13px;">
         <li style="margin-bottom:6px;"><code>/en-gb</code> — United Kingdom</li>
-        <li style="margin-bottom:6px;"><code>/fr</code> — France</li>
-        <li style="margin-bottom:6px;"><code>/de</code> — Germany</li>
-        <li style="margin-bottom:6px;"><code>/ja</code> — Japan</li>
-        <li style="margin-bottom:6px;"><code>/pt-br</code> — Brazil</li>
-        <li style="margin-bottom:6px;"><code>/en-ca</code> — Canada</li>
+        <li style="margin-bottom:6px;"><code>/de-de</code> — Germany</li>
+        <li style="margin-bottom:6px;"><code>/ja-jp</code> — Japan</li>
+        <li style="margin-bottom:6px;"><code>/en-ca</code> / <code>/fr-ca</code> — Canada (multilingual — one instance per language)</li>
         <li style="margin-bottom:6px;"><code>/en-au</code> — Australia</li>
-        <li style="margin-bottom:6px;"><code>/hi</code> — India</li>
-        <li style="margin-bottom:6px;"><code>/it</code> — Italy</li>
-        <li style="margin-bottom:6px;"><code>/es</code> — Spain</li>
+        <li style="margin-bottom:6px;"><code>/it-it</code> — Italy</li>
+        <li style="margin-bottom:6px;"><code>/es-es</code> — Spain</li>
+        <li style="margin-bottom:6px;"><code>/zh-cn</code> — China</li>
+        <li style="margin-bottom:6px;"><code>/nl-nl</code> — Netherlands</li>
       </ul>
     </div>
 
     <div class="frame-footer">
-      <div class="row">Medverse — unified medical education platform · scientific exchange, non-promotional · <strong>Option 3</strong> — no global portal, US local instance only (Scenario 3 + Top-Level Navigation, combined)</div>
+      <div class="row">Medverse — unified medical education platform · scientific exchange, non-promotional · <strong>Option 3</strong> — no global portal, two local instances modeled (US + France) to demonstrate confirmed per-market TA structure (Scenario 3 + Disease State Taxonomy + TA Framework — Market Variation, combined)</div>
       <div class="links">
         <a href="#">Local E-Learning (Talent LMS)</a>
         <a href="option-3.html">← Back to region selector</a>
@@ -151,14 +300,25 @@
     </div>
   </div>
   <div class="outer-nav"><a href="index.html">&larr; All options</a> &nbsp;·&nbsp; <a href="alignment.html">Alignment review: which option fits poc-external?</a></div>
-  <div class="outer-footnote">Working prototype for internal review · Option 3 of 3 · built from the Medverse sitemap workbook (Scenario 3 + Top-Level Navigation + Disease State Taxonomy + TA Framework — Market Variation)</div>
+  <div class="outer-footnote">Working prototype for internal review · Option 3 of 3 · built from the Medverse sitemap workbook (Scenario 3 + Disease State Taxonomy + TA Framework — Market Variation + Rare Blood Disorders Detail + Vaccines TA Detail + Branded Programs)</div>
 
   <script>
     function showView(v) {
       document.getElementById('view-prototype').style.display = v === 'prototype' ? '' : 'none';
       document.getElementById('view-sitemap').style.display = v === 'sitemap' ? '' : 'none';
       document.querySelectorAll('.chrome-toggle button').forEach(b => b.classList.remove('active'));
-      event.target.classList.add('active');
+      if (event && event.target && event.target.matches('.chrome-toggle button')) {
+        event.target.classList.add('active');
+      }
+    }
+    function selectCountry(code) {
+      document.querySelectorAll('.country-tile.modeled').forEach(t => t.classList.remove('active'));
+      if (event && event.currentTarget) event.currentTarget.classList.add('active');
+      showView('sitemap');
+      document.querySelectorAll('.chrome-toggle button').forEach(b => b.classList.remove('active'));
+      document.querySelector('.chrome-toggle button:last-child').classList.add('active');
+      const target = document.getElementById(code === 'us' ? 'locale-us' : 'locale-fr');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   </script>
 </body>

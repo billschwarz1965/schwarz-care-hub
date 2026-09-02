@@ -1,7 +1,7 @@
 import { speak, speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 import { broadcastSignal } from "./orion-bridge.js";
 
-const PUBMED_BASE = "/api/pubmed";
+const PUBMED_BASE = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils";
 const NEJM_JOURNAL = '"N Engl J Med"[Journal]';
 
 const searchInput = document.getElementById("search-input");
@@ -472,7 +472,7 @@ const CHAT_RESPONSES = {
       query: "dupilumab abrocitinib head-to-head comparison atopic dermatitis",
       synthesize: (articles) => {
         const titles = articles.slice(0, 3).map((a, i) => `${i + 1}. **${a.title}** — *${a.fulljournalname}* (${a.pubdate}) [PMID: ${a.pmid}]`).join("\n\n");
-        return `Here is the published head-to-head evidence for dupilumab vs JAK inhibitors:\n\n${titles}\n\n**Key context:** The JADE DARE trial (abrocitinib vs dupilumab) is the largest head-to-head dataset. Dupilumab showed comparable efficacy at Week 26 with a differentiated safety profile — notably lower rates of serious infections and no herpes zoster signal.\n\n**Evidence gap:** No published head-to-head data for upadacitinib vs dupilumab. This is a frequently requested comparison from HCPs (67 Orion signals this quarter).`;
+        return `Here is the published head-to-head evidence for dupilumab vs JAK inhibitors:\n\n${titles}\n\n**Key context:** The JADE DARE trial (abrocitinib vs dupilumab) is the largest head-to-head dataset. Dupilumab showed comparable efficacy at Week 26 with a differentiated safety profile — notably lower rates of serious infections and no herpes zoster signal.\n\n**Evidence gap:** No published head-to-head data for upadacitinib vs dupilumab. This is a frequently requested comparison from HCPs (67 interaction signals this quarter).`;
       }
     },
     {
@@ -974,7 +974,7 @@ async function runDemo() {
   await delay(500);
 
   // ACT 1: Introduction
-  await narrate("Literature Intelligence — live PubMed and NEJM search with AI synthesis and Orion integration");
+  await narrate("Literature Intelligence — live PubMed and NEJM search with AI synthesis and interaction signal integration");
 
   // ACT 2: Governance bar
   const govBar = document.getElementById("governance-bar");
@@ -1043,7 +1043,7 @@ async function runDemo() {
   await delay(600);
   await runSearch();
   await delay(4000);
-  await narrate("Each search generates an intelligence signal for MSL field teams via Orion");
+  await narrate("Each search generates an intelligence signal for medical insights and analytics");
 
   // ACT 8: Chat demo — one cross-TA question, distinct from both searches above
   await narrate("The same agent answers questions directly in chat, with live PubMed searches behind every reply");
@@ -1059,7 +1059,7 @@ async function runDemo() {
   // Wrap up
   if (mainPanel) mainPanel.scrollTo({ top: 0, behavior: "smooth" });
   await delay(500);
-  await narrate("Literature Intelligence — live PubMed, NEJM, AI synthesis, and Orion signals in one platform");
+  await narrate("Literature Intelligence — live PubMed, NEJM, AI synthesis, and interaction signals in one platform");
   narrateOff();
 
   fullDemoRunning = false;

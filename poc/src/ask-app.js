@@ -4,6 +4,7 @@
 // pages it actually has via <body data-modules="...">.
 
 import { askMedVerse, capabilityLink, trialLink, pipelineAreaLabel } from "./ask-router.js";
+import { speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 import { initAskPrompts } from "./ask-prompts.js";
 
 const EDU_ICON = { podcast: "microphone-2", video: "player-play", infographic: "chart-infographic", article: "file-text" };
@@ -38,7 +39,9 @@ const availableModules = (document.body.dataset.modules || "")
   .split(",").map(s => s.trim()).filter(Boolean);
 
 const params = new URLSearchParams(location.search);
-const query = (params.get("q") || "").trim();
+// Reassignable: the in-page demo renders one query after another without
+// navigating, since a reload would kill the demo mid-run.
+let query = (params.get("q") || "").trim();
 
 const input = document.getElementById("ask-input");
 const form = document.getElementById("ask-form");
@@ -66,8 +69,7 @@ const EXAMPLES = [
   "What trials are recruiting for atopic dermatitis?",
   "Who is my MSL for dermatology?",
   "Cardiac manifestations and biomarkers in Fabry disease",
-  "How do I request compassionate use for an unapproved medicine?",
-  "What's in Sanofi's R&D pipeline for atopic dermatitis?"
+  "How do I request compassionate use for an unapproved medicine?"
 ];
 
 const wrap = document.querySelector(".ask-wrap");
@@ -278,4 +280,132 @@ function render() {
 }
 
 render();
+
+// ============================================================
+// GUIDED DEMO
+// ============================================================
+// Walks the real page through real queries: narrates each capability, types the
+// question into the actual search box, and renders the actual result. Nothing is
+// mocked — every step runs the same router the user does.
+
+const delay = (ms) => new Promise(r => setTimeout(r, ms));
+
+async function narrate(text) {
+  const el = document.getElementById("demo-narrator");
+  if (!el) return;
+  el.innerHTML = `<i class="ti ti-sparkles"></i> ${esc(text)}`;
+  if (isCCEnabled()) el.classList.add("visible");
+  showControls();
+  await speakAndWait(text);
+}
+
+function narrateOff() {
+  const el = document.getElementById("demo-narrator");
+  if (el) el.classList.remove("visible");
+  stopSpeaking();
+  hideControls();
+}
+
+/** Render results for an arbitrary query without navigating. */
+function showResultsFor(q) {
+  query = q;
+  if (input) input.value = q;
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/** Type into the search box so the viewer sees the question being asked. */
+async function typeQuery(q, perChar = 14) {
+  if (!input) return;
+  input.value = "";
+  input.focus();
+  for (let i = 0; i < q.length; i++) {
+    input.value = q.slice(0, i + 1);
+    if (i % 3 === 0) await delay(perChar);
+  }
+  await delay(220);
+}
+
+// Every question here is one a clinician would actually type, framed as the
+// clinical moment that prompts it. Corporate-facing questions (pipeline,
+// competitive landscape) are deliberately left out — an HCP does not ask those.
+const DEMO_STEPS = [
+  {
+    q: "What are my options for a patient with moderate-to-severe atopic dermatitis who failed topicals?",
+    before: "A dermatologist has a patient who has failed topical therapy and is deciding what to do next. She types the question the way she would say it.",
+    after: "The treatment algorithm, the trial data, and the disease burden - each claim numbered back to governed Sanofi content. Underneath: the studies recruiting in this condition, and the education already published on it."
+  },
+  {
+    q: "Is Dupixent safe for a patient with a polysorbate allergy?",
+    before: "Now a safety question before prescribing. This one needs two different things at once.",
+    after: "It invoked two agents: Ingredient Safety for the excipient cross-reference, and Medical Information for the part that goes past the label. Either one opens with the question already filled in."
+  },
+  {
+    q: "Dupixent was left out of the fridge overnight, is it still usable?",
+    before: "This is the kind of question a nurse or pharmacist asks on a Monday morning, and it has a real answer or it does not.",
+    after: "No paragraph invented. It routes straight to Temperature Stability, which does the actual excursion assessment against the product's cold chain limits."
+  },
+  {
+    q: "Early detection and screening for type 1 diabetes",
+    before: "A paediatrician wants to understand screening. Answers here are not limited to internal documents.",
+    after: "Six BR one D G E resources, all type 1 diabetes - the early detection toolkit, two articles, three expert videos. Each keeps its content type, its source programme, and a link back to where it actually lives."
+  },
+  {
+    q: "What trials are recruiting for atopic dermatitis?",
+    before: "She has a patient who is running out of options and asks about trials.",
+    after: "Real studies, each with its N C T number, phase, enrolment target and open sites. The links go to Clinical Trials dot gov, because the summary here is not enough to refer a patient on - and the page says so."
+  },
+  {
+    q: "Who is my MSL for dermatology?",
+    before: "She wants to talk to someone at Sanofi about the long-term data. Today that means finding the right person.",
+    after: "No prose, because the question has no prose answer. It hands her to the agent that performs the real lookup. An early build answered this with congress highlights, because that record mentioned an M S L booth - confidently wrong is worse than nothing."
+  },
+  {
+    q: "How do I request compassionate use for an unapproved medicine?",
+    before: "Her patient has exhausted approved options. This is one of the hardest things for a clinician to navigate.",
+    after: "Managed Access, the request portal, and Post Trial Access - the actual pathways, in one place. And every question she asked left an interaction signal describing the topic, intent and disease area, which is what the field team can act on."
+  },
+  {
+    q: "Treatment options for pancreatic cancer",
+    before: "Last one, and it matters most. There is no pancreatic cancer evidence in the indexed content.",
+    after: "So it says so. It does not hand her the nearest document and let it look like an answer. For something a clinician would rely on, being able to say I do not know is what makes everything else trustworthy."
+  }
+];
+
+let demoRunning = false;
+
+async function runDemo() {
+  if (demoRunning) return;
+  demoRunning = true;
+
+  const btn = document.getElementById("run-demo");
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="ti ti-loader"></i> Running…'; }
+
+  try {
+    for (const step of DEMO_STEPS) {
+      if (!demoRunning) break;
+      await narrate(step.before);
+      if (!demoRunning) break;
+      await typeQuery(step.q);
+      showResultsFor(step.q);
+      await delay(700);
+      if (!demoRunning) break;
+      await narrate(step.after);
+      await delay(600);
+    }
+    if (demoRunning) {
+      await narrate("Eight questions a clinician would actually ask, one box, and governance underneath that does not depend on anyone remembering to apply it.");
+    }
+  } finally {
+    narrateOff();
+    demoRunning = false;
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-player-play"></i> Play Demo'; }
+  }
+}
+
+const demoBtn = document.getElementById("run-demo");
+if (demoBtn) demoBtn.addEventListener("click", runDemo);
+
+// Leaving the page mid-demo should not keep talking.
+window.addEventListener("beforeunload", () => { demoRunning = false; stopSpeaking(); });
 initAskPrompts();
