@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="medverse-ask" content="ask.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MedVerse">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <meta name="theme-color" content="#7a00e6">
+  <title>MedVerse — Population Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5fa;
+      --surface: #ffffff;
+      --surface-dim: #f3eff8;
+      --text: #1a1a2e;
+      --text-secondary: #5a5672;
+      --text-muted: #918da3;
+      --border: #e4dff0;
+      --border-strong: #cdc6de;
+      --accent: #7a00e6;
+      --accent-hover: #6600c2;
+      --accent-light: #f0e6ff;
+      --accent-text: #6b21a8;
+      --accent-secondary: #aa46a3;
+      --gold: #f9c851;
+      --gold-dark: #e5a800;
+      --success: #166534;
+      --success-bg: #dcfce7;
+      --warning: #854d0e;
+      --warning-bg: #fef9c3;
+      --danger: #991b1b;
+      --danger-bg: #fee2e2;
+      --info: #1d4ed8;
+      --info-bg: #dbeafe;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --font: 'Work Sans', 'Raleway', 'Roboto', sans-serif;
+    }
+    html.dark {
+      --bg: #0a0a14;
+      --surface: #13131f;
+      --surface-dim: #1a1a2e;
+      --text: #f0eef5;
+      --text-secondary: #a8a3b8;
+      --text-muted: #6b6580;
+      --border: #2a2840;
+      --border-strong: #3a3555;
+      --accent-light: #2a1a40;
+      --accent-text: #c084fc;
+      --success: #4ade80;
+      --success-bg: #14321f;
+      --warning: #fbbf24;
+      --warning-bg: #3a2c0a;
+      --danger: #f87171;
+      --danger-bg: #3a1414;
+      --info: #93c5fd;
+      --info-bg: #16233d;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* HEADER */
+    .header { background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .header-brand-bar { height: 3px; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 50%, var(--gold) 100%); }
+    .header-inner { padding: 10px 24px; display: flex; align-items: center; gap: 12px; }
+    .header-home { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; color: inherit; border-radius: 8px; padding: 4px 8px 4px 4px; margin: -4px; transition: background 0.15s; }
+    .header-home:hover { background: var(--surface-dim); }
+    .header-logo { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; }
+    .header-title { font-size: 16px; font-weight: 600; }
+    .header-subtitle { font-size: 12px; color: var(--text-muted); }
+    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .header-badge { font-size: 11px; padding: 3px 10px; background: var(--warning-bg); color: var(--warning); border-radius: 20px; font-weight: 500; }
+    .theme-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 200; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font-size: 17px; }
+    .theme-toggle .ti-moon { display: none; }
+    html.dark .theme-toggle .ti-moon { display: inline; }
+    html.dark .theme-toggle .ti-sun { display: none; }
+
+    /* MODULE NAV */
+    .module-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; flex-shrink: 0; }
+    .module-tab { padding: 10px 20px; font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
+    .module-tab:hover { color: var(--text); }
+    .module-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .module-tab i { font-size: 16px; }
+
+    /* LAYOUT */
+    .dashboard { flex: 1; overflow-y: auto; padding: 24px; }
+    .dashboard::-webkit-scrollbar { width: 6px; }
+    .dashboard::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .dash-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .dash-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; max-width: 900px; }
+    .demo-play-btn { padding: 8px 16px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .demo-play-btn:hover { background: var(--accent-hover); }
+
+    /* FIREWALL BANNER */
+    .firewall-banner {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius); padding: 14px 18px; margin-bottom: 20px;
+    }
+    .firewall-icon { width: 34px; height: 34px; flex-shrink: 0; border-radius: 9px; background: var(--accent-light); color: var(--accent-text); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .firewall-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; display: flex; align-items: center; gap: 8px; }
+    .firewall-text { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+    .firewall-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .fw-chip { font-size: 10.5px; padding: 3px 9px; border-radius: 20px; font-weight: 600; background: var(--success-bg); color: var(--success); display: flex; align-items: center; gap: 4px; }
+    .fw-chip.blocked { background: var(--danger-bg); color: var(--danger); }
+
+    /* STATS */
+    .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 22px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+    .stat-card-num { font-size: 24px; font-weight: 700; color: var(--accent); line-height: 1.1; }
+    .stat-card-label { font-size: 11px; color: var(--text-muted); margin-top: 5px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .stat-card.stat-danger .stat-card-num { color: var(--danger); }
+    .stat-card.stat-warn .stat-card-num { color: var(--warning); }
+    .stat-card.stat-ok .stat-card-num { color: var(--success); }
+
+    /* PANELS */
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px; }
+    .panel-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+    .panel-title { font-size: 15px; font-weight: 700; flex: 1; }
+    .panel-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+    .map-grid-wrap { display: grid; grid-template-columns: 1fr 320px; gap: 20px; align-items: start; }
+    @media (max-width: 1100px) { .map-grid-wrap { grid-template-columns: 1fr; } }
+
+    /* METRIC TOGGLE */
+    .metric-toggle { display: flex; gap: 4px; background: var(--surface-dim); padding: 3px; border-radius: 8px; }
+    .metric-btn { padding: 6px 13px; font-family: var(--font); font-size: 12px; font-weight: 600; border: none; background: transparent; color: var(--text-muted); border-radius: 6px; cursor: pointer; }
+    .metric-btn.active { background: var(--surface); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+    /* TILE MAP */
+    .tile-map { display: grid; grid-template-columns: repeat(11, 1fr); grid-template-rows: repeat(8, 1fr); gap: 4px; max-width: 620px; }
+    .tile {
+      aspect-ratio: 1; border-radius: 5px; display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; cursor: pointer; border: 2px solid transparent;
+      transition: transform 0.12s, border-color 0.12s; color: #fff; user-select: none;
+    }
+    .tile:hover { transform: scale(1.12); z-index: 5; border-color: var(--text); }
+    .tile.selected { border-color: var(--text); transform: scale(1.12); z-index: 4; }
+    .tile.dim { opacity: 0.28; }
+    .map-legend { display: flex; align-items: center; gap: 14px; margin-top: 14px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-secondary); }
+    .legend-swatch { width: 13px; height: 13px; border-radius: 3px; }
+    .legend-scale { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-muted); }
+    .legend-bar { width: 130px; height: 9px; border-radius: 5px; }
+
+    /* DETAIL SIDE PANEL */
+    .detail-card { background: var(--surface-dim); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .detail-name { font-size: 16px; font-weight: 700; }
+    .detail-region { font-size: 11.5px; color: var(--text-muted); margin-bottom: 12px; }
+    .detail-quadrant { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; color: #fff; margin-bottom: 12px; }
+    .detail-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .dm { background: var(--surface); border: 1px solid var(--border); border-radius: 7px; padding: 9px 10px; }
+    .dm-num { font-size: 16px; font-weight: 700; }
+    .dm-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
+    .gap-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+    .gap-row:last-child { border-bottom: none; }
+    .gap-name { flex: 1; }
+    .gap-val { font-weight: 700; }
+    .gap-delta { font-size: 10.5px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+    .gap-delta.up { background: var(--danger-bg); color: var(--danger); }
+    .gap-delta.down { background: var(--success-bg); color: var(--success); }
+    .safety-pill { font-size: 9.5px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: var(--danger-bg); color: var(--danger); }
+    .detail-empty { font-size: 12.5px; color: var(--text-muted); text-align: center; padding: 34px 12px; line-height: 1.6; }
+
+    /* QUADRANT MATRIX */
+    .quad-matrix { display: grid; grid-template-columns: 88px 1fr 1fr; grid-template-rows: auto 1fr 1fr auto; gap: 8px; max-width: 720px; }
+    .quad-cell { border-radius: var(--radius); padding: 14px; min-height: 108px; border: 1px solid var(--border); cursor: pointer; transition: transform 0.12s; }
+    .quad-cell:hover { transform: translateY(-2px); }
+    .quad-cell-label { font-size: 12.5px; font-weight: 700; margin-bottom: 4px; }
+    .quad-cell-count { font-size: 21px; font-weight: 700; line-height: 1; }
+    .quad-cell-desc { font-size: 10.5px; line-height: 1.45; margin-top: 6px; opacity: 0.88; }
+    .quad-axis { display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .quad-axis.v { writing-mode: vertical-rl; transform: rotate(180deg); }
+
+    /* TABLES */
+    .tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    .tbl th { text-align: left; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); padding: 8px 10px; border-bottom: 1px solid var(--border); font-weight: 600; }
+    .tbl td { padding: 10px; border-bottom: 1px solid var(--border); }
+    .tbl tr:last-child td { border-bottom: none; }
+    .tbl tbody tr:hover { background: var(--surface-dim); }
+    .badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; display: inline-block; }
+    .badge-danger { background: var(--danger-bg); color: var(--danger); }
+    .badge-warn { background: var(--warning-bg); color: var(--warning); }
+    .badge-ok { background: var(--success-bg); color: var(--success); }
+    .badge-accent { background: var(--accent-light); color: var(--accent-text); }
+    .badge-info { background: var(--info-bg); color: var(--info); }
+    .bar-wrap { display: flex; align-items: center; gap: 8px; }
+    .bar-track { flex: 1; height: 7px; background: var(--surface-dim); border-radius: 4px; overflow: hidden; min-width: 60px; }
+    .bar-fill { height: 100%; border-radius: 4px; }
+
+    /* CANDIDATE CARDS */
+    .cand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 12px; }
+    .cand-card { background: var(--surface-dim); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+    .cand-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+    .cand-av { width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; background: var(--accent-light); color: var(--accent-text); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+    .cand-name { font-size: 13.5px; font-weight: 700; }
+    .cand-meta { font-size: 11px; color: var(--text-muted); }
+    .cand-line { font-size: 11.5px; color: var(--text-secondary); line-height: 1.5; margin-top: 7px; }
+    .cand-line strong { color: var(--text); font-weight: 600; }
+    .cand-basis { font-size: 10.5px; margin-top: 9px; padding-top: 9px; border-top: 1px dashed var(--border); color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+    .cand-nocount { font-size: 10px; font-weight: 700; color: var(--success); display: flex; align-items: center; gap: 4px; margin-top: 6px; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 1000px) { .two-col { grid-template-columns: 1fr; } }
+    .demo-narrator { position: fixed; bottom: 0; left: 0; right: 0; z-index: 300; }
+  </style>
+  <script type="module" crossorigin src="./assets/population-Dt7WVUyM.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/enhancements-DWyQcU8v.js">
+  <link rel="modulepreload" crossorigin href="./assets/population-data-DRGwMiPL.js">
+  <link rel="modulepreload" crossorigin href="./assets/taxonomy-B-xcL3O-.js">
+  <link rel="modulepreload" crossorigin href="./assets/orion-bridge-4A-0m1g1.js">
+  <link rel="modulepreload" crossorigin href="./assets/narrator-BE1zjzk_.js">
+  <link rel="stylesheet" crossorigin href="./assets/enhancements-BXHYsJpf.css">
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+    <i class="ti ti-sun"></i>
+    <i class="ti ti-moon"></i>
+  </button>
+
+  <div class="header">
+    <div class="header-brand-bar"></div>
+    <div class="header-inner">
+      <a class="header-home" href="index.html" title="MedVerse home">
+        <div class="header-logo"><i class="ti ti-brain"></i></div>
+        <div>
+          <div class="header-title">MedVerse</div>
+          <div class="header-subtitle">Scientific Intelligence Ecosystem</div>
+        </div>
+      </a>
+      <div class="header-actions">
+        <div class="header-badge">POC v0.1</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="module-nav">
+    <a class="module-tab" href="index.html"><i class="ti ti-home"></i> Home</a>
+    <a class="module-tab" href="ask.html"><i class="ti ti-sparkles"></i> Ask MedVerse</a>
+    <a class="module-tab" href="concierge.html"><i class="ti ti-message-circle"></i> HCP Concierge</a>
+    <a class="module-tab" href="patient.html"><i class="ti ti-heart"></i> Patient Concierge</a>
+    <a class="module-tab" href="msl-copilot.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
+    <a class="module-tab" href="medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
+    <a class="module-tab" href="system-tools.html"><i class="ti ti-settings"></i> Power Agents</a>
+    <a class="module-tab" href="demo.html"><i class="ti ti-player-play"></i> Demo</a>
+    <a class="module-tab" href="about.html"><i class="ti ti-info-circle"></i> About</a>
+  </nav>
+
+  <div class="dashboard">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div class="dash-title" style="flex:1;">Population Intelligence</div>
+      <button class="demo-play-btn" id="demo-play-btn"><i class="ti ti-player-play-filled"></i> Play Demo</button>
+    </div>
+    <div class="dash-subtitle">
+      Deidentified real-world evidence mapped against MedVerse scientific engagement. Where clinical need
+      outruns engagement, the delta is a medical education priority — not a sales target.
+    </div>
+
+    <!-- FIREWALL BANNER -->
+    <div class="firewall-banner">
+      <div class="firewall-icon"><i class="ti ti-shield-lock"></i></div>
+      <div style="flex:1;">
+        <div class="firewall-title">
+          Commercial Firewall active
+          <span class="badge badge-accent" id="fw-floor">Aggregation floor: state</span>
+        </div>
+        <div class="firewall-text" id="fw-text">
+          Source is licensed deidentified real-world data. Patient Services holds the patient-to-HCP linkage;
+          those counts do not cross into this module. HCP engagement candidates below are ranked from care-gap
+          context, scientific profile and the clinician's own information-seeking — independently derivable
+          without any patient-opportunity figure.
+        </div>
+        <div class="firewall-chips">
+          <span class="fw-chip"><i class="ti ti-check"></i> Aggregate burden mapping</span>
+          <span class="fw-chip"><i class="ti ti-check"></i> Care-gap analysis</span>
+          <span class="fw-chip"><i class="ti ti-check"></i> Scientific engagement candidates</span>
+          <span class="fw-chip blocked"><i class="ti ti-x"></i> Patient counts per HCP</span>
+          <span class="fw-chip blocked"><i class="ti ti-x"></i> Sales rep alignment</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid" id="stats-grid"></div>
+
+    <!-- MAP -->
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title">Two-map overlay</div>
+        <div class="metric-toggle" id="metric-toggle">
+          <button class="metric-btn active" data-metric="need">Map A · Clinical need</button>
+          <button class="metric-btn" data-metric="engagement">Map B · Engagement</button>
+          <button class="metric-btn" data-metric="quadrant">Delta · Action</button>
+        </div>
+      </div>
+      <div class="panel-sub" id="map-sub">
+        Map A is clinical need from deidentified RWD. Map B is scientific engagement rolled up from MedVerse
+        behavioural signals. The delta between them is the Medical Affairs action list.
+      </div>
+      <div class="map-grid-wrap">
+        <div>
+          <div class="tile-map" id="tile-map"></div>
+          <div class="map-legend" id="map-legend"></div>
+        </div>
+        <div id="detail-panel"></div>
+      </div>
+    </div>
+
+    <!-- QUADRANTS -->
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Need vs. engagement quadrants</div></div>
+      <div class="panel-sub">51 geographies classified. Click a quadrant to filter the map.</div>
+      <div class="quad-matrix" id="quad-matrix"></div>
+    </div>
+
+    <div class="two-col">
+      <!-- EDUCATION PRIORITIES -->
+      <div class="panel">
+        <div class="panel-head"><div class="panel-title">Education priorities</div></div>
+        <div class="panel-sub">Ranked by gap size, weighted by how scientifically underserved the region is. Safety-relevant gaps weighted higher.</div>
+        <table class="tbl"><thead><tr>
+          <th>Region</th><th>Gap</th><th>Rate</th><th>vs Nat'l</th><th>Score</th>
+        </tr></thead><tbody id="edu-body"></tbody></table>
+      </div>
+
+      <!-- EVENT GEOGRAPHY -->
+      <div class="panel">
+        <div class="panel-head"><div class="panel-title">Event geography</div></div>
+        <div class="panel-sub">Advisory boards, symposia and congress sessions over the trailing 18 months, normalised per 10k cohort.</div>
+        <table class="tbl"><thead><tr>
+          <th>Region</th><th>Need</th><th>Events</th><th>Per 10k</th><th></th>
+        </tr></thead><tbody id="event-body"></tbody></table>
+      </div>
+    </div>
+
+    <!-- CARE GAP REFERENCE -->
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Care gap definitions</div></div>
+      <div class="panel-sub">Every gap is anchored to a guideline or a safety concern. None is defined by treatment opportunity.</div>
+      <table class="tbl"><thead><tr>
+        <th>Gap</th><th>Type</th><th>Nat'l</th><th>Definition</th><th>Education need</th>
+      </tr></thead><tbody id="gap-body"></tbody></table>
+    </div>
+
+    <!-- ENGAGEMENT CANDIDATES -->
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title">Scientific engagement candidates</div>
+        <span class="badge badge-ok"><i class="ti ti-shield-check"></i> No patient counts</span>
+      </div>
+      <div class="panel-sub">HCPs an MSL may engage. Selection is derived from care-gap context, scientific profile and the clinician's own information-seeking.</div>
+      <div class="cand-grid" id="cand-grid"></div>
+    </div>
+  </div>
+
+  <div class="demo-narrator" id="demo-narrator"></div>
+
+  <script>
+  function toggleTheme() {
+    document.documentElement.classList.toggle("dark");
+    localStorage.setItem("medverse-theme",
+      document.documentElement.classList.contains("dark") ? "dark" : "light");
+  }
+  if (localStorage.getItem("medverse-theme") === "dark") {
+    document.documentElement.classList.add("dark");
+  }
+  </script>
+</body>
+</html>

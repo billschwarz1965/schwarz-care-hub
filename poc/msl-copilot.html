@@ -340,6 +340,20 @@
     .theme-toggle .ti-moon { display:none; }
     html.dark .theme-toggle .ti-moon { display:block; }
     html.dark .theme-toggle .ti-sun { display:none; }
+
+    /* TILE MAP (territory heat map) */
+    .metric-toggle { display: flex; gap: 4px; background: var(--surface-dim); padding: 3px; border-radius: 8px; }
+    .metric-btn { padding: 6px 13px; font-family: var(--font); font-size: 12px; font-weight: 600; border: none; background: transparent; color: var(--text-muted); border-radius: 6px; cursor: pointer; }
+    .metric-btn.active { background: var(--surface); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .tile-map { display: grid; grid-template-columns: repeat(11, 1fr); grid-template-rows: repeat(8, 1fr); gap: 4px; max-width: 620px; }
+    .tile { aspect-ratio: 1; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; cursor: pointer; border: 2px solid transparent; transition: transform 0.12s, border-color 0.12s; color: #fff; user-select: none; }
+    .tile:hover { transform: scale(1.12); z-index: 5; border-color: var(--text); }
+    .tile.selected { border-color: var(--text); transform: scale(1.12); z-index: 4; }
+    .map-legend { display: flex; align-items: center; gap: 14px; margin-top: 14px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-secondary); }
+    .legend-swatch { width: 13px; height: 13px; border-radius: 3px; }
+    .legend-scale { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-muted); }
+    .legend-bar { width: 130px; height: 9px; border-radius: 5px; }
   </style>
   <link rel="stylesheet" href="/src/brand-font.css">
   <link rel="stylesheet" href="/src/enhancements.css">
@@ -523,6 +537,20 @@
         <div class="panel-icon" style="background:#ffedd5;color:#c2410c;"><i class="ti ti-chart-histogram"></i></div>
         <div><div class="panel-title">Territory Care Gaps</div><div class="panel-desc">Deidentified real-world evidence for your region — aggregate only</div></div>
       </div>
+      <div class="form-card" style="margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap;">
+          <h4 style="margin:0;"><i class="ti ti-map-2"></i> Territory heat map</h4>
+          <div class="metric-toggle" id="tcg-map-toggle">
+            <button class="metric-btn active" data-metric="need">Map A · Clinical need</button>
+            <button class="metric-btn" data-metric="engagement">Map B · Engagement</button>
+            <button class="metric-btn" data-metric="quadrant">Delta · Action</button>
+          </div>
+        </div>
+        <p id="tcg-map-sub" style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">Map A is clinical need from deidentified RWD. Click a state to load its territory's care-gap profile below.</p>
+        <div class="tile-map" id="tcg-tile-map"></div>
+        <div class="map-legend" id="tcg-map-legend"></div>
+      </div>
+
       <div class="form-panel">
         <div class="form-main">
           <div class="form-card">

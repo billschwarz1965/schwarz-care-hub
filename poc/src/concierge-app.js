@@ -2,6 +2,7 @@ import { generateResponse, suggestedPrompts } from "./rag-engine.js";
 import { speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 import { broadcastSignal } from "./orion-bridge.js";
 import { createDemoController } from "./demo-nav.js";
+import { AGENT_DEMOS } from "./agents-data.js";
 
 // === NAV STATE ===
 const hub = document.getElementById("hub");
@@ -89,6 +90,7 @@ function routeSearch(query) {
     { keywords: ["ingredient", "excipient", "allergy", "latex", "polysorbate", "contraindication", "interaction", "safety profile", "safe for"], agent: "ingredient" },
     { keywords: ["trial", "enroll", "eligib", "study", "phase 3", "phase 2", "clinical study", "recruit"], agent: "trial-match" },
     { keywords: ["msl", "liaison", "field team", "schedule meeting", "find my", "connect with"], agent: "msl-connect" },
+    { keywords: ["peer", "kol", "expert connect", "collaborate", "colleague", "veeva link", "find an expert", "connect with a peer"], agent: "peer-connect" },
     { keywords: ["medical information", "med info", "submit a question", "written response", "off-label", "off label", "renal dose", "hepatic dose", "dialysis", "not in the label", "prescribing information"], agent: "medinfo" },
     { keywords: ["pathway", "care path", "treatment sequence", "step-by-step", "navigator", "patient profile", "comorbid"], agent: "patient-nav" },
     { keywords: ["literature", "pubmed", "publication", "journal", "meta-analysis", "systematic review", "evidence", "paper"], agent: "literature" },
@@ -129,6 +131,9 @@ function prefillAgent(agent, query) {
     const ta = detectTA(query);
     if (ta) document.getElementById("msl-ta").value = ta;
     flashPrefill("msl-submit");
+  } else if (agent === "peer-connect") {
+    document.getElementById("peer-question").value = query;
+    flashPrefill("peer-submit");
   } else if (agent === "medinfo") {
     const product = detectProduct(query);
     if (product) document.getElementById("mi-product").value = product;
@@ -662,6 +667,61 @@ if (medinfoSubmit) medinfoSubmit.addEventListener("click", () => {
         : `Medical Information request logged for ${product}. Flag for MSL follow-up on ${kbHits.signal?.diseaseArea || "product"} interest.`
     });
   }, 1100);
+});
+
+// ============================================================
+// 4b. PEER & EXPERT CONNECT
+// ============================================================
+const peerSubmit = document.getElementById("peer-submit");
+if (peerSubmit) peerSubmit.addEventListener("click", () => {
+  const question = document.getElementById("peer-question").value.trim();
+  const el = document.getElementById("peer-results");
+
+  if (!question) {
+    el.innerHTML = '<div class="result-empty" style="color:var(--danger);"><i class="ti ti-alert-triangle"></i>Describe the clinical problem or collaboration need first.</div>';
+    return;
+  }
+
+  el.innerHTML = '<div class="result-loading"><div class="spinner"></div><div>Querying Veeva Link for peers and KOLs, and scoring matches…</div></div>';
+
+  setTimeout(() => {
+    const rosterStep = AGENT_DEMOS["peer-connect"]?.steps.find(s => s.type === "roster");
+    const experts = rosterStep?.experts || [];
+    const ref = `PC-2026-08-${String(1000 + Math.floor(Math.random() * 8999))}`;
+
+    el.innerHTML = `
+      ${experts.map(x => `
+      <div class="result-card">
+        <div class="result-card-header">
+          <div class="result-title"><i class="ti ti-user-search"></i> ${escapeHtml(x.name)}</div>
+          <span class="result-badge badge-accent">${x.matchScore}% match</span>
+        </div>
+        <div class="result-body">
+          <strong>${escapeHtml(x.credentials)}</strong> — ${escapeHtml(x.institution)}, ${escapeHtml(x.location)}
+          <br><br>${escapeHtml(x.matchReason)}
+        </div>
+        <div class="result-meta">
+          ${x.tags.map(t => `<span class="result-meta-item"><i class="ti ti-tag"></i> ${escapeHtml(t)}</span>`).join("")}
+        </div>
+      </div>`).join("")}
+      <div class="result-card" style="background:var(--orion-bg);border-color:#9fe1cb;">
+        <div class="result-card-header"><div class="result-title" style="color:#085041;"><i class="ti ti-clipboard-check"></i> Governance</div></div>
+        <div class="result-body" style="color:#085041;font-size:12px;line-height:1.6;">
+          <strong>PHI:</strong> ✓ Only professional Veeva Link profile data surfaced — no patient-level data exchanged<br>
+          <strong>Promotional risk:</strong> ✓ Peer-to-peer scientific exchange only — candidates with active speaker bureau engagements excluded<br>
+          <strong>Audit trail:</strong> ✓ Logged — compliance record #${escapeHtml(ref)}
+        </div>
+      </div>`;
+
+    addSignal({
+      topic: "Peer & Expert Connect request",
+      intent: "Peer / KOL collaboration request",
+      diseaseArea: "General",
+      stage: "Peer connect inquiry",
+      depth: "Moderate engagement",
+      orionAction: `Peer Connect request logged — ${experts.length} matches surfaced via Veeva Link. Flag for field medical awareness.`
+    });
+  }, 1200);
 });
 
 // ============================================================
@@ -1208,6 +1268,7 @@ const HCP_AGENTS = [
   { id: "patient-nav",  name: "Patient Navigator",      icon: "map-pin" },
   { id: "trial-match",  name: "Trial Matching",         icon: "flask" },
   { id: "msl-connect",  name: "MSL Connect",            icon: "users" },
+  { id: "peer-connect", name: "Peer & Expert Connect",  icon: "user-search" },
   { id: "medinfo",      name: "Medical Information",    icon: "file-question" },
   { id: "ingredient",   name: "Ingredient Safety",      icon: "shield-check" },
   { id: "temp-stab",    name: "Temperature Stability",  icon: "temperature" },
@@ -1289,6 +1350,19 @@ async function runAgentDemo(index, agent) {
       click("msl-submit");
       await delay(1500);
       await narrate("Dr. Amanda Rodriguez, PharmD — available this week, specializing in Dupixent clinical data and AD real-world evidence. Meeting request, email, and phone options ready");
+      await delay(1500);
+      break;
+    }
+    case "peer-connect": {
+      await narrate("The HCP also wants to compare notes with peers who have hands-on experience. Peer & Expert Connect surfaces a matched roster via Veeva Link");
+      showPanel("peer-connect");
+      await delay(600);
+      set("peer-question", "I'm designing a treat-to-target protocol for difficult-to-treat lupus nephritis patients who've failed belimumab. I'd like to connect with peers who have real-world experience combining anifrolumab with mycophenolate in this population.");
+      await narrate("Describing the clinical problem and collaboration need");
+      await delay(400);
+      click("peer-submit");
+      await delay(1600);
+      await narrate("Three matched peers surfaced, ranked by clinical overlap and academic setting, with speaker-bureau conflicts excluded and the request logged for compliance");
       await delay(1500);
       break;
     }
