@@ -4,6 +4,7 @@
 // pages it actually has via <body data-modules="...">.
 
 import { askMedVerse, capabilityLink, trialLink, pipelineAreaLabel } from "./ask-router.js";
+import { initAskPrompts } from "./ask-prompts.js";
 
 const EDU_ICON = { podcast: "microphone-2", video: "player-play", infographic: "chart-infographic", article: "file-text" };
 
@@ -82,7 +83,7 @@ function render() {
 
     results.innerHTML = `
       <div class="ask-examples">
-        <div class="ask-examples-label">Try one of these</div>
+        <div class="ask-examples-label">Or try one of these</div>
         ${EXAMPLES.map(x => `<button type="button" class="ask-example" data-q="${esc(x)}">${esc(x)}</button>`).join("")}
       </div>`;
 
@@ -277,3 +278,4 @@ function render() {
 }
 
 render();
+initAskPrompts();
