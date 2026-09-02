@@ -1,11 +1,13 @@
 # Publishes to GitHub Pages in one run:
 #   poc             — full POC, the superset edition
 #   poc-external    — external-audience edition
+#   poc-internal    — MSL / Medical Affairs internal edition
 #   sitemap-options — static sitemap prototypes, no build step
 #   hcp-preferences — HCP preferences research section (sanitised; static, no build)
 #
-# NOT published: poc-internal (MSL / Medical Affairs). This site is PUBLIC, so the
-# internal edition is deliberately excluded and served from an authenticated host.
+# poc-internal is published here deliberately, by explicit request — this site is
+# PUBLIC, so anyone with the link can reach the internal edition unauthenticated.
+# There is no login gate. Revisit this if that stops being an acceptable tradeoff.
 #
 # Each edition ships exactly the pages listed in its own vite.config.js. Note
 # that poc/vite.config.js deliberately omits build-economics.html and
@@ -58,13 +60,13 @@ jobs:
         run: |
           set -euo pipefail
           missing=0
-          for dir in poc poc-external poc/sitemap-options poc/hcp-preferences-public; do
+          for dir in poc poc-external poc-internal poc/sitemap-options poc/hcp-preferences-public; do
             if [ ! -d "$dir" ]; then
               echo "::error::Missing build target '$dir' on ref '${{ github.ref_name }}'."
               missing=1
             fi
           done
-          for cfg in poc/vite.config.js poc-external/vite.config.js; do
+          for cfg in poc/vite.config.js poc-external/vite.config.js poc-internal/vite.config.js; do
             if [ ! -f "$cfg" ]; then
               echo "::error::Missing '$cfg'. Without it Vite builds only index.html and every other page is silently dropped."
               missing=1
@@ -72,16 +74,12 @@ jobs:
           done
           [ "$missing" -eq 0 ] || exit 1
 
-      # poc-internal is deliberately NOT built or published here. This site is PUBLIC;
-      # the Internal Edition (MSL & Medical Affairs) must not be world-readable.
-      # Serve it from an authenticated host instead.
-      #
       # No lock file is committed for the edition packages, so `npm install`
       # rather than `npm ci`.
       - name: Build the published POC editions
         run: |
           set -euo pipefail
-          for app in poc poc-external; do
+          for app in poc poc-external poc-internal; do
             echo "::group::build $app"
             ( cd "$app" && npm install && npm run build )
             echo "::endgroup::"
@@ -93,6 +91,7 @@ jobs:
           mkdir -p site
           cp -r poc/dist                  site/poc
           cp -r poc-external/dist         site/poc-external
+          cp -r poc-internal/dist         site/poc-internal
           cp -r poc/sitemap-options       site/sitemap-options
           cp -r poc/hcp-preferences-public site/hcp-preferences
 
@@ -105,8 +104,9 @@ jobs:
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>MedVerse Demos</title>
             <style>
-              body { font-family: system-ui, sans-serif; background: #f7f5fa; color: #1a1a2e; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+              body { font-family: system-ui, sans-serif; background: #f7f5fa; color: #1a1a2e; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 24px; }
               .card { background: #fff; border: 1px solid #e4dff0; border-radius: 16px; padding: 32px 40px; max-width: 520px; box-shadow: 0 8px 32px rgba(122,0,230,0.08); }
+              .banner { display: flex; align-items: flex-start; gap: 8px; background: #fef9c3; color: #854d0e; border: 1px solid #fde68a; border-radius: 10px; padding: 10px 14px; margin-bottom: 18px; font-size: 12px; line-height: 1.5; }
               h1 { font-size: 20px; margin: 0 0 4px; }
               p.sub { font-size: 13px; color: #6b6b80; margin: 0 0 20px; }
               a.link { display: block; padding: 14px 18px; margin-top: 10px; border-radius: 10px; background: #f0e6ff; color: #6b21a8; text-decoration: none; font-weight: 600; }
@@ -118,13 +118,14 @@ jobs:
           </head>
           <body>
             <div class="card">
+              <div class="banner">⚠️ <span><strong>Proof of concept</strong> — illustrative demos with example/synthetic data and a few live read-only connections (e.g. PubMed, ClinicalTrials.gov). Not built or reviewed for production use.</span></div>
               <h1>MedVerse Demos</h1>
               <p class="sub">Illustrative prototypes. Synthetic and example data throughout.</p>
               <a class="link" href="poc/index.html">POC — Full<span>Superset edition, includes internal-only tools</span></a>
               <a class="link" href="poc-external/index.html">POC — External Edition<span>External HCP audience</span></a>
+              <a class="link" href="poc-internal/index.html">POC — Internal Edition<span>MSL &amp; Medical Affairs</span></a>
               <a class="link" href="hcp-preferences/index.html">HCP Preferences<span>Research results and summary</span></a>
               <a class="link" href="sitemap-options/index.html">Sitemap Options<span>Navigation prototypes</span></a>
-              <p class="note">The Internal Edition (MSL &amp; Medical Affairs) is not published here.</p>
             </div>
           </body>
           </html>
@@ -135,7 +136,7 @@ jobs:
       - name: Verify assembled site
         run: |
           set -euo pipefail
-          for target in poc poc-external sitemap-options hcp-preferences; do
+          for target in poc poc-external poc-internal sitemap-options hcp-preferences; do
             if [ ! -f "site/$target/index.html" ]; then
               echo "::error::site/$target/index.html is missing — refusing to deploy."
               exit 1
