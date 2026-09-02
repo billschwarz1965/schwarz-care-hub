@@ -165,9 +165,10 @@ const STYLE = `
   }
 `;
 
-function copyToClipboard(text) {
-  if (navigator.clipboard?.writeText) return navigator.clipboard.writeText(text);
-  // Older browsers on locked-down demo laptops have no async clipboard.
+function execCommandCopy(text) {
+  // Fallback for browsers with no async clipboard API, and for locked-down
+  // corporate policies that expose navigator.clipboard but deny the
+  // permission at runtime (the write rejects instead of the API being absent).
   return new Promise((resolve, reject) => {
     const ta = document.createElement("textarea");
     ta.value = text;
@@ -176,10 +177,18 @@ function copyToClipboard(text) {
     ta.style.opacity = "0";
     document.body.appendChild(ta);
     ta.select();
-    const ok = document.execCommand("copy");
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch { /* not supported */ }
     ta.remove();
     ok ? resolve() : reject(new Error("copy failed"));
   });
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard?.writeText) {
+    return navigator.clipboard.writeText(text).catch(() => execCommandCopy(text));
+  }
+  return execCommandCopy(text);
 }
 
 function renderList(body, filter) {
