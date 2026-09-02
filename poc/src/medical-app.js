@@ -6,6 +6,7 @@ import {
   QUADRANTS, getNationalSummary, getAllRegionRollups, getEducationPriorities,
   getEventGeographyAnalysis,
 } from "./population-data.js";
+import { mountTileMap } from "./population-map.js";
 
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
@@ -785,6 +786,20 @@ function renderPopulation() {
       <div class="stat-tile"><div class="stat-num">${s.cohortInGapPct}%</div><div class="stat-label">Cohort In Gap</div></div>
     </div>
 
+    <div class="result-card" style="margin-bottom:20px;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap;">
+        <h4 style="margin:0;"><i class="ti ti-map-2"></i> Need vs. engagement — state heat map</h4>
+        <div class="metric-toggle" id="med-map-toggle">
+          <button class="metric-btn active" data-metric="need">Map A · Clinical need</button>
+          <button class="metric-btn" data-metric="engagement">Map B · Engagement</button>
+          <button class="metric-btn" data-metric="quadrant">Delta · Action</button>
+        </div>
+      </div>
+      <p id="med-map-sub" style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">Map A is clinical need from deidentified RWD. Map B is scientific engagement rolled up from MedVerse behavioural signals. The delta between them is the Medical Affairs action list.</p>
+      <div class="tile-map" id="med-tile-map"></div>
+      <div class="map-legend" id="med-map-legend"></div>
+    </div>
+
     <div class="result-card">
       <h4><i class="ti ti-map-2"></i> Regional burden vs. engagement</h4>
       <table class="data-table"><thead><tr>
@@ -819,6 +834,8 @@ function renderPopulation() {
       </div>
     </div>
   `;
+
+  mountTileMap({ tileMapId: "med-tile-map", legendId: "med-map-legend", toggleId: "med-map-toggle", subId: "med-map-sub" });
 
   const top = priorities[0];
   if (top) {

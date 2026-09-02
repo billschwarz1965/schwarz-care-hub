@@ -2,7 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="medverse-ask" content="ask.html">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MedVerse">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <meta name="theme-color" content="#7a00e6">
   <title>MedVerse — Power Agents</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -97,16 +104,17 @@
     .theme-toggle .ti-moon { display:none; }
     html.dark .theme-toggle .ti-moon { display:block; }
     html.dark .theme-toggle .ti-sun { display:none; }
-  </style>
-  <script type="module" crossorigin src="/assets/enhancements-CkBzVvPR.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/enhancements-BwV9TaLn.css">
+  </style>
+  <script type="module" crossorigin src="./assets/enhancements-DWyQcU8v.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/enhancements-BXHYsJpf.css">
+  <link rel="stylesheet" crossorigin href="./assets/enhancements-BwV9TaLn.css">
 </head>
 <body>
   <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode"><i class="ti ti-sun"></i><i class="ti ti-moon"></i></button>
   <div class="header">
     <div class="header-brand-bar"></div>
     <div class="header-inner">
-      <a class="header-home" href="/index.html">
+      <a class="header-home" href="index.html">
         <div class="header-logo"><i class="ti ti-brain"></i></div>
         <div>
           <div class="header-title">MedVerse</div>
@@ -120,12 +128,15 @@
   </div>
 
   <nav class="module-nav">
-    <a class="module-tab" href="/index.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
-    <a class="module-tab" href="/medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
-    <a class="module-tab" href="/concierge.html"><i class="ti ti-message-circle"></i> HCP Concierge</a>
-    <a class="module-tab" href="/patient.html"><i class="ti ti-heart"></i> Patient Concierge</a>
-    <a class="module-tab active" href="/system-tools.html"><i class="ti ti-settings"></i> Power Agents</a>
-    <a class="module-tab" href="/demo.html"><i class="ti ti-player-play"></i> Demo</a>
+    <a class="module-tab" href="index.html"><i class="ti ti-home"></i> Home</a>
+    <a class="module-tab" href="ask.html"><i class="ti ti-sparkles"></i> Ask MedVerse</a>
+    <a class="module-tab" href="concierge.html"><i class="ti ti-message-circle"></i> HCP Concierge</a>
+    <a class="module-tab" href="patient.html"><i class="ti ti-heart"></i> Patient Concierge</a>
+    <a class="module-tab" href="msl-copilot.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
+    <a class="module-tab" href="medical.html"><i class="ti ti-building-hospital"></i> Medical Concierge</a>
+    <a class="module-tab active" href="system-tools.html"><i class="ti ti-settings"></i> Power Agents</a>
+    <a class="module-tab" href="demo.html"><i class="ti ti-player-play"></i> Demo</a>
+    <a class="module-tab" href="about.html"><i class="ti ti-info-circle"></i> About</a>
   </nav>
 
   <div class="main-scroll">
@@ -137,7 +148,7 @@
       </div>
 
       <div class="tool-grid">
-        <a class="tool-card" data-tool="orion" href="/orion.html">
+        <a class="tool-card" data-tool="orion" href="orion.html">
           <div class="tool-icon"><i class="ti ti-radar-2"></i></div>
           <div>
             <h3>Orion Intelligence</h3>
@@ -145,7 +156,7 @@
             <span class="tool-tag">Signal Intelligence</span>
           </div>
         </a>
-        <a class="tool-card" data-tool="disease" href="/disease.html">
+        <a class="tool-card" data-tool="disease" href="disease.html">
           <div class="tool-icon"><i class="ti ti-dna"></i></div>
           <div>
             <h3>Disease Navigator</h3>
@@ -153,7 +164,7 @@
             <span class="tool-tag">Disease Landscape</span>
           </div>
         </a>
-        <a class="tool-card" data-tool="literature" href="/literature.html">
+        <a class="tool-card" data-tool="literature" href="literature.html">
           <div class="tool-icon"><i class="ti ti-book-2"></i></div>
           <div>
             <h3>Literature Intelligence</h3>
@@ -161,7 +172,7 @@
             <span class="tool-tag">Scientific Evidence</span>
           </div>
         </a>
-        <a class="tool-card" data-tool="congress" href="/congress.html">
+        <a class="tool-card" data-tool="congress" href="congress.html">
           <div class="tool-icon"><i class="ti ti-calendar-event"></i></div>
           <div>
             <h3>Congress Intelligence</h3>
@@ -169,7 +180,7 @@
             <span class="tool-tag">Congress Coverage</span>
           </div>
         </a>
-        <a class="tool-card" data-tool="agents" href="/agents.html">
+        <a class="tool-card" data-tool="agents" href="agents.html">
           <div class="tool-icon"><i class="ti ti-robot"></i></div>
           <div>
             <h3>Agent Ecosystem</h3>
@@ -183,6 +194,6 @@
   <script>
 function toggleTheme(){document.documentElement.classList.toggle("dark");localStorage.setItem("medverse-theme",document.documentElement.classList.contains("dark")?"dark":"light")}
 if(localStorage.getItem("medverse-theme")==="dark")document.documentElement.classList.add("dark");
-</script>
+</script>
 </body>
 </html>

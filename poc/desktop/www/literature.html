@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="medverse-ask" content="ask.html">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="manifest" href="manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -808,12 +809,13 @@
     .theme-toggle .ti-moon { display: none; }
     html.dark .theme-toggle .ti-moon { display: block; }
     html.dark .theme-toggle .ti-sun { display: none; }
-  </style>
-  <script type="module" crossorigin src="./assets/literature-DEgIBPpn.js"></script>
-  <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-B5Qt9EMX.js">
-  <link rel="modulepreload" crossorigin href="./assets/enhancements-ynYYTJ84.js">
-  <link rel="modulepreload" crossorigin href="./assets/narrator-Gu1jBQbu.js">
-  <link rel="modulepreload" crossorigin href="./assets/orion-bridge-Bxojkdb6.js">
+  </style>
+  <script type="module" crossorigin src="./assets/literature-7F8mkm95.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/enhancements-DWyQcU8v.js">
+  <link rel="modulepreload" crossorigin href="./assets/narrator-BE1zjzk_.js">
+  <link rel="modulepreload" crossorigin href="./assets/taxonomy-B-xcL3O-.js">
+  <link rel="modulepreload" crossorigin href="./assets/orion-bridge-4A-0m1g1.js">
+  <link rel="stylesheet" crossorigin href="./assets/enhancements-BXHYsJpf.css">
   <link rel="stylesheet" crossorigin href="./assets/enhancements-BwV9TaLn.css">
 </head>
 <body>
@@ -839,6 +841,7 @@
 
   <nav class="module-nav">
     <a class="module-tab" href="index.html"><i class="ti ti-home"></i> Home</a>
+    <a class="module-tab" href="ask.html"><i class="ti ti-sparkles"></i> Ask MedVerse</a>
     <a class="module-tab" href="concierge.html"><i class="ti ti-message-circle"></i> HCP Concierge</a>
     <a class="module-tab" href="patient.html"><i class="ti ti-heart"></i> Patient Concierge</a>
     <a class="module-tab" href="msl-copilot.html"><i class="ti ti-briefcase"></i> MSL Copilot</a>
@@ -973,8 +976,8 @@
   <script>
 function toggleTheme(){document.documentElement.classList.toggle("dark");localStorage.setItem("medverse-theme",document.documentElement.classList.contains("dark")?"dark":"light")}
 if(localStorage.getItem("medverse-theme")==="dark")document.documentElement.classList.add("dark");
-</script>
-  <div class="demo-narrator" id="demo-narrator"></div>
+</script>
+  <div class="demo-narrator" id="demo-narrator"></div>
   <script>
   function toggleTheme() {
     document.documentElement.classList.toggle("dark");

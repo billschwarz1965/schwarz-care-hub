@@ -45,8 +45,14 @@ self.addEventListener('install', (event) => {
   // Don't pre-cache in development — a cached shell is another way to end up
   // looking at a build that is no longer what the source says.
   if (!IS_DEV) {
+    // Cached one at a time rather than with addAll(): addAll() rejects the
+    // entire install if a single URL 404s, so one stale entry in
+    // APP_SHELL_PATHS silently disabled the whole worker for an edition. A
+    // missing page now simply goes uncached.
     event.waitUntil(
-      caches.open(CACHE_VERSION).then((cache) => cache.addAll(APP_SHELL))
+      caches.open(CACHE_VERSION).then((cache) =>
+        Promise.all(APP_SHELL.map((url) => cache.add(url).catch(() => {})))
+      )
     );
   }
   self.skipWaiting();
