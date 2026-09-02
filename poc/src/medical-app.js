@@ -3,8 +3,8 @@ import { broadcastSignal, broadcastPopulationSignal } from "./orion-bridge.js";
 import { speakAndWait, stopSpeaking, showControls, hideControls, isCCEnabled } from "./narrator.js";
 import { createDemoController } from "./demo-nav.js";
 import {
-  QUADRANTS, getNationalSummary, getAllRegionRollups, getEducationPriorities,
-  getEventGeographyAnalysis,
+  QUADRANTS, CARE_GAPS, getNationalSummary, getAllRegionRollups, getEducationPriorities,
+  getEventGeographyAnalysis, getRegionRollup, getGapDelta,
 } from "./population-data.js";
 import { mountTileMap } from "./population-map.js";
 
@@ -72,6 +72,7 @@ function routeSearch(q) {
   else if (/education|training|disease state|patient education|hcp education/i.test(lq)) showPanel('med-ed');
   else if (/evidence|rwe|systematic|meta.analy|slr/i.test(lq)) showPanel('evidence');
   else if (/strategy|landscape|unmet|kpi|medical plan/i.test(lq)) showPanel('med-strategy');
+  else if (/care gap|guideline|undertreatment|referral delay|burden/i.test(lq)) showPanel('care-gap');
   else if (/literature|pubmed|search|citation/i.test(lq)) showPanel('literature');
   else if (/congress|eadv|aad|acr|ats|aaaai|ddw|symposium/i.test(lq)) showPanel('congress');
   else showPanel('med-info');
@@ -860,6 +861,88 @@ function renderPopulation() {
   }
 }
 renderPopulation();
+
+// ══════════════════════════════════════════════
+// 9b. CARE GAP ANALYZER
+// ══════════════════════════════════════════════
+// Decomposes a region's aggregate burden into guideline-anchored care gaps —
+// the same taxonomy the tile map and MSL's Territory Care Gaps draw on, but
+// framed for Medical Affairs: guideline citation, medical implication, and
+// the education need each gap implies.
+function renderCareGapAnalysis(region) {
+  const el = $('#cga-results');
+  if (!el) return;
+  const r = getRegionRollup(region);
+  if (!r) {
+    el.innerHTML = '<div class="result-empty"><i class="ti ti-stethoscope"></i>No aggregate data for that region.</div>';
+    return;
+  }
+
+  const ranked = CARE_GAPS
+    .map(gap => ({ gap, rate: r.gapRates[gap.id], delta: getGapDelta(r, gap.id) }))
+    .sort((a, b) => {
+      if (a.gap.safetyRelevant !== b.gap.safetyRelevant) return a.gap.safetyRelevant ? -1 : 1;
+      return b.delta - a.delta;
+    });
+
+  const safetyCount = ranked.filter(x => x.gap.safetyRelevant).length;
+  const top = ranked[0];
+
+  const rows = ranked.map(({ gap, rate, delta }) => {
+    const unit = gap.unit === 'mo' ? ' mo' : '%';
+    const dTxt = (delta > 0 ? '+' : '') + delta + (gap.unit === 'mo' ? 'mo' : 'pp');
+    return `<tr>
+      <td><strong>${gap.name}</strong>${gap.safetyRelevant ? ' <span style="font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--danger-bg);color:var(--danger);">SAFETY</span>' : ''}
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">${gap.guideline}</div></td>
+      <td>${rate}${unit}</td>
+      <td style="color:var(--text-muted);">${gap.nationalRate}${unit}</td>
+      <td style="color:${delta > 0 ? 'var(--danger)' : 'var(--success)'};font-weight:700;">${dTxt}</td>
+      <td style="text-transform:capitalize;">${gap.gapType}</td>
+      <td style="font-size:11.5px;">${gap.educationNeed}</td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="result-card" style="border-left:3px solid var(--accent);">
+      <h4><i class="ti ti-stethoscope"></i> ${ranked.length} guideline-anchored gaps — ${region} (${r.stateCount} states, ${r.cohort.toLocaleString()} cohort)</h4>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">Ranked by safety relevance, then by delta vs. national rate. Every gap is anchored to a guideline or a safety concern — none is defined by treatment opportunity.</p>
+      <table class="data-table"><thead><tr>
+        <th>Gap</th><th>Rate</th><th>National</th><th>Delta</th><th>Type</th><th>Education need</th>
+      </tr></thead><tbody>${rows}</tbody></table>
+    </div>
+    <div class="result-card">
+      <h4><i class="ti ti-arrow-ramp-right"></i> Reading the pattern</h4>
+      <div style="font-size:12.5px;line-height:1.75;color:var(--text-secondary);">
+        <strong style="color:var(--text);">${top.gap.name}</strong> is the largest gap versus national, at ${top.rate}${top.gap.unit === 'mo' ? 'mo' : '%'}
+        (${(top.delta > 0 ? '+' : '') + top.delta}${top.gap.unit === 'mo' ? 'mo' : 'pp'} vs. national). ${top.gap.medicalImplication}.<br><br>
+        <strong style="color:var(--text);">${safetyCount} of ${ranked.length} gaps are safety-relevant</strong> — cumulative exposure or sequencing concerns rather than efficacy framing. These are the least contestable as medical activity.<br><br>
+        Route education needs to Medical Education and Scientific Communications; route any gap with high need <em>and</em> high engagement to Publication Planner for real-world evidence study scoping instead — the evidence base, not the audience, is what's missing there.
+      </div>
+    </div>`;
+
+  broadcastPopulationSignal({
+    geoId: r.geoId,
+    geoName: region,
+    aggregationLevel: 'region',
+    cohortSize: r.cohort,
+    gapId: top.gap.id,
+    gapName: top.gap.name,
+    gapRate: top.rate,
+    nationalRate: top.gap.nationalRate,
+    nationalDelta: top.delta,
+    needIndex: r.needIndex,
+    engagementIndex: r.engagementIndex,
+    quadrant: r.quadrant,
+    medicalAction: `CARE GAP ANALYSIS: ${region} — ${top.gap.shortName} at ${top.rate}${top.gap.unit === 'mo' ? 'mo' : '%'} vs ${top.gap.nationalRate}${top.gap.unit === 'mo' ? 'mo' : '%'} national. ${safetyCount} safety-relevant gap(s). Education need: ${top.gap.educationNeed}.`,
+    educationNeed: top.gap.educationNeed,
+    _source: 'Care Gap Analyzer',
+  });
+}
+
+const cgaSubmit = $('#cga-submit');
+if (cgaSubmit) cgaSubmit.addEventListener('click', () => {
+  renderCareGapAnalysis($('#cga-region').value);
+});
 
 // ══════════════════════════════════════════════
 // 10. LITERATURE INTELLIGENCE
