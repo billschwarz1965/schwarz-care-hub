@@ -102,7 +102,7 @@ jobs:
           <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>MedVerse Demos</title>
+            <title>Medverse Scientific Intelligence Ecosystem Demo</title>
             <style>
               body { font-family: system-ui, sans-serif; background: #f7f5fa; color: #1a1a2e; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 24px; }
               .card { background: #fff; border: 1px solid #e4dff0; border-radius: 16px; padding: 32px 40px; max-width: 520px; box-shadow: 0 8px 32px rgba(122,0,230,0.08); }
@@ -122,11 +122,11 @@ jobs:
           <body>
             <div class="card">
               <div class="banner">⚠️ <span><strong>Proof of concept</strong> — illustrative demos with example/synthetic data and a few live read-only connections (e.g. PubMed, ClinicalTrials.gov). Not built or reviewed for production use.</span></div>
-              <h1>MedVerse Demos</h1>
+              <h1>Medverse Scientific Intelligence Ecosystem Demo</h1>
               <p class="sub">Illustrative prototypes. Synthetic and example data throughout.</p>
               <a class="link" href="poc/index.html">POC — Full<span>Superset edition, includes internal-only tools</span></a>
-              <a class="link" href="poc-external/index.html">POC — External Edition<span>External HCP audience</span></a>
-              <a class="link highlight" href="poc-internal/index.html">POC — Internal Edition<span>MSL &amp; Medical Affairs</span></a>
+              <a class="link highlight" href="poc-external/index.html">POC — External Edition<span>External HCP audience</span></a>
+              <a class="link" href="poc-internal/index.html">POC — Internal Edition<span>MSL &amp; Medical Affairs</span></a>
               <a class="link highlight" href="hcp-preferences/index.html">HCP Preferences<span>Research results and summary</span></a>
               <a class="link" href="sitemap-options/index.html">Sitemap Options<span>Navigation prototypes</span></a>
             </div>
